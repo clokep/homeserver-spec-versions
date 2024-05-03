@@ -50,6 +50,21 @@ class ProjectMetadata(ServerMetadata, AdditionalMetadata):
     pass
 
 
+@dataclass
+class CommitVersionInfo:
+    commit: str
+    date: datetime
+    versions: set[str]
+
+
+@dataclass
+class VersionInfo:
+    first_commit: str
+    start_date: datetime
+    last_commit: str | None = None
+    end_date: datetime | None = None
+
+
 # Projects to ignore.
 INVALID_PROJECTS = {
     # Dendron is essentially a reverse proxy, not a homeserver.
@@ -306,32 +321,68 @@ if __name__ == "__main__":
         repo.head.reference = project.branch
         repo.head.reset(index=True, working_tree=True)
 
-        # Map of version to first commit with that version.
-        versions = {}
+        # List of commits with their version info.
+        versions_at_commit = []
 
         # If no paths are given, then no versions were ever supported.
         if project.paths:
+            # Calculate the set of versions each time these files were changed.
             for commit in repo.iter_commits(
                 f"{project.earliest_commit}~..{project.branch}"
                 if project.earliest_commit
                 else project.branch,
                 paths=project.paths,
+                reverse=True,
             ):
                 # Checkout this commit (why is this so hard?).
                 repo.head.reference = commit
                 repo.head.reset(index=True, working_tree=True)
 
-                # Since commits are in order from newest to earliest, stomp over previous data.
-                for version in get_versions_from_file(project_dir, project.paths):
-                    versions[version] = commit.hexsha
+                # Commits are ordered earliest to latest, only record if the
+                # version info changed.
+                cur_versions = get_versions_from_file(project_dir, project.paths)
+                if (
+                    not versions_at_commit
+                    or versions_at_commit[-1].versions != cur_versions
+                ):
+                    versions_at_commit.append(
+                        CommitVersionInfo(
+                            commit.hexsha, commit.authored_datetime, cur_versions
+                        )
+                    )
+
+        # Map of version to list of commits when support for that version changed.
+        versions = {}
+        for commit_info in versions_at_commit:
+            for version in commit_info.versions:
+                # If this version has not been found before or was previously removed,
+                # add a new entry.
+                if version not in versions:
+                    versions[version] = [
+                        VersionInfo(commit_info.commit, commit_info.date)
+                    ]
+                elif versions[version][-1].last_commit:
+                    versions[version].append(
+                        VersionInfo(commit_info.commit, commit_info.date)
+                    )
+
+            # If any versions are no longer found on this commit, but are still
+            # considered as supported, mark as unsupported.
+            for version, version_info in versions.items():
+                if (
+                    version not in commit_info.versions
+                    and not version_info[-1].last_commit
+                ):
+                    version_info[-1].last_commit = commit_info.commit
+                    version_info[-1].end_date = commit_info.date
 
         print(f"Loaded {project.name} versions: {versions}")
 
-        # Resolve commits to date and the first tag with that commit.
-        versions_dates_all = {}
-        for version, commit_hash in versions.items():
-            commit = repo.commit(commit_hash)
-            versions_dates_all[version] = commit.authored_datetime
+        # Resolve commits to date for when each version was first supported.
+        versions_dates_all = {
+            version: version_info[0].start_date
+            for version, version_info in versions.items()
+        }
 
         print(f"Loaded {project.name} dates: {versions_dates_all}")
 
