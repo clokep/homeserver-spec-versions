@@ -54,8 +54,6 @@ class ProjectMetadata(ServerMetadata, AdditionalMetadata):
 INVALID_PROJECTS = {
     # Dendron is essentially a reverse proxy, not a homeserver.
     "dendron",
-    # Bullettime has no real code.
-    "bullettime",
 }
 
 
@@ -75,6 +73,12 @@ ADDITIONAL_METADATA = {
         ],
         earliest_commit=None,
         earliest_tag="v0.1.0rc1",
+    ),
+    "bullettime": AdditionalMetadata(
+        "master",
+        [],
+        earliest_commit=None,
+        earliest_tag=None,
     ),
     "conduit": AdditionalMetadata(
         "next",

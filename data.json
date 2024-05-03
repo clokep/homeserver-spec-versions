@@ -1,5 +1,11 @@
 {
     "homeserver_versions": {
+        "bullettime": {
+            "initial_release_date": null,
+            "lag_after_release": {},
+            "lag_all": {},
+            "version_dates": {}
+        },
         "conduit": {
             "initial_release_date": "2021-09-02T11:10:23+00:00",
             "lag_after_release": {
