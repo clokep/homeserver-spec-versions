@@ -35,6 +35,10 @@ class AdditionalMetadata:
     #
     # Leave empty if no versions were ever implemented.
     paths: list[str]
+    # The earliest commit to consider.
+    #
+    # Useful for forks where the project contains many old commits.
+    earliest_commit: str | None
     # The earliest tag to consider.
     #
     # Note that earlier tags might exist in the repo due to forks or other reasons.
@@ -60,7 +64,8 @@ ADDITIONAL_METADATA = {
     "synapse": AdditionalMetadata(
         "develop",
         ["synapse/rest/client/versions.py"],
-        "v0.0.0",
+        earliest_commit=None,
+        earliest_tag="v0.0.0",
     ),
     "dendrite": AdditionalMetadata(
         "main",
@@ -68,7 +73,8 @@ ADDITIONAL_METADATA = {
             "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
             "clientapi/routing/routing.go",
         ],
-        "v0.1.0rc1",
+        earliest_commit=None,
+        earliest_tag="v0.1.0rc1",
     ),
     "conduit": AdditionalMetadata(
         "next",
@@ -77,25 +83,31 @@ ADDITIONAL_METADATA = {
             "src/client_server/unversioned.rs",
             "src/api/client_server/unversioned.rs",
         ],
-        "v0.2.0",
+        earliest_commit=None,
+        earliest_tag="v0.2.0",
     ),
     "construct": AdditionalMetadata(
         "master",
         ["ircd/json.cc", "modules/client/versions.cc"],
-        "0.0.10020",
+        earliest_commit=None,
+        earliest_tag="0.0.10020",
     ),
-    "jsynapse": AdditionalMetadata("master", [], earliest_tag=None),
+    "jsynapse": AdditionalMetadata(
+        "master", [], earliest_commit=None, earliest_tag=None
+    ),
     "ligase": AdditionalMetadata(
         "develop",
         [
             "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
             "proxy/routing/routing.go",
         ],
-        "4.8.12",
+        earliest_commit="bde8bc21a45a9dcffaaa812aa6a5a5341bca5f42",
+        earliest_tag="4.8.12",
     ),
     "maelstrom": AdditionalMetadata(
         "master",
         ["src/server/handlers/admin.rs"],
+        earliest_commit=None,
         earliest_tag=None,
     ),
     "matrex": AdditionalMetadata(
@@ -104,6 +116,7 @@ ADDITIONAL_METADATA = {
             "web/controllers/client_versions_controller.ex",
             "controllers/client/versions.ex",
         ],
+        earliest_commit=None,
         earliest_tag=None,
     ),
     "mxhsd": AdditionalMetadata(
@@ -111,12 +124,16 @@ ADDITIONAL_METADATA = {
         [
             "src/main/java/io/kamax/mxhsd/spring/client/controller/VersionController.java"
         ],
+        earliest_commit=None,
         earliest_tag=None,
     ),
-    "transform": AdditionalMetadata("master", ["config.json"], earliest_tag=None),
+    "transform": AdditionalMetadata(
+        "master", ["config.json"], earliest_commit=None, earliest_tag=None
+    ),
     "telodendria": AdditionalMetadata(
         "master",
         ["src/Routes/RouteMatrix.c", "src/Routes/RouteVersions.c"],
+        earliest_commit=None,
         earliest_tag=None,
     ),
 }
@@ -137,6 +154,7 @@ ADDITIONAL_PROJECTS = [
             "src/client_server/unversioned.rs",
             "src/api/client_server/unversioned.rs",
         ],
+        earliest_commit="9c3b3daafcbc95647b5641a6edc975e2ffc04b04",
         earliest_tag="v0.3.0",
     )
 ]
@@ -289,7 +307,12 @@ if __name__ == "__main__":
 
         # If no paths are given, then no versions were ever supported.
         if project.paths:
-            for commit in repo.iter_commits(project.branch, paths=project.paths):
+            for commit in repo.iter_commits(
+                f"{project.earliest_commit}~..{project.branch}"
+                if project.earliest_commit
+                else project.branch,
+                paths=project.paths,
+            ):
                 # Checkout this commit (why is this so hard?).
                 repo.head.reference = commit
                 repo.head.reset(index=True, working_tree=True)
