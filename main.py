@@ -29,8 +29,15 @@ class ServerMetadata:
 
 @dataclass
 class AdditionalMetadata:
+    # The branch which has the latest commit.
     branch: str
+    # The file paths (relative to repo root) to check for version information.
+    #
+    # Leave empty if no versions were ever implemented.
     paths: list[str]
+    # The earliest tag to consider.
+    #
+    # Note that earlier tags might exist in the repo due to forks or other reasons.
     earliest_tag: str | None
 
 
@@ -41,8 +48,10 @@ class ProjectMetadata(ServerMetadata, AdditionalMetadata):
 
 # Projects to ignore.
 INVALID_PROJECTS = {
-    # DIdn't is essentially a reverse proxy, not a homeserver.
+    # Dendron is essentially a reverse proxy, not a homeserver.
     "dendron",
+    # Bullettime has no real code.
+    "bullettime",
 }
 
 
@@ -75,9 +84,39 @@ ADDITIONAL_METADATA = {
         ["ircd/json.cc", "modules/client/versions.cc"],
         "0.0.10020",
     ),
+    "jsynapse": AdditionalMetadata("master", [], earliest_tag=None),
+    "ligase": AdditionalMetadata(
+        "develop",
+        [
+            "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
+            "proxy/routing/routing.go",
+        ],
+        "4.8.12",
+    ),
     "maelstrom": AdditionalMetadata(
         "master",
         ["src/server/handlers/admin.rs"],
+        earliest_tag=None,
+    ),
+    "matrex": AdditionalMetadata(
+        "master",
+        [
+            "web/controllers/client_versions_controller.ex",
+            "controllers/client/versions.ex",
+        ],
+        earliest_tag=None,
+    ),
+    "mxhsd": AdditionalMetadata(
+        "master",
+        [
+            "src/main/java/io/kamax/mxhsd/spring/client/controller/VersionController.java"
+        ],
+        earliest_tag=None,
+    ),
+    "transform": AdditionalMetadata("master", ["config.json"], earliest_tag=None),
+    "telodendria": AdditionalMetadata(
+        "master",
+        ["src/Routes/RouteMatrix.c", "src/Routes/RouteVersions.c"],
         earliest_tag=None,
     ),
 }
@@ -121,6 +160,10 @@ def load_projects() -> Iterator[ProjectMetadata]:
             print(f"Ignoring {server_name}.")
             continue
 
+        # jSynapse is missing the repository metadata.
+        if server_name == "jsynapse":
+            server["repository"] = "https://github.com/swarmcom/jSynapse"
+
         if server_name not in ADDITIONAL_METADATA:
             print(f"No metadata for {server_name}, skipping.")
             continue
@@ -142,8 +185,8 @@ def get_versions_from_file(root: Path, paths: list[str]) -> set[str]:
             "--only-matching",
             "--no-filename",
             "-E",
-            # This is equivalent to a command line of: "(\\\\?['\"]) ?[vr]\d.+?\1"
-            r"""(\\?['\\"]) ?[vr]\d.+?\1""",
+            # This is equivalent to a command line of: "(\\\\?['\"]) ?[vr]\d\..+?\1"
+            r"""(\\?['\\"]) ?[vr]\d\..+?\1""",
             *paths,
         ],
         capture_output=True,
@@ -244,14 +287,16 @@ if __name__ == "__main__":
         # Map of version to first commit with that version.
         versions = {}
 
-        for commit in repo.iter_commits(project.branch, paths=project.paths):
-            # Checkout this commit (why is this so hard?).
-            repo.head.reference = commit
-            repo.head.reset(index=True, working_tree=True)
+        # If no paths are given, then no versions were ever supported.
+        if project.paths:
+            for commit in repo.iter_commits(project.branch, paths=project.paths):
+                # Checkout this commit (why is this so hard?).
+                repo.head.reference = commit
+                repo.head.reset(index=True, working_tree=True)
 
-            # Since commits are in order from newest to earliest, stomp over previous data.
-            for version in get_versions_from_file(project_dir, project.paths):
-                versions[version] = commit.hexsha
+                # Since commits are in order from newest to earliest, stomp over previous data.
+                for version in get_versions_from_file(project_dir, project.paths):
+                    versions[version] = commit.hexsha
 
         print(f"Loaded {project.name} versions: {versions}")
 

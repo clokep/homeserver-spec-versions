@@ -75,6 +75,12 @@
 
             for (let project in data.homeserver_versions) {
                 const projectVersions = data.homeserver_versions[project]["lag_" + (post_rel ? "after_release" : "all")];
+
+                // If there are no versions, don't bother adding them.
+                if (!Object.keys(projectVersions).length) {
+                    continue;
+                }
+
                 barDatasets.push({
                     label: project,
                     // Fill in zeros for missing spec versions.
