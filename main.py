@@ -1,54 +1,93 @@
-from dataclasses import dataclass
+import tomllib
+from dataclasses import dataclass, asdict
 from datetime import datetime, timezone, timedelta
 import json
 from pathlib import Path
 import os.path
 import subprocess
+from typing import Iterator
+from urllib.request import urlopen
 
 import git
 from git import Repo
 
+SERVER_METADATA_URL = "https://raw.githubusercontent.com/matrix-org/matrix.org/main/content/ecosystem/servers/servers.toml"
+
 
 @dataclass
-class Project:
+class ServerMetadata:
+    # From the TOML file.
     name: str
-    git_location: str
+    description: str
+    author: str
+    maturity: str
+    language: str
+    licence: str
+    repository: str
+    room: str | None = None
+
+
+@dataclass
+class AdditionalMetadata:
     branch: str
     paths: list[str]
     earliest_tag: str
 
 
+@dataclass
+class ProjectMetadata(ServerMetadata, AdditionalMetadata):
+    pass
+
+
 # Constants.
-PROJECTS = (
-    Project(
-        "Synapse",
-        "https://github.com/element-hq/synapse.git",
+ADDITIONAL_METADATA = {
+    "Synapse": AdditionalMetadata(
         "develop",
         ["synapse/rest/client/versions.py"],
         "v0.0.0",
     ),
-    Project(
-        "Dendrite",
-        "https://github.com/matrix-org/dendrite.git",
+    "Dendrite": AdditionalMetadata(
         "main",
-        ["src/github.com/matrix-org/dendrite/clientapi/routing/routing.go", "clientapi/routing/routing.go"],
+        [
+            "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
+            "clientapi/routing/routing.go",
+        ],
         "v0.1.0rc1",
     ),
-    Project(
-        "Conduit",
-        "https://gitlab.com/famedly/conduit.git",
+    "Conduit": AdditionalMetadata(
         "next",
-        ["src/main.rs", "src/client_server/unversioned.rs", "src/api/client_server/unversioned.rs"],
+        [
+            "src/main.rs",
+            "src/client_server/unversioned.rs",
+            "src/api/client_server/unversioned.rs",
+        ],
         "v0.2.0",
     ),
-    Project(
-        "Construct",
-        "https://github.com/matrix-construct/construct.git",
+    "Construct": AdditionalMetadata(
         "master",
         ["ircd/json.cc", "modules/client/versions.cc"],
         "0.0.10020",
     ),
-)
+}
+
+
+def download_projects():
+    """Download the servers.toml metadata file."""
+    with open("servers.toml", "wb") as f:
+        with urlopen(SERVER_METADATA_URL) as u:
+            f.write(u.read())
+
+
+def load_projects() -> Iterator[ProjectMetadata]:
+    with open("servers.toml", "rb") as f:
+        data = tomllib.load(f)
+
+    for server in data["servers"]:
+        if server["name"] not in ADDITIONAL_METADATA:
+            print(f"Skipping {server['name']}")
+            continue
+
+        yield ProjectMetadata(**server, **asdict(ADDITIONAL_METADATA[server["name"]]))
 
 
 def json_encode(o: object) -> str | bool | int | float | None | list | dict:
@@ -58,7 +97,14 @@ def json_encode(o: object) -> str | bool | int | float | None | list | dict:
 
 def get_versions_from_file(root: Path, paths: list[str]) -> set[str]:
     result = subprocess.run(
-        ["grep", "--only-matching", "--no-filename", "-E", "(['\\\"]) ?[vr]\\d.+?\\1", *paths],
+        [
+            "grep",
+            "--only-matching",
+            "--no-filename",
+            "-E",
+            "(['\\\"]) ?[vr]\\d.+?\\1",
+            *paths,
+        ],
         capture_output=True,
         cwd=root,
     )
@@ -103,6 +149,10 @@ def get_tag_datetime(tag: git.TagReference) -> datetime:
 
 
 if __name__ == "__main__":
+    # Download the metadata if it doesn't exist.
+    if not os.path.isfile("servers.toml"):
+        download_projects()
+
     # First get the known versions according to the spec repo.
     _, spec_repo = get_repo(
         "matrix-spec", "https://github.com/matrix-org/matrix-spec.git"
@@ -131,16 +181,21 @@ if __name__ == "__main__":
     spec_dates = sorted(spec_versions.items(), key=lambda v: v[1])
     result = {
         "spec_versions": {
-            "lag":
-                dict([(spec_dates[0][0], 0)] + [(y[0], (y[1] - x[1]).days) for x, y in zip(spec_dates[:-1], spec_dates[1:])]),
+            "lag": dict(
+                [(spec_dates[0][0], 0)]
+                + [
+                    (y[0], (y[1] - x[1]).days)
+                    for x, y in zip(spec_dates[:-1], spec_dates[1:])
+                ]
+            ),
             "version_dates": spec_versions,
         },
         "homeserver_versions": {},
     }
 
     # For each project find the earliest known date the project supported it.
-    for project in PROJECTS:
-        project_dir, repo = get_repo(project.name.lower(), project.git_location)
+    for project in load_projects():
+        project_dir, repo = get_repo(project.name.lower(), project.repository)
 
         repo.head.reference = project.branch
         repo.head.reset(index=True, working_tree=True)

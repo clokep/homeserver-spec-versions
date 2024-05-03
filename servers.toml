@@ -1,0 +1,129 @@
+[[servers]]
+name = "Synapse"
+description = "Matrix.org homeserver"
+author = "Matrix.org team"
+maturity = "Stable"
+language = "Python"
+licence = "AGPL-3.0-or-later"
+repository = "https://github.com/element-hq/synapse"
+room = "#synapse:matrix.org"
+
+[[servers]]
+name = "Dendrite"
+description = "Dendrite is a second-generation Matrix homeserver written in Go!"
+author = "Matrix.org team"
+maturity = "Beta"
+language = "Go"
+licence = "Apache-2.0"
+repository = "https://github.com/matrix-org/dendrite"
+room = "#dendrite:matrix.org"
+
+[[servers]]
+name = "Conduit"
+description = "Conduit is a simple, fast and reliable chat server written in Rust"
+author = "Timo Kösters"
+maturity = "Beta"
+language = "Rust"
+licence = "Apache-2.0"
+repository = "https://gitlab.com/famedly/conduit"
+room = "#conduit:matrix.org"
+
+[[servers]]
+name = "Construct"
+description = "Construct is a C++ Matrix Homeserver"
+author = "Jason Volk"
+maturity = "Beta"
+language = "C++"
+licence = "BSD"
+repository = "https://github.com/matrix-construct/construct"
+
+[[servers]]
+name = "Ligase"
+description = "Ligase is a Cloud-native Matrix home server written in Golang."
+author = "Finogeeks team"
+maturity = "Obsolete"
+language = "Go"
+licence = "AGPLv3"
+repository = "https://github.com/finogeeks/Ligase"
+
+[[servers]]
+name = "bullettime"
+description = "An experimental golang Matrix homeserver"
+author = "Patrik Oldsberg"
+maturity = "Obsolete"
+language = "Go"
+licence = "Apache-2.0"
+repository = "https://github.com/matrix-org/bullettime"
+
+[[servers]]
+name = "Dendron"
+description = "Discontinued in favour of Dendrite (\"Dendron, done right\")"
+author = "Matrix.org team"
+maturity = "Obsolete"
+language = "Go"
+licence = "Apache-2.0"
+repository = "https://github.com/matrix-org/dendron"
+
+[[servers]]
+name = "jSynapse"
+description = ""
+author = "Swarmcom"
+language = "Java"
+maturity = "Obsolete"
+licence = "Apache-2.0"
+
+[[servers]]
+name = "Maelstrom"
+description = "A high-performance Matrix Home-Server written in Rust designed to be scalable, light on resources, and have a pluggable storage engine."
+author = "Chris Bruce"
+maturity = "Obsolete"
+language = "Rust"
+licence = "Apache-2.0 OR MIT"
+repository = "https://github.com/maelstrom-rs/maelstrom"
+room = "#m-server:matrix.org"
+
+[[servers]]
+name = "Matrex"
+description = "A WIP toy Matrix server implementation in Elixir."
+author = "Ryan Johnson"
+maturity = "Obsolete"
+language = "Elixir"
+licence = "MIT"
+repository = "https://github.com/bismark/matrex"
+
+[[servers]]
+name = "mxhsd"
+description = "mxhsd is Matrix Homeserver aimed towards entities who want to have in-depth control of their servers"
+author = "Max Dor"
+maturity = "Obsolete"
+language = "Java"
+licence = "AGPL-3.0-or-later"
+repository = "https://github.com/kamax-io/mxhsd"
+
+[[servers]]
+name = "Pallium"
+description = ""
+author = "KoFish"
+language = "Go"
+maturity = "Obsolete"
+licence = "Apache-2.0"
+repository = "https://github.com/KoFish/pallium"
+
+[[servers]]
+name = "Transform"
+description = "Transform is a matrix homeserver built using Typescript and Redis."
+author = "bettiah"
+maturity = "Obsolete"
+language = "TypeScript"
+licence = "Apache-2.0"
+repository = "https://github.com/bettiah/transform"
+
+[[servers]]
+name = "Telodendria"
+description = "Telodendria is an open source Matrix homeserver implementation written from scratch in ANSI C and designed to be lightweight and simple, yet functional."
+author = "Jordan Bancino"
+maturity = "Alpha"
+language = "C"
+licence = "MIT"
+repository = "https://git.telodendria.io/Telodendria/Telodendria"
+room = "#telodendria-general:bancino.net"
