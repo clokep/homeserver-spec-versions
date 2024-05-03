@@ -5,18 +5,21 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>Homeserver Spec Version Support</title>
   <script src="chart.umd.js"></script>
+  <script src="hammer.js"></script>
+  <script src="chartjs-plugin-zoom.min.js"></script>
   <style>
-      canvas {
-          -moz-user-select: none;
-          -webkit-user-select: none;
-          -ms-user-select: none;
-      }
-
       div {
           width: 75%;
           margin-left: auto;
           margin-right: auto;
           padding-bottom: 2em;
+      }
+
+      .reset-zoom {
+          position: absolute;
+          margin-left: auto;
+          margin-right: 3px;
+          margin-top: 10px;
       }
   </style>
 </head>
@@ -33,13 +36,30 @@
   <p>
     Forks are considered from the first commit which is not part of the parent project.
   </p>
+
+  <p>
+    Drag or pinch to zoom. Hold shift to pan.
+  </p>
 </div>
 
-<div id="chart-content">
+<div>
   <!-- Contains canvas elements for each chart. -->
+  <button class="reset-zoom" onclick="resetZoom('days-to-support');">reset zoom</button>
   <canvas id="days-to-support"></canvas>
+</div>
+
+<div>
+  <button class="reset-zoom" onclick="resetZoom('days-to-support-post-rel');">reset zoom</button>
   <canvas id="days-to-support-post-rel"></canvas>
+</div>
+
+<div>
+  <button class="reset-zoom" onclick="resetZoom('spec-days-vs-support');">reset zoom</button>
   <canvas id="spec-days-vs-support"></canvas>
+</div>
+
+<div>
+  <button class="reset-zoom" onclick="resetZoom('spec-days-vs-support-post-rel');">reset zoom</button>
   <canvas id="spec-days-vs-support-post-rel"></canvas>
 </div>
 
@@ -72,6 +92,26 @@
 
             ctx.restore()
         }
+    };
+
+    const zoomOptions = {
+        pan: {
+            enabled: true,
+            modifierKey: "shift",
+        },
+        zoom: {
+            pinch: {
+                enabled: true,
+            },
+            drag: {
+                enabled: true,
+            },
+            mode: 'xy',
+        }
+    };
+
+    function resetZoom(chartId) {
+        Chart.getChart(chartId).resetZoom();
     }
 
     fetch("data.json").then(response => response.json()).then(data => {
@@ -127,7 +167,8 @@
                         title: {
                             display: true,
                             text: "Days to support spec version" + (post_rel ? " (post-release)" : ""),
-                        }
+                        },
+                        zoom: zoomOptions,
                     }
                 }
             });
@@ -145,7 +186,8 @@
                         title: {
                             display: true,
                             text: "Days to support spec version" + (post_rel ? " (post-release)" : ""),
-                        }
+                        },
+                        zoom: zoomOptions
                     }
                 },
                 plugins: [scatterDataLabels],
