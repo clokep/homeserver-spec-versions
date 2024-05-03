@@ -31,12 +31,19 @@ class ServerMetadata:
 class AdditionalMetadata:
     branch: str
     paths: list[str]
-    earliest_tag: str
+    earliest_tag: str | None
 
 
 @dataclass
 class ProjectMetadata(ServerMetadata, AdditionalMetadata):
     pass
+
+
+# Projects to ignore.
+INVALID_PROJECTS = {
+    # DIdn't is essentially a reverse proxy, not a homeserver.
+    "dendron",
+}
 
 
 # Constants.
@@ -67,6 +74,11 @@ ADDITIONAL_METADATA = {
         "master",
         ["ircd/json.cc", "modules/client/versions.cc"],
         "0.0.10020",
+    ),
+    "maelstrom": AdditionalMetadata(
+        "master",
+        ["src/server/handlers/admin.rs"],
+        earliest_tag=None,
     ),
 }
 
@@ -104,8 +116,13 @@ def load_projects() -> Iterator[ProjectMetadata]:
 
     for server in data["servers"]:
         server_name = server["name"].lower()
+
+        if server_name in INVALID_PROJECTS:
+            print(f"Ignoring {server_name}.")
+            continue
+
         if server_name not in ADDITIONAL_METADATA:
-            print(f"Skipping {server['name']}")
+            print(f"No metadata for {server_name}, skipping.")
             continue
 
         yield ProjectMetadata(**server, **asdict(ADDITIONAL_METADATA[server_name]))
@@ -125,7 +142,8 @@ def get_versions_from_file(root: Path, paths: list[str]) -> set[str]:
             "--only-matching",
             "--no-filename",
             "-E",
-            "(['\\\"]) ?[vr]\\d.+?\\1",
+            # This is equivalent to a command line of: "(\\\\?['\"]) ?[vr]\d.+?\1"
+            r"""(\\?['\\"]) ?[vr]\d.+?\1""",
             *paths,
         ],
         capture_output=True,
@@ -135,8 +153,8 @@ def get_versions_from_file(root: Path, paths: list[str]) -> set[str]:
     versions = set()
 
     for line in result.stdout.decode("ascii").splitlines():
-        # Remove the quotes.
-        line = line[1:-1].strip()
+        # Remove the quotes and whitespace.
+        line = line.strip("\\'\" ")
 
         # Construct used a space separated string at some point.
         versions.update(line.split())
@@ -246,16 +264,20 @@ if __name__ == "__main__":
         print(f"Loaded {project.name} dates: {versions_dates_all}")
 
         # Get the earliest release of this project.
-        release_date = get_tag_datetime(repo.tags[project.earliest_tag])
+        if project.earliest_tag:
+            release_date = get_tag_datetime(repo.tags[project.earliest_tag])
 
-        # Remove any spec versions which existed before this project was released.
-        version_dates_after_release = {
-            version: version_date
-            for version, version_date in versions_dates_all.items()
-            if spec_versions[version] >= release_date
-        }
+            # Remove any spec versions which existed before this project was released.
+            version_dates_after_release = {
+                version: version_date
+                for version, version_date in versions_dates_all.items()
+                if spec_versions[version] >= release_date
+            }
 
-        print(f"Loaded {project.name} dates: {version_dates_after_release}")
+            print(f"Loaded {project.name} dates: {version_dates_after_release}")
+        else:
+            release_date = None
+            version_dates_after_release = {}
 
         print()
 

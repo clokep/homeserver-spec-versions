@@ -144,6 +144,18 @@
                 "v1.2": "2022-06-01T09:39:17+01:00"
             }
         },
+        "maelstrom": {
+            "initial_release_date": null,
+            "lag_after_release": {},
+            "lag_all": {
+                "r0.5.0": 297,
+                "r0.6.0": 176
+            },
+            "version_dates": {
+                "r0.5.0": "2020-04-04T14:45:03+02:00",
+                "r0.6.0": "2020-05-02T12:13:56+02:00"
+            }
+        },
         "synapse": {
             "initial_release_date": "2014-08-14T03:36:03+01:00",
             "lag_after_release": {
