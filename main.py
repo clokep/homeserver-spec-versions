@@ -41,12 +41,12 @@ class ProjectMetadata(ServerMetadata, AdditionalMetadata):
 
 # Constants.
 ADDITIONAL_METADATA = {
-    "Synapse": AdditionalMetadata(
+    "synapse": AdditionalMetadata(
         "develop",
         ["synapse/rest/client/versions.py"],
         "v0.0.0",
     ),
-    "Dendrite": AdditionalMetadata(
+    "dendrite": AdditionalMetadata(
         "main",
         [
             "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
@@ -54,7 +54,7 @@ ADDITIONAL_METADATA = {
         ],
         "v0.1.0rc1",
     ),
-    "Conduit": AdditionalMetadata(
+    "conduit": AdditionalMetadata(
         "next",
         [
             "src/main.rs",
@@ -63,12 +63,32 @@ ADDITIONAL_METADATA = {
         ],
         "v0.2.0",
     ),
-    "Construct": AdditionalMetadata(
+    "construct": AdditionalMetadata(
         "master",
         ["ircd/json.cc", "modules/client/versions.cc"],
         "0.0.10020",
     ),
 }
+
+ADDITIONAL_PROJECTS = [
+    ProjectMetadata(
+        name="Conduwuit",
+        description="",
+        author="",
+        maturity="Beta",
+        language="Rust",
+        licence="Apache-2.0",
+        repository="https://github.com/girlbossceo/conduwuit",
+        room="#conduwuit:puppygock.gay",
+        branch="main",
+        paths=[
+            "src/main.rs",
+            "src/client_server/unversioned.rs",
+            "src/api/client_server/unversioned.rs",
+        ],
+        earliest_tag="v0.3.0",
+    )
+]
 
 
 def download_projects():
@@ -83,11 +103,14 @@ def load_projects() -> Iterator[ProjectMetadata]:
         data = tomllib.load(f)
 
     for server in data["servers"]:
-        if server["name"] not in ADDITIONAL_METADATA:
+        server_name = server["name"].lower()
+        if server_name not in ADDITIONAL_METADATA:
             print(f"Skipping {server['name']}")
             continue
 
-        yield ProjectMetadata(**server, **asdict(ADDITIONAL_METADATA[server["name"]]))
+        yield ProjectMetadata(**server, **asdict(ADDITIONAL_METADATA[server_name]))
+
+    yield from ADDITIONAL_PROJECTS
 
 
 def json_encode(o: object) -> str | bool | int | float | None | list | dict:
