@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Homeserver Spec Version Support</title>
+  <script src="chart.umd.js"></script>
+  <style>
+      canvas {
+          -moz-user-select: none;
+          -webkit-user-select: none;
+          -ms-user-select: none;
+      }
+
+      div {
+          width: 75%;
+          margin-left: auto;
+          margin-right: auto;
+          padding-bottom: 2em;
+      }
+  </style>
+</head>
+
+<body>
+
+<div id="chart-content">
+  <!-- Contains canvas elements for each chart. -->
+  <canvas id="days-to-support"></canvas>
+  <canvas id="days-to-support-post-rel"></canvas>
+  <canvas id="spec-days-vs-support"></canvas>
+  <canvas id="spec-days-vs-support-post-rel"></canvas>
+</div>
+
+<script>
+    // Plugin to draw scatter plot labels for each point.
+    const scatterDataLabels = {
+        id: "scatterDataLabels",
+        afterDatasetsDraw(chart, args, options, cancelable) {
+            const {ctx} = chart;
+            ctx.save();
+
+            for (let d in chart.config.data.datasets) {
+                const dataset = chart.config.data.datasets[d];
+
+                if (chart.getDatasetMeta(d).hidden) {
+                    return;
+                }
+
+                for (let n in dataset.data) {
+                    const data = dataset.data[n];
+
+                    let textWidth = ctx.measureText(data.label).width;
+                    ctx.fillText(
+                        data.label,
+                        chart.getDatasetMeta(d).data[n].x - (textWidth / 2),
+                        chart.getDatasetMeta(d).data[n].y - 10
+                    );
+                }
+            }
+
+            ctx.restore()
+        }
+    }
+
+    fetch("data.json").then(response => response.json()).then(data => {
+        // The full list of released spec versions.
+        const specVersions = Object.keys(data.spec_versions.version_dates);
+
+        // Generate the versions of each chart for each homeserver -- one including
+        // all data, and one including data for only after the homeserver's initial
+        // release.
+        for (const post_rel of [false, true]) {
+            var barDatasets = [];
+            var scatterDatasets = [];
+
+            for (let project in data.homeserver_versions) {
+                const projectVersions = data.homeserver_versions[project]["lag_" + (post_rel ? "after_release" : "all")];
+                barDatasets.push({
+                    label: project,
+                    // Fill in zeros for missing spec versions.
+                    data: specVersions.map(v => projectVersions[v] || 0),
+                    borderWidth: 1,
+                })
+
+                scatterDatasets.push({
+                    label: project,
+                    data: Object.keys(projectVersions).map(v => {
+                        return {
+                            label: v,
+                            x: data.spec_versions.lag[v],
+                            y: projectVersions[v]
+                        };
+                    }),
+                    borderWidth: 1,
+                })
+            }
+
+            // Bar chart of the number of days between a spec release and the homeserver
+            // supporting it.
+            const barContext = document.getElementById("days-to-support" + (post_rel ? "-post-rel" : ""));
+            new Chart(barContext, {
+                type: "bar",
+                data: {
+                    labels: specVersions,
+                    datasets: barDatasets,
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: "Days to support spec version" + (post_rel ? " (post-release)" : ""),
+                        }
+                    }
+                }
+            });
+
+            // Scatter chart of the number of days between a spec release and the homeserver
+            // supporting it.
+            const scatterContext = document.getElementById("spec-days-vs-support" + (post_rel ? "-post-rel" : ""));
+            new Chart(scatterContext, {
+                type: "scatter",
+                data: {
+                    datasets: scatterDatasets,
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: "Days to support spec version" + (post_rel ? " (post-release)" : ""),
+                        }
+                    }
+                },
+                plugins: [scatterDataLabels],
+            });
+        }
+    });
+</script>
+</body>
+
+</html>

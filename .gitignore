@@ -1,0 +1,6 @@
+.idea/
+__pycache__/
+.python-version
+
+# The checked out sub-projects.
+.projects
