@@ -59,21 +59,6 @@ INVALID_PROJECTS = {
 
 # Constants.
 ADDITIONAL_METADATA = {
-    "synapse": AdditionalMetadata(
-        "develop",
-        ["synapse/rest/client/versions.py"],
-        earliest_commit=None,
-        earliest_tag="v0.0.0",
-    ),
-    "dendrite": AdditionalMetadata(
-        "main",
-        [
-            "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
-            "clientapi/routing/routing.go",
-        ],
-        earliest_commit=None,
-        earliest_tag="v0.1.0rc1",
-    ),
     "bullettime": AdditionalMetadata(
         "master",
         [],
@@ -95,6 +80,15 @@ ADDITIONAL_METADATA = {
         ["ircd/json.cc", "modules/client/versions.cc"],
         earliest_commit=None,
         earliest_tag="0.0.10020",
+    ),
+    "dendrite": AdditionalMetadata(
+        "main",
+        [
+            "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
+            "clientapi/routing/routing.go",
+        ],
+        earliest_commit=None,
+        earliest_tag="v0.1.0rc1",
     ),
     "jsynapse": AdditionalMetadata(
         "master", [], earliest_commit=None, earliest_tag=None
@@ -130,6 +124,12 @@ ADDITIONAL_METADATA = {
         ],
         earliest_commit=None,
         earliest_tag=None,
+    ),
+    "synapse": AdditionalMetadata(
+        "develop",
+        ["synapse/rest/client/versions.py"],
+        earliest_commit=None,
+        earliest_tag="v0.0.0",
     ),
     "transform": AdditionalMetadata(
         "master", ["config.json"], earliest_commit=None, earliest_tag=None
