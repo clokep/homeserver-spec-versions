@@ -296,7 +296,7 @@ if __name__ == "__main__":
     #   version_dates: a map of version number to release date
     #
     # homeserver_versions: a map of project -> object with keys:
-    #   version_dates: map of version to release date
+    #   version_dates: map of version to list of tuples of supported/unsupported dates
     #   lag_all: map of version # to days to support it
     #   lag_after_release: map of version # to days to support it
     spec_dates = sorted(spec_versions.items(), key=lambda v: v[1])
@@ -406,7 +406,10 @@ if __name__ == "__main__":
 
         result["homeserver_versions"][project.name.lower()] = {
             "initial_release_date": release_date,
-            "version_dates": versions_dates_all,
+            "version_dates": {
+                v: [(info.start_date, info.end_date) for info in version_info]
+                for v, version_info in versions.items()
+            },
             "lag_all": {
                 v: (d - spec_versions[v]).days for v, d in versions_dates_all.items()
             },
