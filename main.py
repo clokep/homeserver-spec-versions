@@ -255,7 +255,8 @@ def get_repo(name: str, remote: str) -> tuple[Path, Repo]:
         repo = Repo.clone_from(remote, repo_dir)
     else:
         repo = Repo(repo_dir)
-        # TODO Fetch
+        repo.remote().fetch()
+        repo.remote().fetch()
 
     return repo_dir, repo
 
@@ -328,9 +329,9 @@ if __name__ == "__main__":
         if project.paths:
             # Calculate the set of versions each time these files were changed.
             for commit in repo.iter_commits(
-                f"{project.earliest_commit}~..{project.branch}"
+                f"{project.earliest_commit}~..origin/{project.branch}"
                 if project.earliest_commit
-                else project.branch,
+                else f"origin/{project.branch}",
                 paths=project.paths,
                 reverse=True,
             ):
