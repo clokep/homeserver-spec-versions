@@ -90,6 +90,16 @@ ADDITIONAL_METADATA = {
         earliest_commit=None,
         earliest_tag="v0.2.0",
     ),
+    "conduwuit": AdditionalMetadata(
+        branch="main",
+        paths=[
+            "src/main.rs",
+            "src/client_server/unversioned.rs",
+            "src/api/client_server/unversioned.rs",
+        ],
+        earliest_commit="9c3b3daafcbc95647b5641a6edc975e2ffc04b04",
+        earliest_tag="v0.3.0",
+    ),
     "construct": AdditionalMetadata(
         "master",
         ["ircd/json.cc", "modules/client/versions.cc"],
@@ -157,26 +167,7 @@ ADDITIONAL_METADATA = {
     ),
 }
 
-ADDITIONAL_PROJECTS = [
-    ProjectMetadata(
-        name="Conduwuit",
-        description="",
-        author="",
-        maturity="Beta",
-        language="Rust",
-        licence="Apache-2.0",
-        repository="https://github.com/girlbossceo/conduwuit",
-        room="#conduwuit:puppygock.gay",
-        branch="main",
-        paths=[
-            "src/main.rs",
-            "src/client_server/unversioned.rs",
-            "src/api/client_server/unversioned.rs",
-        ],
-        earliest_commit="9c3b3daafcbc95647b5641a6edc975e2ffc04b04",
-        earliest_tag="v0.3.0",
-    )
-]
+ADDITIONAL_PROJECTS = []
 
 
 def download_projects():
@@ -196,10 +187,6 @@ def load_projects() -> Iterator[ProjectMetadata]:
         if server_name in INVALID_PROJECTS:
             print(f"Ignoring {server_name}.")
             continue
-
-        # jSynapse is missing the repository metadata.
-        if server_name == "jsynapse":
-            server["repository"] = "https://github.com/swarmcom/jSynapse"
 
         if server_name not in ADDITIONAL_METADATA:
             print(f"No metadata for {server_name}, skipping.")
