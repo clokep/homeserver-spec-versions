@@ -418,6 +418,7 @@ if __name__ == "__main__":
                 v: (d - spec_versions[v]).days
                 for v, d in version_dates_after_release.items()
             },
+            "maturity": project.maturity.lower(),
         }
 
     with open("data.json", "w") as f:

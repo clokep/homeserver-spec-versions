@@ -28,6 +28,8 @@
 <body>
 
 <div>
+  <h1>Homeserver Spec Versions</h1>
+
   <p>
     Matrix spec version as reported by various homeservers. This uses the <i>self-reported</i>
     versions for each homeserver and no verification is done whether the version is fully
@@ -40,6 +42,21 @@
 
   <p>
     Drag or pinch to zoom. Hold shift to pan.
+  </p>
+
+  <p>
+    <h3>Maturity</h3>
+    <input type="checkbox" id="stable" onclick="render();" checked />
+    <label for="stable">Stable</label>
+
+    <input type="checkbox" id="beta" onclick="render();" checked />
+    <label for="beta">Beta</label>
+
+    <input type="checkbox" id="alpha"onclick="render();" />
+    <label for="alpha">Alpha</label>
+
+    <input type="checkbox" id="obsolete" onclick="render();" />
+    <label for="obsolete">Obsolete</label>
   </p>
 </div>
 
@@ -144,54 +161,17 @@
         Chart.getChart(chartId).resetZoom();
     }
 
-    fetch("data.json").then(response => response.json()).then(data => {
-        // The full list of released spec versions.
-        const specVersions = Object.keys(data.spec_versions.version_dates).sort(cmpVersions);
-
+    function build() {
         // Generate the versions of each chart for each homeserver -- one including
         // all data, and one including data for only after the homeserver's initial
         // release.
         for (const post_rel of [false, true]) {
-            var barDatasets = [];
-            var scatterDatasets = [];
-
-            for (let project in data.homeserver_versions) {
-                const projectVersions = data.homeserver_versions[project]["lag_" + (post_rel ? "after_release" : "all")];
-
-                // If there are no versions, don't bother adding them.
-                if (!Object.keys(projectVersions).length) {
-                    continue;
-                }
-
-                barDatasets.push({
-                    label: project,
-                    // Fill in zeros for missing spec versions.
-                    data: specVersions.map(v => projectVersions[v] || 0),
-                    borderWidth: 1,
-                })
-
-                scatterDatasets.push({
-                    label: project,
-                    data: Object.keys(projectVersions).map(v => {
-                        return {
-                            label: v,
-                            x: data.spec_versions.lag[v],
-                            y: projectVersions[v]
-                        };
-                    }),
-                    borderWidth: 1,
-                })
-            }
-
             // Bar chart of the number of days between a spec release and the homeserver
             // supporting it.
             const barContext = document.getElementById("days-to-support" + (post_rel ? "-post-rel" : ""));
             new Chart(barContext, {
                 type: "bar",
-                data: {
-                    labels: specVersions,
-                    datasets: barDatasets,
-                },
+                data: null,
                 options: {
                     plugins: {
                         title: {
@@ -208,9 +188,7 @@
             const scatterContext = document.getElementById("spec-days-vs-support" + (post_rel ? "-post-rel" : ""));
             new Chart(scatterContext, {
                 type: "scatter",
-                data: {
-                    datasets: scatterDatasets,
-                },
+                data: null,
                 options: {
                     plugins: {
                         title: {
@@ -224,35 +202,10 @@
             });
         }
 
-        // Line showing the dates when versions were supported.
-        const now = new Date();
-        const versionsDatasets = [];
-        for (let project in data.homeserver_versions) {
-            const projectVersions = data.homeserver_versions[project].version_dates;
-
-            // If there are no versions, don't bother adding them.
-            if (!Object.keys(projectVersions).length) {
-                continue;
-            }
-
-            versionsDatasets.push(
-                {
-                    label: project,
-                    // TODO Handle a version being supported multiple times.
-                    data: specVersions.map(ver =>
-                        projectVersions[ver] ? [projectVersions[ver][0][0], projectVersions[ver][0][1] || now] : null
-                    ),
-                }
-            );
-        }
-
         const versionsSupportedContext = document.getElementById("supported-versions-over-time");
         new Chart(versionsSupportedContext, {
             type: "bar",
-            data: {
-                labels: specVersions,
-                datasets: versionsDatasets
-            },
+            data: null,
             options: {
                 indexAxis: "y",
                 // Add height since there's so many lines.
@@ -272,7 +225,114 @@
                 }
             },
         });
-    });
+
+        // Add the initial data.
+        render();
+    }
+
+    function render() {
+        let allowedMaturities = ["stable", "beta", "alpha", "obsolete"].filter(maturity => document.getElementById(maturity).checked);
+
+        fetch("data.json").then(response => response.json()).then(data => {
+            // The full list of released spec versions.
+            const specVersions = Object.keys(data.spec_versions.version_dates).sort(cmpVersions);
+
+            // Generate the versions of each chart for each homeserver -- one including
+            // all data, and one including data for only after the homeserver's initial
+            // release.
+            for (const post_rel of [false, true]) {
+                var barDatasets = [];
+                var scatterDatasets = [];
+
+                for (let project in data.homeserver_versions) {
+                    const projectVersions = data.homeserver_versions[project]["lag_" + (post_rel ? "after_release" : "all")];
+
+                    // If there are no versions, don't bother adding them.
+                    if (!Object.keys(projectVersions).length) {
+                        continue;
+                    }
+
+                    // Filter projects by maturity.
+                    if (!allowedMaturities.includes(data.homeserver_versions[project].maturity)) {
+                        continue
+                    }
+
+                    barDatasets.push({
+                        label: project,
+                        // Fill in zeros for missing spec versions.
+                        data: specVersions.map(v => projectVersions[v] || 0),
+                        borderWidth: 1,
+                    })
+
+                    scatterDatasets.push({
+                        label: project,
+                        data: Object.keys(projectVersions).map(v => {
+                            return {
+                                label: v,
+                                x: data.spec_versions.lag[v],
+                                y: projectVersions[v]
+                            };
+                        }),
+                        borderWidth: 1,
+                    })
+                }
+
+                // Bar chart of the number of days between a spec release and the homeserver
+                // supporting it.
+                const barChart = Chart.getChart("days-to-support" + (post_rel ? "-post-rel" : ""));
+                barChart.data = {
+                    labels: specVersions,
+                    datasets: barDatasets,
+                };
+                barChart.update();
+
+                // Scatter chart of the number of days between a spec release and the homeserver
+                // supporting it.
+                const scatterChart = Chart.getChart("spec-days-vs-support" + (post_rel ? "-post-rel" : ""));
+                scatterChart.data = {
+                    datasets: scatterDatasets,
+                };
+                scatterChart.update();
+            }
+
+            // Line showing the dates when versions were supported.
+            const now = new Date();
+            const versionsDatasets = [];
+            for (let project in data.homeserver_versions) {
+                const projectVersions = data.homeserver_versions[project].version_dates;
+
+                // If there are no versions, don't bother adding them.
+                if (!Object.keys(projectVersions).length) {
+                    continue;
+                }
+
+                // Filter projects by maturity.
+                if (!allowedMaturities.includes(data.homeserver_versions[project].maturity)) {
+                    continue
+                }
+
+                versionsDatasets.push(
+                    {
+                        label: project,
+                        // TODO Handle a version being supported multiple times.
+                        data: specVersions.map(ver =>
+                            projectVersions[ver] ? [projectVersions[ver][0][0], projectVersions[ver][0][1] || now] : null
+                        ),
+                    }
+                );
+            }
+
+            const versionsSupportedChart = Chart.getChart("supported-versions-over-time");
+            versionsSupportedChart.data = {
+                labels: specVersions,
+                datasets: versionsDatasets
+            };
+            versionsSupportedChart.update();
+        });
+    }
+
+    // Build the initial version.
+    build();
 </script>
 </body>
 

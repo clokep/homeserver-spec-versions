@@ -4,6 +4,7 @@
             "initial_release_date": null,
             "lag_after_release": {},
             "lag_all": {},
+            "maturity": "obsolete",
             "version_dates": {}
         },
         "conduit": {
@@ -29,6 +30,7 @@
                 "v1.4": 264,
                 "v1.5": 425
             },
+            "maturity": "beta",
             "version_dates": {
                 "r0.0.1": [
                     [
@@ -130,6 +132,7 @@
                 "v1.4": 298,
                 "v1.5": 416
             },
+            "maturity": "beta",
             "version_dates": {
                 "r0.0.1": [
                     [
@@ -237,6 +240,7 @@
                 "v1.5": 76,
                 "v1.6": 63
             },
+            "maturity": "beta",
             "version_dates": {
                 "r0.0.1": [
                     [
@@ -357,6 +361,7 @@
                 "v1.1": 203,
                 "v1.2": 118
             },
+            "maturity": "beta",
             "version_dates": {
                 "r0.0.1": [
                     [
@@ -418,6 +423,7 @@
             "initial_release_date": null,
             "lag_after_release": {},
             "lag_all": {},
+            "maturity": "obsolete",
             "version_dates": {}
         },
         "ligase": {
@@ -429,6 +435,7 @@
                 "r0.2.0": 1419,
                 "r0.3.0": 918
             },
+            "maturity": "obsolete",
             "version_dates": {
                 "r0.0.1": [
                     [
@@ -463,6 +470,7 @@
                 "r0.5.0": 297,
                 "r0.6.0": 176
             },
+            "maturity": "obsolete",
             "version_dates": {
                 "r0.5.0": [
                     [
@@ -484,6 +492,7 @@
             "lag_all": {
                 "r0.2.0": 121
             },
+            "maturity": "obsolete",
             "version_dates": {
                 "r0.2.0": [
                     [
@@ -500,6 +509,7 @@
                 "r0.2.0": 486,
                 "r0.3.0": 141
             },
+            "maturity": "obsolete",
             "version_dates": {
                 "r0.2.0": [
                     [
@@ -557,6 +567,7 @@
                 "v1.8": 98,
                 "v1.9": 0
             },
+            "maturity": "stable",
             "version_dates": {
                 "r0.0.1": [
                     [
@@ -679,6 +690,7 @@
                 "v1.6": 1,
                 "v1.7": 167
             },
+            "maturity": "alpha",
             "version_dates": {
                 "v1.2": [
                     [
@@ -739,6 +751,7 @@
                 "r0.2.0": 707,
                 "r0.3.0": 206
             },
+            "maturity": "obsolete",
             "version_dates": {
                 "r0.0.1": [
                     [
