@@ -27,65 +27,64 @@
 </head>
 
 <body>
+  <div>
+    <h1>Homeserver Spec Versions</h1>
 
-<div>
-  <h1>Homeserver Spec Versions</h1>
+    <p>
+      Matrix spec version as reported by various homeservers. This uses the <i>self-reported</i>
+      versions for each homeserver and no verification is done whether the version is fully
+      supported.
+    </p>
 
-  <p>
-    Matrix spec version as reported by various homeservers. This uses the <i>self-reported</i>
-    versions for each homeserver and no verification is done whether the version is fully
-    supported.
-  </p>
+    <p>
+      Forks are considered from the first commit which is not part of the parent project.
+    </p>
 
-  <p>
-    Forks are considered from the first commit which is not part of the parent project.
-  </p>
+    <p>
+      Drag or pinch to zoom. Hold shift to pan.
+    </p>
 
-  <p>
-    Drag or pinch to zoom. Hold shift to pan.
-  </p>
-
-  <p>
     <h3>Maturity</h3>
-    <input type="checkbox" id="stable" onclick="render();" checked />
-    <label for="stable">Stable</label>
+    <p>
+      <input type="checkbox" id="stable" onclick="render();" checked />
+      <label for="stable">Stable</label>
 
-    <input type="checkbox" id="beta" onclick="render();" checked />
-    <label for="beta">Beta</label>
+      <input type="checkbox" id="beta" onclick="render();" checked />
+      <label for="beta">Beta</label>
 
-    <input type="checkbox" id="alpha"onclick="render();" />
-    <label for="alpha">Alpha</label>
+      <input type="checkbox" id="alpha"onclick="render();" />
+      <label for="alpha">Alpha</label>
 
-    <input type="checkbox" id="obsolete" onclick="render();" />
-    <label for="obsolete">Obsolete</label>
-  </p>
-</div>
+      <input type="checkbox" id="obsolete" onclick="render();" />
+      <label for="obsolete">Obsolete</label>
+    </p>
+  </div>
 
-<div>
-  <!-- Contains canvas elements for each chart. -->
-  <button class="reset-zoom" onclick="resetZoom('days-to-support');">reset zoom</button>
-  <canvas id="days-to-support"></canvas>
-</div>
+  <div>
+    <!-- Contains canvas elements for each chart. -->
+    <button class="reset-zoom" onclick="resetZoom('days-to-support');">reset zoom</button>
+    <canvas id="days-to-support"></canvas>
+  </div>
 
-<div>
-  <button class="reset-zoom" onclick="resetZoom('days-to-support-post-rel');">reset zoom</button>
-  <canvas id="days-to-support-post-rel"></canvas>
-</div>
+  <div>
+    <button class="reset-zoom" onclick="resetZoom('days-to-support-post-rel');">reset zoom</button>
+    <canvas id="days-to-support-post-rel"></canvas>
+  </div>
 
-<div>
-  <button class="reset-zoom" onclick="resetZoom('spec-days-vs-support');">reset zoom</button>
-  <canvas id="spec-days-vs-support"></canvas>
-</div>
+  <div>
+    <button class="reset-zoom" onclick="resetZoom('spec-days-vs-support');">reset zoom</button>
+    <canvas id="spec-days-vs-support"></canvas>
+  </div>
 
-<div>
-  <button class="reset-zoom" onclick="resetZoom('spec-days-vs-support-post-rel');">reset zoom</button>
-  <canvas id="spec-days-vs-support-post-rel"></canvas>
-</div>
+  <div>
+    <button class="reset-zoom" onclick="resetZoom('spec-days-vs-support-post-rel');">reset zoom</button>
+    <canvas id="spec-days-vs-support-post-rel"></canvas>
+  </div>
 
-<div>
-  <button class="reset-zoom" onclick="resetZoom('supported-versions-over-time');">reset zoom</button>
-  <canvas id="supported-versions-over-time"></canvas>
-</div>
+  <div>
+    <button class="reset-zoom" onclick="resetZoom('supported-versions-over-time');">reset zoom</button>
+    <canvas id="supported-versions-over-time"></canvas>
+  </div>
 </body>
 
 </html>
