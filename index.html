@@ -46,6 +46,10 @@
 
     <h3>Maturity</h3>
     <p>
+      Limit the displayed homeservers to their maturity.
+
+      <br>
+
       <input type="checkbox" id="stable" onclick="render();" checked />
       <label for="stable">Stable</label>
 
@@ -58,6 +62,18 @@
       <input type="checkbox" id="obsolete" onclick="render();" />
       <label for="obsolete">Obsolete</label>
     </p>
+
+    <h3>Releases to include</h3>
+    <p>
+      By default only the spec versions released <i>after</i> a homeserver's first
+      release are included. (As the latency to support an earlier version seems
+      uninteresting.)
+
+      <br>
+
+      <input type="checkbox" id="display-all-releases" onclick="render();" />
+      <label for="display-all-releases">Display all releases</label>
+    </p>
   </div>
 
   <div>
@@ -67,18 +83,8 @@
   </div>
 
   <div>
-    <button class="reset-zoom" onclick="resetZoom('days-to-support-post-rel');">reset zoom</button>
-    <canvas id="days-to-support-post-rel"></canvas>
-  </div>
-
-  <div>
     <button class="reset-zoom" onclick="resetZoom('spec-days-vs-support');">reset zoom</button>
     <canvas id="spec-days-vs-support"></canvas>
-  </div>
-
-  <div>
-    <button class="reset-zoom" onclick="resetZoom('spec-days-vs-support-post-rel');">reset zoom</button>
-    <canvas id="spec-days-vs-support-post-rel"></canvas>
   </div>
 
   <div>
