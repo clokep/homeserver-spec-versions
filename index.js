@@ -1,33 +1,3 @@
-// Plugin to draw scatter plot labels for each point.
-const scatterDataLabels = {
-    id: "scatterDataLabels",
-    afterDatasetsDraw(chart, args, options, cancelable) {
-        const {ctx} = chart;
-        ctx.save();
-
-        for (let d in chart.config.data.datasets) {
-            const dataset = chart.config.data.datasets[d];
-
-            if (chart.getDatasetMeta(d).hidden) {
-                return;
-            }
-
-            for (let n in dataset.data) {
-                const data = dataset.data[n];
-
-                let textWidth = ctx.measureText(data.label).width;
-                ctx.fillText(
-                    data.label,
-                    chart.getDatasetMeta(d).data[n].x - (textWidth / 2),
-                    chart.getDatasetMeta(d).data[n].y - 10
-                );
-            }
-        }
-
-        ctx.restore()
-    }
-};
-
 const zoomOptions = {
     pan: {
         enabled: true,
@@ -98,6 +68,9 @@ function build() {
         data: null,
         options: {
             plugins: {
+                datalabels: {
+                    align: "end"
+                },
                 title: {
                     display: true,
                     text: "Spec days vs. support days",
@@ -105,7 +78,7 @@ function build() {
                 zoom: zoomOptions
             }
         },
-        plugins: [scatterDataLabels],
+        plugins: [ChartDataLabels]
     });
 
     const versionsSupportedContext = document.getElementById("supported-versions-over-time");
