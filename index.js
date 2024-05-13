@@ -216,10 +216,19 @@ function render() {
             versionsDatasets.push(
                 {
                     label: project,
-                    // TODO Handle a version being supported multiple times.
-                    data: specVersions.map(ver =>
-                        projectVersions[ver] ? [projectVersions[ver][0][0], projectVersions[ver][0][1] || now] : null
-                    ),
+                    // Convert the mapping of version -> list of dates to a flat
+                    // array of objects with y value of the version and x the start
+                    // & end date of that version.
+                    data: Object.keys(projectVersions).map(
+                        verString => projectVersions[verString].map(
+                            verDates => {
+                                return {
+                                    x: [verDates[0], verDates[1] || now],
+                                    y: verString
+                                };
+                            }
+                        )
+                    ).flat(),
                 }
             );
         }
