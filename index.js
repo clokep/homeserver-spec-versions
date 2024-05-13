@@ -56,6 +56,20 @@ function build() {
                     text: "Days to support spec version",
                 },
                 zoom: zoomOptions,
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: "Spec version"
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: "Days to support"
+                    }
+                }
             }
         }
     });
@@ -76,6 +90,20 @@ function build() {
                     text: "Spec days vs. support days",
                 },
                 zoom: zoomOptions
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: "Days since last spec"
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: "Days to support"
+                    }
+                }
             }
         },
         plugins: [ChartDataLabels]
@@ -86,21 +114,32 @@ function build() {
         type: "bar",
         data: null,
         options: {
-            indexAxis: "y",
             // Add height since there's so many lines.
             aspectRatio: 1,
-            scales: {
-                x: {
-                    min: "2016-01-01",
-                    type: "time",
-                },
-            },
+            // Horizontal bars.
+            indexAxis: "y",
             plugins: {
                 title: {
                     display: true,
                     text: "Supported versions over time",
                 },
                 zoom: zoomOptions
+            },
+            scales: {
+                x: {
+                    min: "2016-01-01",
+                    title: {
+                        display: true,
+                        text: "Date"
+                    },
+                    type: "time"
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: "Spec version"
+                    }
+                }
             }
         },
     });
