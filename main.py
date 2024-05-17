@@ -36,11 +36,13 @@ class AdditionalMetadata:
     #
     # Leave empty if no versions were ever implemented.
     paths: list[str]
-    # The earliest commit to consider.
+    # The earliest commit to consider. IF not given, the initial commit of the
+    # repo is used.
     #
     # Useful for forks where the project contains many old commits.
     earliest_commit: str | None
-    # The earliest tag to consider.
+    # The earliest tag to consider. If not given, the earliest tag on the repo
+    # is used.
     #
     # Note that earlier tags might exist in the repo due to forks or other reasons.
     earliest_tag: str | None
@@ -419,10 +421,30 @@ if __name__ == "__main__":
         print(f"Loaded {project.name} dates: {versions_dates_all}")
 
         # Get the earliest release of this project.
+        if project.earliest_commit:
+            earliest_commit = repo.commit(project.earliest_commit)
+        else:
+            earliest_commit = next(repo.iter_commits(reverse=True))
+        initial_commit_date = earliest_commit.authored_datetime
+
+        # Remove any spec versions which existed before this project was started.
+        version_dates_after_commit = {
+            version: version_date
+            for version, version_date in versions_dates_all.items()
+            if spec_versions[version] >= initial_commit_date
+        }
+
+        # Get the earliest release of this project.
         if project.earliest_tag:
             release_date = get_tag_datetime(repo.tags[project.earliest_tag])
+        elif repo.tags:
+            earliest_tag = min(repo.tags, key=lambda t: get_tag_datetime(t))
+            release_date = get_tag_datetime(earliest_tag)
+        else:
+            release_date = None
 
-            # Remove any spec versions which existed before this project was released.
+        # Remove any spec versions which existed before this project was released.
+        if release_date:
             version_dates_after_release = {
                 version: version_date
                 for version, version_date in versions_dates_all.items()
@@ -431,7 +453,6 @@ if __name__ == "__main__":
 
             print(f"Loaded {project.name} dates: {version_dates_after_release}")
         else:
-            release_date = None
             version_dates_after_release = {}
 
         print()
@@ -444,6 +465,10 @@ if __name__ == "__main__":
             },
             "lag_all": {
                 v: (d - spec_versions[v]).days for v, d in versions_dates_all.items()
+            },
+            "lag_after_commit": {
+                v: (d - spec_versions[v]).days
+                for v, d in version_dates_after_commit.items()
             },
             "lag_after_release": {
                 v: (d - spec_versions[v]).days

@@ -2,6 +2,7 @@
     "homeserver_versions": {
         "bullettime": {
             "initial_release_date": null,
+            "lag_after_commit": {},
             "lag_after_release": {},
             "lag_all": {},
             "maturity": "obsolete",
@@ -9,6 +10,13 @@
         },
         "conduit": {
             "initial_release_date": "2021-09-02T11:10:23+00:00",
+            "lag_after_commit": {
+                "v1.1": 217,
+                "v1.2": 132,
+                "v1.3": 355,
+                "v1.4": 264,
+                "v1.5": 425
+            },
             "lag_after_release": {
                 "v1.1": 217,
                 "v1.2": 132,
@@ -116,6 +124,7 @@
         },
         "conduwuit": {
             "initial_release_date": "2024-04-26T00:15:41-04:00",
+            "lag_after_commit": {},
             "lag_after_release": {},
             "lag_all": {
                 "r0.0.1": 2918,
@@ -216,6 +225,22 @@
         },
         "construct": {
             "initial_release_date": "2020-12-02T18:54:20-08:00",
+            "lag_after_commit": {
+                "r0.0.1": 322,
+                "r0.1.0": 204,
+                "r0.2.0": 138,
+                "r0.3.0": 80,
+                "r0.4.0": 172,
+                "r0.5.0": 5,
+                "r0.6.0": 26,
+                "r0.6.1": 198,
+                "v1.1": 236,
+                "v1.2": 151,
+                "v1.3": 211,
+                "v1.4": 120,
+                "v1.5": 76,
+                "v1.6": 63
+            },
             "lag_after_release": {
                 "v1.1": 236,
                 "v1.2": 151,
@@ -346,6 +371,14 @@
         },
         "dendrite": {
             "initial_release_date": "2020-10-02T17:27:39+01:00",
+            "lag_after_commit": {
+                "r0.3.0": 107,
+                "r0.4.0": 724,
+                "r0.5.0": 440,
+                "r0.6.1": 90,
+                "v1.1": 203,
+                "v1.2": 118
+            },
             "lag_after_release": {
                 "v1.1": 203,
                 "v1.2": 118
@@ -420,14 +453,16 @@
             }
         },
         "ejabberd": {
-            "initial_release_date": null,
+            "initial_release_date": "2010-02-03T15:05:20+01:00",
+            "lag_after_commit": {},
             "lag_after_release": {},
             "lag_all": {},
             "maturity": "alpha",
             "version_dates": {}
         },
         "gridify server": {
-            "initial_release_date": null,
+            "initial_release_date": "2019-01-17T13:41:58+01:00",
+            "lag_after_commit": {},
             "lag_after_release": {},
             "lag_all": {
                 "r0.4.0": 159
@@ -444,6 +479,7 @@
         },
         "jsynapse": {
             "initial_release_date": null,
+            "lag_after_commit": {},
             "lag_after_release": {},
             "lag_all": {},
             "maturity": "obsolete",
@@ -451,6 +487,7 @@
         },
         "ligase": {
             "initial_release_date": "2020-08-07T10:29:40+08:00",
+            "lag_after_commit": {},
             "lag_after_release": {},
             "lag_all": {
                 "r0.0.1": 1604,
@@ -488,6 +525,7 @@
         },
         "maelstrom": {
             "initial_release_date": null,
+            "lag_after_commit": {},
             "lag_after_release": {},
             "lag_all": {
                 "r0.5.0": 297,
@@ -511,6 +549,7 @@
         },
         "matrex": {
             "initial_release_date": null,
+            "lag_after_commit": {},
             "lag_after_release": {},
             "lag_all": {
                 "r0.2.0": 121
@@ -527,6 +566,9 @@
         },
         "mxhsd": {
             "initial_release_date": null,
+            "lag_after_commit": {
+                "r0.3.0": 141
+            },
             "lag_after_release": {},
             "lag_all": {
                 "r0.2.0": 486,
@@ -550,6 +592,26 @@
         },
         "synapse": {
             "initial_release_date": "2014-08-14T03:36:03+01:00",
+            "lag_after_commit": {
+                "r0.0.1": -5,
+                "r0.1.0": 79,
+                "r0.2.0": 13,
+                "r0.3.0": -12,
+                "r0.4.0": 160,
+                "r0.5.0": -7,
+                "r0.6.0": 210,
+                "r0.6.1": 523,
+                "v1.1": 100,
+                "v1.10": 37,
+                "v1.2": 18,
+                "v1.3": 90,
+                "v1.4": 9,
+                "v1.5": 12,
+                "v1.6": 86,
+                "v1.7": 188,
+                "v1.8": 98,
+                "v1.9": 0
+            },
             "lag_after_release": {
                 "r0.0.1": -5,
                 "r0.1.0": 79,
@@ -703,8 +765,17 @@
             }
         },
         "telodendria": {
-            "initial_release_date": null,
-            "lag_after_release": {},
+            "initial_release_date": "2022-12-13T19:49:03+00:00",
+            "lag_after_commit": {
+                "v1.4": -5,
+                "v1.5": 23,
+                "v1.6": 1,
+                "v1.7": 167
+            },
+            "lag_after_release": {
+                "v1.6": 1,
+                "v1.7": 167
+            },
             "lag_all": {
                 "v1.2": 708,
                 "v1.3": 555,
@@ -767,6 +838,7 @@
         },
         "transform": {
             "initial_release_date": null,
+            "lag_after_commit": {},
             "lag_after_release": {},
             "lag_all": {
                 "r0.0.1": 892,

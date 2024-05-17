@@ -150,7 +150,7 @@ function build() {
 
 function render() {
     let allowedMaturities = ["stable", "beta", "alpha", "obsolete"].filter(maturity => document.getElementById(maturity).checked);
-    let displayAllReleases = !document.getElementById("display-all-releases").checked;
+    let displayType = document.getElementById("display-type").value;
 
     fetch("data.json").then(response => response.json()).then(data => {
         // The full list of released spec versions.
@@ -160,7 +160,7 @@ function render() {
         var scatterDatasets = [];
 
         for (let project in data.homeserver_versions) {
-            const projectVersions = data.homeserver_versions[project]["lag_" + (displayAllReleases ? "after_release" : "all")];
+            const projectVersions = data.homeserver_versions[project]["lag_" + displayType];
 
             // If there are no versions, don't bother adding them.
             if (!Object.keys(projectVersions).length) {

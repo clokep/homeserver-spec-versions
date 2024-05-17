@@ -66,14 +66,18 @@
 
     <h3>Releases to include</h3>
     <p>
-      By default only the spec versions released <i>after</i> a homeserver's first
-      release are included. (As the latency to support an earlier version seems
-      uninteresting.)
+      By default, only the spec versions released <i>after</i> a homeserver's first
+      release are included. You can look at all data or data after a homeserver's first
+      commit using the dropdown below.
 
       <br>
 
-      <input type="checkbox" id="display-all-releases" onclick="render();" />
-      <label for="display-all-releases">Display all releases</label>
+      <select id="display-type" onchange="render();">
+        <option value="all" >All spec releases</option>
+        <option value="after_commit">Spec releases after initial project commit</option>
+        <option value="after_release" selected>Spec releases after initial project release</option>
+      </select>
+
     </p>
   </div>
 
