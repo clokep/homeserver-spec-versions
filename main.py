@@ -1,3 +1,4 @@
+import re
 import tomllib
 from dataclasses import dataclass, asdict
 from datetime import datetime, timezone, timedelta
@@ -238,14 +239,19 @@ def json_encode(o: object) -> str | bool | int | float | None | list | dict:
 
 
 def get_versions_from_file(root: Path, paths: list[str]) -> set[str]:
+    # To get the version numbers and to ignore ones that are in comments we use
+    # a two-pass system:
+    #
+    # 1. Use grep to find lines that contain potential version numbers.
+    # 2. Strip comments "off" those lines, then search again to see if they
+    #    have version numbers.
     result = subprocess.run(
         [
             "grep",
-            "--only-matching",
             "--no-filename",
             "-E",
             # This is equivalent to a command line of: "(\\\\?['\"]) ?[vr]\d\..+?\1"
-            r"""(\\?['\\"]) ?[vr]\d\..+?\1""",
+            r"[vr]\d[\d\.]+\d",
             *paths,
         ],
         capture_output=True,
@@ -255,14 +261,17 @@ def get_versions_from_file(root: Path, paths: list[str]) -> set[str]:
     versions = set()
 
     for line in result.stdout.decode("ascii").splitlines():
-        # Remove the quotes and whitespace.
-        line = line.strip("\\'\" ")
+        # Strip whitespace.
+        line = line.strip()
 
-        # Construct used a space separated string at some point.
-        versions.update(line.split())
+        # Strip comments.
+        #
+        # TODO This only handles line comments, not block comments.
+        line = re.split(r"#|//", line)[0]
 
-    # Dendrite has a version in a comment which breaks things.
-    versions.discard("v33333")
+        # Search again for the versions.
+        versions.update(re.findall(r"[vr]\d[\d\.]+\d", line))
+
     # Dendrite declares a v1.0, which never existed.
     versions.discard("v1.0")
     # Construct declares a r2.0.0, which never existed.
