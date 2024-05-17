@@ -32,12 +32,15 @@ class ServerMetadata:
 class AdditionalMetadata:
     # The branch which has the latest commit.
     branch: str
-    # The file paths (relative to repo root) to check for version information.
+    # The file paths (relative to repo root) to check for spec version information.
     #
-    # Leave empty if no versions were ever implemented.
-    paths: list[str]
-    # The earliest commit to consider. IF not given, the initial commit of the
-    # repo is used.
+    # Leave empty if no spec versions were ever implemented.
+    spec_version_paths: list[str]
+    # The file paths (relative to repo root) to check for room version information.
+    #
+    # Leave empty if no room versions were ever implemented.
+    room_version_paths: list[str]
+    # The earliest commit to consider.
     #
     # Useful for forks where the project contains many old commits.
     earliest_commit: str | None
@@ -79,94 +82,113 @@ INVALID_PROJECTS = {
 ADDITIONAL_METADATA = {
     "bullettime": AdditionalMetadata(
         "master",
-        [],
+        spec_version_paths=[],
+        room_version_paths=[],
         earliest_commit=None,
         earliest_tag=None,
     ),
     "conduit": AdditionalMetadata(
         "next",
-        [
+        spec_version_paths=[
             "src/main.rs",
             "src/client_server/unversioned.rs",
             "src/api/client_server/unversioned.rs",
         ],
+        room_version_paths=[],
         earliest_commit=None,
         earliest_tag=None,
     ),
     "conduwuit": AdditionalMetadata(
         branch="main",
-        paths=[
+        spec_version_paths=[
             "src/main.rs",
             "src/client_server/unversioned.rs",
             "src/api/client_server/unversioned.rs",
         ],
+        room_version_paths=[],
         earliest_commit="9c3b3daafcbc95647b5641a6edc975e2ffc04b04",
         earliest_tag=None,
     ),
     "construct": AdditionalMetadata(
         "master",
-        ["ircd/json.cc", "modules/client/versions.cc"],
+        spec_version_paths=["ircd/json.cc", "modules/client/versions.cc"],
+        room_version_paths=["modules/client/capabilities.cc"],
         earliest_commit=None,
         # Earlier tags from charybdis exist.
         earliest_tag="0.0.10020",
     ),
     "dendrite": AdditionalMetadata(
         "main",
-        [
+        spec_version_paths=[
             "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
             "clientapi/routing/routing.go",
         ],
+        room_version_paths=[],
         earliest_commit=None,
         earliest_tag=None,
     ),
     "jsynapse": AdditionalMetadata(
-        "master", [], earliest_commit=None, earliest_tag=None
+        "master",
+        spec_version_paths=[],
+        room_version_paths=[],
+        earliest_commit=None,
+        earliest_tag=None,
     ),
     "ligase": AdditionalMetadata(
         "develop",
-        [
+        spec_version_paths=[
             "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
             "proxy/routing/routing.go",
         ],
+        room_version_paths=[],
         earliest_commit="bde8bc21a45a9dcffaaa812aa6a5a5341bca5f42",
         earliest_tag=None,
     ),
     "maelstrom": AdditionalMetadata(
         "master",
-        ["src/server/handlers/admin.rs"],
+        spec_version_paths=["src/server/handlers/admin.rs"],
+        room_version_paths=[],
         earliest_commit=None,
         earliest_tag=None,
     ),
     "matrex": AdditionalMetadata(
         "master",
-        [
+        spec_version_paths=[
             "web/controllers/client_versions_controller.ex",
             "controllers/client/versions.ex",
         ],
+        room_version_paths=[],
         earliest_commit=None,
         earliest_tag=None,
     ),
     "mxhsd": AdditionalMetadata(
         "master",
-        [
+        spec_version_paths=[
             "src/main/java/io/kamax/mxhsd/spring/client/controller/VersionController.java"
         ],
+        room_version_paths=[],
         earliest_commit=None,
         earliest_tag=None,
     ),
     "synapse": AdditionalMetadata(
         "develop",
-        ["synapse/rest/client/versions.py"],
+        spec_version_paths=["synapse/rest/client/versions.py"],
+        room_version_paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
         earliest_commit=None,
         # Earlier tags exist from DINSIC.
         earliest_tag="v0.0.0",
     ),
     "transform": AdditionalMetadata(
-        "master", ["config.json"], earliest_commit=None, earliest_tag=None
+        "master",
+        spec_version_paths=["config.json"],
+        room_version_paths=[],
+        earliest_commit=None,
+        earliest_tag=None,
     ),
     "telodendria": AdditionalMetadata(
         "master",
-        ["src/Routes/RouteMatrix.c", "src/Routes/RouteVersions.c"],
+        spec_version_paths=["src/Routes/RouteMatrix.c", "src/Routes/RouteVersions.c"],
+        room_version_paths=[],
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -259,7 +281,9 @@ def json_encode(o: object) -> str | bool | int | float | None | list | dict:
         return o.isoformat()
 
 
-def get_versions_from_file(root: Path, paths: list[str]) -> set[str]:
+def get_versions_from_file(
+    root: Path, paths: list[str], pattern: str, to_ignore: list[str]
+) -> set[str]:
     """
     Fetch the spec versions from one or more files.
 
@@ -275,8 +299,7 @@ def get_versions_from_file(root: Path, paths: list[str]) -> set[str]:
             "grep",
             "--no-filename",
             "-E",
-            # This is equivalent to a command line of: "(\\\\?['\"]) ?[vr]\d\..+?\1"
-            r"[vr]\d[\d\.]+\d",
+            pattern,
             *paths,
         ],
         capture_output=True,
@@ -297,10 +320,9 @@ def get_versions_from_file(root: Path, paths: list[str]) -> set[str]:
         # Search again for the versions.
         versions.update(re.findall(r"[vr]\d[\d\.]+\d", line))
 
-    # Dendrite declares a v1.0, which never existed.
-    versions.discard("v1.0")
-    # Construct declares a r2.0.0, which never existed.
-    versions.discard("r2.0.0")
+    # Ignore some versions that are "bad".
+    for v in to_ignore:
+        versions.discard(v)
 
     return versions
 
@@ -376,13 +398,13 @@ def get_project_versions(
     versions_at_commit = []
 
     # If no paths are given, then no versions were ever supported.
-    if project.paths:
+    if project.spec_version_paths:
         # Calculate the set of versions each time these files were changed.
         for commit in repo.iter_commits(
             f"{project.earliest_commit}~..origin/{project.branch}"
             if project.earliest_commit
             else f"origin/{project.branch}",
-            paths=project.paths,
+            paths=project.spec_version_paths,
             reverse=True,
         ):
             # Checkout this commit (why is this so hard?).
@@ -391,7 +413,12 @@ def get_project_versions(
 
             # Commits are ordered earliest to latest, only record if the
             # version info changed.
-            cur_versions = get_versions_from_file(project_dir, project.paths)
+            cur_versions = get_versions_from_file(
+                project_dir,
+                project.spec_version_paths,
+                r"[vr]\d[\d\.]+\d",
+                to_ignore=[],
+            )
             if (
                 not versions_at_commit
                 or versions_at_commit[-1].versions != cur_versions
