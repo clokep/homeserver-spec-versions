@@ -167,7 +167,42 @@ ADDITIONAL_METADATA = {
     ),
 }
 
-ADDITIONAL_PROJECTS = []
+ADDITIONAL_PROJECTS = [
+    ProjectMetadata(
+        name="Gridify Server",
+        description="Corporate-level Unified communication server with support for several protocols: Matrix Home and Identity server and Grid Data Server",
+        author="Kamax Sarl",
+        maturity="Obsolete",
+        language="Java",
+        licence="AGPL-3.0-or-later",
+        repository="https://gitlab.com/kamax-lu/software/gridify/server",
+        room="#gridify-server:kamax.io",
+        branch="master",
+        paths=[
+            "src/main/java/io/kamax/grid/gridepo/http/handler/matrix/VersionsHandler.java",
+            "src/main/java/io/kamax/grid/gridepo/network/grid/http/handler/matrix/home/client/VersionsHandler.java",
+            "src/main/java/io/kamax/gridify/server/network/grid/http/handler/matrix/home/client/VersionsHandler.java"
+        ],
+        earliest_commit=None,
+        earliest_tag=None,
+    ),
+    # Note that ejabberd doesn't implement the Client-Server API, thus it doesn't declare
+    # itself compatible with any particular versions.
+    ProjectMetadata(
+        name="ejabberd",
+        description="Robust, Ubiquitous and Massively Scalable Messaging Platform (XMPP, MQTT, SIP Server)",
+        author="ProcessOne",
+        maturity="alpha",
+        language="Erlang/OTP",
+        licence="GPL-2.0-only",
+        repository="https://github.com/processone/ejabberd",
+        room=None,
+        branch="master",
+        paths=[],
+        earliest_commit=None,
+        earliest_tag=None,
+    ),
+]
 
 
 def download_projects():

@@ -419,6 +419,29 @@
                 ]
             }
         },
+        "ejabberd": {
+            "initial_release_date": null,
+            "lag_after_release": {},
+            "lag_all": {},
+            "maturity": "alpha",
+            "version_dates": {}
+        },
+        "gridify server": {
+            "initial_release_date": null,
+            "lag_after_release": {},
+            "lag_all": {
+                "r0.4.0": 159
+            },
+            "maturity": "obsolete",
+            "version_dates": {
+                "r0.4.0": [
+                    [
+                        "2019-02-07T03:55:07+01:00",
+                        null
+                    ]
+                ]
+            }
+        },
         "jsynapse": {
             "initial_release_date": null,
             "lag_after_release": {},
