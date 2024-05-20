@@ -36,10 +36,19 @@ class AdditionalMetadata:
     #
     # Leave empty if no spec versions were ever implemented.
     spec_version_paths: list[str]
-    # The file paths (relative to repo root) to check for room version information.
+    # Some homeservers store room version info in a different repo.
+    #
+    # Defaults to the project repo.
+    room_version_repo: str | None
+    # The file paths (relative to room version or project root) to check for room
+    # version information.
     #
     # Leave empty if no room versions were ever implemented.
     room_version_paths: list[str]
+    # The pattern to use to fetch room versions.
+    #
+    # This should have 0 or 1 single capturing group.
+    room_version_pattern: str
     # The earliest commit to consider.
     #
     # Useful for forks where the project contains many old commits.
@@ -83,7 +92,9 @@ ADDITIONAL_METADATA = {
     "bullettime": AdditionalMetadata(
         "master",
         spec_version_paths=[],
+        room_version_repo=None,
         room_version_paths=[],
+        room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -94,7 +105,9 @@ ADDITIONAL_METADATA = {
             "src/client_server/unversioned.rs",
             "src/api/client_server/unversioned.rs",
         ],
-        room_version_paths=[],
+        room_version_repo=None,
+        room_version_paths=["src/service/globals/mod.rs"],
+        room_version_pattern=r"RoomVersionId::V(\d+)",
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -105,14 +118,18 @@ ADDITIONAL_METADATA = {
             "src/client_server/unversioned.rs",
             "src/api/client_server/unversioned.rs",
         ],
-        room_version_paths=[],
+        room_version_repo=None,
+        room_version_paths=["src/service/globals/mod.rs"],
+        room_version_pattern=r"RoomVersionId::V(\d+)",
         earliest_commit="9c3b3daafcbc95647b5641a6edc975e2ffc04b04",
         earliest_tag=None,
     ),
     "construct": AdditionalMetadata(
         "master",
         spec_version_paths=["ircd/json.cc", "modules/client/versions.cc"],
+        room_version_repo=None,
         room_version_paths=["modules/client/capabilities.cc"],
+        room_version_pattern=r'"(\d+)"',
         earliest_commit=None,
         # Earlier tags from charybdis exist.
         earliest_tag="0.0.10020",
@@ -123,14 +140,18 @@ ADDITIONAL_METADATA = {
             "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
             "clientapi/routing/routing.go",
         ],
-        room_version_paths=[],
+        room_version_repo="https://github.com/matrix-org/gomatrixserverlib",
+        room_version_paths=["eventversion.go"],
+        room_version_pattern=r"RoomVersionV(\d+)",
         earliest_commit=None,
         earliest_tag=None,
     ),
     "jsynapse": AdditionalMetadata(
         "master",
         spec_version_paths=[],
+        room_version_repo=None,
         room_version_paths=[],
+        room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -140,14 +161,18 @@ ADDITIONAL_METADATA = {
             "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
             "proxy/routing/routing.go",
         ],
+        room_version_repo=None,
         room_version_paths=[],
+        room_version_pattern="",
         earliest_commit="bde8bc21a45a9dcffaaa812aa6a5a5341bca5f42",
         earliest_tag=None,
     ),
     "maelstrom": AdditionalMetadata(
         "master",
         spec_version_paths=["src/server/handlers/admin.rs"],
+        room_version_repo=None,
         room_version_paths=[],
+        room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -157,7 +182,9 @@ ADDITIONAL_METADATA = {
             "web/controllers/client_versions_controller.ex",
             "controllers/client/versions.ex",
         ],
+        room_version_repo=None,
         room_version_paths=[],
+        room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -166,14 +193,18 @@ ADDITIONAL_METADATA = {
         spec_version_paths=[
             "src/main/java/io/kamax/mxhsd/spring/client/controller/VersionController.java"
         ],
+        room_version_repo=None,
         room_version_paths=[],
+        room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
     ),
     "synapse": AdditionalMetadata(
         "develop",
         spec_version_paths=["synapse/rest/client/versions.py"],
+        room_version_repo=None,
         room_version_paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
+        room_version_pattern=r"RoomVersions.V(\d+)",
         earliest_commit=None,
         # Earlier tags exist from DINSIC.
         earliest_tag="v0.0.0",
@@ -181,14 +212,18 @@ ADDITIONAL_METADATA = {
     "transform": AdditionalMetadata(
         "master",
         spec_version_paths=["config.json"],
+        room_version_repo=None,
         room_version_paths=[],
+        room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
     ),
     "telodendria": AdditionalMetadata(
         "master",
         spec_version_paths=["src/Routes/RouteMatrix.c", "src/Routes/RouteVersions.c"],
-        room_version_paths=[],
+        room_version_repo=None,
+        room_version_paths=["src/Routes/RouteCapabilities.c"],
+        room_version_pattern=r'roomVersions, "(\d+)"',
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -210,7 +245,9 @@ ADDITIONAL_PROJECTS = [
             "src/main/java/io/kamax/grid/gridepo/network/grid/http/handler/matrix/home/client/VersionsHandler.java",
             "src/main/java/io/kamax/gridify/server/network/grid/http/handler/matrix/home/client/VersionsHandler.java",
         ],
+        room_version_repo=None,
         room_version_paths=[],
+        room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -227,7 +264,9 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="master",
         spec_version_paths=[],
+        room_version_repo=None,
         room_version_paths=[],
+        room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -243,7 +282,9 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="develop",
         spec_version_paths=[],
+        room_version_repo=None,
         room_version_paths=[],
+        room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -285,7 +326,7 @@ def json_encode(o: object) -> str | bool | int | float | None | list | dict:
 
 
 def get_versions_from_file(
-    root: Path, paths: list[str], pattern: str, to_ignore: list[str]
+    root: str, paths: list[str], pattern: str, to_ignore: list[str]
 ) -> set[str]:
     """
     Fetch the spec versions from one or more files.
@@ -321,7 +362,7 @@ def get_versions_from_file(
         line = re.split(r"#|//", line)[0]
 
         # Search again for the versions.
-        versions.update(re.findall(r"[vr]\d[\d\.]+\d", line))
+        versions.update(re.findall(pattern, line))
 
     # Ignore some versions that are "bad".
     for v in to_ignore:
@@ -330,7 +371,7 @@ def get_versions_from_file(
     return versions
 
 
-def get_repo(name: str, remote: str) -> tuple[Path, Repo]:
+def get_repo(name: str, remote: str) -> Repo:
     """
     Given a project name and the remote git URL, return a tuple of file path and git repo.
 
@@ -344,7 +385,7 @@ def get_repo(name: str, remote: str) -> tuple[Path, Repo]:
         repo = Repo(repo_dir)
         repo.remote().fetch()
 
-    return repo_dir, repo
+    return repo
 
 
 def calculate_lag(
@@ -385,7 +426,11 @@ def get_tag_datetime(tag: git.TagReference) -> datetime:
 
 
 def get_project_versions(
-    project: ProjectMetadata, project_dir: Path, repo: Repo
+    project: ProjectMetadata,
+    repo: Repo,
+    paths: list[str],
+    pattern: str,
+    to_ignore: list[str],
 ) -> dict[str, list[VersionInfo]]:
     """
     Calculate the supported versions for a project and metadata about when support
@@ -401,13 +446,13 @@ def get_project_versions(
     versions_at_commit = []
 
     # If no paths are given, then no versions were ever supported.
-    if project.spec_version_paths:
+    if paths:
         # Calculate the set of versions each time these files were changed.
         for commit in repo.iter_commits(
             f"{project.earliest_commit}~..origin/{project.branch}"
             if project.earliest_commit
             else f"origin/{project.branch}",
-            paths=project.spec_version_paths,
+            paths=paths,
             reverse=True,
         ):
             # Checkout this commit (why is this so hard?).
@@ -417,15 +462,7 @@ def get_project_versions(
             # Commits are ordered earliest to latest, only record if the
             # version info changed.
             cur_versions = get_versions_from_file(
-                project_dir,
-                project.spec_version_paths,
-                r"[vr]\d[\d\.]+\d",
-                to_ignore=[
-                    # Dendrite declares a v1.0, which never existed.
-                    "v1.0",
-                    # Construct declares a r2.0.0, which never existed.
-                    "r2.0.0",
-                ],
+                repo.working_dir, paths, pattern, to_ignore
             )
             if (
                 not versions_at_commit
@@ -472,14 +509,42 @@ def main(
     4. Calculate the lag and set of supported versions.
 
     """
-    project_dir, repo = get_repo(project.name.lower(), project.repository)
+    repo = get_repo(project.name.lower(), project.repository)
 
     repo.head.reference = project.branch
     repo.head.reset(index=True, working_tree=True)
 
-    # Map of version to list of commit metadata for when support for that version changed.
-    versions = get_project_versions(project, project_dir, repo)
-    print(f"Loaded {project.name} versions: {versions}")
+    # Map of spec version to list of commit metadata for when support for that version changed.
+    versions = get_project_versions(
+        project,
+        repo,
+        project.spec_version_paths,
+        r"[vr]\d[\d\.]+\d",
+        to_ignore=[
+            # Dendrite declares a v1.0, which never existed.
+            "v1.0",
+            # Construct declares a r2.0.0, which never existed.
+            "r2.0.0",
+        ],
+    )
+    print(f"Loaded {project.name} spec versions: {versions}")
+
+    if project.room_version_repo:
+        room_version_repo = get_repo(
+            project.room_version_repo.split("/")[-1], project.room_version_repo
+        )
+    else:
+        room_version_repo = repo
+
+    # Map of room version to list of commit metadata for when support for that version changed.
+    room_versions = get_project_versions(
+        project,
+        room_version_repo,
+        project.room_version_paths,
+        project.room_version_pattern,
+        to_ignore=[],
+    )
+    print(f"Loaded {project.name} room versions: {room_versions}")
 
     # Resolve commits to date for when each version was first supported.
     versions_dates_all = {
@@ -519,9 +584,13 @@ def main(
 
     return {
         "initial_release_date": release_date,
-        "version_dates": {
+        "spec_version_dates": {
             v: [(info.start_date, info.end_date) for info in version_info]
             for v, version_info in versions.items()
+        },
+        "room_version_dates": {
+            v: [(info.start_date, info.end_date) for info in version_info]
+            for v, version_info in room_versions.items()
         },
         "lag_all": calculate_lag(versions_dates_all, spec_versions),
         "lag_after_commit": calculate_lag(version_dates_after_commit, spec_versions),
@@ -536,9 +605,7 @@ if __name__ == "__main__":
         download_projects()
 
     # First get the known versions according to the spec repo.
-    _, spec_repo = get_repo(
-        "matrix-spec", "https://github.com/matrix-org/matrix-spec.git"
-    )
+    spec_repo = get_repo("matrix-spec", "https://github.com/matrix-org/matrix-spec.git")
 
     # Map of version -> commit date.
     spec_versions = {
@@ -572,6 +639,8 @@ if __name__ == "__main__":
             ),
             "version_dates": spec_versions,
         },
+        # TODO Calculate this from the spec repo.
+        "room_versions": [str(v) for v in range(1, 11 + 1)],
         "homeserver_versions": {},
     }
 

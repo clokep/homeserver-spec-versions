@@ -109,8 +109,9 @@ function build() {
         plugins: [ChartDataLabels]
     });
 
-    const versionsSupportedContext = document.getElementById("supported-versions-over-time");
-    new Chart(versionsSupportedContext, {
+    // Timeline of supported versions.
+    const specVersionsSupportedContext = document.getElementById("supported-spec-versions-over-time");
+    new Chart(specVersionsSupportedContext, {
         type: "bar",
         data: null,
         options: {
@@ -121,7 +122,7 @@ function build() {
             plugins: {
                 title: {
                     display: true,
-                    text: "Supported versions over time",
+                    text: "Supported spec versions over time",
                 },
                 zoom: zoomOptions
             },
@@ -144,6 +145,41 @@ function build() {
         },
     });
 
+    const roomVersionsSupportedContext = document.getElementById("supported-room-versions-over-time");
+    new Chart(roomVersionsSupportedContext, {
+        type: "bar",
+        data: null,
+        options: {
+            // Add height since there's so many lines.
+            aspectRatio: 1,
+            // Horizontal bars.
+            indexAxis: "y",
+            plugins: {
+                title: {
+                    display: true,
+                    text: "Supported room versions over time",
+                },
+                zoom: zoomOptions
+            },
+            scales: {
+                x: {
+                    min: "2016-01-01",
+                    title: {
+                        display: true,
+                        text: "Date"
+                    },
+                    type: "time"
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: "Room version"
+                    }
+                }
+            }
+        },
+    });
+
     // Add the initial data.
     render();
 }
@@ -155,7 +191,9 @@ function render() {
     fetch("data.json").then(response => response.json()).then(data => {
         // The full list of released spec versions.
         const specVersions = Object.keys(data.spec_versions.version_dates).sort(cmpVersions);
-        
+        // The full list of room versions.
+        const roomVersions = data.room_versions.sort(v => -Number(v));
+
         var barDatasets = [];
         var scatterDatasets = [];
 
@@ -209,11 +247,11 @@ function render() {
         };
         scatterChart.update();
 
-        // Line showing the dates when versions were supported.
+        // Timeline showing the dates when spec versions were supported.
         const now = new Date();
-        const versionsDatasets = [];
+        const specVersionsDataset = [];
         for (let project in data.homeserver_versions) {
-            const projectVersions = data.homeserver_versions[project].version_dates;
+            const projectVersions = data.homeserver_versions[project].spec_version_dates;
 
             // If there are no versions, don't bother adding them.
             if (!Object.keys(projectVersions).length) {
@@ -225,7 +263,7 @@ function render() {
                 continue
             }
 
-            versionsDatasets.push(
+            specVersionsDataset.push(
                 {
                     label: project,
                     // Convert the mapping of version -> list of dates to a flat
@@ -245,12 +283,54 @@ function render() {
             );
         }
 
-        const versionsSupportedChart = Chart.getChart("supported-versions-over-time");
-        versionsSupportedChart.data = {
+        const specVersionsSupportedChart = Chart.getChart("supported-spec-versions-over-time");
+        specVersionsSupportedChart.data = {
             labels: specVersions,
-            datasets: versionsDatasets
+            datasets: specVersionsDataset
         };
-        versionsSupportedChart.update();
+        specVersionsSupportedChart.update();
+
+        // Timeline showing the dates when room versions were supported.
+        const roomVersionsDataset = [];
+        for (let project in data.homeserver_versions) {
+            const projectVersions = data.homeserver_versions[project].room_version_dates;
+
+            // If there are no versions, don't bother adding them.
+            if (!Object.keys(projectVersions).length) {
+                continue;
+            }
+
+            // Filter projects by maturity.
+            if (!allowedMaturities.includes(data.homeserver_versions[project].maturity)) {
+                continue
+            }
+
+            roomVersionsDataset.push(
+                {
+                    label: project,
+                    // Convert the mapping of version -> list of dates to a flat
+                    // array of objects with y value of the version and x the start
+                    // & end date of that version.
+                    data: Object.keys(projectVersions).map(
+                        verString => projectVersions[verString].map(
+                            verDates => {
+                                return {
+                                    x: [verDates[0], verDates[1] || now],
+                                    y: verString
+                                };
+                            }
+                        )
+                    ).flat(),
+                }
+            );
+        }
+
+        const roomVersionsSupportedChart = Chart.getChart("supported-room-versions-over-time");
+        roomVersionsSupportedChart.data = {
+            labels: roomVersions,
+            datasets: roomVersionsDataset
+        };
+        roomVersionsSupportedChart.update();
     });
 }
 
