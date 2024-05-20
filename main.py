@@ -454,6 +454,9 @@ def get_project_versions(
             else f"origin/{project.branch}",
             paths=paths,
             reverse=True,
+            # Follow the development branch through merges (i.e. use dates that
+            # changes are merged instead of original commit date).
+            first_parent=True,
         ):
             # Checkout this commit (why is this so hard?).
             repo.head.reference = commit
