@@ -38,8 +38,49 @@ function cmpVersions(a, b) {
     }
 }
 
+function cmpRoomVersions(a, b) {
+    return Number(a) - Number(b);
+}
+
 function resetZoom(chartId) {
     Chart.getChart(chartId).resetZoom();
+}
+
+function buildTimeline(elementId, title, yAxisTitle) {
+    const context = document.getElementById(elementId);
+    new Chart(context, {
+        type: "bar",
+        data: null,
+        options: {
+            // Add height since there's so many lines.
+            aspectRatio: 1,
+            // Horizontal bars.
+            indexAxis: "y",
+            plugins: {
+                title: {
+                    display: true,
+                    text: title,
+                },
+                zoom: zoomOptions
+            },
+            scales: {
+                x: {
+                    min: "2016-01-01",
+                    title: {
+                        display: true,
+                        text: "Date"
+                    },
+                    type: "time"
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: yAxisTitle
+                    }
+                }
+            }
+        },
+    });
 }
 
 function build() {
@@ -110,75 +151,8 @@ function build() {
     });
 
     // Timeline of supported versions.
-    const specVersionsSupportedContext = document.getElementById("supported-spec-versions-over-time");
-    new Chart(specVersionsSupportedContext, {
-        type: "bar",
-        data: null,
-        options: {
-            // Add height since there's so many lines.
-            aspectRatio: 1,
-            // Horizontal bars.
-            indexAxis: "y",
-            plugins: {
-                title: {
-                    display: true,
-                    text: "Supported spec versions over time",
-                },
-                zoom: zoomOptions
-            },
-            scales: {
-                x: {
-                    min: "2016-01-01",
-                    title: {
-                        display: true,
-                        text: "Date"
-                    },
-                    type: "time"
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: "Spec version"
-                    }
-                }
-            }
-        },
-    });
-
-    const roomVersionsSupportedContext = document.getElementById("supported-room-versions-over-time");
-    new Chart(roomVersionsSupportedContext, {
-        type: "bar",
-        data: null,
-        options: {
-            // Add height since there's so many lines.
-            aspectRatio: 1,
-            // Horizontal bars.
-            indexAxis: "y",
-            plugins: {
-                title: {
-                    display: true,
-                    text: "Supported room versions over time",
-                },
-                zoom: zoomOptions
-            },
-            scales: {
-                x: {
-                    min: "2016-01-01",
-                    title: {
-                        display: true,
-                        text: "Date"
-                    },
-                    type: "time"
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: "Room version"
-                    }
-                }
-            }
-        },
-    });
+    buildTimeline("supported-spec-versions-over-time", "Supported spec versions over time", "Spec version");
+    buildTimeline("supported-room-versions-over-time", "Supported room versions over time", "Room version");
 
     // Add the initial data.
     render();
@@ -192,7 +166,7 @@ function render() {
         // The full list of released spec versions.
         const specVersions = Object.keys(data.spec_versions.version_dates).sort(cmpVersions);
         // The full list of room versions.
-        const roomVersions = data.room_versions.sort(v => -Number(v));
+        const roomVersions = data.room_versions.sort(cmpRoomVersions);
 
         var barDatasets = [];
         var scatterDatasets = [];
