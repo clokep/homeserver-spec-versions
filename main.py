@@ -205,11 +205,12 @@ ADDITIONAL_PROJECTS = [
         repository="https://gitlab.com/kamax-lu/software/gridify/server",
         room="#gridify-server:kamax.io",
         branch="master",
-        paths=[
+        spec_version_paths=[
             "src/main/java/io/kamax/grid/gridepo/http/handler/matrix/VersionsHandler.java",
             "src/main/java/io/kamax/grid/gridepo/network/grid/http/handler/matrix/home/client/VersionsHandler.java",
             "src/main/java/io/kamax/gridify/server/network/grid/http/handler/matrix/home/client/VersionsHandler.java",
         ],
+        room_version_paths=[],
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -225,7 +226,8 @@ ADDITIONAL_PROJECTS = [
         repository="https://github.com/processone/ejabberd",
         room=None,
         branch="master",
-        paths=[],
+        spec_version_paths=[],
+        room_version_paths=[],
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -240,7 +242,8 @@ ADDITIONAL_PROJECTS = [
         repository="https://gitlab.com/polyjuice/polyjuice_server",
         room=None,
         branch="develop",
-        paths=[],
+        spec_version_paths=[],
+        room_version_paths=[],
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -417,7 +420,12 @@ def get_project_versions(
                 project_dir,
                 project.spec_version_paths,
                 r"[vr]\d[\d\.]+\d",
-                to_ignore=[],
+                to_ignore=[
+                    # Dendrite declares a v1.0, which never existed.
+                    "v1.0",
+                    # Construct declares a r2.0.0, which never existed.
+                    "r2.0.0",
+                ],
             )
             if (
                 not versions_at_commit
