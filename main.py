@@ -233,6 +233,7 @@ def download_projects():
 
 
 def load_projects() -> Iterator[ProjectMetadata]:
+    """Load the projects from the servers.toml file and augment with additional info."""
     with open("servers.toml", "rb") as f:
         data = tomllib.load(f)
 
@@ -253,17 +254,22 @@ def load_projects() -> Iterator[ProjectMetadata]:
 
 
 def json_encode(o: object) -> str | bool | int | float | None | list | dict:
+    """Support encoding datetimes in ISO 8601 format."""
     if isinstance(o, datetime):
         return o.isoformat()
 
 
 def get_versions_from_file(root: Path, paths: list[str]) -> set[str]:
-    # To get the version numbers and to ignore ones that are in comments we use
-    # a two-pass system:
-    #
-    # 1. Use grep to find lines that contain potential version numbers.
-    # 2. Strip comments "off" those lines, then search again to see if they
-    #    have version numbers.
+    """
+    Fetch the spec versions from one or more files.
+
+    To get the valid version numbers and to ignore ones that are in comments we use
+    a two-pass system:
+
+    1. Use grep to find lines that contain potential version numbers.
+    2. Strip comments "off" those lines, then search again to see if they
+       have version numbers.
+    """
     result = subprocess.run(
         [
             "grep",
@@ -300,24 +306,169 @@ def get_versions_from_file(root: Path, paths: list[str]) -> set[str]:
 
 
 def get_repo(name: str, remote: str) -> tuple[Path, Repo]:
+    """
+    Given a project name and the remote git URL, return a tuple of file path and git repo.
+
+    This will either clone the project (if it doesn't exist) or fetch from the
+    remote to update the repository.
+    """
     repo_dir = Path(".") / ".projects" / name.lower()
     if not os.path.isdir(repo_dir):
         repo = Repo.clone_from(remote, repo_dir)
     else:
         repo = Repo(repo_dir)
         repo.remote().fetch()
-        repo.remote().fetch()
 
     return repo_dir, repo
 
 
 def get_tag_datetime(tag: git.TagReference) -> datetime:
+    """
+    Generate a datetime from a tag.
+
+    This prefers the tagged date, but falls back to the commit date.
+    """
     if tag.tag is None:
         return tag.commit.authored_datetime
     return datetime.fromtimestamp(
         tag.tag.tagged_date,
         tz=timezone(offset=timedelta(seconds=-tag.tag.tagger_tz_offset)),
     )
+
+
+def get_project_versions(
+    project: ProjectMetadata, spec_versions: dict[str, datetime]
+) -> dict[str, object]:
+    """
+    Generate the project's version information.
+
+    1. Update the project's repository.
+    2. Crawl the files to find the commits when the supported versions change.
+    3. Resolve the commits to dates.
+    4. Calculate the lag and set of supported versions.
+
+    """
+    project_dir, repo = get_repo(project.name.lower(), project.repository)
+
+    repo.head.reference = project.branch
+    repo.head.reset(index=True, working_tree=True)
+
+    # List of commits with their version info.
+    versions_at_commit = []
+
+    # If no paths are given, then no versions were ever supported.
+    if project.paths:
+        # Calculate the set of versions each time these files were changed.
+        for commit in repo.iter_commits(
+            f"{project.earliest_commit}~..origin/{project.branch}"
+            if project.earliest_commit
+            else f"origin/{project.branch}",
+            paths=project.paths,
+            reverse=True,
+        ):
+            # Checkout this commit (why is this so hard?).
+            repo.head.reference = commit
+            repo.head.reset(index=True, working_tree=True)
+
+            # Commits are ordered earliest to latest, only record if the
+            # version info changed.
+            cur_versions = get_versions_from_file(project_dir, project.paths)
+            if (
+                not versions_at_commit
+                or versions_at_commit[-1].versions != cur_versions
+            ):
+                versions_at_commit.append(
+                    CommitVersionInfo(
+                        commit.hexsha, commit.authored_datetime, cur_versions
+                    )
+                )
+
+    # Map of version to list of commits when support for that version changed.
+    versions = {}
+    for commit_info in versions_at_commit:
+        for version in commit_info.versions:
+            # If this version has not been found before or was previously removed,
+            # add a new entry.
+            if version not in versions:
+                versions[version] = [VersionInfo(commit_info.commit, commit_info.date)]
+            elif versions[version][-1].last_commit:
+                versions[version].append(
+                    VersionInfo(commit_info.commit, commit_info.date)
+                )
+
+        # If any versions are no longer found on this commit, but are still
+        # considered as supported, mark as unsupported.
+        for version, version_info in versions.items():
+            if version not in commit_info.versions and not version_info[-1].last_commit:
+                version_info[-1].last_commit = commit_info.commit
+                version_info[-1].end_date = commit_info.date
+
+    print(f"Loaded {project.name} versions: {versions}")
+
+    # Resolve commits to date for when each version was first supported.
+    versions_dates_all = {
+        version: version_info[0].start_date
+        for version, version_info in versions.items()
+    }
+
+    print(f"Loaded {project.name} dates: {versions_dates_all}")
+
+    # Get the earliest release of this project.
+    if project.earliest_commit:
+        earliest_commit = repo.commit(project.earliest_commit)
+    else:
+        earliest_commit = next(repo.iter_commits(reverse=True))
+    initial_commit_date = earliest_commit.authored_datetime
+
+    # Remove any spec versions which existed before this project was started.
+    version_dates_after_commit = {
+        version: version_date
+        for version, version_date in versions_dates_all.items()
+        if spec_versions[version] >= initial_commit_date
+    }
+
+    # Get the earliest release of this project.
+    if project.earliest_tag:
+        release_date = get_tag_datetime(repo.tags[project.earliest_tag])
+    elif repo.tags:
+        earliest_tag = min(repo.tags, key=lambda t: get_tag_datetime(t))
+        release_date = get_tag_datetime(earliest_tag)
+    else:
+        release_date = None
+
+    # Remove any spec versions which existed before this project was released.
+    if release_date:
+        version_dates_after_release = {
+            version: version_date
+            for version, version_date in versions_dates_all.items()
+            if spec_versions[version] >= release_date
+        }
+
+        print(f"Loaded {project.name} dates: {version_dates_after_release}")
+    else:
+        version_dates_after_release = {}
+
+    print()
+
+    return {
+        "initial_release_date": release_date,
+        "version_dates": {
+            v: [(info.start_date, info.end_date) for info in version_info]
+            for v, version_info in versions.items()
+        },
+        "lag_all": {
+            v: (d - spec_versions[v]).days for v, d in versions_dates_all.items()
+        },
+        "lag_after_commit": {
+            v: (d - spec_versions[v]).days
+            for v, d in version_dates_after_commit.items()
+        },
+        "lag_after_release": {
+            v: (d - spec_versions[v]).days
+            for v, d in version_dates_after_release.items()
+        },
+        "maturity": project.maturity.lower(),
+    }
 
 
 if __name__ == "__main__":
@@ -367,132 +518,9 @@ if __name__ == "__main__":
 
     # For each project find the earliest known date the project supported it.
     for project in load_projects():
-        project_dir, repo = get_repo(project.name.lower(), project.repository)
-
-        repo.head.reference = project.branch
-        repo.head.reset(index=True, working_tree=True)
-
-        # List of commits with their version info.
-        versions_at_commit = []
-
-        # If no paths are given, then no versions were ever supported.
-        if project.paths:
-            # Calculate the set of versions each time these files were changed.
-            for commit in repo.iter_commits(
-                f"{project.earliest_commit}~..origin/{project.branch}"
-                if project.earliest_commit
-                else f"origin/{project.branch}",
-                paths=project.paths,
-                reverse=True,
-            ):
-                # Checkout this commit (why is this so hard?).
-                repo.head.reference = commit
-                repo.head.reset(index=True, working_tree=True)
-
-                # Commits are ordered earliest to latest, only record if the
-                # version info changed.
-                cur_versions = get_versions_from_file(project_dir, project.paths)
-                if (
-                    not versions_at_commit
-                    or versions_at_commit[-1].versions != cur_versions
-                ):
-                    versions_at_commit.append(
-                        CommitVersionInfo(
-                            commit.hexsha, commit.authored_datetime, cur_versions
-                        )
-                    )
-
-        # Map of version to list of commits when support for that version changed.
-        versions = {}
-        for commit_info in versions_at_commit:
-            for version in commit_info.versions:
-                # If this version has not been found before or was previously removed,
-                # add a new entry.
-                if version not in versions:
-                    versions[version] = [
-                        VersionInfo(commit_info.commit, commit_info.date)
-                    ]
-                elif versions[version][-1].last_commit:
-                    versions[version].append(
-                        VersionInfo(commit_info.commit, commit_info.date)
-                    )
-
-            # If any versions are no longer found on this commit, but are still
-            # considered as supported, mark as unsupported.
-            for version, version_info in versions.items():
-                if (
-                    version not in commit_info.versions
-                    and not version_info[-1].last_commit
-                ):
-                    version_info[-1].last_commit = commit_info.commit
-                    version_info[-1].end_date = commit_info.date
-
-        print(f"Loaded {project.name} versions: {versions}")
-
-        # Resolve commits to date for when each version was first supported.
-        versions_dates_all = {
-            version: version_info[0].start_date
-            for version, version_info in versions.items()
-        }
-
-        print(f"Loaded {project.name} dates: {versions_dates_all}")
-
-        # Get the earliest release of this project.
-        if project.earliest_commit:
-            earliest_commit = repo.commit(project.earliest_commit)
-        else:
-            earliest_commit = next(repo.iter_commits(reverse=True))
-        initial_commit_date = earliest_commit.authored_datetime
-
-        # Remove any spec versions which existed before this project was started.
-        version_dates_after_commit = {
-            version: version_date
-            for version, version_date in versions_dates_all.items()
-            if spec_versions[version] >= initial_commit_date
-        }
-
-        # Get the earliest release of this project.
-        if project.earliest_tag:
-            release_date = get_tag_datetime(repo.tags[project.earliest_tag])
-        elif repo.tags:
-            earliest_tag = min(repo.tags, key=lambda t: get_tag_datetime(t))
-            release_date = get_tag_datetime(earliest_tag)
-        else:
-            release_date = None
-
-        # Remove any spec versions which existed before this project was released.
-        if release_date:
-            version_dates_after_release = {
-                version: version_date
-                for version, version_date in versions_dates_all.items()
-                if spec_versions[version] >= release_date
-            }
-
-            print(f"Loaded {project.name} dates: {version_dates_after_release}")
-        else:
-            version_dates_after_release = {}
-
-        print()
-
-        result["homeserver_versions"][project.name.lower()] = {
-            "initial_release_date": release_date,
-            "version_dates": {
-                v: [(info.start_date, info.end_date) for info in version_info]
-                for v, version_info in versions.items()
-            },
-            "lag_all": {
-                v: (d - spec_versions[v]).days for v, d in versions_dates_all.items()
-            },
-            "lag_after_commit": {
-                v: (d - spec_versions[v]).days
-                for v, d in version_dates_after_commit.items()
-            },
-            "lag_after_release": {
-                v: (d - spec_versions[v]).days
-                for v, d in version_dates_after_release.items()
-            },
-            "maturity": project.maturity.lower(),
-        }
+        result["homeserver_versions"][project.name.lower()] = get_project_versions(
+            project, spec_versions
+        )
 
     with open("data.json", "w") as f:
         json.dump(result, f, default=json_encode, sort_keys=True, indent=4)
