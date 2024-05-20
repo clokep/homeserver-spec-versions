@@ -41,7 +41,7 @@ class AdditionalMetadata:
     #
     # Useful for forks where the project contains many old commits.
     earliest_commit: str | None
-    # The earliest tag to consider. If not given, the earliest tag on the repo
+    # The earliest tag to consider. If not given, the earliest tag in the repo
     # is used.
     #
     # Note that earlier tags might exist in the repo due to forks or other reasons.
@@ -91,7 +91,7 @@ ADDITIONAL_METADATA = {
             "src/api/client_server/unversioned.rs",
         ],
         earliest_commit=None,
-        earliest_tag="v0.2.0",
+        earliest_tag=None,
     ),
     "conduwuit": AdditionalMetadata(
         branch="main",
@@ -101,12 +101,13 @@ ADDITIONAL_METADATA = {
             "src/api/client_server/unversioned.rs",
         ],
         earliest_commit="9c3b3daafcbc95647b5641a6edc975e2ffc04b04",
-        earliest_tag="v0.3.0",
+        earliest_tag=None,
     ),
     "construct": AdditionalMetadata(
         "master",
         ["ircd/json.cc", "modules/client/versions.cc"],
         earliest_commit=None,
+        # Earlier tags from charybdis exist.
         earliest_tag="0.0.10020",
     ),
     "dendrite": AdditionalMetadata(
@@ -116,7 +117,7 @@ ADDITIONAL_METADATA = {
             "clientapi/routing/routing.go",
         ],
         earliest_commit=None,
-        earliest_tag="v0.1.0rc1",
+        earliest_tag=None,
     ),
     "jsynapse": AdditionalMetadata(
         "master", [], earliest_commit=None, earliest_tag=None
@@ -128,7 +129,7 @@ ADDITIONAL_METADATA = {
             "proxy/routing/routing.go",
         ],
         earliest_commit="bde8bc21a45a9dcffaaa812aa6a5a5341bca5f42",
-        earliest_tag="4.8.12",
+        earliest_tag=None,
     ),
     "maelstrom": AdditionalMetadata(
         "master",
@@ -157,6 +158,7 @@ ADDITIONAL_METADATA = {
         "develop",
         ["synapse/rest/client/versions.py"],
         earliest_commit=None,
+        # Earlier tags exist from DINSIC.
         earliest_tag="v0.0.0",
     ),
     "transform": AdditionalMetadata(
