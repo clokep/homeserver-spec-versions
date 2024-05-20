@@ -322,6 +322,29 @@ def get_repo(name: str, remote: str) -> tuple[Path, Repo]:
     return repo_dir, repo
 
 
+def calculate_lag(
+    versions: dict[str, datetime], spec_versions: dict[str, datetime]
+) -> dict[str, int]:
+    """Caclulate the lag between supported versions and spec versions."""
+    return {v: (d - spec_versions[v]).days for v, d in versions.items()}
+
+
+def calculate_versions_after_date(
+    initial_date: datetime | None,
+    versions: dict[str, datetime],
+    spec_versions: dict[str, datetime],
+) -> dict[str, datetime]:
+    """Calculate the supported versions for spec versions after a given date.s"""
+    if initial_date:
+        return {
+            version: version_date
+            for version, version_date in versions.items()
+            if spec_versions[version] >= initial_date
+        }
+    else:
+        return {}
+
+
 def get_tag_datetime(tag: git.TagReference) -> datetime:
     """
     Generate a datetime from a tag.
@@ -336,7 +359,7 @@ def get_tag_datetime(tag: git.TagReference) -> datetime:
     )
 
 
-def get_project_versions(
+def main(
     project: ProjectMetadata, spec_versions: dict[str, datetime]
 ) -> dict[str, object]:
     """
@@ -421,11 +444,9 @@ def get_project_versions(
     initial_commit_date = earliest_commit.authored_datetime
 
     # Remove any spec versions which existed before this project was started.
-    version_dates_after_commit = {
-        version: version_date
-        for version, version_date in versions_dates_all.items()
-        if spec_versions[version] >= initial_commit_date
-    }
+    version_dates_after_commit = calculate_versions_after_date(
+        initial_commit_date, versions_dates_all, spec_versions
+    )
 
     # Get the earliest release of this project.
     if project.earliest_tag:
@@ -437,16 +458,9 @@ def get_project_versions(
         release_date = None
 
     # Remove any spec versions which existed before this project was released.
-    if release_date:
-        version_dates_after_release = {
-            version: version_date
-            for version, version_date in versions_dates_all.items()
-            if spec_versions[version] >= release_date
-        }
-
-        print(f"Loaded {project.name} dates: {version_dates_after_release}")
-    else:
-        version_dates_after_release = {}
+    version_dates_after_release = calculate_versions_after_date(
+        release_date, versions_dates_all, spec_versions
+    )
 
     print()
 
@@ -456,17 +470,9 @@ def get_project_versions(
             v: [(info.start_date, info.end_date) for info in version_info]
             for v, version_info in versions.items()
         },
-        "lag_all": {
-            v: (d - spec_versions[v]).days for v, d in versions_dates_all.items()
-        },
-        "lag_after_commit": {
-            v: (d - spec_versions[v]).days
-            for v, d in version_dates_after_commit.items()
-        },
-        "lag_after_release": {
-            v: (d - spec_versions[v]).days
-            for v, d in version_dates_after_release.items()
-        },
+        "lag_all": calculate_lag(versions_dates_all, spec_versions),
+        "lag_after_commit": calculate_lag(version_dates_after_commit, spec_versions),
+        "lag_after_release": calculate_lag(version_dates_after_release, spec_versions),
         "maturity": project.maturity.lower(),
     }
 
@@ -518,7 +524,7 @@ if __name__ == "__main__":
 
     # For each project find the earliest known date the project supported it.
     for project in load_projects():
-        result["homeserver_versions"][project.name.lower()] = get_project_versions(
+        result["homeserver_versions"][project.name.lower()] = main(
             project, spec_versions
         )
 
