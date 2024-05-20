@@ -590,6 +590,14 @@
                 ]
             }
         },
+        "polyjuice server": {
+            "initial_release_date": null,
+            "lag_after_commit": {},
+            "lag_after_release": {},
+            "lag_all": {},
+            "maturity": "alpha",
+            "version_dates": {}
+        },
         "synapse": {
             "initial_release_date": "2014-08-14T03:36:03+01:00",
             "lag_after_commit": {

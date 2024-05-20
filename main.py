@@ -184,7 +184,7 @@ ADDITIONAL_PROJECTS = [
         paths=[
             "src/main/java/io/kamax/grid/gridepo/http/handler/matrix/VersionsHandler.java",
             "src/main/java/io/kamax/grid/gridepo/network/grid/http/handler/matrix/home/client/VersionsHandler.java",
-            "src/main/java/io/kamax/gridify/server/network/grid/http/handler/matrix/home/client/VersionsHandler.java"
+            "src/main/java/io/kamax/gridify/server/network/grid/http/handler/matrix/home/client/VersionsHandler.java",
         ],
         earliest_commit=None,
         earliest_tag=None,
@@ -201,6 +201,21 @@ ADDITIONAL_PROJECTS = [
         repository="https://github.com/processone/ejabberd",
         room=None,
         branch="master",
+        paths=[],
+        earliest_commit=None,
+        earliest_tag=None,
+    ),
+    # Is polyjuice server meant to be a full homeserver?
+    ProjectMetadata(
+        name="Polyjuice Server",
+        description="Helper functions for creating a Matrix server",
+        author="Hubert Chathi",
+        maturity="alpha",
+        language="Elixir",
+        licence="Apache-2.0",
+        repository="https://gitlab.com/polyjuice/polyjuice_server",
+        room=None,
+        branch="develop",
         paths=[],
         earliest_commit=None,
         earliest_tag=None,
