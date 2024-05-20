@@ -359,22 +359,18 @@ def get_tag_datetime(tag: git.TagReference) -> datetime:
     )
 
 
-def main(
-    project: ProjectMetadata, spec_versions: dict[str, datetime]
-) -> dict[str, object]:
+def get_project_versions(
+    project: ProjectMetadata, project_dir: Path, repo: Repo
+) -> dict[str, list[VersionInfo]]:
     """
-    Generate the project's version information.
+    Calculate the supported versions for a project and metadata about when support
+    was added/removed.
 
-    1. Update the project's repository.
-    2. Crawl the files to find the commits when the supported versions change.
-    3. Resolve the commits to dates.
-    4. Calculate the lag and set of supported versions.
+    Returns a map of version to a list of metadata. The metadata contains the
+    first supported date/commit and the last supported date/commit (if any).
 
+    Each version may have more than one set of supported/removed versions.
     """
-    project_dir, repo = get_repo(project.name.lower(), project.repository)
-
-    repo.head.reference = project.branch
-    repo.head.reset(index=True, working_tree=True)
 
     # List of commits with their version info.
     versions_at_commit = []
@@ -406,7 +402,7 @@ def main(
                     )
                 )
 
-    # Map of version to list of commits when support for that version changed.
+    # Map of version to list of commit metadata for when support for that version changed.
     versions = {}
     for commit_info in versions_at_commit:
         for version in commit_info.versions:
@@ -426,6 +422,28 @@ def main(
                 version_info[-1].last_commit = commit_info.commit
                 version_info[-1].end_date = commit_info.date
 
+    return versions
+
+
+def main(
+    project: ProjectMetadata, spec_versions: dict[str, datetime]
+) -> dict[str, object]:
+    """
+    Generate the project's version information.
+
+    1. Update the project's repository.
+    2. Crawl the files to find the commits when the supported versions change.
+    3. Resolve the commits to dates.
+    4. Calculate the lag and set of supported versions.
+
+    """
+    project_dir, repo = get_repo(project.name.lower(), project.repository)
+
+    repo.head.reference = project.branch
+    repo.head.reset(index=True, working_tree=True)
+
+    # Map of version to list of commit metadata for when support for that version changed.
+    versions = get_project_versions(project, project_dir, repo)
     print(f"Loaded {project.name} versions: {versions}")
 
     # Resolve commits to date for when each version was first supported.
