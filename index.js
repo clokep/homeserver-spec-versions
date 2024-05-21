@@ -153,6 +153,7 @@ function build() {
     // Timeline of supported versions.
     buildTimeline("supported-spec-versions-over-time", "Supported spec versions over time", "Spec version");
     buildTimeline("supported-room-versions-over-time", "Supported room versions over time", "Room version");
+    buildTimeline("default-room-versions-over-time", "Default room versions over time", "Room version");
 
     // Add the initial data.
     render();
@@ -266,37 +267,40 @@ function render() {
 
         // Timeline showing the dates when room versions were supported.
         const roomVersionsDataset = [];
+        const defaultRoomVersionsDataset = [];
         for (let project in data.homeserver_versions) {
-            const projectVersions = data.homeserver_versions[project].room_version_dates;
+            for (let [data_key, results] of [["room_version_dates", roomVersionsDataset], ["default_room_version_dates", defaultRoomVersionsDataset]]) {
+                const projectVersions = data.homeserver_versions[project][data_key];
 
-            // If there are no versions, don't bother adding them.
-            if (!Object.keys(projectVersions).length) {
-                continue;
-            }
-
-            // Filter projects by maturity.
-            if (!allowedMaturities.includes(data.homeserver_versions[project].maturity)) {
-                continue
-            }
-
-            roomVersionsDataset.push(
-                {
-                    label: project,
-                    // Convert the mapping of version -> list of dates to a flat
-                    // array of objects with y value of the version and x the start
-                    // & end date of that version.
-                    data: Object.keys(projectVersions).map(
-                        verString => projectVersions[verString].map(
-                            verDates => {
-                                return {
-                                    x: [verDates[0], verDates[1] || now],
-                                    y: verString
-                                };
-                            }
-                        )
-                    ).flat(),
+                // If there are no versions, don't bother adding them.
+                if (!Object.keys(projectVersions).length) {
+                    continue;
                 }
-            );
+
+                // Filter projects by maturity.
+                if (!allowedMaturities.includes(data.homeserver_versions[project].maturity)) {
+                    continue
+                }
+
+                results.push(
+                    {
+                        label: project,
+                        // Convert the mapping of version -> list of dates to a flat
+                        // array of objects with y value of the version and x the start
+                        // & end date of that version.
+                        data: Object.keys(projectVersions).map(
+                            verString => projectVersions[verString].map(
+                                verDates => {
+                                    return {
+                                        x: [verDates[0], verDates[1] || now],
+                                        y: verString
+                                    };
+                                }
+                            )
+                        ).flat(),
+                    }
+                );
+            }
         }
 
         const roomVersionsSupportedChart = Chart.getChart("supported-room-versions-over-time");
@@ -305,6 +309,17 @@ function render() {
             datasets: roomVersionsDataset
         };
         roomVersionsSupportedChart.update();
+
+        // Some room versions were never used as defaults in the spec.
+        const defaultRoomVersions = new Set();
+        defaultRoomVersionsDataset.forEach(p => p.data.forEach(d => defaultRoomVersions.add(d.y)));
+
+        const defaultRoomVersionsChart = Chart.getChart("default-room-versions-over-time");
+        defaultRoomVersionsChart.data = {
+            labels: [...defaultRoomVersions.values()].sort(cmpRoomVersions),
+            datasets: defaultRoomVersionsDataset
+        };
+        defaultRoomVersionsChart.update();
     });
 }
 

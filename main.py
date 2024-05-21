@@ -49,6 +49,15 @@ class AdditionalMetadata:
     #
     # This should have 0 or 1 single capturing group.
     room_version_pattern: str
+    # The file paths (relative to repo root) to check for default
+    # room version information.
+    #
+    # Leave empty if no room versions were ever implemented.
+    default_room_version_paths: list[str]
+    # The pattern to use to fetch the default room version.
+    #
+    # This should have 0 or 1 single capturing group.
+    default_room_version_pattern: str
     # The earliest commit to consider.
     #
     # Useful for forks where the project contains many old commits.
@@ -95,19 +104,31 @@ ADDITIONAL_METADATA = {
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        default_room_version_paths=[],
+        default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
     ),
     "conduit": AdditionalMetadata(
         "next",
         spec_version_paths=[
+            "src/client_server.rs",
             "src/main.rs",
             "src/client_server/unversioned.rs",
             "src/api/client_server/unversioned.rs",
         ],
         room_version_repo=None,
-        room_version_paths=["src/service/globals/mod.rs"],
+        room_version_paths=["src/client_server.rs", "src/service/globals/mod.rs"],
         room_version_pattern=r"RoomVersionId::V(?:ersion)?(\d+)",
+        default_room_version_paths=[
+            "src/client_server.rs",
+            "src/client_server/capabilities.rs",
+            "src/database/globals.rs",
+            "src/server_server.rs",
+            "src/config/mod.rs",
+        ],
+        # default_room_version_pattern=r"default: RoomVersionId::V(?:ersion)?(\d+),|^ +RoomVersionId::V(?:ersion)?(\d+)$",
+        default_room_version_pattern=r'default: "(\d+)"|default: RoomVersionId::V(?:ersion)?(\d+),|default_room_version = RoomVersionId::V(?:ersion)?(\d+);|^ +RoomVersionId::V(?:ersion)?(\d+)$',
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -121,6 +142,8 @@ ADDITIONAL_METADATA = {
         room_version_repo=None,
         room_version_paths=["src/service/globals/mod.rs"],
         room_version_pattern=r"RoomVersionId::V(?:ersion)?(\d+)",
+        default_room_version_paths=["src/server_server.rs", "src/config/mod.rs"],
+        default_room_version_pattern=r"RoomVersionId::V(\d+)",
         earliest_commit="9c3b3daafcbc95647b5641a6edc975e2ffc04b04",
         earliest_tag=None,
     ),
@@ -130,6 +153,12 @@ ADDITIONAL_METADATA = {
         room_version_repo=None,
         room_version_paths=["modules/client/capabilities.cc"],
         room_version_pattern=r'"(\d+)"',
+        default_room_version_paths=[
+            "modules/m_room_create.cc",
+            "modules/client/createroom.cc",
+            "matrix/room_create.cc",
+        ],
+        default_room_version_pattern=r'(?:"default",|"room_version", json::value {) +"(\d+)',
         earliest_commit=None,
         # Earlier tags from charybdis exist.
         earliest_tag="0.0.10020",
@@ -143,6 +172,11 @@ ADDITIONAL_METADATA = {
         room_version_repo="https://github.com/matrix-org/gomatrixserverlib",
         room_version_paths=["eventversion.go"],
         room_version_pattern=r"RoomVersionV(\d+)",
+        default_room_version_paths=[
+            "roomserver/version/version.go",
+            "setup/config/config_roomserver.go",
+        ],
+        default_room_version_pattern=r"return gomatrixserverlib.RoomVersionV(\d+)|DefaultRoomVersion = gomatrixserverlib.RoomVersionV(\d+)",
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -152,6 +186,8 @@ ADDITIONAL_METADATA = {
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        default_room_version_paths=[],
+        default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -164,6 +200,8 @@ ADDITIONAL_METADATA = {
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        default_room_version_paths=[],
+        default_room_version_pattern="",
         earliest_commit="bde8bc21a45a9dcffaaa812aa6a5a5341bca5f42",
         earliest_tag=None,
     ),
@@ -173,6 +211,8 @@ ADDITIONAL_METADATA = {
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        default_room_version_paths=[],
+        default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -185,6 +225,8 @@ ADDITIONAL_METADATA = {
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        default_room_version_paths=[],
+        default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -196,6 +238,8 @@ ADDITIONAL_METADATA = {
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        default_room_version_paths=[],
+        default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -205,6 +249,13 @@ ADDITIONAL_METADATA = {
         room_version_repo=None,
         room_version_paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
         room_version_pattern=r"RoomVersions.V(\d+)",
+        default_room_version_paths=[
+            "synapse/api/constants.py",
+            "synapse/api/room_versions.py",
+            "synapse/config/server.py",
+        ],
+        # Either the constant or fetching the default_room_version from the config.
+        default_room_version_pattern=r'(?:DEFAULT_ROOM_VERSION = RoomVersions.V|DEFAULT_ROOM_VERSION = "|"default_room_version", ")(\d+)',
         earliest_commit=None,
         # Earlier tags exist from DINSIC.
         earliest_tag="v0.0.0",
@@ -215,6 +266,8 @@ ADDITIONAL_METADATA = {
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        default_room_version_paths=[],
+        default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -224,6 +277,8 @@ ADDITIONAL_METADATA = {
         room_version_repo=None,
         room_version_paths=["src/Routes/RouteCapabilities.c"],
         room_version_pattern=r'roomVersions, "(\d+)"',
+        default_room_version_paths=[],
+        default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -248,6 +303,8 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        default_room_version_paths=[],
+        default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -267,6 +324,8 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        default_room_version_paths=[],
+        default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -285,6 +344,8 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        default_room_version_paths=[],
+        default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
     ),
@@ -353,16 +414,18 @@ def get_versions_from_file(
     versions = set()
 
     for line in result.stdout.decode("ascii").splitlines():
-        # Strip whitespace.
-        line = line.strip()
-
         # Strip comments.
         #
         # TODO This only handles line comments, not block comments.
         line = re.split(r"#|//", line)[0]
 
         # Search again for the versions.
-        versions.update(re.findall(pattern, line))
+        matches = re.findall(pattern, line)
+        matches = [
+            next(m for m in match if m) if isinstance(match, tuple) else match
+            for match in matches
+        ]
+        versions.update(matches)
 
     # Ignore some versions that are "bad".
     for v in to_ignore:
@@ -549,6 +612,17 @@ def main(
     )
     print(f"Loaded {project.name} room versions: {room_versions}")
 
+    # Map of default room version to list of commit metadata for when support for that version changed.
+    default_room_versions = get_project_versions(
+        project,
+        repo,
+        project.default_room_version_paths,
+        project.default_room_version_pattern,
+        to_ignore=[],
+    )
+    print(f"Loaded {project.name} default room versions: {default_room_versions}")
+    # TODO Validate there's no overlap of default room versions?
+
     # Resolve commits to date for when each version was first supported.
     versions_dates_all = {
         version: version_info[0].start_date
@@ -594,6 +668,10 @@ def main(
         "room_version_dates": {
             v: [(info.start_date, info.end_date) for info in version_info]
             for v, version_info in room_versions.items()
+        },
+        "default_room_version_dates": {
+            v: [(info.start_date, info.end_date) for info in version_info]
+            for v, version_info in default_room_versions.items()
         },
         "lag_all": calculate_lag(versions_dates_all, spec_versions),
         "lag_after_commit": calculate_lag(version_dates_after_commit, spec_versions),
