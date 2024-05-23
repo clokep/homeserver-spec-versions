@@ -715,6 +715,30 @@ if __name__ == "__main__":
         or t.name.startswith("client-server/r")
     }
 
+    # Map of room version -> commit date.
+    room_versions = {}
+    ROOM_VERSION_PATHS = [
+        "specification/rooms/",
+        "content/rooms/",
+        ":(exclude)content/rooms/fragments",
+    ]
+    ROOM_VERSION_FILE_PATTERN = re.compile(r".+/v(\d+)\.(?:md|rst)$")
+    commits = spec_repo.iter_commits(paths=ROOM_VERSION_PATHS, reverse=True)
+    for commit in commits:
+        # Find the added files in the diff from the previous commit which match
+        # the expected paths.
+        # room_version_paths = [
+        #     d.b_path
+        #     for d in commit.parents[0].diff(commit, paths=ROOM_VERSION_PATHS)
+        #     if d.change_type == "A" and ROOM_VERSION_FILE_PATTERN.match(d.b_path)
+        # ]
+        for diff in commit.parents[0].diff(commit, paths=ROOM_VERSION_PATHS):
+            match = ROOM_VERSION_FILE_PATTERN.match(diff.b_path)
+            if diff.change_type == "A" and match:
+                room_version = match[1]
+                if room_version not in room_versions:
+                    room_versions[room_version] = commit.authored_datetime
+
     # The final output data is an object:
     #
     # spec_versions:
@@ -737,8 +761,7 @@ if __name__ == "__main__":
             ),
             "version_dates": spec_versions,
         },
-        # TODO Calculate this from the spec repo.
-        "room_versions": [str(v) for v in range(1, 11 + 1)],
+        "room_versions": list(room_versions.keys()),
         "homeserver_versions": {},
     }
 
