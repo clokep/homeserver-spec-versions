@@ -189,6 +189,7 @@ function render() {
         const specVersions = Object.keys(data.spec_versions.version_dates).sort(cmpVersions);
         // The full list of room versions.
         const roomVersions = Object.keys(data.room_versions).sort(cmpRoomVersions);
+        const defaultRoomVersions = Object.keys(data.default_room_versions).sort(cmpRoomVersions);
 
         var barDatasets = [];
         var scatterDatasets = [];
@@ -338,16 +339,15 @@ function render() {
         }
         roomVersionsSupportedChart.update();
 
-        // Some room versions were never used as defaults in the spec.
-        const defaultRoomVersions = new Set();
-        defaultRoomVersionsDataset.forEach(p => p.data.forEach(d => defaultRoomVersions.add(d.y)));
-
         const defaultRoomVersionsChart = Chart.getChart("default-room-versions-over-time");
         defaultRoomVersionsChart.data = {
             // Add a dummy entry for room for the line labels.
-            labels: ["", ...defaultRoomVersions.values()].sort(cmpRoomVersions),
+            labels: ["", ...defaultRoomVersions],
             datasets: defaultRoomVersionsDataset
         };
+        defaultRoomVersionsChart.options.plugins.annotation = {
+            annotations: annotationsFromReleaseDates(data.default_room_versions, rotation=0)
+        }
         defaultRoomVersionsChart.update();
     });
 }

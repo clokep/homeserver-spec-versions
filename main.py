@@ -723,8 +723,7 @@ if __name__ == "__main__":
         ":(exclude)content/rooms/fragments",
     ]
     ROOM_VERSION_FILE_PATTERN = re.compile(r".+/v(\d+)\.(?:md|rst)$")
-    commits = spec_repo.iter_commits(paths=ROOM_VERSION_PATHS, reverse=True)
-    for commit in commits:
+    for commit in spec_repo.iter_commits(paths=ROOM_VERSION_PATHS, reverse=True):
         # Find the added files in the diff from the previous commit which match
         # the expected paths.
         # room_version_paths = [
@@ -739,16 +738,54 @@ if __name__ == "__main__":
                 if room_version not in room_versions:
                     room_versions[room_version] = commit.authored_datetime
 
+    # Map of default room versions -> commit date.
+    DEFAULT_ROOM_VERSION_PATHS = [
+        "specification/index.rst",
+        "content/_index.md",
+        "content/rooms/_index.md",
+    ]
+    default_room_versions = {}
+    for commit in spec_repo.iter_commits(
+        "origin/main", paths=DEFAULT_ROOM_VERSION_PATHS, reverse=True
+    ):
+        # Checkout this commit (why is this so hard?).
+        spec_repo.head.reference = commit
+        spec_repo.head.reset(index=True, working_tree=True)
+
+        cur_versions = get_versions_from_file(
+            spec_repo.working_dir,
+            DEFAULT_ROOM_VERSION_PATHS,
+            r"Servers MUST have Room Version (\d+)|Servers SHOULD use (?:\*\*)?room version (\d+)(?:\*\*)?",
+            [
+                # Dendrite incorrectly set room version 2 as the default for a period.
+                "2"
+            ],
+        )
+        assert len(cur_versions) <= 1, "Found more than one default room version"
+        if cur_versions:
+            default_room_version = next(iter(cur_versions))
+            if default_room_version not in default_room_versions:
+                default_room_versions[default_room_version] = commit.authored_datetime
+
     # The final output data is an object:
     #
     # spec_versions:
     #   lag: days since previous spec version
     #   version_dates: a map of version number to release date
     #
+    # room_versions: a map of room version -> commit date
+    #
+    # default_room_versions: a map of default room version -> commit date
+    #
     # homeserver_versions: a map of project -> object with keys:
-    #   version_dates: map of version to list of tuples of supported/unsupported dates
+    #   default_room_version_dates: map of default room version to list of tuples of supported/unsupported dates
+    #   room_version_dates: map of room version to list of tuples of supported/unsupported dates
+    #   spec_version_dates: map of spec version to list of tuples of supported/unsupported dates
     #   lag_all: map of version # to days to support it
+    #   lag_after_commit: map of version # to days to support it
     #   lag_after_release: map of version # to days to support it
+    #   maturity: string of stable/beta/alpha/obsolete
+    #   initial_release_date: date of project's first release
     spec_dates = sorted(spec_versions.items(), key=lambda v: v[1])
     result = {
         "spec_versions": {
@@ -762,6 +799,7 @@ if __name__ == "__main__":
             "version_dates": spec_versions,
         },
         "room_versions": room_versions,
+        "default_room_versions": default_room_versions,
         "homeserver_versions": {},
     }
 
