@@ -65,7 +65,7 @@ function buildTimeline(elementId, title, yAxisTitle) {
             },
             scales: {
                 x: {
-                    min: "2016-01-01",
+                    min: "2015-10-01",
                     title: {
                         display: true,
                         text: "Date"
@@ -157,6 +157,27 @@ function build() {
 
     // Add the initial data.
     render();
+}
+
+function annotationsFromReleaseDates(releaseDates) {
+    return Object.entries(releaseDates).map(
+        ([specVersion, releaseDate]) => {
+            return {
+                id: specVersion,
+                type: "line",
+                xMin: releaseDate,
+                xMax: releaseDate,
+                borderWidth: 1,
+                borderDash: [10, 10],
+                label: {
+                    display: true,
+                    content: specVersion,
+                    rotation: -90,
+                    position: "end"
+                }
+            }
+        }
+    );
 }
 
 function render() {
@@ -263,6 +284,9 @@ function render() {
             labels: specVersions,
             datasets: specVersionsDataset
         };
+        specVersionsSupportedChart.options.plugins.annotation = {
+            annotations: annotationsFromReleaseDates(data.spec_versions.version_dates)
+        }
         specVersionsSupportedChart.update();
 
         // Timeline showing the dates when room versions were supported.
@@ -316,7 +340,8 @@ function render() {
 
         const defaultRoomVersionsChart = Chart.getChart("default-room-versions-over-time");
         defaultRoomVersionsChart.data = {
-            labels: [...defaultRoomVersions.values()].sort(cmpRoomVersions),
+            // Add a dummy entry for room for the line labels.
+            labels: ["", ...defaultRoomVersions.values()].sort(cmpRoomVersions),
             datasets: defaultRoomVersionsDataset
         };
         defaultRoomVersionsChart.update();
