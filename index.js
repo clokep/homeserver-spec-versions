@@ -159,7 +159,7 @@ function build() {
     render();
 }
 
-function annotationsFromReleaseDates(releaseDates) {
+function annotationsFromReleaseDates(releaseDates, rotation) {
     return Object.entries(releaseDates).map(
         ([specVersion, releaseDate]) => {
             return {
@@ -172,7 +172,7 @@ function annotationsFromReleaseDates(releaseDates) {
                 label: {
                     display: true,
                     content: specVersion,
-                    rotation: -90,
+                    rotation: rotation,
                     position: "end"
                 }
             }
@@ -188,7 +188,7 @@ function render() {
         // The full list of released spec versions.
         const specVersions = Object.keys(data.spec_versions.version_dates).sort(cmpVersions);
         // The full list of room versions.
-        const roomVersions = data.room_versions.sort(cmpRoomVersions);
+        const roomVersions = Object.keys(data.room_versions).sort(cmpRoomVersions);
 
         var barDatasets = [];
         var scatterDatasets = [];
@@ -285,7 +285,7 @@ function render() {
             datasets: specVersionsDataset
         };
         specVersionsSupportedChart.options.plugins.annotation = {
-            annotations: annotationsFromReleaseDates(data.spec_versions.version_dates)
+            annotations: annotationsFromReleaseDates(data.spec_versions.version_dates, rotation=-90)
         }
         specVersionsSupportedChart.update();
 
@@ -329,9 +329,13 @@ function render() {
 
         const roomVersionsSupportedChart = Chart.getChart("supported-room-versions-over-time");
         roomVersionsSupportedChart.data = {
-            labels: roomVersions,
+            // Add a dummy entry for room for the line labels.
+            labels: ["", ...roomVersions],
             datasets: roomVersionsDataset
         };
+        roomVersionsSupportedChart.options.plugins.annotation = {
+            annotations: annotationsFromReleaseDates(data.room_versions, rotation=0)
+        }
         roomVersionsSupportedChart.update();
 
         // Some room versions were never used as defaults in the spec.

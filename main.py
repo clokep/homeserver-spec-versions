@@ -761,7 +761,7 @@ if __name__ == "__main__":
             ),
             "version_dates": spec_versions,
         },
-        "room_versions": list(room_versions.keys()),
+        "room_versions": room_versions,
         "homeserver_versions": {},
     }
 
