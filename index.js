@@ -167,13 +167,14 @@ function annotationsFromReleaseDates(releaseDates, rotation) {
                 type: "line",
                 xMin: releaseDate,
                 xMax: releaseDate,
+                yMax: specVersion,
                 borderWidth: 1,
                 borderDash: [10, 10],
                 label: {
                     display: true,
                     content: specVersion,
                     rotation: rotation,
-                    position: "end"
+                    position: "center"
                 }
             }
         }
@@ -331,7 +332,7 @@ function render() {
         const roomVersionsSupportedChart = Chart.getChart("supported-room-versions-over-time");
         roomVersionsSupportedChart.data = {
             // Add a dummy entry for room for the line labels.
-            labels: ["", ...roomVersions],
+            labels: roomVersions,
             datasets: roomVersionsDataset
         };
         roomVersionsSupportedChart.options.plugins.annotation = {
@@ -342,7 +343,7 @@ function render() {
         const defaultRoomVersionsChart = Chart.getChart("default-room-versions-over-time");
         defaultRoomVersionsChart.data = {
             // Add a dummy entry for room for the line labels.
-            labels: ["", ...defaultRoomVersions],
+            labels: defaultRoomVersions,
             datasets: defaultRoomVersionsDataset
         };
         defaultRoomVersionsChart.options.plugins.annotation = {
