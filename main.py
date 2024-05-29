@@ -635,7 +635,8 @@ def main(
         repo,
         project.default_room_version_paths,
         project.default_room_version_pattern,
-        to_ignore=[],
+        # Dendrite declared room version 2 as a default, but that was invalid.
+        to_ignore=["2"],
     )
     print(f"Loaded {project.name} default room versions: {default_room_versions}")
     # TODO Validate there's no overlap of default room versions?
