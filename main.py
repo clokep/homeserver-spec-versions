@@ -69,10 +69,11 @@ def get_versions_from_file(
         # Search again for the versions.
         matches = re.findall(pattern, line)
         matches = [
-            next(m for m in match if m) if isinstance(match, tuple) else match
+            [m for m in match if m] if isinstance(match, tuple) else match.split()
             for match in matches
         ]
-        versions.update(matches)
+        # Flatten the list of lists
+        versions.update([m for ma in matches for m in ma])
 
     # Ignore some versions that are "bad".
     for v in to_ignore:
@@ -137,6 +138,7 @@ def get_tag_datetime(tag: git.TagReference) -> datetime:
 
 def get_project_versions(
     project: ProjectMetadata,
+    earliest_commit: str | None,
     repo: Repo,
     paths: list[str],
     pattern: str,
@@ -159,8 +161,8 @@ def get_project_versions(
     if paths:
         # Calculate the set of versions each time these files were changed.
         for commit in repo.iter_commits(
-            f"{project.earliest_commit}~..origin/{project.branch}"
-            if project.earliest_commit
+            f"{earliest_commit}~..origin/{project.branch}"
+            if earliest_commit
             else f"origin/{project.branch}",
             paths=paths,
             reverse=True,
@@ -224,12 +226,13 @@ def main(
     """
     repo = get_repo(project.name.lower(), project.repository)
 
-    repo.head.reference = project.branch
+    repo.head.reference = f"origin/{project.branch}"
     repo.head.reset(index=True, working_tree=True)
 
     # Map of spec version to list of commit metadata for when support for that version changed.
     versions = get_project_versions(
         project,
+        project.earliest_commit,
         repo,
         project.spec_version_paths,
         r"[vr]\d[\d\.]+\d",
@@ -242,16 +245,20 @@ def main(
     )
     print(f"Loaded {project.name} spec versions: {versions}")
 
+    # If a different repo is used for room versions, check it out.
     if project.room_version_repo:
         room_version_repo = get_repo(
             project.room_version_repo.split("/")[-1], project.room_version_repo
         )
+        earliest_room_version_commit = None
     else:
         room_version_repo = repo
+        earliest_room_version_commit = project.earliest_commit
 
     # Map of room version to list of commit metadata for when support for that version changed.
     room_versions = get_project_versions(
         project,
+        earliest_room_version_commit,
         room_version_repo,
         project.room_version_paths,
         project.room_version_pattern,
@@ -262,6 +269,7 @@ def main(
     # Map of default room version to list of commit metadata for when support for that version changed.
     default_room_versions = get_project_versions(
         project,
+        project.earliest_commit,
         repo,
         project.default_room_version_paths,
         project.default_room_version_pattern,

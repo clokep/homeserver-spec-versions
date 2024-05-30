@@ -30,7 +30,8 @@ class AdditionalMetadata:
     spec_version_paths: list[str]
     # Some homeservers store room version info in a different repo.
     #
-    # Defaults to the project repo.
+    # Defaults to the project repo. If the project repo is used, earliest_commit
+    # still applies; otherwise it does not.
     room_version_repo: str | None
     # The file paths (relative to room version or project root) to check for room
     # version information.
