@@ -40,7 +40,7 @@
             "lag_after_commit": {},
             "lag_after_release": {},
             "lag_all": {},
-            "maturity": "obsolete",
+            "maturity": "unstarted",
             "room_version_dates": {},
             "spec_version_dates": {}
         },
@@ -70,7 +70,7 @@
             "lag_after_commit": {},
             "lag_after_release": {},
             "lag_all": {},
-            "maturity": "obsolete",
+            "maturity": "unstarted",
             "room_version_dates": {},
             "spec_version_dates": {}
         },
@@ -273,7 +273,7 @@
                 "10": [
                     [
                         "2023-09-10T02:32:37-04:00",
-                        "2024-03-05T19:48:54-05:00"
+                        null
                     ]
                 ]
             },
@@ -683,7 +683,7 @@
             "lag_after_commit": {},
             "lag_after_release": {},
             "lag_all": {},
-            "maturity": "obsolete",
+            "maturity": "unstarted",
             "room_version_dates": {},
             "spec_version_dates": {}
         },
@@ -887,7 +887,7 @@
                 "r0.3.0": 197,
                 "r0.4.0": 125
             },
-            "maturity": "obsolete",
+            "maturity": "unstarted",
             "room_version_dates": {},
             "spec_version_dates": {
                 "r0.3.0": [
@@ -1038,7 +1038,14 @@
             }
         },
         "gridify server": {
-            "default_room_version_dates": {},
+            "default_room_version_dates": {
+                "6": [
+                    [
+                        "2021-08-13T17:01:18+02:00",
+                        null
+                    ]
+                ]
+            },
             "initial_release_date": "2019-01-17T13:41:58+01:00",
             "lag_after_commit": {},
             "lag_after_release": {},
@@ -1046,7 +1053,50 @@
                 "r0.4.0": 159
             },
             "maturity": "obsolete",
-            "room_version_dates": {},
+            "room_version_dates": {
+                "1": [
+                    [
+                        "2021-08-13T17:01:18+02:00",
+                        "2021-08-20T05:41:59+02:00"
+                    ]
+                ],
+                "2": [
+                    [
+                        "2021-08-13T17:01:18+02:00",
+                        "2021-08-20T05:41:59+02:00"
+                    ]
+                ],
+                "3": [
+                    [
+                        "2021-08-13T17:01:18+02:00",
+                        "2021-08-20T05:41:59+02:00"
+                    ]
+                ],
+                "4": [
+                    [
+                        "2021-08-13T17:01:18+02:00",
+                        null
+                    ]
+                ],
+                "5": [
+                    [
+                        "2021-08-13T17:01:18+02:00",
+                        null
+                    ]
+                ],
+                "6": [
+                    [
+                        "2021-08-13T17:01:18+02:00",
+                        null
+                    ]
+                ],
+                "7": [
+                    [
+                        "2021-08-13T17:01:18+02:00",
+                        null
+                    ]
+                ]
+            },
             "spec_version_dates": {
                 "r0.4.0": [
                     [
@@ -1254,7 +1304,62 @@
             "lag_after_release": {},
             "lag_all": {},
             "maturity": "alpha",
-            "room_version_dates": {},
+            "room_version_dates": {
+                "1": [
+                    [
+                        "2022-08-07T00:15:09+03:00",
+                        null
+                    ]
+                ],
+                "2": [
+                    [
+                        "2022-08-07T00:15:09+03:00",
+                        null
+                    ]
+                ],
+                "3": [
+                    [
+                        "2022-08-07T00:15:09+03:00",
+                        null
+                    ]
+                ],
+                "4": [
+                    [
+                        "2022-08-07T00:15:09+03:00",
+                        null
+                    ]
+                ],
+                "5": [
+                    [
+                        "2022-08-07T00:15:09+03:00",
+                        null
+                    ]
+                ],
+                "6": [
+                    [
+                        "2022-08-07T00:15:09+03:00",
+                        null
+                    ]
+                ],
+                "7": [
+                    [
+                        "2022-08-07T00:15:09+03:00",
+                        null
+                    ]
+                ],
+                "8": [
+                    [
+                        "2022-08-07T00:15:09+03:00",
+                        null
+                    ]
+                ],
+                "9": [
+                    [
+                        "2022-08-07T00:15:09+03:00",
+                        null
+                    ]
+                ]
+            },
             "spec_version_dates": {}
         },
         "himatrix": {
@@ -1265,7 +1370,7 @@
             "lag_all": {
                 "r0.6.1": 223
             },
-            "maturity": "obsolete",
+            "maturity": "unstarted",
             "room_version_dates": {},
             "spec_version_dates": {
                 "r0.6.1": [
@@ -1284,7 +1389,7 @@
             "lag_all": {
                 "r0.6.0": 717
             },
-            "maturity": "obsolete",
+            "maturity": "unstarted",
             "room_version_dates": {},
             "spec_version_dates": {
                 "r0.6.0": [
@@ -1353,7 +1458,7 @@
             "lag_all": {
                 "r0.3.0": 201
             },
-            "maturity": "obsolete",
+            "maturity": "unstarted",
             "room_version_dates": {},
             "spec_version_dates": {
                 "r0.3.0": [
@@ -1476,7 +1581,7 @@
             "lag_after_commit": {},
             "lag_after_release": {},
             "lag_all": {},
-            "maturity": "obsolete",
+            "maturity": "unstarted",
             "room_version_dates": {},
             "spec_version_dates": {}
         },
@@ -1622,7 +1727,7 @@
             "lag_all": {
                 "v1.6": 40
             },
-            "maturity": "obsolete",
+            "maturity": "unstarted",
             "room_version_dates": {},
             "spec_version_dates": {
                 "v1.6": [
@@ -2002,7 +2107,20 @@
             }
         },
         "thurim": {
-            "default_room_version_dates": {},
+            "default_room_version_dates": {
+                "5": [
+                    [
+                        "2021-10-08T19:48:42-07:00",
+                        "2022-05-21T16:02:38-04:00"
+                    ]
+                ],
+                "9": [
+                    [
+                        "2022-05-21T16:02:38-04:00",
+                        null
+                    ]
+                ]
+            },
             "initial_release_date": null,
             "lag_after_commit": {
                 "v1.1": 797,

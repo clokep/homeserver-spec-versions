@@ -182,7 +182,7 @@ function annotationsFromReleaseDates(releaseDates, rotation) {
 }
 
 function render() {
-    let allowedMaturities = ["stable", "beta", "alpha", "obsolete"].filter(maturity => document.getElementById(maturity).checked);
+    let allowedMaturities = ["stable", "beta", "alpha", "obsolete", "unstarted"].filter(maturity => document.getElementById(maturity).checked);
     let displayType = document.getElementById("display-type").value;
 
     fetch("data.json").then(response => response.json()).then(data => {
