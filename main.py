@@ -283,7 +283,7 @@ def get_project_versions(
     return versions
 
 
-def main(
+def get_project_dates(
     project: ProjectMetadata, spec_versions: dict[str, datetime]
 ) -> dict[str, object]:
     """
@@ -374,6 +374,7 @@ def main(
     if project.earliest_tag:
         release_date = get_tag_datetime(repo.tags[project.earliest_tag])
     elif repo.tags:
+        # TODO Find tags after earliest commit.
         earliest_tag = min(repo.tags, key=lambda t: get_tag_datetime(t))
         release_date = get_tag_datetime(earliest_tag)
     else:
@@ -449,7 +450,7 @@ if __name__ == "__main__":
 
     # For each project find the earliest known date the project supported it.
     for project in load_projects():
-        result["homeserver_versions"][project.name.lower()] = main(
+        result["homeserver_versions"][project.name.lower()] = get_project_dates(
             project, spec_versions
         )
 
