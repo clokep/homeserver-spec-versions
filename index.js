@@ -46,7 +46,7 @@ function resetZoom(chartId) {
     Chart.getChart(chartId).resetZoom();
 }
 
-function buildTimeline(elementId, title, yAxisTitle) {
+function buildTimeline(elementId, title, yAxisTitle, earliestDate) {
     const context = document.getElementById(elementId);
     new Chart(context, {
         type: "bar",
@@ -65,7 +65,7 @@ function buildTimeline(elementId, title, yAxisTitle) {
             },
             scales: {
                 x: {
-                    min: "2015-10-01",
+                    min: earliestDate,
                     title: {
                         display: true,
                         text: "Date"
@@ -151,9 +151,35 @@ function build() {
     });
 
     // Timeline of supported versions.
-    buildTimeline("supported-spec-versions-over-time", "Supported spec versions over time", "Spec version");
-    buildTimeline("supported-room-versions-over-time", "Supported room versions over time", "Room version");
-    buildTimeline("default-room-versions-over-time", "Default room versions over time", "Room version");
+    buildTimeline("supported-spec-versions-over-time", "Supported spec versions over time", "Spec version", "2015-10-01");
+    buildTimeline("supported-room-versions-over-time", "Supported room versions over time", "Room version", "2015-10-01");
+    buildTimeline("default-room-versions-over-time", "Default room versions over time", "Room version", "2015-10-01");
+
+    // Timeline of homeserver history.
+    const historyContext = document.getElementById("homeserver-history");
+    new Chart(historyContext, {
+        type: "line",
+        data: null,
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: "Homeserver History",
+                },
+                zoom: zoomOptions,
+            },
+            scales: {
+                x: {
+                    min: "2014-08-01",
+                    title: {
+                        display: true,
+                        text: "Date"
+                    },
+                    type: "time"
+                }
+            }
+        }
+    });
 
     // Add the initial data.
     render();
@@ -295,17 +321,17 @@ function render() {
         const roomVersionsDataset = [];
         const defaultRoomVersionsDataset = [];
         for (let project in data.homeserver_versions) {
+            // Filter projects by maturity.
+            if (!allowedMaturities.includes(data.homeserver_versions[project].maturity)) {
+                continue
+            }
+
             for (let [data_key, results] of [["room_version_dates", roomVersionsDataset], ["default_room_version_dates", defaultRoomVersionsDataset]]) {
                 const projectVersions = data.homeserver_versions[project][data_key];
 
                 // If there are no versions, don't bother adding them.
                 if (!Object.keys(projectVersions).length) {
                     continue;
-                }
-
-                // Filter projects by maturity.
-                if (!allowedMaturities.includes(data.homeserver_versions[project].maturity)) {
-                    continue
                 }
 
                 results.push(
@@ -329,9 +355,56 @@ function render() {
             }
         }
 
+        // Create data for family tree diagram.
+        const homeserverHistoryDataset = [];
+        // Group homeservers by family.
+        const projectsByFamily = Object.entries(data.homeserver_versions).filter(
+          ([p, pInfo]) => allowedMaturities.includes(pInfo.maturity)
+        ).sort(([a_name, a], [b_name, b]) => {
+            // Use the project's date by default.
+            let a_date = a.initial_commit_date;
+            let b_date = b.initial_commit_date;
+
+            // If the homeservers are of different families, use the origin project's date.
+            if ((a.forked_from || a_name) !== (b.forked_from || b_name)) {
+                a_date = a.forked_from ? data.homeserver_versions[a.forked_from].initial_commit_date : a.initial_commit_date;
+                b_date = b.forked_from ? data.homeserver_versions[b.forked_from].initial_commit_date : b.initial_commit_date;
+            }
+
+            return new Date(a_date) - new Date(b_date);
+        });
+        for (let idx in projectsByFamily) {
+            // If
+            const [project, projectInfo] = projectsByFamily[idx];
+            let data = [
+                {
+                    x: projectInfo.initial_commit_date,
+                    y: idx
+                },
+                {
+                    x: projectInfo.last_commit_date,
+                    y: idx
+                }
+            ];
+
+            if (projectInfo.forked_from) {
+                data.unshift({
+                    x: projectInfo.forked_date,
+                    y: projectsByFamily.findIndex(
+                      ([p, pInfo]) => p === projectInfo.forked_from)
+                });
+            }
+
+            homeserverHistoryDataset.push(
+              {
+                  label: project,
+                  data: data
+              }
+            )
+        }
+
         const roomVersionsSupportedChart = Chart.getChart("supported-room-versions-over-time");
         roomVersionsSupportedChart.data = {
-            // Add a dummy entry for room for the line labels.
             labels: roomVersions,
             datasets: roomVersionsDataset
         };
@@ -342,7 +415,6 @@ function render() {
 
         const defaultRoomVersionsChart = Chart.getChart("default-room-versions-over-time");
         defaultRoomVersionsChart.data = {
-            // Add a dummy entry for room for the line labels.
             labels: defaultRoomVersions,
             datasets: defaultRoomVersionsDataset
         };
@@ -350,6 +422,12 @@ function render() {
             annotations: annotationsFromReleaseDates(data.default_room_versions, rotation=0)
         }
         defaultRoomVersionsChart.update();
+
+        const homeserverHistoryChart = Chart.getChart("homeserver-history");
+        homeserverHistoryChart.data = {
+            datasets: homeserverHistoryDataset
+        };
+        homeserverHistoryChart.update();
     });
 }
 

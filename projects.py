@@ -60,6 +60,8 @@ class AdditionalMetadata:
     #
     # Note that earlier tags might exist in the repo due to forks or other reasons.
     earliest_tag: str | None
+    # Project this is forked from.
+    forked_from: str | None
 
 
 @dataclass
@@ -86,6 +88,7 @@ ADDITIONAL_METADATA = {
         default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     "conduit": AdditionalMetadata(
         "next",
@@ -114,6 +117,7 @@ ADDITIONAL_METADATA = {
         default_room_version_pattern=r'default: "(\d+)"|default: RoomVersionId::V(?:ersion)?(\d+),|default_room_version = RoomVersionId::V(?:ersion)?(\d+);|^ +RoomVersionId::V(?:ersion)?(\d+)$',
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     "conduwuit": AdditionalMetadata(
         branch="main",
@@ -143,6 +147,7 @@ ADDITIONAL_METADATA = {
         default_room_version_pattern=r'default: "(\d+)"|default: RoomVersionId::V(?:ersion)?(\d+),|default_room_version = RoomVersionId::V(?:ersion)?(\d+);|^ +RoomVersionId::V(?:ersion)?(\d+)$|default_default_room_version.+RoomVersionId::V(\d+)',
         earliest_commit="9c3b3daafcbc95647b5641a6edc975e2ffc04b04",
         earliest_tag=None,
+        forked_from="conduit",
     ),
     "construct": AdditionalMetadata(
         "master",
@@ -156,9 +161,11 @@ ADDITIONAL_METADATA = {
             "matrix/room_create.cc",
         ],
         default_room_version_pattern=r'(?:"default",|"room_version", json::value {) +"(\d+)',
-        earliest_commit=None,
-        # Earlier tags from charybdis exist.
+        # Earlier commits from charybdis.
+        earliest_commit="b592b69b8670413340c297e5a41caf153d832e57",
+        # Earlier tags from charybdis.
         earliest_tag="0.0.10020",
+        forked_from=None,
     ),
     "dendrite": AdditionalMetadata(
         "main",
@@ -176,6 +183,7 @@ ADDITIONAL_METADATA = {
         default_room_version_pattern=r"return gomatrixserverlib.RoomVersionV(\d+)|DefaultRoomVersion = gomatrixserverlib.RoomVersionV(\d+)",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     "jsynapse": AdditionalMetadata(
         "master",
@@ -187,6 +195,7 @@ ADDITIONAL_METADATA = {
         default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     "ligase": AdditionalMetadata(
         "develop",
@@ -201,6 +210,7 @@ ADDITIONAL_METADATA = {
         default_room_version_pattern="",
         earliest_commit="bde8bc21a45a9dcffaaa812aa6a5a5341bca5f42",
         earliest_tag=None,
+        forked_from="dendrite",
     ),
     "maelstrom": AdditionalMetadata(
         "master",
@@ -212,6 +222,7 @@ ADDITIONAL_METADATA = {
         default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     "matrex": AdditionalMetadata(
         "master",
@@ -226,6 +237,7 @@ ADDITIONAL_METADATA = {
         default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     "mxhsd": AdditionalMetadata(
         "master",
@@ -239,6 +251,7 @@ ADDITIONAL_METADATA = {
         default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     "synapse": AdditionalMetadata(
         "develop",
@@ -256,6 +269,7 @@ ADDITIONAL_METADATA = {
         earliest_commit=None,
         # Earlier tags exist from DINSIC.
         earliest_tag="v0.0.0",
+        forked_from=None,
     ),
     "transform": AdditionalMetadata(
         "master",
@@ -267,6 +281,7 @@ ADDITIONAL_METADATA = {
         default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     "telodendria": AdditionalMetadata(
         "master",
@@ -278,6 +293,7 @@ ADDITIONAL_METADATA = {
         default_room_version_pattern=r'JsonValueString\("(\d+)"\), 2, "m.room_versions", "default"',
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
 }
 
@@ -302,6 +318,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern=r'"default: "(\d+)"',
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     ProjectMetadata(
         name="axiom",
@@ -321,6 +338,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     ProjectMetadata(
         name="casniam",
@@ -340,6 +358,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     ProjectMetadata(
         name="coignet",
@@ -359,6 +378,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     ProjectMetadata(
         name="cortex",
@@ -378,6 +398,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     ProjectMetadata(
         name="dopamine",
@@ -397,6 +418,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     ProjectMetadata(
         name="grapevine",
@@ -435,6 +457,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern=r'default: "(\d+)"|default: RoomVersionId::V(?:ersion)?(\d+),|default_room_version = RoomVersionId::V(?:ersion)?(\d+);|^ +RoomVersionId::V(?:ersion)?(\d+)$',
         earliest_commit="17a0b3430934fbb8370066ee9dc3506102c5b3f6",
         earliest_tag=None,
+        forked_from="conduit",
     ),
     ProjectMetadata(
         name="Gridify Server",
@@ -462,6 +485,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern=r"RoomAlgoV(\d+)",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     # Note that ejabberd doesn't implement the Client-Server API, thus it doesn't declare
     # itself compatible with any particular versions.
@@ -481,8 +505,10 @@ ADDITIONAL_PROJECTS = [
         room_version_pattern="",
         default_room_version_paths=[],
         default_room_version_pattern="",
-        earliest_commit=None,
+        # First commit w/ Matrix support.
+        earliest_commit="f44e23b8cc2c3ab7d1c36f702f00a6b5b947c5d0",
         earliest_tag=None,
+        forked_from=None,
     ),
     ProjectMetadata(
         name="Harmony",
@@ -508,6 +534,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern=r"return gomatrixserverlib.RoomVersionV(\d+)|DefaultRoomVersion = gomatrixserverlib.RoomVersionV(\d+)",
         earliest_commit="6d1087df8dbd7982e7c7ad2f16b17588562c4048",
         earliest_tag=None,
+        forked_from="dendrite",
     ),
     ProjectMetadata(
         name="HG HomeServer",
@@ -528,6 +555,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern=r"defaultRoomVersion : MatrixRoomVersion = MatrixRoomVersion\.V(\d+)",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     ProjectMetadata(
         name="himatrix",
@@ -547,6 +575,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     ProjectMetadata(
         name="Insomnium",
@@ -566,6 +595,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     ProjectMetadata(
         name="lomatia",
@@ -585,6 +615,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     ProjectMetadata(
         name="MagnetHS",
@@ -606,6 +637,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     ProjectMetadata(
         name="neuron",
@@ -625,6 +657,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     ProjectMetadata(
         name="plasma",
@@ -644,6 +677,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     ProjectMetadata(
         name="plasma_old",
@@ -667,6 +701,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern=r'default_room_version: "(\d+)"',
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     # Is polyjuice server meant to be a full homeserver?
     ProjectMetadata(
@@ -687,6 +722,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     ProjectMetadata(
         name="Ruma",
@@ -706,6 +742,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     ProjectMetadata(
         name="Serverless-Matrix",
@@ -725,6 +762,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
     ProjectMetadata(
         name="thurim",
@@ -745,6 +783,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern=r'default_room_version: "(\d+)"',
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
     ),
 ]
 

@@ -361,9 +361,12 @@ def get_project_dates(
     # Get the earliest release of this project.
     if project.earliest_commit:
         earliest_commit = repo.commit(project.earliest_commit)
+        forked_date = earliest_commit.parents[0].authored_datetime
     else:
         earliest_commit = next(repo.iter_commits(reverse=True))
+        forked_date = None
     initial_commit_date = earliest_commit.authored_datetime
+    last_commit_date = repo.commit(f"origin/{project.branch}").authored_datetime
 
     # Remove any spec versions which existed before this project was started.
     version_dates_after_commit = calculate_versions_after_date(
@@ -389,6 +392,10 @@ def get_project_dates(
 
     return {
         "initial_release_date": release_date,
+        "initial_commit_date": initial_commit_date,
+        "forked_date": forked_date,
+        "forked_from": project.forked_from,
+        "last_commit_date": last_commit_date,
         "spec_version_dates": {
             v: [(info.start_date, info.end_date) for info in version_info]
             for v, version_info in versions.items()
