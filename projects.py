@@ -121,6 +121,7 @@ ADDITIONAL_METADATA = {
             "src/main.rs",
             "src/client_server/unversioned.rs",
             "src/api/client_server/unversioned.rs",
+            "src/api/client/unversioned.rs",
         ],
         room_version_repo=None,
         room_version_paths=[
