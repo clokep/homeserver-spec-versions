@@ -46,6 +46,35 @@ function resetZoom(chartId) {
     Chart.getChart(chartId).resetZoom();
 }
 
+/**
+ * Add a data point to a bar graph.
+ */
+function addVersionsToDataset(dataset, now, project, projectVersions) {
+    // If there are no versions, don't bother adding them.
+    if (!Object.keys(projectVersions).length) {
+        return
+    }
+
+    dataset.push(
+        {
+            label: project,
+            // Convert the mapping of version -> list of dates to a flat
+            // array of objects with y value of the version and x the start
+            // & end date of that version.
+            data: Object.keys(projectVersions).map(
+                verString => projectVersions[verString].map(
+                    verDates => {
+                        return {
+                            x: [verDates[0], verDates[1] || now],
+                            y: verString
+                        };
+                    }
+                )
+            ).flat(),
+        }
+    );
+}
+
 function buildTimeline(elementId, title, yAxisTitle, earliestDate) {
     const context = document.getElementById(elementId);
     new Chart(context, {
@@ -281,37 +310,21 @@ function renderData(data, displayType) {
     };
     scatterChart.update();
 
-    // Timeline showing the dates when spec versions were supported.
+    // Generate timeline date for spec & room versions supporteed.
     const now = new Date();
     const specVersionsDataset = [];
+    const roomVersionsDataset = [];
+    const defaultRoomVersionsDataset = [];
+
     for (let project in data.homeserver_versions) {
-        const projectVersions = data.homeserver_versions[project].spec_version_dates;
+        addVersionsToDataset(specVersionsDataset, now, project, data.homeserver_versions[project].spec_version_dates);
 
-        // If there are no versions, don't bother adding them.
-        if (!Object.keys(projectVersions).length) {
-            continue;
+        for (let [data_key, dataset] of [["room_version_dates", roomVersionsDataset], ["default_room_version_dates", defaultRoomVersionsDataset]]) {
+            addVersionsToDataset(dataset, now, project, data.homeserver_versions[project][data_key]);
         }
-
-        specVersionsDataset.push(
-            {
-                label: project,
-                // Convert the mapping of version -> list of dates to a flat
-                // array of objects with y value of the version and x the start
-                // & end date of that version.
-                data: Object.keys(projectVersions).map(
-                    verString => projectVersions[verString].map(
-                        verDates => {
-                            return {
-                                x: [verDates[0], verDates[1] || now],
-                                y: verString
-                            };
-                        }
-                    )
-                ).flat(),
-            }
-        );
     }
 
+    // Timeline showing the dates when spec versions were supported.
     const specVersionsSupportedChart = Chart.getChart("supported-spec-versions-over-time");
     specVersionsSupportedChart.data = {
         labels: specVersions,
@@ -323,37 +336,25 @@ function renderData(data, displayType) {
     specVersionsSupportedChart.update();
 
     // Timeline showing the dates when room versions were supported.
-    const roomVersionsDataset = [];
-    const defaultRoomVersionsDataset = [];
-    for (let project in data.homeserver_versions) {
-        for (let [data_key, results] of [["room_version_dates", roomVersionsDataset], ["default_room_version_dates", defaultRoomVersionsDataset]]) {
-            const projectVersions = data.homeserver_versions[project][data_key];
-
-            // If there are no versions, don't bother adding them.
-            if (!Object.keys(projectVersions).length) {
-                continue;
-            }
-
-            results.push(
-                {
-                    label: project,
-                    // Convert the mapping of version -> list of dates to a flat
-                    // array of objects with y value of the version and x the start
-                    // & end date of that version.
-                    data: Object.keys(projectVersions).map(
-                        verString => projectVersions[verString].map(
-                            verDates => {
-                                return {
-                                    x: [verDates[0], verDates[1] || now],
-                                    y: verString
-                                };
-                            }
-                        )
-                    ).flat(),
-                }
-            );
-        }
+    const roomVersionsSupportedChart = Chart.getChart("supported-room-versions-over-time");
+    roomVersionsSupportedChart.data = {
+        labels: roomVersions,
+        datasets: roomVersionsDataset
+    };
+    roomVersionsSupportedChart.options.plugins.annotation = {
+        annotations: annotationsFromReleaseDates(data.room_versions, rotation=0)
     }
+    roomVersionsSupportedChart.update();
+
+    const defaultRoomVersionsChart = Chart.getChart("default-room-versions-over-time");
+    defaultRoomVersionsChart.data = {
+        labels: defaultRoomVersions,
+        datasets: defaultRoomVersionsDataset
+    };
+    defaultRoomVersionsChart.options.plugins.annotation = {
+        annotations: annotationsFromReleaseDates(data.default_room_versions, rotation=0)
+    }
+    defaultRoomVersionsChart.update();
 
     // Create data for family tree diagram.
     const homeserverHistoryDataset = [];
@@ -400,26 +401,6 @@ function renderData(data, displayType) {
           }
         )
     }
-
-    const roomVersionsSupportedChart = Chart.getChart("supported-room-versions-over-time");
-    roomVersionsSupportedChart.data = {
-        labels: roomVersions,
-        datasets: roomVersionsDataset
-    };
-    roomVersionsSupportedChart.options.plugins.annotation = {
-        annotations: annotationsFromReleaseDates(data.room_versions, rotation=0)
-    }
-    roomVersionsSupportedChart.update();
-
-    const defaultRoomVersionsChart = Chart.getChart("default-room-versions-over-time");
-    defaultRoomVersionsChart.data = {
-        labels: defaultRoomVersions,
-        datasets: defaultRoomVersionsDataset
-    };
-    defaultRoomVersionsChart.options.plugins.annotation = {
-        annotations: annotationsFromReleaseDates(data.default_room_versions, rotation=0)
-    }
-    defaultRoomVersionsChart.update();
 
     const homeserverHistoryChart = Chart.getChart("homeserver-history");
     homeserverHistoryChart.data = {
