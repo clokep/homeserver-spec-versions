@@ -212,82 +212,134 @@ function render() {
     let displayType = document.getElementById("display-type").value;
 
     fetch("data.json").then(response => response.json()).then(data => {
-        // The full list of released spec versions.
-        const specVersions = Object.keys(data.spec_versions.version_dates).sort(cmpVersions);
-        // The full list of room versions.
-        const roomVersions = Object.keys(data.room_versions).sort(cmpRoomVersions);
-        const defaultRoomVersions = Object.keys(data.default_room_versions).sort(cmpRoomVersions);
+        renderData(data, allowedMaturities, displayType);
+    });
+}
 
-        var barDatasets = [];
-        var scatterDatasets = [];
+function renderData(data, allowedMaturities, displayType) {
+    // The full list of released spec versions.
+    const specVersions = Object.keys(data.spec_versions.version_dates).sort(cmpVersions);
+    // The full list of room versions.
+    const roomVersions = Object.keys(data.room_versions).sort(cmpRoomVersions);
+    const defaultRoomVersions = Object.keys(data.default_room_versions).sort(cmpRoomVersions);
 
-        for (let project in data.homeserver_versions) {
-            const projectVersions = data.homeserver_versions[project]["lag_" + displayType];
+    var barDatasets = [];
+    var scatterDatasets = [];
 
-            // If there are no versions, don't bother adding them.
-            if (!Object.keys(projectVersions).length) {
-                continue;
-            }
+    for (let project in data.homeserver_versions) {
+        const projectVersions = data.homeserver_versions[project]["lag_" + displayType];
 
-            // Filter projects by maturity.
-            if (!allowedMaturities.includes(data.homeserver_versions[project].maturity)) {
-                continue
-            }
-
-            barDatasets.push({
-                label: project,
-                // Fill in zeros for missing spec versions.
-                data: specVersions.map(v => projectVersions[v] || 0),
-                borderWidth: 1,
-            })
-
-            scatterDatasets.push({
-                label: project,
-                data: Object.keys(projectVersions).map(v => {
-                    return {
-                        label: v,
-                        x: data.spec_versions.lag[v],
-                        y: projectVersions[v]
-                    };
-                }),
-                borderWidth: 1,
-            })
+        // If there are no versions, don't bother adding them.
+        if (!Object.keys(projectVersions).length) {
+            continue;
         }
 
-        // Bar chart of the number of days between a spec release and the homeserver
-        // supporting it.
-        const barChart = Chart.getChart("days-to-support");
-        barChart.data = {
-            labels: specVersions,
-            datasets: barDatasets,
-        };
-        barChart.update();
+        // Filter projects by maturity.
+        if (!allowedMaturities.includes(data.homeserver_versions[project].maturity)) {
+            continue
+        }
 
-        // Scatter chart of the number of days between a spec release and the homeserver
-        // supporting it.
-        const scatterChart = Chart.getChart("spec-days-vs-support");
-        scatterChart.data = {
-            datasets: scatterDatasets,
-        };
-        scatterChart.update();
+        barDatasets.push({
+            label: project,
+            // Fill in zeros for missing spec versions.
+            data: specVersions.map(v => projectVersions[v] || 0),
+            borderWidth: 1,
+        })
 
-        // Timeline showing the dates when spec versions were supported.
-        const now = new Date();
-        const specVersionsDataset = [];
-        for (let project in data.homeserver_versions) {
-            const projectVersions = data.homeserver_versions[project].spec_version_dates;
+        scatterDatasets.push({
+            label: project,
+            data: Object.keys(projectVersions).map(v => {
+                return {
+                    label: v,
+                    x: data.spec_versions.lag[v],
+                    y: projectVersions[v]
+                };
+            }),
+            borderWidth: 1,
+        })
+    }
+
+    // Bar chart of the number of days between a spec release and the homeserver
+    // supporting it.
+    const barChart = Chart.getChart("days-to-support");
+    barChart.data = {
+        labels: specVersions,
+        datasets: barDatasets,
+    };
+    barChart.update();
+
+    // Scatter chart of the number of days between a spec release and the homeserver
+    // supporting it.
+    const scatterChart = Chart.getChart("spec-days-vs-support");
+    scatterChart.data = {
+        datasets: scatterDatasets,
+    };
+    scatterChart.update();
+
+    // Timeline showing the dates when spec versions were supported.
+    const now = new Date();
+    const specVersionsDataset = [];
+    for (let project in data.homeserver_versions) {
+        const projectVersions = data.homeserver_versions[project].spec_version_dates;
+
+        // If there are no versions, don't bother adding them.
+        if (!Object.keys(projectVersions).length) {
+            continue;
+        }
+
+        // Filter projects by maturity.
+        if (!allowedMaturities.includes(data.homeserver_versions[project].maturity)) {
+            continue
+        }
+
+        specVersionsDataset.push(
+            {
+                label: project,
+                // Convert the mapping of version -> list of dates to a flat
+                // array of objects with y value of the version and x the start
+                // & end date of that version.
+                data: Object.keys(projectVersions).map(
+                    verString => projectVersions[verString].map(
+                        verDates => {
+                            return {
+                                x: [verDates[0], verDates[1] || now],
+                                y: verString
+                            };
+                        }
+                    )
+                ).flat(),
+            }
+        );
+    }
+
+    const specVersionsSupportedChart = Chart.getChart("supported-spec-versions-over-time");
+    specVersionsSupportedChart.data = {
+        labels: specVersions,
+        datasets: specVersionsDataset
+    };
+    specVersionsSupportedChart.options.plugins.annotation = {
+        annotations: annotationsFromReleaseDates(data.spec_versions.version_dates, rotation=-90)
+    }
+    specVersionsSupportedChart.update();
+
+    // Timeline showing the dates when room versions were supported.
+    const roomVersionsDataset = [];
+    const defaultRoomVersionsDataset = [];
+    for (let project in data.homeserver_versions) {
+        // Filter projects by maturity.
+        if (!allowedMaturities.includes(data.homeserver_versions[project].maturity)) {
+            continue
+        }
+
+        for (let [data_key, results] of [["room_version_dates", roomVersionsDataset], ["default_room_version_dates", defaultRoomVersionsDataset]]) {
+            const projectVersions = data.homeserver_versions[project][data_key];
 
             // If there are no versions, don't bother adding them.
             if (!Object.keys(projectVersions).length) {
                 continue;
             }
 
-            // Filter projects by maturity.
-            if (!allowedMaturities.includes(data.homeserver_versions[project].maturity)) {
-                continue
-            }
-
-            specVersionsDataset.push(
+            results.push(
                 {
                     label: project,
                     // Convert the mapping of version -> list of dates to a flat
@@ -306,129 +358,81 @@ function render() {
                 }
             );
         }
+    }
 
-        const specVersionsSupportedChart = Chart.getChart("supported-spec-versions-over-time");
-        specVersionsSupportedChart.data = {
-            labels: specVersions,
-            datasets: specVersionsDataset
-        };
-        specVersionsSupportedChart.options.plugins.annotation = {
-            annotations: annotationsFromReleaseDates(data.spec_versions.version_dates, rotation=-90)
-        }
-        specVersionsSupportedChart.update();
+    // Create data for family tree diagram.
+    const homeserverHistoryDataset = [];
+    // Group homeservers by family.
+    const projectsByFamily = Object.entries(data.homeserver_versions).filter(
+      ([p, pInfo]) => allowedMaturities.includes(pInfo.maturity)
+    ).sort(([a_name, a], [b_name, b]) => {
+        // Use the project's date by default.
+        let a_date = a.initial_commit_date;
+        let b_date = b.initial_commit_date;
 
-        // Timeline showing the dates when room versions were supported.
-        const roomVersionsDataset = [];
-        const defaultRoomVersionsDataset = [];
-        for (let project in data.homeserver_versions) {
-            // Filter projects by maturity.
-            if (!allowedMaturities.includes(data.homeserver_versions[project].maturity)) {
-                continue
-            }
-
-            for (let [data_key, results] of [["room_version_dates", roomVersionsDataset], ["default_room_version_dates", defaultRoomVersionsDataset]]) {
-                const projectVersions = data.homeserver_versions[project][data_key];
-
-                // If there are no versions, don't bother adding them.
-                if (!Object.keys(projectVersions).length) {
-                    continue;
-                }
-
-                results.push(
-                    {
-                        label: project,
-                        // Convert the mapping of version -> list of dates to a flat
-                        // array of objects with y value of the version and x the start
-                        // & end date of that version.
-                        data: Object.keys(projectVersions).map(
-                            verString => projectVersions[verString].map(
-                                verDates => {
-                                    return {
-                                        x: [verDates[0], verDates[1] || now],
-                                        y: verString
-                                    };
-                                }
-                            )
-                        ).flat(),
-                    }
-                );
-            }
+        // If the homeservers are of different families, use the origin project's date.
+        if ((a.forked_from || a_name) !== (b.forked_from || b_name)) {
+            a_date = a.forked_from ? data.homeserver_versions[a.forked_from].initial_commit_date : a.initial_commit_date;
+            b_date = b.forked_from ? data.homeserver_versions[b.forked_from].initial_commit_date : b.initial_commit_date;
         }
 
-        // Create data for family tree diagram.
-        const homeserverHistoryDataset = [];
-        // Group homeservers by family.
-        const projectsByFamily = Object.entries(data.homeserver_versions).filter(
-          ([p, pInfo]) => allowedMaturities.includes(pInfo.maturity)
-        ).sort(([a_name, a], [b_name, b]) => {
-            // Use the project's date by default.
-            let a_date = a.initial_commit_date;
-            let b_date = b.initial_commit_date;
-
-            // If the homeservers are of different families, use the origin project's date.
-            if ((a.forked_from || a_name) !== (b.forked_from || b_name)) {
-                a_date = a.forked_from ? data.homeserver_versions[a.forked_from].initial_commit_date : a.initial_commit_date;
-                b_date = b.forked_from ? data.homeserver_versions[b.forked_from].initial_commit_date : b.initial_commit_date;
-            }
-
-            return new Date(a_date) - new Date(b_date);
-        });
-        for (let idx in projectsByFamily) {
-            // If
-            const [project, projectInfo] = projectsByFamily[idx];
-            let data = [
-                {
-                    x: projectInfo.initial_commit_date,
-                    y: idx
-                },
-                {
-                    x: projectInfo.last_commit_date,
-                    y: idx
-                }
-            ];
-
-            if (projectInfo.forked_from) {
-                data.unshift({
-                    x: projectInfo.forked_date,
-                    y: projectsByFamily.findIndex(
-                      ([p, pInfo]) => p === projectInfo.forked_from)
-                });
-            }
-
-            homeserverHistoryDataset.push(
-              {
-                  label: project,
-                  data: data
-              }
-            )
-        }
-
-        const roomVersionsSupportedChart = Chart.getChart("supported-room-versions-over-time");
-        roomVersionsSupportedChart.data = {
-            labels: roomVersions,
-            datasets: roomVersionsDataset
-        };
-        roomVersionsSupportedChart.options.plugins.annotation = {
-            annotations: annotationsFromReleaseDates(data.room_versions, rotation=0)
-        }
-        roomVersionsSupportedChart.update();
-
-        const defaultRoomVersionsChart = Chart.getChart("default-room-versions-over-time");
-        defaultRoomVersionsChart.data = {
-            labels: defaultRoomVersions,
-            datasets: defaultRoomVersionsDataset
-        };
-        defaultRoomVersionsChart.options.plugins.annotation = {
-            annotations: annotationsFromReleaseDates(data.default_room_versions, rotation=0)
-        }
-        defaultRoomVersionsChart.update();
-
-        const homeserverHistoryChart = Chart.getChart("homeserver-history");
-        homeserverHistoryChart.data = {
-            datasets: homeserverHistoryDataset
-        };
-        homeserverHistoryChart.update();
+        return new Date(a_date) - new Date(b_date);
     });
+    for (let idx in projectsByFamily) {
+        // If
+        const [project, projectInfo] = projectsByFamily[idx];
+        let data = [
+            {
+                x: projectInfo.initial_commit_date,
+                y: idx
+            },
+            {
+                x: projectInfo.last_commit_date,
+                y: idx
+            }
+        ];
+
+        if (projectInfo.forked_from) {
+            data.unshift({
+                x: projectInfo.forked_date,
+                y: projectsByFamily.findIndex(
+                  ([p, pInfo]) => p === projectInfo.forked_from)
+            });
+        }
+
+        homeserverHistoryDataset.push(
+          {
+              label: project,
+              data: data
+          }
+        )
+    }
+
+    const roomVersionsSupportedChart = Chart.getChart("supported-room-versions-over-time");
+    roomVersionsSupportedChart.data = {
+        labels: roomVersions,
+        datasets: roomVersionsDataset
+    };
+    roomVersionsSupportedChart.options.plugins.annotation = {
+        annotations: annotationsFromReleaseDates(data.room_versions, rotation=0)
+    }
+    roomVersionsSupportedChart.update();
+
+    const defaultRoomVersionsChart = Chart.getChart("default-room-versions-over-time");
+    defaultRoomVersionsChart.data = {
+        labels: defaultRoomVersions,
+        datasets: defaultRoomVersionsDataset
+    };
+    defaultRoomVersionsChart.options.plugins.annotation = {
+        annotations: annotationsFromReleaseDates(data.default_room_versions, rotation=0)
+    }
+    defaultRoomVersionsChart.update();
+
+    const homeserverHistoryChart = Chart.getChart("homeserver-history");
+    homeserverHistoryChart.data = {
+        datasets: homeserverHistoryDataset
+    };
+    homeserverHistoryChart.update();
 }
 
 // Build the initial version.
