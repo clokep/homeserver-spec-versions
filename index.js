@@ -212,11 +212,21 @@ function render() {
     let displayType = document.getElementById("display-type").value;
 
     fetch("data.json").then(response => response.json()).then(data => {
-        renderData(data, allowedMaturities, displayType);
+        // Filter the displayed projects by maturity.
+        data.homeserver_versions = Object.fromEntries(
+            Object.entries(data.homeserver_versions).filter(
+                ([project, projectInfo]) => allowedMaturities.includes(projectInfo.maturity)
+            )
+        );
+
+        renderData(data, displayType);
     });
 }
 
-function renderData(data, allowedMaturities, displayType) {
+/**
+ * Render the data which has already been filtered for ignored homeservers.
+ */
+function renderData(data, displayType) {
     // The full list of released spec versions.
     const specVersions = Object.keys(data.spec_versions.version_dates).sort(cmpVersions);
     // The full list of room versions.
@@ -232,11 +242,6 @@ function renderData(data, allowedMaturities, displayType) {
         // If there are no versions, don't bother adding them.
         if (!Object.keys(projectVersions).length) {
             continue;
-        }
-
-        // Filter projects by maturity.
-        if (!allowedMaturities.includes(data.homeserver_versions[project].maturity)) {
-            continue
         }
 
         barDatasets.push({
@@ -287,11 +292,6 @@ function renderData(data, allowedMaturities, displayType) {
             continue;
         }
 
-        // Filter projects by maturity.
-        if (!allowedMaturities.includes(data.homeserver_versions[project].maturity)) {
-            continue
-        }
-
         specVersionsDataset.push(
             {
                 label: project,
@@ -326,11 +326,6 @@ function renderData(data, allowedMaturities, displayType) {
     const roomVersionsDataset = [];
     const defaultRoomVersionsDataset = [];
     for (let project in data.homeserver_versions) {
-        // Filter projects by maturity.
-        if (!allowedMaturities.includes(data.homeserver_versions[project].maturity)) {
-            continue
-        }
-
         for (let [data_key, results] of [["room_version_dates", roomVersionsDataset], ["default_room_version_dates", defaultRoomVersionsDataset]]) {
             const projectVersions = data.homeserver_versions[project][data_key];
 
@@ -363,9 +358,7 @@ function renderData(data, allowedMaturities, displayType) {
     // Create data for family tree diagram.
     const homeserverHistoryDataset = [];
     // Group homeservers by family.
-    const projectsByFamily = Object.entries(data.homeserver_versions).filter(
-      ([p, pInfo]) => allowedMaturities.includes(pInfo.maturity)
-    ).sort(([a_name, a], [b_name, b]) => {
+    const projectsByFamily = Object.entries(data.homeserver_versions).sort(([a_name, a], [b_name, b]) => {
         // Use the project's date by default.
         let a_date = a.initial_commit_date;
         let b_date = b.initial_commit_date;
