@@ -266,10 +266,11 @@ ADDITIONAL_METADATA = {
         ],
         # Either the constant or fetching the default_room_version from the config.
         default_room_version_pattern=r'(?:DEFAULT_ROOM_VERSION = RoomVersions.V|DEFAULT_ROOM_VERSION = "|"default_room_version", ")(\d+)',
-        earliest_commit=None,
-        # Earlier tags exist from DINSIC.
-        earliest_tag="v0.0.0",
-        forked_from=None,
+        # First tag from AGPL Synapse.
+        earliest_commit="230decd5b8deea78674f92b2c0c11bd41090470a",
+        # Earlier tags exist from Apache Synapse.
+        earliest_tag="v1.99.0",
+        forked_from="synapse-legacy",
     ),
     "transform": AdditionalMetadata(
         "master",
@@ -762,6 +763,32 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern="",
         earliest_commit=None,
         earliest_tag=None,
+        forked_from=None,
+    ),
+    ProjectMetadata(
+        name="synapse-legacy",
+        description="Matrix.org homeserver",
+        author="Matrix.org team",
+        maturity="Stable",
+        language="Python",
+        licence="Apache-2.0",
+        repository="https://github.com/matrix-org/synapse",
+        room=None,
+        branch="develop",
+        spec_version_paths=["synapse/rest/client/versions.py"],
+        room_version_repo=None,
+        room_version_paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
+        room_version_pattern=r"RoomVersions.V(\d+)",
+        default_room_version_paths=[
+            "synapse/api/constants.py",
+            "synapse/api/room_versions.py",
+            "synapse/config/server.py",
+        ],
+        # Either the constant or fetching the default_room_version from the config.
+        default_room_version_pattern=r'(?:DEFAULT_ROOM_VERSION = RoomVersions.V|DEFAULT_ROOM_VERSION = "|"default_room_version", ")(\d+)',
+        earliest_commit=None,
+        # Earlier tags exist from DINSIC.
+        earliest_tag="v0.0.0",
         forked_from=None,
     ),
     ProjectMetadata(
