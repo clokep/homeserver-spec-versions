@@ -1086,7 +1086,7 @@
                 ]
             }
         },
-        "gridify server": {
+        "gridify": {
             "default_room_version_dates": {
                 "6": [
                     [
@@ -1354,7 +1354,7 @@
                 ]
             }
         },
-        "hg homeserver": {
+        "hg": {
             "default_room_version_dates": {},
             "forked_date": null,
             "forked_from": null,
@@ -1795,7 +1795,7 @@
                 ]
             }
         },
-        "polyjuice server": {
+        "polyjuice": {
             "default_room_version_dates": {},
             "forked_date": null,
             "forked_from": null,

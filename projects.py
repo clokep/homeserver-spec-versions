@@ -461,7 +461,7 @@ ADDITIONAL_PROJECTS = [
         forked_from="conduit",
     ),
     ProjectMetadata(
-        name="Gridify Server",
+        name="Gridify",
         description="Corporate-level Unified communication server with support for several protocols: Matrix Home and Identity server and Grid Data Server",
         author="Kamax Sarl",
         maturity="Obsolete",
@@ -538,7 +538,7 @@ ADDITIONAL_PROJECTS = [
         forked_from="dendrite",
     ),
     ProjectMetadata(
-        name="HG HomeServer",
+        name="HG",
         description="Minimal Matrix HomeServer written in TypeScript",
         author="Jaakko Heusala",
         maturity="Alpha",
@@ -706,7 +706,7 @@ ADDITIONAL_PROJECTS = [
     ),
     # Is polyjuice server meant to be a full homeserver?
     ProjectMetadata(
-        name="Polyjuice Server",
+        name="Polyjuice",
         description="Helper functions for creating a Matrix server",
         author="Hubert Chathi",
         maturity="Alpha",
