@@ -641,6 +641,32 @@ ADDITIONAL_PROJECTS = [
         forked_from=None,
     ),
     ProjectMetadata(
+        name="mascarene",
+        description="Mascarene is an open source homeserver implementation of the Matrix protocol.",
+        author="?",
+        maturity="Obsolete",
+        language="Scala",
+        licence="AGPL-3.0",
+        repository="https://gitlab.com/mascarene/mascarene",
+        room=None,
+        branch="master",
+        spec_version_paths=[
+            "homeserver/src/main/scala/org/mascarene/homeserver/matrix/server/client/ClientApiRoutes.scala"
+        ],
+        room_version_repo=None,
+        room_version_paths=[
+            "homeserver/src/main/scala/org/mascarene/homeserver/internal/rooms/RoomAgent.scala"
+        ],
+        room_version_pattern='"(\d+)"',
+        default_room_version_paths=[
+            "homeserver/src/main/resources/reference.conf"
+        ],
+        default_room_version_pattern='default-room-version="(\d+)"',
+        earliest_commit=None,
+        earliest_tag=None,
+        forked_from=None,
+    ),
+    ProjectMetadata(
         name="neuron",
         description="typescript matrix homeserver implementation",
         author="Michael",
