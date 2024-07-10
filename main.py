@@ -129,7 +129,7 @@ def get_tag_datetime(tag: git.TagReference) -> datetime:
     This prefers the tagged date, but falls back to the commit date.
     """
     if tag.tag is None:
-        return tag.commit.authored_datetime
+        return tag.commit.committed_datetime
     return datetime.fromtimestamp(
         tag.tag.tagged_date,
         tz=timezone(offset=timedelta(seconds=-tag.tag.tagger_tz_offset)),
@@ -173,7 +173,7 @@ def get_spec_dates() -> (
             if diff.change_type == "A" and match:
                 room_version = match[1]
                 if room_version not in room_versions:
-                    room_versions[room_version] = commit.authored_datetime
+                    room_versions[room_version] = commit.committed_datetime
 
     # Map of default room versions -> commit date.
     DEFAULT_ROOM_VERSION_PATHS = [
@@ -202,7 +202,7 @@ def get_spec_dates() -> (
         if cur_versions:
             default_room_version = next(iter(cur_versions))
             if default_room_version not in default_room_versions:
-                default_room_versions[default_room_version] = commit.authored_datetime
+                default_room_versions[default_room_version] = commit.committed_datetime
 
     return spec_versions, room_versions, default_room_versions
 
@@ -256,7 +256,7 @@ def get_project_versions(
             ):
                 versions_at_commit.append(
                     CommitVersionInfo(
-                        commit.hexsha, commit.authored_datetime, cur_versions
+                        commit.hexsha, commit.committed_datetime, cur_versions
                     )
                 )
 
@@ -361,12 +361,12 @@ def get_project_dates(
     # Get the earliest release of this project.
     if project.earliest_commit:
         earliest_commit = repo.commit(project.earliest_commit)
-        forked_date = earliest_commit.parents[0].authored_datetime
+        forked_date = earliest_commit.parents[0].committed_datetime
     else:
         earliest_commit = next(repo.iter_commits(reverse=True))
         forked_date = None
-    initial_commit_date = earliest_commit.authored_datetime
-    last_commit_date = repo.commit(f"origin/{project.branch}").authored_datetime
+    initial_commit_date = earliest_commit.committed_datetime
+    last_commit_date = repo.commit(f"origin/{project.branch}").committed_datetime
 
     # Remove any spec versions which existed before this project was started.
     version_dates_after_commit = calculate_versions_after_date(
