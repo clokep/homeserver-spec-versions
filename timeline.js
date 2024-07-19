@@ -40,10 +40,16 @@ function build() {
                     type: "time"
                 },
                 y: {
-                    // The y-axis doesn't mean anything, it just groups families.
-                    display: false,
                     // Put the oldest family on top.
-                    reverse: true
+                    reverse: true,
+                    ticks: {
+                        // Show every project.
+                        stepSize: 1
+                    },
+                    grid: {
+                        // Draw grid lines between timeline lines.
+                        offset: true,
+                    }
                 }
             }
         }
@@ -126,6 +132,10 @@ function renderData(data) {
     homeserverHistoryChart.data = {
         datasets: homeserverHistoryDataset
     };
+    homeserverHistoryChart.options.scales.y.ticks.callback = function(value, index, ticks) {
+        const [project, projectInfo] = projectsByFamily[value];
+        return project;
+    }
     homeserverHistoryChart.update();
 }
 
