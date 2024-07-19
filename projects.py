@@ -1,10 +1,29 @@
 import os.path
 import tomllib
 from dataclasses import asdict, dataclass
+from datetime import datetime
 from typing import Iterator
 from urllib.request import urlopen
 
 SERVER_METADATA_URL = "https://raw.githubusercontent.com/matrix-org/matrix.org/main/content/ecosystem/servers/servers.toml"
+
+
+@dataclass
+class ProjectData:
+    """The project info that's dumped into the JSON file."""
+
+    initial_release_date: datetime | None
+    initial_commit_date: datetime
+    forked_date: datetime | None
+    forked_from: str
+    last_commit_date: datetime
+    spec_version_dates: dict[str, list[tuple[datetime, datetime]]]
+    room_version_dates: dict[str, list[tuple[datetime, datetime]]]
+    default_room_version_dates: dict[str, list[tuple[datetime, datetime]]]
+    lag_all: dict[str, int]
+    lag_after_commit: dict[str, int]
+    lag_after_release: dict[str, int]
+    maturity: str
 
 
 @dataclass
@@ -658,9 +677,7 @@ ADDITIONAL_PROJECTS = [
             "homeserver/src/main/scala/org/mascarene/homeserver/internal/rooms/RoomAgent.scala"
         ],
         room_version_pattern='"(\d+)"',
-        default_room_version_paths=[
-            "homeserver/src/main/resources/reference.conf"
-        ],
+        default_room_version_paths=["homeserver/src/main/resources/reference.conf"],
         default_room_version_pattern='default-room-version="(\d+)"',
         earliest_commit=None,
         earliest_tag=None,

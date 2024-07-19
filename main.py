@@ -1,5 +1,5 @@
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from datetime import datetime, timezone, timedelta
 import json
 from pathlib import Path
@@ -9,7 +9,7 @@ import subprocess
 import git
 from git import Repo
 
-from projects import ProjectMetadata, load_projects
+from projects import ProjectMetadata, load_projects, ProjectData
 
 
 @dataclass
@@ -285,7 +285,7 @@ def get_project_versions(
 
 def get_project_dates(
     project: ProjectMetadata, spec_versions: dict[str, datetime]
-) -> dict[str, object]:
+) -> ProjectData:
     """
     Generate the project's version information.
 
@@ -390,29 +390,29 @@ def get_project_dates(
 
     print()
 
-    return {
-        "initial_release_date": release_date,
-        "initial_commit_date": initial_commit_date,
-        "forked_date": forked_date,
-        "forked_from": project.forked_from,
-        "last_commit_date": last_commit_date,
-        "spec_version_dates": {
+    return ProjectData(
+        initial_release_date=release_date,
+        initial_commit_date=initial_commit_date,
+        forked_date=forked_date,
+        forked_from=project.forked_from,
+        last_commit_date=last_commit_date,
+        spec_version_dates={
             v: [(info.start_date, info.end_date) for info in version_info]
             for v, version_info in versions.items()
         },
-        "room_version_dates": {
+        room_version_dates={
             v: [(info.start_date, info.end_date) for info in version_info]
             for v, version_info in room_versions.items()
         },
-        "default_room_version_dates": {
+        default_room_version_dates={
             v: [(info.start_date, info.end_date) for info in version_info]
             for v, version_info in default_room_versions.items()
         },
-        "lag_all": calculate_lag(versions_dates_all, spec_versions),
-        "lag_after_commit": calculate_lag(version_dates_after_commit, spec_versions),
-        "lag_after_release": calculate_lag(version_dates_after_release, spec_versions),
-        "maturity": project.maturity.lower(),
-    }
+        lag_all=calculate_lag(versions_dates_all, spec_versions),
+        lag_after_commit=calculate_lag(version_dates_after_commit, spec_versions),
+        lag_after_release=calculate_lag(version_dates_after_release, spec_versions),
+        maturity=project.maturity.lower(),
+    )
 
 
 if __name__ == "__main__":
@@ -457,8 +457,8 @@ if __name__ == "__main__":
 
     # For each project find the earliest known date the project supported it.
     for project in load_projects():
-        result["homeserver_versions"][project.name.lower()] = get_project_dates(
-            project, spec_versions
+        result["homeserver_versions"][project.name.lower()] = asdict(
+            get_project_dates(project, spec_versions)
         )
 
     with open("data.json", "w") as f:
