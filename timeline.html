@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Homeserver Timeline</title>
+  <script src="chart.umd.js"></script>
+  <script src="hammer.js"></script>
+  <script src="chartjs-plugin-zoom.min.js"></script>
+  <script src="chartjs-plugin-datalabels.min.js"></script>
+  <script src="chartjs-plugin-annotation.min.js"></script>
+  <script src="chartjs-adapter-date-fns.bundle.min.js"></script>
+  <script src="timeline.js" defer="true"></script>
+  <style>
+      div {
+          width: 75%;
+          margin-left: auto;
+          margin-right: auto;
+          padding-bottom: 2em;
+      }
+
+      .reset-zoom {
+          position: absolute;
+          margin-left: auto;
+          margin-right: 3px;
+          margin-top: 10px;
+      }
+  </style>
+</head>
+
+<body>
+  <div>
+    <h1>Homeserver Timeline</h1>
+
+    <a href="/">Homeserver Versions Support</a>
+
+    <p>
+      Timeline of Matrix homeserver versions.
+    </p>
+
+    <p>
+      Forks are considered from the first commit which is not part of the parent project.
+    </p>
+
+    <p>
+      Drag or pinch to zoom. Hold shift to pan.
+    </p>
+
+    <h3>Maturity</h3>
+    <p>
+      Limit the displayed homeservers to their maturity.
+
+      <br>
+
+      <input type="checkbox" id="stable" onclick="render();" checked />
+      <label for="stable">Stable</label>
+
+      <input type="checkbox" id="beta" onclick="render();" checked />
+      <label for="beta">Beta</label>
+
+      <input type="checkbox" id="alpha"onclick="render();" checked />
+      <label for="alpha">Alpha</label>
+
+      <input type="checkbox" id="obsolete" onclick="render();" checked />
+      <label for="obsolete">Obsolete</label>
+
+      <input type="checkbox" id="unstarted" onclick="render();" checked />
+      <label for="unstarted">Unstarted</label>
+    </p>
+  </div>
+
+  <div>
+    <button class="reset-zoom" onclick="resetZoom('homeserver-history');">reset zoom</button>
+    <canvas id="homeserver-history"></canvas>
+  </div>
+</body>
+
+</html>

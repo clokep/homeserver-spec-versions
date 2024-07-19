@@ -184,32 +184,6 @@ function build() {
     buildTimeline("supported-room-versions-over-time", "Supported room versions over time", "Room version", "2015-10-01");
     buildTimeline("default-room-versions-over-time", "Default room versions over time", "Room version", "2015-10-01");
 
-    // Timeline of homeserver history.
-    const historyContext = document.getElementById("homeserver-history");
-    new Chart(historyContext, {
-        type: "line",
-        data: null,
-        options: {
-            plugins: {
-                title: {
-                    display: true,
-                    text: "Homeserver History",
-                },
-                zoom: zoomOptions,
-            },
-            scales: {
-                x: {
-                    min: "2014-08-01",
-                    title: {
-                        display: true,
-                        text: "Date"
-                    },
-                    type: "time"
-                }
-            }
-        }
-    });
-
     // Add the initial data.
     render();
 }
@@ -355,58 +329,6 @@ function renderData(data, displayType) {
         annotations: annotationsFromReleaseDates(data.default_room_versions, rotation=0)
     }
     defaultRoomVersionsChart.update();
-
-    // Create data for family tree diagram.
-    const homeserverHistoryDataset = [];
-    // Group homeservers by family.
-    const projectsByFamily = Object.entries(data.homeserver_versions).sort(([a_name, a], [b_name, b]) => {
-        // Use the project's date by default.
-        let a_date = a.initial_commit_date;
-        let b_date = b.initial_commit_date;
-
-        // If the homeservers are of different families, use the origin project's date.
-        if ((a.forked_from || a_name) !== (b.forked_from || b_name)) {
-            a_date = a.forked_from ? data.homeserver_versions[a.forked_from].initial_commit_date : a.initial_commit_date;
-            b_date = b.forked_from ? data.homeserver_versions[b.forked_from].initial_commit_date : b.initial_commit_date;
-        }
-
-        return new Date(a_date) - new Date(b_date);
-    });
-    for (let idx in projectsByFamily) {
-        // If
-        const [project, projectInfo] = projectsByFamily[idx];
-        let data = [
-            {
-                x: projectInfo.initial_commit_date,
-                y: idx
-            },
-            {
-                x: projectInfo.last_commit_date,
-                y: idx
-            }
-        ];
-
-        if (projectInfo.forked_from) {
-            data.unshift({
-                x: projectInfo.forked_date,
-                y: projectsByFamily.findIndex(
-                  ([p, pInfo]) => p === projectInfo.forked_from)
-            });
-        }
-
-        homeserverHistoryDataset.push(
-          {
-              label: project,
-              data: data
-          }
-        )
-    }
-
-    const homeserverHistoryChart = Chart.getChart("homeserver-history");
-    homeserverHistoryChart.data = {
-        datasets: homeserverHistoryDataset
-    };
-    homeserverHistoryChart.update();
 }
 
 // Build the initial version.
