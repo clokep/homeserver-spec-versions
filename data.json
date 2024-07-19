@@ -80,6 +80,20 @@
             "room_version_dates": {},
             "spec_version_dates": {}
         },
+        "catalyst": {
+            "default_room_version_dates": {},
+            "forked_date": "2022-10-10T00:00:00",
+            "forked_from": "conduit",
+            "initial_commit_date": "2022-10-10T00:00:00",
+            "initial_release_date": null,
+            "lag_after_commit": {},
+            "lag_after_release": {},
+            "lag_all": {},
+            "last_commit_date": "2022-12-21T00:00:00",
+            "maturity": "alpha",
+            "room_version_dates": {},
+            "spec_version_dates": {}
+        },
         "coignet": {
             "default_room_version_dates": {},
             "forked_date": null,
@@ -959,6 +973,20 @@
             "room_version_dates": {},
             "spec_version_dates": {}
         },
+        "gopheus": {
+            "default_room_version_dates": {},
+            "forked_date": null,
+            "forked_from": null,
+            "initial_commit_date": "2014-12-18T10:47:55+01:00",
+            "initial_release_date": null,
+            "lag_after_commit": {},
+            "lag_after_release": {},
+            "lag_all": {},
+            "last_commit_date": "2014-12-18T10:49:14+01:00",
+            "maturity": "unstarted",
+            "room_version_dates": {},
+            "spec_version_dates": {}
+        },
         "grapevine": {
             "default_room_version_dates": {
                 "10": [
@@ -1446,6 +1474,20 @@
                 ]
             }
         },
+        "hungryserv": {
+            "default_room_version_dates": {},
+            "forked_date": null,
+            "forked_from": null,
+            "initial_commit_date": "2022-06-05T00:00:00",
+            "initial_release_date": null,
+            "lag_after_commit": {},
+            "lag_after_release": {},
+            "lag_all": {},
+            "last_commit_date": "2024-07-19T14:50:31.426991",
+            "maturity": "beta",
+            "room_version_dates": {},
+            "spec_version_dates": {}
+        },
         "insomnium": {
             "default_room_version_dates": {},
             "forked_date": null,
@@ -1468,6 +1510,20 @@
                     ]
                 ]
             }
+        },
+        "jmatrix": {
+            "default_room_version_dates": {},
+            "forked_date": null,
+            "forked_from": null,
+            "initial_commit_date": "2023-11-16T20:11:29+01:00",
+            "initial_release_date": null,
+            "lag_after_commit": {},
+            "lag_after_release": {},
+            "lag_all": {},
+            "last_commit_date": "2023-11-16T20:11:29+01:00",
+            "maturity": "unstarted",
+            "room_version_dates": {},
+            "spec_version_dates": {}
         },
         "jsynapse": {
             "default_room_version_dates": {},

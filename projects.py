@@ -15,7 +15,7 @@ class ProjectData:
     initial_release_date: datetime | None
     initial_commit_date: datetime
     forked_date: datetime | None
-    forked_from: str
+    forked_from: str | None
     last_commit_date: datetime
     spec_version_dates: dict[str, list[tuple[datetime, datetime]]]
     room_version_dates: dict[str, list[tuple[datetime, datetime]]]
@@ -531,6 +531,26 @@ ADDITIONAL_PROJECTS = [
         forked_from=None,
     ),
     ProjectMetadata(
+        name="gopheus",
+        description="Testing goplang with Matrix.org Homeserver",
+        author="SkaveRat",
+        maturity="Unstarted",
+        language="Go",
+        licence="GPL-2.0",
+        repository="https://github.com/SkaveRat/gopheus",
+        room=None,
+        branch="master",
+        spec_version_paths=[],
+        room_version_repo=None,
+        room_version_paths=[],
+        room_version_pattern="",
+        default_room_version_paths=[],
+        default_room_version_pattern="",
+        earliest_commit=None,
+        earliest_tag=None,
+        forked_from=None,
+    ),
+    ProjectMetadata(
         name="Harmony",
         description="A lighter-weight fork of the Dendrite homeserver for the Matrix protocol",
         author="Neil Alexander",
@@ -600,7 +620,7 @@ ADDITIONAL_PROJECTS = [
     ProjectMetadata(
         name="Insomnium",
         description="A Matrix homeserver implementation.",
-        author="",
+        author="Lucas Neuber",
         maturity="Unstarted",
         language="C#",
         licence="GPL-3.0",
@@ -608,6 +628,26 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="production",
         spec_version_paths=["Insomnium/src/Insomnium/Program.cs"],
+        room_version_repo=None,
+        room_version_paths=[],
+        room_version_pattern="",
+        default_room_version_paths=[],
+        default_room_version_pattern="",
+        earliest_commit=None,
+        earliest_tag=None,
+        forked_from=None,
+    ),
+    ProjectMetadata(
+        name="jmatrix",
+        description="Matrix homeserver written in Java/Quarkus",
+        author="Lazar Bulić",
+        maturity="Unstarted",
+        language="Java",
+        licence="Apache-2.0",
+        repository="https://github.com/pendula95/jmatrix",
+        room=None,
+        branch="master",
+        spec_version_paths=[],
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
@@ -837,14 +877,65 @@ ADDITIONAL_PROJECTS = [
 ]
 
 
-# Other projects with essentially no commits:
-_OTHER_PROJECTS = [
-    "https://github.com/pendula95/jmatrix",
-    "https://github.com/SkaveRat/gopheus",
-    "https://github.com/binex-dsk/calcium",
-]
-
-# Known proprietary servers: hungryserv
+# Data to dump verbatim into data.json, this is for e.g. proprietary homeservers,
+# repos that have been deleted, etc.
+#
+# Data may be inaccurate.
+MANUAL_PROJECTS = {
+    # https://github.com/binex-dsk/calcium
+    #
+    # matrix homeserver... but BASED!
+    # "calcium": ProjectData(
+    #     initial_release_date=None,
+    #     initial_commit_date=datetime(2022, 6, 5, 0, 0, 0),
+    #     forked_date=None,
+    #     forked_from=None,
+    #     last_commit_date=datetime(),
+    #     spec_version_dates={},
+    #     room_version_dates={},
+    #     default_room_version_dates={},
+    #     lag_all={},
+    #     lag_after_commit={},
+    #     lag_after_release={},
+    #     maturity="unstarted",
+    # ),
+    # https://git.spec.cat/Nyaaori/catalyst
+    "catalyst": ProjectData(
+        initial_release_date=None,
+        # Pre-end of 2022-10-10:
+        # https://matrix.org/blog/2023/01/03/matrix-community-year-in-review-2022
+        # https://gitlab.com/famedly/conduit/-/commit/2b7c19835b65e4dd3a6a32466a9f45b06bf1ced2
+        initial_commit_date=datetime(2022, 10, 10, 0, 0, 0),
+        forked_date=datetime(2022, 10, 10, 0, 0, 0),
+        forked_from="conduit",
+        # No idea, use the latest commit in conduit from them?
+        # https://gitlab.com/famedly/conduit/-/commit/7cc346bc18d50d614bd07f4d2dbe0186eb024389
+        last_commit_date=datetime(2022, 12, 21, 0, 0, 0),
+        spec_version_dates={},
+        room_version_dates={},
+        default_room_version_dates={},
+        lag_all={},
+        lag_after_commit={},
+        lag_after_release={},
+        maturity="alpha",
+    ),
+    "hungryserv": ProjectData(
+        initial_release_date=None,
+        # Pre 2022-06-10: https://sumnerevans.com/posts/travel/2022-lisbon-and-paris/ericeira-portugal/
+        initial_commit_date=datetime(2022, 6, 5, 0, 0, 0),
+        forked_date=None,
+        forked_from=None,
+        # It is being actively developed.
+        last_commit_date=datetime.now(),
+        spec_version_dates={},
+        room_version_dates={},
+        default_room_version_dates={},
+        lag_all={},
+        lag_after_commit={},
+        lag_after_release={},
+        maturity="beta",
+    ),
+}
 
 
 def download_projects():

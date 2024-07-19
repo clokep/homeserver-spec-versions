@@ -9,7 +9,7 @@ import subprocess
 import git
 from git import Repo
 
-from projects import ProjectMetadata, load_projects, ProjectData
+from projects import ProjectMetadata, load_projects, ProjectData, MANUAL_PROJECTS
 
 
 @dataclass
@@ -460,6 +460,9 @@ if __name__ == "__main__":
         result["homeserver_versions"][project.name.lower()] = asdict(
             get_project_dates(project, spec_versions)
         )
+
+    for project, project_data in MANUAL_PROJECTS.items():
+        result["homeserver_versions"][project.lower()] = asdict(project_data)
 
     with open("data.json", "w") as f:
         json.dump(result, f, default=json_encode, sort_keys=True, indent=4)
