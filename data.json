@@ -1483,7 +1483,7 @@
             "lag_after_commit": {},
             "lag_after_release": {},
             "lag_all": {},
-            "last_commit_date": "2024-08-15T08:33:55.206083",
+            "last_commit_date": "2024-08-15T09:18:09.893852",
             "maturity": "beta",
             "room_version_dates": {},
             "spec_version_dates": {}
@@ -1820,7 +1820,7 @@
             "last_commit_date": "2024-03-28T11:40:34+01:00",
             "maturity": "alpha",
             "room_version_dates": {
-                "\"11\"": [
+                "11": [
                     [
                         "2024-01-02T10:51:31+01:00",
                         null

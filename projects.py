@@ -759,7 +759,7 @@ ADDITIONAL_PROJECTS = [
         ],
         room_version_repo=None,
         room_version_paths=["src/utils/state_res.cpp"],
-        room_version_pattern=r'"\d+"',
+        room_version_pattern=r'"(\d+)"',
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
