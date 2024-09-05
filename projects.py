@@ -164,7 +164,7 @@ ADDITIONAL_METADATA = {
             "src/core/config/mod.rs",
         ],
         default_room_version_pattern=r'default: "(\d+)"|default: RoomVersionId::V(?:ersion)?(\d+),|default_room_version = RoomVersionId::V(?:ersion)?(\d+);|^ +RoomVersionId::V(?:ersion)?(\d+)$|default_default_room_version.+RoomVersionId::V(\d+)',
-        earliest_commit="9c3b3daafcbc95647b5641a6edc975e2ffc04b04",
+        earliest_commit="40908b24e74bda4c80a5a6183602afcc0c04449b",
         earliest_tag=None,
         forked_from="conduit",
     ),
