@@ -207,6 +207,37 @@ def get_spec_dates() -> (
     return spec_versions, room_versions, default_room_versions
 
 
+def resolve_versions_at_commit(
+    versions_at_commit: list[CommitVersionInfo],
+) -> dict[str, list[VersionInfo]]:
+    """
+    Convert a list of changing versions by commit/tag into a dictionary of version
+    mapped to the commits/tags that changed it.
+    """
+
+    # Map of version to list of commit metadata for when support for that version changed.
+    versions = {}
+    for commit_info in versions_at_commit:
+        for version in commit_info.versions:
+            # If this version has not been found before or was previously removed,
+            # add a new entry.
+            if version not in versions:
+                versions[version] = [VersionInfo(commit_info.commit, commit_info.date)]
+            elif versions[version][-1].last_commit:
+                versions[version].append(
+                    VersionInfo(commit_info.commit, commit_info.date)
+                )
+
+        # If any versions are no longer found on this commit, but are still
+        # considered as supported, mark as unsupported.
+        for version, version_info in versions.items():
+            if version not in commit_info.versions and not version_info[-1].last_commit:
+                version_info[-1].last_commit = commit_info.commit
+                version_info[-1].end_date = commit_info.date
+
+    return versions
+
+
 def get_project_versions(
     project: ProjectMetadata,
     earliest_commit: str | None,
@@ -261,26 +292,19 @@ def get_project_versions(
                 )
 
     # Map of version to list of commit metadata for when support for that version changed.
-    versions = {}
-    for commit_info in versions_at_commit:
-        for version in commit_info.versions:
-            # If this version has not been found before or was previously removed,
-            # add a new entry.
-            if version not in versions:
-                versions[version] = [VersionInfo(commit_info.commit, commit_info.date)]
-            elif versions[version][-1].last_commit:
-                versions[version].append(
-                    VersionInfo(commit_info.commit, commit_info.date)
-                )
-
-        # If any versions are no longer found on this commit, but are still
-        # considered as supported, mark as unsupported.
-        for version, version_info in versions.items():
-            if version not in commit_info.versions and not version_info[-1].last_commit:
-                version_info[-1].last_commit = commit_info.commit
-                version_info[-1].end_date = commit_info.date
+    versions = resolve_versions_at_commit(versions_at_commit)
 
     return versions
+
+
+def version_info_to_dates(
+    versions: dict[str, list[VersionInfo]],
+) -> dict[str, list[tuple[datetime, datetime]]]:
+    """Convert a map of version to list of version infos to version to list of tuples of dates."""
+    return {
+        v: [(info.start_date, info.end_date) for info in version_info]
+        for v, version_info in versions.items()
+    }
 
 
 def get_project_dates(
@@ -314,7 +338,7 @@ def get_project_dates(
             "r2.0.0",
         ],
     )
-    print(f"Loaded {project.name} spec versions: {versions}")
+    print(f"Loaded {project.name} spec versions: {versions.keys()}")
 
     # If a different repo is used for room versions, check it out.
     if project.room_version_repo:
@@ -335,7 +359,7 @@ def get_project_dates(
         project.room_version_pattern,
         to_ignore=[],
     )
-    print(f"Loaded {project.name} room versions: {room_versions}")
+    print(f"Loaded {project.name} room versions: {room_versions.keys()}")
 
     # Map of default room version to list of commit metadata for when support for that version changed.
     default_room_versions = get_project_versions(
@@ -347,7 +371,9 @@ def get_project_dates(
         # Dendrite declared room version 2 as a default, but that was invalid.
         to_ignore=["2"],
     )
-    print(f"Loaded {project.name} default room versions: {default_room_versions}")
+    print(
+        f"Loaded {project.name} default room versions: {default_room_versions.keys()}"
+    )
     # TODO Validate there's no overlap of default room versions?
 
     # Resolve commits to date for when each version was first supported.
@@ -396,18 +422,9 @@ def get_project_dates(
         forked_date=forked_date,
         forked_from=project.forked_from,
         last_commit_date=last_commit_date,
-        spec_version_dates={
-            v: [(info.start_date, info.end_date) for info in version_info]
-            for v, version_info in versions.items()
-        },
-        room_version_dates={
-            v: [(info.start_date, info.end_date) for info in version_info]
-            for v, version_info in room_versions.items()
-        },
-        default_room_version_dates={
-            v: [(info.start_date, info.end_date) for info in version_info]
-            for v, version_info in default_room_versions.items()
-        },
+        spec_version_dates=version_info_to_dates(versions),
+        room_version_dates=version_info_to_dates(room_versions),
+        default_room_version_dates=version_info_to_dates(default_room_versions),
         lag_all=calculate_lag(versions_dates_all, spec_versions),
         lag_after_commit=calculate_lag(version_dates_after_commit, spec_versions),
         lag_after_release=calculate_lag(version_dates_after_release, spec_versions),
