@@ -14,6 +14,9 @@ from projects import ProjectMetadata, load_projects, ProjectData, MANUAL_PROJECT
 
 @dataclass
 class CommitVersionInfo:
+    """Versions at a particular commit or tag."""
+
+    # Commit or tag.
     commit: str
     date: datetime
     versions: set[str]
@@ -245,7 +248,7 @@ def get_project_versions(
     paths: list[str],
     pattern: str,
     to_ignore: list[str],
-) -> dict[str, list[VersionInfo]]:
+) -> tuple[dict[str, list[VersionInfo]], dict[str, list[VersionInfo]]]:
     """
     Calculate the supported versions for a project and metadata about when support
     was added/removed.
@@ -258,6 +261,9 @@ def get_project_versions(
 
     # List of commits with their version info.
     versions_at_commit = []
+    versions_at_tag = []
+
+    git_cmd = git.cmd.Git(repo.working_dir)
 
     # If no paths are given, then no versions were ever supported.
     if paths:
@@ -291,10 +297,24 @@ def get_project_versions(
                     )
                 )
 
+            # Resolve the commit to the *next* tag.
+            tags = git_cmd.execute(
+                ("git", "tag", "--contains", commit.hexsha)
+            ).splitlines()
+            # If no tags were found than this wasn't released yet.
+            if tags:
+                tag = tags[0]
+
+                if not versions_at_tag or versions_at_tag[-1].versions != cur_versions:
+                    versions_at_tag.append(
+                        CommitVersionInfo(tag, get_tag_datetime(repo.tags[tag]), cur_versions)
+                    )
+
     # Map of version to list of commit metadata for when support for that version changed.
     versions = resolve_versions_at_commit(versions_at_commit)
+    tags = resolve_versions_at_commit(versions_at_tag)
 
-    return versions
+    return versions, tags
 
 
 def version_info_to_dates(
@@ -325,7 +345,7 @@ def get_project_dates(
     repo.head.reset(index=True, working_tree=True)
 
     # Map of spec version to list of commit metadata for when support for that version changed.
-    versions = get_project_versions(
+    versions, versions_by_tag = get_project_versions(
         project,
         project.earliest_commit,
         repo,
@@ -338,7 +358,7 @@ def get_project_dates(
             "r2.0.0",
         ],
     )
-    print(f"Loaded {project.name} spec versions: {versions.keys()}")
+    print(f"Loaded {project.name} spec versions: {list(versions.keys())}")
 
     # If a different repo is used for room versions, check it out.
     if project.room_version_repo:
@@ -351,7 +371,7 @@ def get_project_dates(
         earliest_room_version_commit = project.earliest_commit
 
     # Map of room version to list of commit metadata for when support for that version changed.
-    room_versions = get_project_versions(
+    room_versions, room_versions_by_tag = get_project_versions(
         project,
         earliest_room_version_commit,
         room_version_repo,
@@ -359,10 +379,10 @@ def get_project_dates(
         project.room_version_pattern,
         to_ignore=[],
     )
-    print(f"Loaded {project.name} room versions: {room_versions.keys()}")
+    print(f"Loaded {project.name} room versions: {list(room_versions.keys())}")
 
     # Map of default room version to list of commit metadata for when support for that version changed.
-    default_room_versions = get_project_versions(
+    default_room_versions, default_room_versions_by_tag = get_project_versions(
         project,
         project.earliest_commit,
         repo,
@@ -372,7 +392,7 @@ def get_project_dates(
         to_ignore=["2"],
     )
     print(
-        f"Loaded {project.name} default room versions: {default_room_versions.keys()}"
+        f"Loaded {project.name} default room versions: {list(default_room_versions.keys())}"
     )
     # TODO Validate there's no overlap of default room versions?
 
@@ -382,7 +402,7 @@ def get_project_dates(
         for version, version_info in versions.items()
     }
 
-    print(f"Loaded {project.name} dates: {versions_dates_all.keys()}")
+    print(f"Loaded {project.name} dates: {list(versions_dates_all.keys())}")
 
     # Get the earliest release of this project.
     if project.earliest_commit:
@@ -422,9 +442,12 @@ def get_project_dates(
         forked_date=forked_date,
         forked_from=project.forked_from,
         last_commit_date=last_commit_date,
-        spec_version_dates=version_info_to_dates(versions),
-        room_version_dates=version_info_to_dates(room_versions),
-        default_room_version_dates=version_info_to_dates(default_room_versions),
+        spec_version_dates_by_commit=version_info_to_dates(versions),
+        spec_version_dates_by_tag=version_info_to_dates(versions_by_tag),
+        room_version_dates_by_commit=version_info_to_dates(room_versions),
+        room_version_dates_by_tag=version_info_to_dates(room_versions_by_tag),
+        default_room_version_dates_by_commit=version_info_to_dates(default_room_versions),
+        default_room_version_dates_by_tag=version_info_to_dates(default_room_versions_by_tag),
         lag_all=calculate_lag(versions_dates_all, spec_versions),
         lag_after_commit=calculate_lag(version_dates_after_commit, spec_versions),
         lag_after_release=calculate_lag(version_dates_after_release, spec_versions),

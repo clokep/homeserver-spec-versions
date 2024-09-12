@@ -17,13 +17,22 @@ class ProjectData:
     forked_date: datetime | None
     forked_from: str | None
     last_commit_date: datetime
-    spec_version_dates: dict[
+    spec_version_dates_by_commit: dict[
         str, list[tuple[str, datetime, str | None, datetime | None]]
     ]
-    room_version_dates: dict[
+    spec_version_dates_by_tag: dict[
         str, list[tuple[str, datetime, str | None, datetime | None]]
     ]
-    default_room_version_dates: dict[
+    room_version_dates_by_commit: dict[
+        str, list[tuple[str, datetime, str | None, datetime | None]]
+    ]
+    room_version_dates_by_tag: dict[
+        str, list[tuple[str, datetime, str | None, datetime | None]]
+    ]
+    default_room_version_dates_by_commit: dict[
+        str, list[tuple[str, datetime, str | None, datetime | None]]
+    ]
+    default_room_version_dates_by_tag: dict[
         str, list[tuple[str, datetime, str | None, datetime | None]]
     ]
     lag_all: dict[str, int]
@@ -960,9 +969,12 @@ MANUAL_PROJECTS = {
         # No idea, use the latest commit in conduit from them?
         # https://gitlab.com/famedly/conduit/-/commit/7cc346bc18d50d614bd07f4d2dbe0186eb024389
         last_commit_date=datetime(2022, 12, 21, 0, 0, 0),
-        spec_version_dates={},
-        room_version_dates={},
-        default_room_version_dates={},
+        spec_version_dates_by_commit={},
+        spec_version_dates_by_tag={},
+        room_version_dates_by_commit={},
+        room_version_dates_by_tag={},
+        default_room_version_dates_by_commit={},
+        default_room_version_dates_by_tag={},
         lag_all={},
         lag_after_commit={},
         lag_after_release={},
@@ -976,9 +988,12 @@ MANUAL_PROJECTS = {
         forked_from=None,
         # It is being actively developed.
         last_commit_date=datetime.now(),
-        spec_version_dates={},
-        room_version_dates={},
-        default_room_version_dates={},
+        spec_version_dates_by_commit={},
+        spec_version_dates_by_tag={},
+        room_version_dates_by_commit={},
+        room_version_dates_by_tag={},
+        default_room_version_dates_by_commit={},
+        default_room_version_dates_by_tag={},
         lag_all={},
         lag_after_commit={},
         lag_after_release={},

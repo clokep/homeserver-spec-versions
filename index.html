@@ -83,7 +83,18 @@
         <option value="after_commit">Spec releases after initial project commit</option>
         <option value="after_release" selected>Spec releases after initial project release</option>
       </select>
+    </p>
 
+    <h3>Commit or tag date</h3>
+    <p>
+      Use the commit date or first release (tag) date?
+
+      <br>
+
+      <select id="date-type" onchange="render();">
+        <option value="by_commit" >Commit date</option>
+        <option value="by_tag" selected>Release date</option>
+      </select>
     </p>
   </div>
 

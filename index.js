@@ -67,6 +67,7 @@ function addVersionsToDataset(dataset, now, project, projectVersions) {
                         return {
                             // verDates is [commit, date, commit | null, date | null]
                             x: [verDates[1], verDates[3] || now],
+                            x_label: [verDates[0], verDates[2]],
                             y: verString
                         };
                     }
@@ -95,14 +96,21 @@ function buildTimeline(elementId, title, yAxisTitle, earliestDate) {
                     callbacks: {
                         // Format the dates as human-readable strings.
                         label(context) {
-                            let label = context.dataset.label + ": ";
+                            let labels = [context.dataset.label];
 
-                            label += new Date(context.parsed._custom.start).toLocaleString();
-                            if (context.parsed._custom.end) {
-                                label += " - " + new Date(context.parsed._custom.end).toLocaleString();
+                            // x[0] is a string, while x[1] is already parsed.
+                            let date_label = new Date(context.raw.x[0]).toLocaleString();
+                            if (context.raw.x[1]) {
+                                date_label += " - " + context.raw.x[1].toLocaleString();
+                            }
+                            labels.push(date_label);
+
+                            // Include tags, if available.
+                            if (context.raw.x_label) {
+                                labels.push(context.raw.x_label[0] + " - " + (context.raw.x_label[1] || "dev"));
                             }
 
-                            return label;
+                            return labels;
                         }
                     }
                 },
@@ -229,6 +237,7 @@ function annotationsFromReleaseDates(releaseDates, rotation) {
 function render() {
     let allowedMaturities = ["stable", "beta", "alpha", "obsolete", "unstarted"].filter(maturity => document.getElementById(maturity).checked);
     let displayType = document.getElementById("display-type").value;
+    let dateType = document.getElementById("date-type").value;
 
     fetch("data.json").then(response => response.json()).then(data => {
         // Filter the displayed projects by maturity.
@@ -238,14 +247,14 @@ function render() {
             )
         );
 
-        renderData(data, displayType);
+        renderData(data, displayType, dateType);
     });
 }
 
 /**
  * Render the data which has already been filtered for ignored homeservers.
  */
-function renderData(data, displayType) {
+function renderData(data, displayType, dateType) {
     // The full list of released spec versions.
     const specVersions = Object.keys(data.spec_versions.version_dates).sort(cmpVersions);
     // The full list of room versions.
@@ -307,10 +316,10 @@ function renderData(data, displayType) {
     const defaultRoomVersionsDataset = [];
 
     for (let project in data.homeserver_versions) {
-        addVersionsToDataset(specVersionsDataset, now, project, data.homeserver_versions[project].spec_version_dates);
+        addVersionsToDataset(specVersionsDataset, now, project, data.homeserver_versions[project]["spec_version_dates_" + dateType]);
 
         for (let [data_key, dataset] of [["room_version_dates", roomVersionsDataset], ["default_room_version_dates", defaultRoomVersionsDataset]]) {
-            addVersionsToDataset(dataset, now, project, data.homeserver_versions[project][data_key]);
+            addVersionsToDataset(dataset, now, project, data.homeserver_versions[project][data_key + "_" + dateType]);
         }
     }
 

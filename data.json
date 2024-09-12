@@ -9,7 +9,8 @@
     },
     "homeserver_versions": {
         "architex": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2021-06-22T14:09:25+02:00",
@@ -21,7 +22,7 @@
             },
             "last_commit_date": "2021-09-14T21:10:57+02:00",
             "maturity": "obsolete",
-            "room_version_dates": {
+            "room_version_dates_by_commit": {
                 "5": [
                     [
                         "34da9da261f254a3c71809accf22f3b97f68307d",
@@ -31,7 +32,8 @@
                     ]
                 ]
             },
-            "spec_version_dates": {
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
                 "r0.6.1": [
                     [
                         "232df26b8518f13ff96a91d64724d9580f291669",
@@ -40,10 +42,12 @@
                         null
                     ]
                 ]
-            }
+            },
+            "spec_version_dates_by_tag": {}
         },
         "axiom": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2021-02-17T14:42:36+01:00",
@@ -53,11 +57,14 @@
             "lag_all": {},
             "last_commit_date": "2021-02-18T15:29:17+01:00",
             "maturity": "unstarted",
-            "room_version_dates": {},
-            "spec_version_dates": {}
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {},
+            "spec_version_dates_by_tag": {}
         },
         "bullettime": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2015-09-18T00:49:09+02:00",
@@ -67,11 +74,14 @@
             "lag_all": {},
             "last_commit_date": "2015-09-21T14:14:26+02:00",
             "maturity": "obsolete",
-            "room_version_dates": {},
-            "spec_version_dates": {}
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {},
+            "spec_version_dates_by_tag": {}
         },
         "casniam": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2019-01-20T14:06:35+00:00",
@@ -81,11 +91,14 @@
             "lag_all": {},
             "last_commit_date": "2020-11-30T00:00:22+00:00",
             "maturity": "obsolete",
-            "room_version_dates": {},
-            "spec_version_dates": {}
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {},
+            "spec_version_dates_by_tag": {}
         },
         "catalyst": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": "2022-10-10T00:00:00",
             "forked_from": "conduit",
             "initial_commit_date": "2022-10-10T00:00:00",
@@ -95,11 +108,14 @@
             "lag_all": {},
             "last_commit_date": "2022-12-21T00:00:00",
             "maturity": "alpha",
-            "room_version_dates": {},
-            "spec_version_dates": {}
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {},
+            "spec_version_dates_by_tag": {}
         },
         "coignet": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2017-11-10T15:54:34+01:00",
@@ -109,11 +125,13 @@
             "lag_all": {},
             "last_commit_date": "2018-01-31T19:07:38+01:00",
             "maturity": "unstarted",
-            "room_version_dates": {},
-            "spec_version_dates": {}
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {},
+            "spec_version_dates_by_tag": {}
         },
         "conduit": {
-            "default_room_version_dates": {
+            "default_room_version_dates_by_commit": {
                 "10": [
                     [
                         "e19e6a4bff050f71a1d2c5b8e4f734d3475ac8c3",
@@ -136,6 +154,32 @@
                         "2022-12-21T15:51:47+01:00",
                         "e19e6a4bff050f71a1d2c5b8e4f734d3475ac8c3",
                         "2024-04-20T18:47:56+00:00"
+                    ]
+                ]
+            },
+            "default_room_version_dates_by_tag": {
+                "10": [
+                    [
+                        "v0.7.0",
+                        "2024-04-24T23:23:33+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "6": [
+                    [
+                        "v0.2.0",
+                        "2021-09-02T11:10:23+00:00",
+                        "v0.5.0",
+                        "2022-12-21T15:51:47+01:00"
+                    ]
+                ],
+                "9": [
+                    [
+                        "v0.5.0",
+                        "2022-12-21T15:51:47+01:00",
+                        "v0.7.0",
+                        "2024-04-24T23:23:33+00:00"
                     ]
                 ]
             },
@@ -173,7 +217,7 @@
             },
             "last_commit_date": "2024-08-28T10:59:41+00:00",
             "maturity": "beta",
-            "room_version_dates": {
+            "room_version_dates_by_commit": {
                 "10": [
                     [
                         "53f14a2c4c216b529cc63137d8704573197aed19",
@@ -259,7 +303,93 @@
                     ]
                 ]
             },
-            "spec_version_dates": {
+            "room_version_dates_by_tag": {
+                "10": [
+                    [
+                        "v0.5.0",
+                        "2022-12-21T15:51:47+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "11": [
+                    [
+                        "v0.7.0",
+                        "2024-04-24T23:23:33+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "3": [
+                    [
+                        "v0.4.0",
+                        "2022-06-23T07:43:05+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "4": [
+                    [
+                        "v0.4.0",
+                        "2022-06-23T07:43:05+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "5": [
+                    [
+                        "v0.2.0",
+                        "2021-09-02T11:10:23+00:00",
+                        "v0.2.0",
+                        "2021-09-02T11:10:23+00:00"
+                    ],
+                    [
+                        "v0.2.0",
+                        "2021-09-02T11:10:23+00:00",
+                        "v0.2.0",
+                        "2021-09-02T11:10:23+00:00"
+                    ],
+                    [
+                        "v0.2.0",
+                        "2021-09-02T11:10:23+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "6": [
+                    [
+                        "v0.2.0",
+                        "2021-09-02T11:10:23+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "7": [
+                    [
+                        "v0.4.0",
+                        "2022-06-23T07:43:05+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "8": [
+                    [
+                        "v0.4.0",
+                        "2022-06-23T07:43:05+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "9": [
+                    [
+                        "v0.4.0",
+                        "2022-06-23T07:43:05+00:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "spec_version_dates_by_commit": {
                 "r0.0.1": [
                     [
                         "34a53ce20a49d9a9d6ffd98a04d0164a73a16a79",
@@ -362,14 +492,128 @@
                         null
                     ]
                 ]
+            },
+            "spec_version_dates_by_tag": {
+                "r0.0.1": [
+                    [
+                        "v0.2.0",
+                        "2021-09-02T11:10:23+00:00",
+                        "v0.2.0",
+                        "2021-09-02T11:10:23+00:00"
+                    ]
+                ],
+                "r0.1.0": [
+                    [
+                        "v0.2.0",
+                        "2021-09-02T11:10:23+00:00",
+                        "v0.2.0",
+                        "2021-09-02T11:10:23+00:00"
+                    ]
+                ],
+                "r0.2.0": [
+                    [
+                        "v0.2.0",
+                        "2021-09-02T11:10:23+00:00",
+                        "v0.2.0",
+                        "2021-09-02T11:10:23+00:00"
+                    ]
+                ],
+                "r0.3.0": [
+                    [
+                        "v0.2.0",
+                        "2021-09-02T11:10:23+00:00",
+                        "v0.2.0",
+                        "2021-09-02T11:10:23+00:00"
+                    ]
+                ],
+                "r0.4.0": [
+                    [
+                        "v0.2.0",
+                        "2021-09-02T11:10:23+00:00",
+                        "v0.2.0",
+                        "2021-09-02T11:10:23+00:00"
+                    ]
+                ],
+                "r0.5.0": [
+                    [
+                        "v0.2.0",
+                        "2021-09-02T11:10:23+00:00",
+                        "v0.2.0",
+                        "2021-09-02T11:10:23+00:00"
+                    ],
+                    [
+                        "v0.2.0",
+                        "2021-09-02T11:10:23+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.6.0": [
+                    [
+                        "v0.2.0",
+                        "2021-09-02T11:10:23+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.1": [
+                    [
+                        "v0.4.0",
+                        "2022-06-23T07:43:05+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.2": [
+                    [
+                        "v0.4.0",
+                        "2022-06-23T07:43:05+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.3": [
+                    [
+                        "v0.6.0",
+                        "2023-08-10T17:01:56+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.4": [
+                    [
+                        "v0.6.0",
+                        "2023-08-10T17:01:56+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.5": [
+                    [
+                        "v0.7.0",
+                        "2024-04-24T23:23:33+00:00",
+                        null,
+                        null
+                    ]
+                ]
             }
         },
         "conduwuit": {
-            "default_room_version_dates": {
+            "default_room_version_dates_by_commit": {
                 "10": [
                     [
                         "40908b24e74bda4c80a5a6183602afcc0c04449b",
                         "2023-09-13T20:36:03-04:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "default_room_version_dates_by_tag": {
+                "10": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
                         null,
                         null
                     ]
@@ -403,7 +647,7 @@
             },
             "last_commit_date": "2024-09-01T12:44:24-04:00",
             "maturity": "beta",
-            "room_version_dates": {
+            "room_version_dates_by_commit": {
                 "1": [
                     [
                         "6695b8d8b69905bed2d2e1d77196c1861cac5b96",
@@ -493,7 +737,97 @@
                     ]
                 ]
             },
-            "spec_version_dates": {
+            "room_version_dates_by_tag": {
+                "1": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00"
+                    ]
+                ],
+                "10": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "11": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "2": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "3": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "4": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "5": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "6": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "7": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "8": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "9": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "spec_version_dates_by_commit": {
                 "r0.0.1": [
                     [
                         "5422d0ceddde7aa92f3ea653865a5553761f4fd6",
@@ -606,10 +940,124 @@
                         null
                     ]
                 ]
+            },
+            "spec_version_dates_by_tag": {
+                "r0.0.1": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.1.0": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.2.0": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.3.0": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.4.0": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.5.0": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.6.0": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.6.1": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.1": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.11": [
+                    [
+                        "v0.4.6",
+                        "2024-09-01T12:44:24-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.2": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.3": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.4": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.5": [
+                    [
+                        "v0.3.0",
+                        "2024-04-26T02:03:40-04:00",
+                        null,
+                        null
+                    ]
+                ]
             }
         },
         "construct": {
-            "default_room_version_dates": {
+            "default_room_version_dates_by_commit": {
                 "4": [
                     [
                         "f4600bb002f3fa68b27b67dd02ad4f127282fda7",
@@ -636,6 +1084,38 @@
                     [
                         "f08b9e85cd9073a90a4b0302ed2ec6e6b974c893",
                         "2023-04-21T21:40:50-07:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "default_room_version_dates_by_tag": {
+                "4": [
+                    [
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00",
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00"
+                    ]
+                ],
+                "5": [
+                    [
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00",
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00"
+                    ],
+                    [
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00",
+                        "0.9.534",
+                        "2023-04-22T22:04:59-07:00"
+                    ]
+                ],
+                "6": [
+                    [
+                        "0.9.534",
+                        "2023-04-22T22:04:59-07:00",
                         null,
                         null
                     ]
@@ -684,7 +1164,7 @@
             },
             "last_commit_date": "2023-05-01T12:45:37-07:00",
             "maturity": "beta",
-            "room_version_dates": {
+            "room_version_dates_by_commit": {
                 "1": [
                     [
                         "2f088591f750d055e630cd69dac86b878c3d8efc",
@@ -766,7 +1246,89 @@
                     ]
                 ]
             },
-            "spec_version_dates": {
+            "room_version_dates_by_tag": {
+                "1": [
+                    [
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00",
+                        null,
+                        null
+                    ]
+                ],
+                "10": [
+                    [
+                        "0.9.206",
+                        "2023-02-11T15:38:14-08:00",
+                        null,
+                        null
+                    ]
+                ],
+                "2": [
+                    [
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00",
+                        null,
+                        null
+                    ]
+                ],
+                "3": [
+                    [
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00",
+                        null,
+                        null
+                    ]
+                ],
+                "4": [
+                    [
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00",
+                        null,
+                        null
+                    ]
+                ],
+                "5": [
+                    [
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00",
+                        null,
+                        null
+                    ]
+                ],
+                "6": [
+                    [
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00",
+                        null,
+                        null
+                    ]
+                ],
+                "7": [
+                    [
+                        "0.7.747",
+                        "2022-08-11T13:28:12-07:00",
+                        null,
+                        null
+                    ]
+                ],
+                "8": [
+                    [
+                        "0.7.747",
+                        "2022-08-11T13:28:12-07:00",
+                        null,
+                        null
+                    ]
+                ],
+                "9": [
+                    [
+                        "0.7.747",
+                        "2022-08-11T13:28:12-07:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "spec_version_dates_by_commit": {
                 "r0.0.1": [
                     [
                         "b592b69b8670413340c297e5a41caf153d832e57",
@@ -903,10 +1465,149 @@
                         null
                     ]
                 ]
+            },
+            "spec_version_dates_by_tag": {
+                "r0.0.1": [
+                    [
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00",
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00"
+                    ],
+                    [
+                        "0.7.747",
+                        "2022-08-11T13:28:12-07:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.1.0": [
+                    [
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00",
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00"
+                    ],
+                    [
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.2.0": [
+                    [
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00",
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00"
+                    ],
+                    [
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.3.0": [
+                    [
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00",
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00"
+                    ],
+                    [
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.4.0": [
+                    [
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.5.0": [
+                    [
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.6.0": [
+                    [
+                        "0.0.10020",
+                        "2020-12-02T20:47:37-08:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.6.1": [
+                    [
+                        "0.3.22",
+                        "2020-12-14T04:09:43-08:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.1": [
+                    [
+                        "0.7.747",
+                        "2022-08-11T13:28:12-07:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.2": [
+                    [
+                        "0.7.747",
+                        "2022-08-11T13:28:12-07:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.3": [
+                    [
+                        "0.9.206",
+                        "2023-02-11T15:38:14-08:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.4": [
+                    [
+                        "0.9.206",
+                        "2023-02-11T15:38:14-08:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.5": [
+                    [
+                        "0.9.206",
+                        "2023-02-11T15:38:14-08:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.6": [
+                    [
+                        "0.9.534",
+                        "2023-04-22T22:04:59-07:00",
+                        null,
+                        null
+                    ]
+                ]
             }
         },
         "cortex": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2019-02-17T10:52:50+01:00",
@@ -916,11 +1617,13 @@
             "lag_all": {},
             "last_commit_date": "2019-02-24T17:58:34+01:00",
             "maturity": "unstarted",
-            "room_version_dates": {},
-            "spec_version_dates": {}
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {},
+            "spec_version_dates_by_tag": {}
         },
         "dendrite": {
-            "default_room_version_dates": {
+            "default_room_version_dates_by_commit": {
                 "1": [
                     [
                         "452f393dd7de5203c5cd3ebe5697af6ea0f4b009",
@@ -970,6 +1673,56 @@
                     ]
                 ]
             },
+            "default_room_version_dates_by_tag": {
+                "1": [
+                    [
+                        "helm-dendrite-0.10.8",
+                        "2023-01-06T15:44:10+01:00",
+                        "helm-dendrite-0.10.8",
+                        "2023-01-06T15:44:10+01:00"
+                    ]
+                ],
+                "10": [
+                    [
+                        "helm-dendrite-0.11.0",
+                        "2023-01-20T16:20:01+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "4": [
+                    [
+                        "helm-dendrite-0.10.8",
+                        "2023-01-06T15:44:10+01:00",
+                        "helm-dendrite-0.10.8",
+                        "2023-01-06T15:44:10+01:00"
+                    ]
+                ],
+                "5": [
+                    [
+                        "helm-dendrite-0.10.8",
+                        "2023-01-06T15:44:10+01:00",
+                        "helm-dendrite-0.10.8",
+                        "2023-01-06T15:44:10+01:00"
+                    ]
+                ],
+                "6": [
+                    [
+                        "helm-dendrite-0.10.8",
+                        "2023-01-06T15:44:10+01:00",
+                        "helm-dendrite-0.10.8",
+                        "2023-01-06T15:44:10+01:00"
+                    ]
+                ],
+                "9": [
+                    [
+                        "helm-dendrite-0.10.8",
+                        "2023-01-06T15:44:10+01:00",
+                        "helm-dendrite-0.11.0",
+                        "2023-01-20T16:20:01+01:00"
+                    ]
+                ]
+            },
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2017-01-20T18:25:51+00:00",
@@ -999,7 +1752,7 @@
             },
             "last_commit_date": "2024-09-10T19:45:31+00:00",
             "maturity": "beta",
-            "room_version_dates": {
+            "room_version_dates_by_commit": {
                 "1": [
                     [
                         "cc6847798a3ff74b5a0dda24cf71a2224dcd0fe5",
@@ -1089,7 +1842,8 @@
                     ]
                 ]
             },
-            "spec_version_dates": {
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
                 "r0.0.1": [
                     [
                         "524475f8a3a3efa3cca53d2be7f3a71f7d6bb2eb",
@@ -1162,10 +1916,85 @@
                         null
                     ]
                 ]
+            },
+            "spec_version_dates_by_tag": {
+                "r0.0.1": [
+                    [
+                        "helm-dendrite-0.10.8",
+                        "2023-01-06T15:44:10+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.1.0": [
+                    [
+                        "helm-dendrite-0.10.8",
+                        "2023-01-06T15:44:10+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.2.0": [
+                    [
+                        "helm-dendrite-0.10.8",
+                        "2023-01-06T15:44:10+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.3.0": [
+                    [
+                        "helm-dendrite-0.10.8",
+                        "2023-01-06T15:44:10+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.4.0": [
+                    [
+                        "helm-dendrite-0.10.8",
+                        "2023-01-06T15:44:10+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.5.0": [
+                    [
+                        "helm-dendrite-0.10.8",
+                        "2023-01-06T15:44:10+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.6.1": [
+                    [
+                        "helm-dendrite-0.10.8",
+                        "2023-01-06T15:44:10+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.1": [
+                    [
+                        "helm-dendrite-0.10.8",
+                        "2023-01-06T15:44:10+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.2": [
+                    [
+                        "helm-dendrite-0.10.8",
+                        "2023-01-06T15:44:10+01:00",
+                        null,
+                        null
+                    ]
+                ]
             }
         },
         "dopamine": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2018-06-12T23:39:39-04:00",
@@ -1180,8 +2009,9 @@
             },
             "last_commit_date": "2019-04-28T19:57:10-04:00",
             "maturity": "unstarted",
-            "room_version_dates": {},
-            "spec_version_dates": {
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
                 "r0.3.0": [
                     [
                         "96409b24912bf85c39dfbc19834f735d41bcc0a5",
@@ -1198,10 +2028,12 @@
                         null
                     ]
                 ]
-            }
+            },
+            "spec_version_dates_by_tag": {}
         },
         "ejabberd": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": "2024-02-13T11:55:23+01:00",
             "forked_from": null,
             "initial_commit_date": "2024-02-14T06:59:23+03:00",
@@ -1211,11 +2043,14 @@
             "lag_all": {},
             "last_commit_date": "2024-09-11T13:20:53+02:00",
             "maturity": "alpha",
-            "room_version_dates": {},
-            "spec_version_dates": {}
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {},
+            "spec_version_dates_by_tag": {}
         },
         "gopheus": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2014-12-18T10:47:55+01:00",
@@ -1225,11 +2060,13 @@
             "lag_all": {},
             "last_commit_date": "2014-12-18T10:49:14+01:00",
             "maturity": "unstarted",
-            "room_version_dates": {},
-            "spec_version_dates": {}
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {},
+            "spec_version_dates_by_tag": {}
         },
         "grapevine": {
-            "default_room_version_dates": {
+            "default_room_version_dates_by_commit": {
                 "10": [
                     [
                         "17a0b3430934fbb8370066ee9dc3506102c5b3f6",
@@ -1239,6 +2076,7 @@
                     ]
                 ]
             },
+            "default_room_version_dates_by_tag": {},
             "forked_date": "2024-04-24T23:23:33+00:00",
             "forked_from": "conduit",
             "initial_commit_date": "2024-04-29T22:18:28-07:00",
@@ -1256,7 +2094,7 @@
             },
             "last_commit_date": "2024-09-08T14:08:32-07:00",
             "maturity": "alpha",
-            "room_version_dates": {
+            "room_version_dates_by_commit": {
                 "10": [
                     [
                         "17a0b3430934fbb8370066ee9dc3506102c5b3f6",
@@ -1330,7 +2168,8 @@
                     ]
                 ]
             },
-            "spec_version_dates": {
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
                 "r0.5.0": [
                     [
                         "f27941d5108acda250921c6a58499a46568fd030",
@@ -1387,14 +2226,25 @@
                         null
                     ]
                 ]
-            }
+            },
+            "spec_version_dates_by_tag": {}
         },
         "gridify": {
-            "default_room_version_dates": {
+            "default_room_version_dates_by_commit": {
                 "6": [
                     [
                         "66f751ffb1bd03c5fd95adcc5891cfdc8f50fbc8",
                         "2021-08-14T22:51:26+02:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "default_room_version_dates_by_tag": {
+                "6": [
+                    [
+                        "v0.0.4",
+                        "2021-08-21T21:51:19+02:00",
                         null,
                         null
                     ]
@@ -1411,7 +2261,7 @@
             },
             "last_commit_date": "2021-09-29T18:22:27+02:00",
             "maturity": "obsolete",
-            "room_version_dates": {
+            "room_version_dates_by_commit": {
                 "1": [
                     [
                         "66f751ffb1bd03c5fd95adcc5891cfdc8f50fbc8",
@@ -1469,7 +2319,65 @@
                     ]
                 ]
             },
-            "spec_version_dates": {
+            "room_version_dates_by_tag": {
+                "1": [
+                    [
+                        "v0.0.4",
+                        "2021-08-21T21:51:19+02:00",
+                        "v0.0.4",
+                        "2021-08-21T21:51:19+02:00"
+                    ]
+                ],
+                "2": [
+                    [
+                        "v0.0.4",
+                        "2021-08-21T21:51:19+02:00",
+                        "v0.0.4",
+                        "2021-08-21T21:51:19+02:00"
+                    ]
+                ],
+                "3": [
+                    [
+                        "v0.0.4",
+                        "2021-08-21T21:51:19+02:00",
+                        "v0.0.4",
+                        "2021-08-21T21:51:19+02:00"
+                    ]
+                ],
+                "4": [
+                    [
+                        "v0.0.4",
+                        "2021-08-21T21:51:19+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "5": [
+                    [
+                        "v0.0.4",
+                        "2021-08-21T21:51:19+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "6": [
+                    [
+                        "v0.0.4",
+                        "2021-08-21T21:51:19+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "7": [
+                    [
+                        "v0.0.4",
+                        "2021-08-21T21:51:19+02:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "spec_version_dates_by_commit": {
                 "r0.4.0": [
                     [
                         "9ace112705695985510f99627bc85324bbee0cec",
@@ -1478,10 +2386,20 @@
                         null
                     ]
                 ]
+            },
+            "spec_version_dates_by_tag": {
+                "r0.4.0": [
+                    [
+                        "v0.0.1",
+                        "2019-04-18T00:26:33+02:00",
+                        null,
+                        null
+                    ]
+                ]
             }
         },
         "harmony": {
-            "default_room_version_dates": {
+            "default_room_version_dates_by_commit": {
                 "10": [
                     [
                         "6d691b5ed160c1c6eb57b3c1001113cb94f8b60f",
@@ -1491,6 +2409,7 @@
                     ]
                 ]
             },
+            "default_room_version_dates_by_tag": {},
             "forked_date": "2024-03-05T20:41:35+01:00",
             "forked_from": "dendrite",
             "initial_commit_date": "2024-03-05T19:47:17+00:00",
@@ -1516,7 +2435,7 @@
             },
             "last_commit_date": "2024-09-09T11:53:31+01:00",
             "maturity": "alpha",
-            "room_version_dates": {
+            "room_version_dates_by_commit": {
                 "1": [
                     [
                         "cc6847798a3ff74b5a0dda24cf71a2224dcd0fe5",
@@ -1606,7 +2525,8 @@
                     ]
                 ]
             },
-            "spec_version_dates": {
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
                 "r0.0.1": [
                     [
                         "6d1087df8dbd7982e7c7ad2f16b17588562c4048",
@@ -1727,10 +2647,12 @@
                         null
                     ]
                 ]
-            }
+            },
+            "spec_version_dates_by_tag": {}
         },
         "hg": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2022-04-23T21:50:30+03:00",
@@ -1740,7 +2662,7 @@
             "lag_all": {},
             "last_commit_date": "2023-08-12T15:59:08+03:00",
             "maturity": "alpha",
-            "room_version_dates": {
+            "room_version_dates_by_commit": {
                 "1": [
                     [
                         "8dfa3f3f78713fbc2944563833cccc0d0674ed96",
@@ -1814,10 +2736,86 @@
                     ]
                 ]
             },
-            "spec_version_dates": {}
+            "room_version_dates_by_tag": {
+                "1": [
+                    [
+                        "v0.0.1",
+                        "2023-01-04T22:00:22+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "2": [
+                    [
+                        "v0.0.1",
+                        "2023-01-04T22:00:22+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "3": [
+                    [
+                        "v0.0.1",
+                        "2023-01-04T22:00:22+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "4": [
+                    [
+                        "v0.0.1",
+                        "2023-01-04T22:00:22+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "5": [
+                    [
+                        "v0.0.1",
+                        "2023-01-04T22:00:22+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "6": [
+                    [
+                        "v0.0.1",
+                        "2023-01-04T22:00:22+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "7": [
+                    [
+                        "v0.0.1",
+                        "2023-01-04T22:00:22+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "8": [
+                    [
+                        "v0.0.1",
+                        "2023-01-04T22:00:22+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "9": [
+                    [
+                        "v0.0.1",
+                        "2023-01-04T22:00:22+02:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "spec_version_dates_by_commit": {},
+            "spec_version_dates_by_tag": {}
         },
         "himatrix": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2021-01-05T20:52:00+09:00",
@@ -1829,8 +2827,9 @@
             },
             "last_commit_date": "2021-01-06T03:46:27+09:00",
             "maturity": "unstarted",
-            "room_version_dates": {},
-            "spec_version_dates": {
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
                 "r0.6.1": [
                     [
                         "c407d14323efb2e06bcd67637c3d82f5a4be60b2",
@@ -1839,10 +2838,12 @@
                         null
                     ]
                 ]
-            }
+            },
+            "spec_version_dates_by_tag": {}
         },
         "hungryserv": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2022-06-05T00:00:00",
@@ -1850,13 +2851,16 @@
             "lag_after_commit": {},
             "lag_after_release": {},
             "lag_all": {},
-            "last_commit_date": "2024-09-12T09:07:16.385623",
+            "last_commit_date": "2024-09-12T09:50:24.266474",
             "maturity": "beta",
-            "room_version_dates": {},
-            "spec_version_dates": {}
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {},
+            "spec_version_dates_by_tag": {}
         },
         "insomnium": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2021-10-25T13:23:56+02:00",
@@ -1868,8 +2872,9 @@
             },
             "last_commit_date": "2021-11-17T12:20:03+01:00",
             "maturity": "unstarted",
-            "room_version_dates": {},
-            "spec_version_dates": {
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
                 "r0.6.0": [
                     [
                         "1b92bfcf89ec42fdc5c21bcc27f7bfacbe207fc3",
@@ -1878,10 +2883,12 @@
                         null
                     ]
                 ]
-            }
+            },
+            "spec_version_dates_by_tag": {}
         },
         "jmatrix": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2023-11-16T20:11:29+01:00",
@@ -1891,11 +2898,14 @@
             "lag_all": {},
             "last_commit_date": "2023-11-16T20:11:29+01:00",
             "maturity": "unstarted",
-            "room_version_dates": {},
-            "spec_version_dates": {}
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {},
+            "spec_version_dates_by_tag": {}
         },
         "jsynapse": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2015-03-18T00:59:31+01:00",
@@ -1905,11 +2915,14 @@
             "lag_all": {},
             "last_commit_date": "2015-04-24T19:04:28+03:00",
             "maturity": "obsolete",
-            "room_version_dates": {},
-            "spec_version_dates": {}
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {},
+            "spec_version_dates_by_tag": {}
         },
         "ligase": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": "2017-11-15T11:13:09+00:00",
             "forked_from": "dendrite",
             "initial_commit_date": "2020-06-03T13:41:57+08:00",
@@ -1924,8 +2937,9 @@
             },
             "last_commit_date": "2021-09-22T16:34:16+08:00",
             "maturity": "obsolete",
-            "room_version_dates": {},
-            "spec_version_dates": {
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
                 "r0.0.1": [
                     [
                         "bde8bc21a45a9dcffaaa812aa6a5a5341bca5f42",
@@ -1958,10 +2972,45 @@
                         null
                     ]
                 ]
+            },
+            "spec_version_dates_by_tag": {
+                "r0.0.1": [
+                    [
+                        "4.8.12",
+                        "2020-08-07T10:29:40+08:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.1.0": [
+                    [
+                        "4.8.12",
+                        "2020-08-07T10:29:40+08:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.2.0": [
+                    [
+                        "4.8.12",
+                        "2020-08-07T10:29:40+08:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.3.0": [
+                    [
+                        "4.8.12",
+                        "2020-08-07T10:29:40+08:00",
+                        null,
+                        null
+                    ]
+                ]
             }
         },
         "lomatia": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2018-06-15T21:50:24-06:00",
@@ -1973,8 +3022,9 @@
             },
             "last_commit_date": "2019-06-20T22:47:48-06:00",
             "maturity": "unstarted",
-            "room_version_dates": {},
-            "spec_version_dates": {
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
                 "r0.3.0": [
                     [
                         "82041f92a51f360a1da3385c83a41ea6b7a5f8d2",
@@ -1983,10 +3033,12 @@
                         null
                     ]
                 ]
-            }
+            },
+            "spec_version_dates_by_tag": {}
         },
         "maelstrom": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2020-04-03T14:36:22+02:00",
@@ -1999,8 +3051,9 @@
             },
             "last_commit_date": "2020-08-13T15:36:14-06:00",
             "maturity": "obsolete",
-            "room_version_dates": {},
-            "spec_version_dates": {
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
                 "r0.5.0": [
                     [
                         "b37ee79fae737908ef71ba67e6b0a9b813583f8c",
@@ -2017,10 +3070,12 @@
                         null
                     ]
                 ]
-            }
+            },
+            "spec_version_dates_by_tag": {}
         },
         "magneths": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2017-11-14T10:00:44+00:00",
@@ -2034,8 +3089,9 @@
             },
             "last_commit_date": "2018-01-19T10:17:12+00:00",
             "maturity": "obsolete",
-            "room_version_dates": {},
-            "spec_version_dates": {
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
                 "r0.0.1": [
                     [
                         "d88c64183793d1cb03b4bc37e1398371e0b5caab",
@@ -2060,14 +3116,25 @@
                         null
                     ]
                 ]
-            }
+            },
+            "spec_version_dates_by_tag": {}
         },
         "mascarene": {
-            "default_room_version_dates": {
+            "default_room_version_dates_by_commit": {
                 "5": [
                     [
                         "e7eb5792264c0e2e4a82c77a3d0fbf05152d7909",
                         "2020-05-21T22:02:46+04:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "default_room_version_dates_by_tag": {
+                "5": [
+                    [
+                        "v0.1.0",
+                        "2020-06-14T12:18:42+04:00",
                         null,
                         null
                     ]
@@ -2086,7 +3153,7 @@
             },
             "last_commit_date": "2021-02-28T16:40:19+04:00",
             "maturity": "obsolete",
-            "room_version_dates": {
+            "room_version_dates_by_commit": {
                 "1": [
                     [
                         "fea253461debbb5e64fd6eae253da3003943d7ff",
@@ -2128,7 +3195,8 @@
                     ]
                 ]
             },
-            "spec_version_dates": {
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
                 "r0.6.0": [
                     [
                         "841d05a2ff9e7aba96c2b23ae5ec78b36316eef0",
@@ -2137,10 +3205,12 @@
                         null
                     ]
                 ]
-            }
+            },
+            "spec_version_dates_by_tag": {}
         },
         "matrex": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2016-11-12T16:45:39+00:00",
@@ -2152,8 +3222,9 @@
             },
             "last_commit_date": "2018-02-22T08:59:42-08:00",
             "maturity": "obsolete",
-            "room_version_dates": {},
-            "spec_version_dates": {
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
                 "r0.2.0": [
                     [
                         "d875b43808406b84865e93561caf97dbd9949a95",
@@ -2162,10 +3233,12 @@
                         "2016-11-22T08:34:19+00:00"
                     ]
                 ]
-            }
+            },
+            "spec_version_dates_by_tag": {}
         },
         "mxhsd": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2017-08-13T16:01:06+02:00",
@@ -2180,8 +3253,9 @@
             },
             "last_commit_date": "2018-10-19T23:44:02+02:00",
             "maturity": "obsolete",
-            "room_version_dates": {},
-            "spec_version_dates": {
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
                 "r0.2.0": [
                     [
                         "0560beef4bea793648c8367c340d21784b158fc7",
@@ -2198,10 +3272,12 @@
                         null
                     ]
                 ]
-            }
+            },
+            "spec_version_dates_by_tag": {}
         },
         "neuron": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2021-11-22T22:23:28-06:00",
@@ -2211,11 +3287,13 @@
             "lag_all": {},
             "last_commit_date": "2021-11-30T23:04:15-06:00",
             "maturity": "unstarted",
-            "room_version_dates": {},
-            "spec_version_dates": {}
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {},
+            "spec_version_dates_by_tag": {}
         },
         "palpo": {
-            "default_room_version_dates": {
+            "default_room_version_dates_by_commit": {
                 "10": [
                     [
                         "f2179df8adac188bc758e7a5689e19ead0dcdb73",
@@ -2225,6 +3303,7 @@
                     ]
                 ]
             },
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2024-08-08T12:46:51+08:00",
@@ -2242,7 +3321,15 @@
             },
             "last_commit_date": "2024-09-12T07:20:23+08:00",
             "maturity": "alpha",
-            "room_version_dates": {
+            "room_version_dates_by_commit": {
+                "1": [
+                    [
+                        "f2179df8adac188bc758e7a5689e19ead0dcdb73",
+                        "2024-08-08T12:46:51+08:00",
+                        null,
+                        null
+                    ]
+                ],
                 "10": [
                     [
                         "f2179df8adac188bc758e7a5689e19ead0dcdb73",
@@ -2252,6 +3339,14 @@
                     ]
                 ],
                 "11": [
+                    [
+                        "f2179df8adac188bc758e7a5689e19ead0dcdb73",
+                        "2024-08-08T12:46:51+08:00",
+                        null,
+                        null
+                    ]
+                ],
+                "2": [
                     [
                         "f2179df8adac188bc758e7a5689e19ead0dcdb73",
                         "2024-08-08T12:46:51+08:00",
@@ -2316,7 +3411,8 @@
                     ]
                 ]
             },
-            "spec_version_dates": {
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
                 "r0.5.0": [
                     [
                         "f2179df8adac188bc758e7a5689e19ead0dcdb73",
@@ -2373,10 +3469,12 @@
                         null
                     ]
                 ]
-            }
+            },
+            "spec_version_dates_by_tag": {}
         },
         "persephone": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2023-11-07T10:32:22+01:00",
@@ -2389,7 +3487,7 @@
             },
             "last_commit_date": "2024-03-28T11:40:34+01:00",
             "maturity": "alpha",
-            "room_version_dates": {
+            "room_version_dates_by_commit": {
                 "11": [
                     [
                         "aa64e98c72d8782d8c71030133b1a12208a821b2",
@@ -2399,7 +3497,8 @@
                     ]
                 ]
             },
-            "spec_version_dates": {
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
                 "v1.1": [
                     [
                         "1ca57f99f1be6bb1fe64363c58babcb5c148fe26",
@@ -2416,10 +3515,12 @@
                         null
                     ]
                 ]
-            }
+            },
+            "spec_version_dates_by_tag": {}
         },
         "plasma": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2022-01-08T21:32:03+04:00",
@@ -2429,11 +3530,13 @@
             "lag_all": {},
             "last_commit_date": "2022-04-24T17:44:10+04:00",
             "maturity": "obsolete",
-            "room_version_dates": {},
-            "spec_version_dates": {}
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {},
+            "spec_version_dates_by_tag": {}
         },
         "plasma_old": {
-            "default_room_version_dates": {
+            "default_room_version_dates_by_commit": {
                 "5": [
                     [
                         "d9e7afb7cb3c2b645c5fbc0a49b42365024116ab",
@@ -2451,6 +3554,7 @@
                     ]
                 ]
             },
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2019-01-07T22:16:20+01:00",
@@ -2464,7 +3568,7 @@
             },
             "last_commit_date": "2021-07-31T12:03:42+04:00",
             "maturity": "obsolete",
-            "room_version_dates": {
+            "room_version_dates_by_commit": {
                 "1": [
                     [
                         "d9e7afb7cb3c2b645c5fbc0a49b42365024116ab",
@@ -2544,7 +3648,8 @@
                     ]
                 ]
             },
-            "spec_version_dates": {
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
                 "r0.6.1": [
                     [
                         "cc54223ad0c71a9079a7871aaf287d34e51dbd68",
@@ -2553,10 +3658,12 @@
                         null
                     ]
                 ]
-            }
+            },
+            "spec_version_dates_by_tag": {}
         },
         "ruma": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2015-11-29T02:58:41-08:00",
@@ -2570,8 +3677,9 @@
             },
             "last_commit_date": "2020-03-22T14:26:18+01:00",
             "maturity": "obsolete",
-            "room_version_dates": {},
-            "spec_version_dates": {
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
                 "r0.2.0": [
                     [
                         "d692c138d9baf026dba5e40f6362857cab3be80e",
@@ -2580,10 +3688,12 @@
                         null
                     ]
                 ]
-            }
+            },
+            "spec_version_dates_by_tag": {}
         },
         "serverless-matrix": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2023-01-02T21:22:06-08:00",
@@ -2597,8 +3707,9 @@
             },
             "last_commit_date": "2023-03-26T23:22:38-07:00",
             "maturity": "unstarted",
-            "room_version_dates": {},
-            "spec_version_dates": {
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
                 "v1.6": [
                     [
                         "76cbc775201061a34cbfb1c70932ccc425b2f03d",
@@ -2607,14 +3718,25 @@
                         null
                     ]
                 ]
-            }
+            },
+            "spec_version_dates_by_tag": {}
         },
         "synapse": {
-            "default_room_version_dates": {
+            "default_room_version_dates_by_commit": {
                 "10": [
                     [
                         "eaad9bb156d324e35c10b0e9139fb2ce615ecc0b",
                         "2023-12-13T15:11:56+00:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "default_room_version_dates_by_tag": {
+                "10": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
                         null,
                         null
                     ]
@@ -2655,7 +3777,7 @@
             },
             "last_commit_date": "2024-09-12T13:05:43+01:00",
             "maturity": "stable",
-            "room_version_dates": {
+            "room_version_dates_by_commit": {
                 "1": [
                     [
                         "eaad9bb156d324e35c10b0e9139fb2ce615ecc0b",
@@ -2745,7 +3867,97 @@
                     ]
                 ]
             },
-            "spec_version_dates": {
+            "room_version_dates_by_tag": {
+                "1": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "10": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "11": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "2": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "3": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "4": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "5": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "6": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "7": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "8": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "9": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "spec_version_dates_by_commit": {
                 "r0.0.1": [
                     [
                         "eaad9bb156d324e35c10b0e9139fb2ce615ecc0b",
@@ -2898,10 +4110,164 @@
                         null
                     ]
                 ]
+            },
+            "spec_version_dates_by_tag": {
+                "r0.0.1": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.1.0": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.2.0": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.3.0": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.4.0": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.5.0": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.6.0": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.6.1": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.1": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.10": [
+                    [
+                        "v1.107.0",
+                        "2024-05-14T14:39:34+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.11": [
+                    [
+                        "v1.111.0",
+                        "2024-07-16T13:51:12+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.2": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.3": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.4": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.5": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.6": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.7": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.8": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.9": [
+                    [
+                        "v1.100.0",
+                        "2024-01-30T16:58:37+00:00",
+                        null,
+                        null
+                    ]
+                ]
             }
         },
         "synapse-legacy": {
-            "default_room_version_dates": {
+            "default_room_version_dates_by_commit": {
                 "1": [
                     [
                         "8521ae13e33301e06eb1fb5b36a8eef4e7f6453f",
@@ -2948,6 +4314,56 @@
                         "2022-02-22T14:09:40+00:00",
                         "e8f2bf5c40c27e68e5983ebbd1fc0281bc45bf5f",
                         "2023-01-18T18:59:48+00:00"
+                    ]
+                ]
+            },
+            "default_room_version_dates_by_tag": {
+                "1": [
+                    [
+                        "0.34.0rc2",
+                        "2018-11-19T12:54:29-06:00",
+                        "1.7.2",
+                        "2019-12-24T17:39:58+00:00"
+                    ]
+                ],
+                "10": [
+                    [
+                        "v1.76.0",
+                        "2023-01-31T08:39:09-08:00",
+                        null,
+                        null
+                    ]
+                ],
+                "4": [
+                    [
+                        "1.7.2",
+                        "2019-12-24T17:39:58+00:00",
+                        "1.7.2",
+                        "2019-12-24T17:39:58+00:00"
+                    ]
+                ],
+                "5": [
+                    [
+                        "1.7.2",
+                        "2019-12-24T17:39:58+00:00",
+                        "v1.22.0",
+                        "2020-10-27T12:10:05+00:00"
+                    ]
+                ],
+                "6": [
+                    [
+                        "v1.22.0",
+                        "2020-10-27T12:10:05+00:00",
+                        "v1.54.0",
+                        "2022-03-08T14:37:40+00:00"
+                    ]
+                ],
+                "9": [
+                    [
+                        "v1.54.0",
+                        "2022-03-08T14:37:40+00:00",
+                        "v1.76.0",
+                        "2023-01-31T08:39:09-08:00"
                     ]
                 ]
             },
@@ -3014,7 +4430,7 @@
             },
             "last_commit_date": "2023-12-13T14:50:56+00:00",
             "maturity": "stable",
-            "room_version_dates": {
+            "room_version_dates_by_commit": {
                 "1": [
                     [
                         "3bf8bab8f9d9bbdf225361adc66a97fdf4ae3fcd",
@@ -3104,7 +4520,97 @@
                     ]
                 ]
             },
-            "spec_version_dates": {
+            "room_version_dates_by_tag": {
+                "1": [
+                    [
+                        "0.34.0rc2",
+                        "2018-11-19T12:54:29-06:00",
+                        null,
+                        null
+                    ]
+                ],
+                "10": [
+                    [
+                        "v1.64.0",
+                        "2022-08-02T11:23:46+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "11": [
+                    [
+                        "v1.89.0",
+                        "2023-08-01T11:09:50+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "2": [
+                    [
+                        "1.7.2",
+                        "2019-12-24T17:39:58+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "3": [
+                    [
+                        "1.7.2",
+                        "2019-12-24T17:39:58+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "4": [
+                    [
+                        "1.7.2",
+                        "2019-12-24T17:39:58+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "5": [
+                    [
+                        "1.7.2",
+                        "2019-12-24T17:39:58+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "6": [
+                    [
+                        "v1.14.0",
+                        "2020-05-28T12:45:32+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "7": [
+                    [
+                        "v1.37.0",
+                        "2021-06-29T10:18:22+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "8": [
+                    [
+                        "v1.41.0",
+                        "2021-08-24T16:20:54+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "9": [
+                    [
+                        "v1.43.0",
+                        "2021-09-21T12:24:47+01:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "spec_version_dates_by_commit": {
                 "r0.0.1": [
                     [
                         "76346870571ce885d07b180cf88c11a33a051cf8",
@@ -3241,14 +4747,162 @@
                         null
                     ]
                 ]
+            },
+            "spec_version_dates_by_tag": {
+                "r0.0.1": [
+                    [
+                        "0.34.0rc2",
+                        "2018-11-19T12:54:29-06:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.1.0": [
+                    [
+                        "0.34.0rc2",
+                        "2018-11-19T12:54:29-06:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.2.0": [
+                    [
+                        "0.34.0rc2",
+                        "2018-11-19T12:54:29-06:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.3.0": [
+                    [
+                        "0.34.0rc2",
+                        "2018-11-19T12:54:29-06:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.4.0": [
+                    [
+                        "1.7.2",
+                        "2019-12-24T17:39:58+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.5.0": [
+                    [
+                        "1.7.2",
+                        "2019-12-24T17:39:58+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.6.0": [
+                    [
+                        "v1.15.0",
+                        "2020-06-11T13:28:07+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.6.1": [
+                    [
+                        "v1.47.0",
+                        "2021-11-17T13:11:40+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.1": [
+                    [
+                        "v1.54.0",
+                        "2022-03-08T14:37:40+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.2": [
+                    [
+                        "v1.54.0",
+                        "2022-03-08T14:37:40+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.3": [
+                    [
+                        "v1.70.0",
+                        "2022-10-26T11:21:02+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.4": [
+                    [
+                        "v1.70.0",
+                        "2022-10-26T11:21:02+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.5": [
+                    [
+                        "v1.74.0",
+                        "2022-12-20T16:13:47+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.6": [
+                    [
+                        "v1.84.0",
+                        "2023-05-23T11:31:13+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.7": [
+                    [
+                        "v1.98.0",
+                        "2023-12-12T15:51:42+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.8": [
+                    [
+                        "v1.98.0",
+                        "2023-12-12T15:51:42+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.9": [
+                    [
+                        "v1.98.0",
+                        "2023-12-12T15:51:42+00:00",
+                        null,
+                        null
+                    ]
+                ]
             }
         },
         "telodendria": {
-            "default_room_version_dates": {
+            "default_room_version_dates_by_commit": {
                 "1": [
                     [
                         "96ca9a725d2cbcf932d9aab5e28cff234db538c0",
                         "2023-04-25T22:11:34+00:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "default_room_version_dates_by_tag": {
+                "1": [
+                    [
+                        "Telodendria-0_3_0",
+                        "2023-06-10T13:29:56+00:00",
                         null,
                         null
                     ]
@@ -3279,7 +4933,7 @@
             },
             "last_commit_date": "2024-08-27T09:47:25-04:00",
             "maturity": "alpha",
-            "room_version_dates": {
+            "room_version_dates_by_commit": {
                 "1": [
                     [
                         "96ca9a725d2cbcf932d9aab5e28cff234db538c0",
@@ -3289,7 +4943,17 @@
                     ]
                 ]
             },
-            "spec_version_dates": {
+            "room_version_dates_by_tag": {
+                "1": [
+                    [
+                        "Telodendria-0_3_0",
+                        "2023-06-10T13:29:56+00:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "spec_version_dates_by_commit": {
                 "v1.2": [
                     [
                         "54420f003639f1e077a79e529069fe3989061477",
@@ -3356,10 +5020,36 @@
                         null
                     ]
                 ]
+            },
+            "spec_version_dates_by_tag": {
+                "v1.4": [
+                    [
+                        "Telodendria-0_1_0",
+                        "2022-12-13T19:49:03+00:00",
+                        "Telodendria-0_1_0",
+                        "2022-12-13T19:49:03+00:00"
+                    ]
+                ],
+                "v1.5": [
+                    [
+                        "Telodendria-0_1_0",
+                        "2022-12-13T19:49:03+00:00",
+                        "Telodendria-0_2_0",
+                        "2023-03-07T00:44:53+00:00"
+                    ]
+                ],
+                "v1.6": [
+                    [
+                        "Telodendria-0_2_0",
+                        "2023-03-07T00:44:53+00:00",
+                        null,
+                        null
+                    ]
+                ]
             }
         },
         "thurim": {
-            "default_room_version_dates": {
+            "default_room_version_dates_by_commit": {
                 "5": [
                     [
                         "05611af78f9fcb3c5a1eeae7e979980268801b3d",
@@ -3377,6 +5067,7 @@
                     ]
                 ]
             },
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2021-01-02T06:38:03-08:00",
@@ -3414,7 +5105,7 @@
             },
             "last_commit_date": "2024-04-06T09:39:50-04:00",
             "maturity": "alpha",
-            "room_version_dates": {
+            "room_version_dates_by_commit": {
                 "9": [
                     [
                         "f92396545d27524ad5d706e986e3c0386efcac66",
@@ -3424,7 +5115,8 @@
                     ]
                 ]
             },
-            "spec_version_dates": {
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
                 "r0.0.1": [
                     [
                         "c989615f99013ba3490ea2804b59a7f4dfaf01e0",
@@ -3561,10 +5253,12 @@
                         null
                     ]
                 ]
-            }
+            },
+            "spec_version_dates_by_tag": {}
         },
         "transform": {
-            "default_room_version_dates": {},
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2018-06-01T18:27:57+08:00",
@@ -3579,8 +5273,9 @@
             },
             "last_commit_date": "2018-06-30T13:31:19+01:00",
             "maturity": "obsolete",
-            "room_version_dates": {},
-            "spec_version_dates": {
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
                 "r0.0.1": [
                     [
                         "aeb1c14aea2cb80776e5289eacea4ab542dbec6f",
@@ -3613,7 +5308,8 @@
                         null
                     ]
                 ]
-            }
+            },
+            "spec_version_dates_by_tag": {}
         }
     },
     "room_versions": {
