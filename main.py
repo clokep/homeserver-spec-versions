@@ -1,5 +1,5 @@
 import re
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, astuple
 from datetime import datetime, timezone, timedelta
 import json
 from pathlib import Path
@@ -299,10 +299,10 @@ def get_project_versions(
 
 def version_info_to_dates(
     versions: dict[str, list[VersionInfo]],
-) -> dict[str, list[tuple[datetime, datetime]]]:
+) -> dict[str, list[tuple[str, datetime, str | None, datetime | None]]]:
     """Convert a map of version to list of version infos to version to list of tuples of dates."""
     return {
-        v: [(info.start_date, info.end_date) for info in version_info]
+        v: [astuple(info) for info in version_info]
         for v, version_info in versions.items()
     }
 
@@ -382,7 +382,7 @@ def get_project_dates(
         for version, version_info in versions.items()
     }
 
-    print(f"Loaded {project.name} dates: {versions_dates_all}")
+    print(f"Loaded {project.name} dates: {versions_dates_all.keys()}")
 
     # Get the earliest release of this project.
     if project.earliest_commit:

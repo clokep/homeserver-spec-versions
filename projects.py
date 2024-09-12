@@ -17,9 +17,15 @@ class ProjectData:
     forked_date: datetime | None
     forked_from: str | None
     last_commit_date: datetime
-    spec_version_dates: dict[str, list[tuple[datetime, datetime]]]
-    room_version_dates: dict[str, list[tuple[datetime, datetime]]]
-    default_room_version_dates: dict[str, list[tuple[datetime, datetime]]]
+    spec_version_dates: dict[
+        str, list[tuple[str, datetime, str | None, datetime | None]]
+    ]
+    room_version_dates: dict[
+        str, list[tuple[str, datetime, str | None, datetime | None]]
+    ]
+    default_room_version_dates: dict[
+        str, list[tuple[str, datetime, str | None, datetime | None]]
+    ]
     lag_all: dict[str, int]
     lag_after_commit: dict[str, int]
     lag_after_release: dict[str, int]

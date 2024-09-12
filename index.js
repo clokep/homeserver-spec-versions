@@ -65,7 +65,8 @@ function addVersionsToDataset(dataset, now, project, projectVersions) {
                 verString => projectVersions[verString].map(
                     verDates => {
                         return {
-                            x: [verDates[0], verDates[1] || now],
+                            // verDates is [commit, date, commit | null, date | null]
+                            x: [verDates[1], verDates[3] || now],
                             y: verString
                         };
                     }
@@ -89,6 +90,21 @@ function buildTimeline(elementId, title, yAxisTitle, earliestDate) {
                 title: {
                     display: true,
                     text: title,
+                },
+                tooltip: {
+                    callbacks: {
+                        // Format the dates as human-readable strings.
+                        label(context) {
+                            let label = context.dataset.label + ": ";
+
+                            label += new Date(context.parsed._custom.start).toLocaleString();
+                            if (context.parsed._custom.end) {
+                                label += " - " + new Date(context.parsed._custom.end).toLocaleString();
+                            }
+
+                            return label;
+                        }
+                    }
                 },
                 zoom: zoomOptions
             },
