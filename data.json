@@ -15,11 +15,14 @@
             "forked_from": null,
             "initial_commit_date": "2021-06-22T14:09:25+02:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
                 "r0.6.1": 461
             },
+            "lag_all_by_tag": {},
             "last_commit_date": "2021-09-14T21:10:57+02:00",
             "maturity": "obsolete",
             "room_version_dates_by_commit": {
@@ -52,9 +55,12 @@
             "forked_from": null,
             "initial_commit_date": "2021-02-17T14:42:36+01:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {},
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {},
+            "lag_all_by_tag": {},
             "last_commit_date": "2021-02-18T15:29:17+01:00",
             "maturity": "unstarted",
             "room_version_dates_by_commit": {},
@@ -69,9 +75,12 @@
             "forked_from": null,
             "initial_commit_date": "2015-09-18T00:49:09+02:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {},
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {},
+            "lag_all_by_tag": {},
             "last_commit_date": "2015-09-21T14:14:26+02:00",
             "maturity": "obsolete",
             "room_version_dates_by_commit": {},
@@ -86,9 +95,12 @@
             "forked_from": null,
             "initial_commit_date": "2019-01-20T14:06:35+00:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {},
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {},
+            "lag_all_by_tag": {},
             "last_commit_date": "2020-11-30T00:00:22+00:00",
             "maturity": "obsolete",
             "room_version_dates_by_commit": {},
@@ -103,9 +115,12 @@
             "forked_from": "conduit",
             "initial_commit_date": "2022-10-10T00:00:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {},
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {},
+            "lag_all_by_tag": {},
             "last_commit_date": "2022-12-21T00:00:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {},
@@ -120,9 +135,12 @@
             "forked_from": null,
             "initial_commit_date": "2017-11-10T15:54:34+01:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {},
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {},
+            "lag_all_by_tag": {},
             "last_commit_date": "2018-01-31T19:07:38+01:00",
             "maturity": "unstarted",
             "room_version_dates_by_commit": {},
@@ -187,21 +205,35 @@
             "forked_from": null,
             "initial_commit_date": "2020-02-15T22:42:21+01:00",
             "initial_release_date": "2021-09-02T11:10:23+00:00",
-            "lag_after_commit": {
+            "lag_after_commit_by_commit": {
                 "v1.1": 225,
                 "v1.2": 140,
                 "v1.3": 372,
                 "v1.4": 310,
                 "v1.5": 426
             },
-            "lag_after_release": {
+            "lag_after_commit_by_tag": {
+                "v1.1": 225,
+                "v1.2": 140,
+                "v1.3": 372,
+                "v1.4": 310,
+                "v1.5": 524
+            },
+            "lag_after_release_by_commit": {
                 "v1.1": 225,
                 "v1.2": 140,
                 "v1.3": 372,
                 "v1.4": 310,
                 "v1.5": 426
             },
-            "lag_all": {
+            "lag_after_release_by_tag": {
+                "v1.1": 225,
+                "v1.2": 140,
+                "v1.3": 372,
+                "v1.4": 310,
+                "v1.5": 524
+            },
+            "lag_all_by_commit": {
                 "r0.0.1": 1538,
                 "r0.1.0": 1419,
                 "r0.2.0": 1353,
@@ -214,6 +246,20 @@
                 "v1.3": 372,
                 "v1.4": 310,
                 "v1.5": 426
+            },
+            "lag_all_by_tag": {
+                "r0.0.1": 2060,
+                "r0.1.0": 1942,
+                "r0.2.0": 1875,
+                "r0.3.0": 1374,
+                "r0.4.0": 1097,
+                "r0.5.0": 813,
+                "r0.6.0": 664,
+                "v1.1": 225,
+                "v1.2": 140,
+                "v1.3": 372,
+                "v1.4": 310,
+                "v1.5": 524
             },
             "last_commit_date": "2024-08-28T10:59:41+00:00",
             "maturity": "beta",
@@ -623,13 +669,19 @@
             "forked_from": "conduit",
             "initial_commit_date": "2023-09-13T20:36:03-04:00",
             "initial_release_date": "2024-04-26T02:03:40-04:00",
-            "lag_after_commit": {
+            "lag_after_commit_by_commit": {
                 "v1.11": 70
             },
-            "lag_after_release": {
+            "lag_after_commit_by_tag": {
+                "v1.11": 73
+            },
+            "lag_after_release_by_commit": {
                 "v1.11": 70
             },
-            "lag_all": {
+            "lag_after_release_by_tag": {
+                "v1.11": 73
+            },
+            "lag_all_by_commit": {
                 "r0.0.1": 2918,
                 "r0.1.0": 2799,
                 "r0.2.0": 2733,
@@ -644,6 +696,22 @@
                 "v1.3": 406,
                 "v1.4": 344,
                 "v1.5": 416
+            },
+            "lag_all_by_tag": {
+                "r0.0.1": 3027,
+                "r0.1.0": 2908,
+                "r0.2.0": 2842,
+                "r0.3.0": 2341,
+                "r0.4.0": 2064,
+                "r0.5.0": 1780,
+                "r0.6.0": 1631,
+                "r0.6.1": 1429,
+                "v1.1": 898,
+                "v1.11": 73,
+                "v1.2": 813,
+                "v1.3": 632,
+                "v1.4": 569,
+                "v1.5": 525
             },
             "last_commit_date": "2024-09-01T12:44:24-04:00",
             "maturity": "beta",
@@ -1125,7 +1193,7 @@
             "forked_from": null,
             "initial_commit_date": "2017-03-10T17:51:18-08:00",
             "initial_release_date": "2020-12-02T20:47:37-08:00",
-            "lag_after_commit": {
+            "lag_after_commit_by_commit": {
                 "r0.3.0": 80,
                 "r0.4.0": 172,
                 "r0.5.0": 5,
@@ -1138,7 +1206,20 @@
                 "v1.5": 77,
                 "v1.6": 64
             },
-            "lag_after_release": {
+            "lag_after_commit_by_tag": {
+                "r0.3.0": 1101,
+                "r0.4.0": 824,
+                "r0.5.0": 540,
+                "r0.6.0": 391,
+                "r0.6.1": 200,
+                "v1.1": 275,
+                "v1.2": 190,
+                "v1.3": 192,
+                "v1.4": 130,
+                "v1.5": 86,
+                "v1.6": 67
+            },
+            "lag_after_release_by_commit": {
                 "v1.1": 237,
                 "v1.2": 152,
                 "v1.3": 183,
@@ -1146,7 +1227,15 @@
                 "v1.5": 77,
                 "v1.6": 64
             },
-            "lag_all": {
+            "lag_after_release_by_tag": {
+                "v1.1": 275,
+                "v1.2": 190,
+                "v1.3": 192,
+                "v1.4": 130,
+                "v1.5": 86,
+                "v1.6": 67
+            },
+            "lag_all_by_commit": {
                 "r0.0.1": 424,
                 "r0.1.0": 305,
                 "r0.2.0": 239,
@@ -1161,6 +1250,22 @@
                 "v1.4": 121,
                 "v1.5": 77,
                 "v1.6": 64
+            },
+            "lag_all_by_tag": {
+                "r0.0.1": 1787,
+                "r0.1.0": 1668,
+                "r0.2.0": 1602,
+                "r0.3.0": 1101,
+                "r0.4.0": 824,
+                "r0.5.0": 540,
+                "r0.6.0": 391,
+                "r0.6.1": 200,
+                "v1.1": 275,
+                "v1.2": 190,
+                "v1.3": 192,
+                "v1.4": 130,
+                "v1.5": 86,
+                "v1.6": 67
             },
             "last_commit_date": "2023-05-01T12:45:37-07:00",
             "maturity": "beta",
@@ -1612,9 +1717,12 @@
             "forked_from": null,
             "initial_commit_date": "2019-02-17T10:52:50+01:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {},
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {},
+            "lag_all_by_tag": {},
             "last_commit_date": "2019-02-24T17:58:34+01:00",
             "maturity": "unstarted",
             "room_version_dates_by_commit": {},
@@ -1727,7 +1835,7 @@
             "forked_from": null,
             "initial_commit_date": "2017-01-20T18:25:51+00:00",
             "initial_release_date": "2020-10-02T17:27:39+01:00",
-            "lag_after_commit": {
+            "lag_after_commit_by_commit": {
                 "r0.3.0": 107,
                 "r0.4.0": 724,
                 "r0.5.0": 440,
@@ -1735,11 +1843,23 @@
                 "v1.1": 203,
                 "v1.2": 118
             },
-            "lag_after_release": {
+            "lag_after_commit_by_tag": {
+                "r0.3.0": 1865,
+                "r0.4.0": 1588,
+                "r0.5.0": 1304,
+                "r0.6.1": 954,
+                "v1.1": 422,
+                "v1.2": 337
+            },
+            "lag_after_release_by_commit": {
                 "v1.1": 203,
                 "v1.2": 118
             },
-            "lag_all": {
+            "lag_after_release_by_tag": {
+                "v1.1": 422,
+                "v1.2": 337
+            },
+            "lag_all_by_commit": {
                 "r0.0.1": 532,
                 "r0.1.0": 414,
                 "r0.2.0": 347,
@@ -1749,6 +1869,17 @@
                 "r0.6.1": 90,
                 "v1.1": 203,
                 "v1.2": 118
+            },
+            "lag_all_by_tag": {
+                "r0.0.1": 2551,
+                "r0.1.0": 2433,
+                "r0.2.0": 2366,
+                "r0.3.0": 1865,
+                "r0.4.0": 1588,
+                "r0.5.0": 1304,
+                "r0.6.1": 954,
+                "v1.1": 422,
+                "v1.2": 337
             },
             "last_commit_date": "2024-09-10T19:45:31+00:00",
             "maturity": "beta",
@@ -1999,14 +2130,17 @@
             "forked_from": null,
             "initial_commit_date": "2018-06-12T23:39:39-04:00",
             "initial_release_date": null,
-            "lag_after_commit": {
+            "lag_after_commit_by_commit": {
                 "r0.4.0": 125
             },
-            "lag_after_release": {},
-            "lag_all": {
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
                 "r0.3.0": 197,
                 "r0.4.0": 125
             },
+            "lag_all_by_tag": {},
             "last_commit_date": "2019-04-28T19:57:10-04:00",
             "maturity": "unstarted",
             "room_version_dates_by_commit": {},
@@ -2038,9 +2172,12 @@
             "forked_from": null,
             "initial_commit_date": "2024-02-14T06:59:23+03:00",
             "initial_release_date": "2010-02-03T15:05:20+01:00",
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {},
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {},
+            "lag_all_by_tag": {},
             "last_commit_date": "2024-09-11T13:20:53+02:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {},
@@ -2055,9 +2192,12 @@
             "forked_from": null,
             "initial_commit_date": "2014-12-18T10:47:55+01:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {},
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {},
+            "lag_all_by_tag": {},
             "last_commit_date": "2014-12-18T10:49:14+01:00",
             "maturity": "unstarted",
             "room_version_dates_by_commit": {},
@@ -2081,9 +2221,11 @@
             "forked_from": "conduit",
             "initial_commit_date": "2024-04-29T22:18:28-07:00",
             "initial_release_date": "2024-04-28T01:25:44-07:00",
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
                 "r0.5.0": 1785,
                 "r0.6.0": 1636,
                 "v1.1": 903,
@@ -2092,6 +2234,7 @@
                 "v1.4": 574,
                 "v1.5": 530
             },
+            "lag_all_by_tag": {},
             "last_commit_date": "2024-09-08T14:08:32-07:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
@@ -2254,10 +2397,15 @@
             "forked_from": null,
             "initial_commit_date": "2019-01-17T13:41:58+01:00",
             "initial_release_date": "2019-01-17T13:41:58+01:00",
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
                 "r0.4.0": 159
+            },
+            "lag_all_by_tag": {
+                "r0.4.0": 228
             },
             "last_commit_date": "2021-09-29T18:22:27+02:00",
             "maturity": "obsolete",
@@ -2414,9 +2562,11 @@
             "forked_from": "dendrite",
             "initial_commit_date": "2024-03-05T19:47:17+00:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
                 "r0.0.1": 2976,
                 "r0.1.0": 2857,
                 "r0.2.0": 2791,
@@ -2433,6 +2583,7 @@
                 "v1.7": 285,
                 "v1.8": 195
             },
+            "lag_all_by_tag": {},
             "last_commit_date": "2024-09-09T11:53:31+01:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
@@ -2657,9 +2808,12 @@
             "forked_from": null,
             "initial_commit_date": "2022-04-23T21:50:30+03:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {},
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {},
+            "lag_all_by_tag": {},
             "last_commit_date": "2023-08-12T15:59:08+03:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
@@ -2820,11 +2974,14 @@
             "forked_from": null,
             "initial_commit_date": "2021-01-05T20:52:00+09:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
                 "r0.6.1": 223
             },
+            "lag_all_by_tag": {},
             "last_commit_date": "2021-01-06T03:46:27+09:00",
             "maturity": "unstarted",
             "room_version_dates_by_commit": {},
@@ -2848,10 +3005,13 @@
             "forked_from": null,
             "initial_commit_date": "2022-06-05T00:00:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {},
-            "last_commit_date": "2024-09-12T09:50:24.266474",
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {},
+            "lag_all_by_tag": {},
+            "last_commit_date": "2024-09-12T11:41:57.100598",
             "maturity": "beta",
             "room_version_dates_by_commit": {},
             "room_version_dates_by_tag": {},
@@ -2865,11 +3025,14 @@
             "forked_from": null,
             "initial_commit_date": "2021-10-25T13:23:56+02:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
                 "r0.6.0": 717
             },
+            "lag_all_by_tag": {},
             "last_commit_date": "2021-11-17T12:20:03+01:00",
             "maturity": "unstarted",
             "room_version_dates_by_commit": {},
@@ -2893,9 +3056,12 @@
             "forked_from": null,
             "initial_commit_date": "2023-11-16T20:11:29+01:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {},
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {},
+            "lag_all_by_tag": {},
             "last_commit_date": "2023-11-16T20:11:29+01:00",
             "maturity": "unstarted",
             "room_version_dates_by_commit": {},
@@ -2910,9 +3076,12 @@
             "forked_from": null,
             "initial_commit_date": "2015-03-18T00:59:31+01:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {},
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {},
+            "lag_all_by_tag": {},
             "last_commit_date": "2015-04-24T19:04:28+03:00",
             "maturity": "obsolete",
             "room_version_dates_by_commit": {},
@@ -2927,13 +3096,21 @@
             "forked_from": "dendrite",
             "initial_commit_date": "2020-06-03T13:41:57+08:00",
             "initial_release_date": "2020-08-07T10:29:40+08:00",
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
                 "r0.0.1": 1604,
                 "r0.1.0": 1485,
                 "r0.2.0": 1419,
                 "r0.3.0": 918
+            },
+            "lag_all_by_tag": {
+                "r0.0.1": 1669,
+                "r0.1.0": 1550,
+                "r0.2.0": 1484,
+                "r0.3.0": 983
             },
             "last_commit_date": "2021-09-22T16:34:16+08:00",
             "maturity": "obsolete",
@@ -3015,11 +3192,14 @@
             "forked_from": null,
             "initial_commit_date": "2018-06-15T21:50:24-06:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
                 "r0.3.0": 201
             },
+            "lag_all_by_tag": {},
             "last_commit_date": "2019-06-20T22:47:48-06:00",
             "maturity": "unstarted",
             "room_version_dates_by_commit": {},
@@ -3043,12 +3223,15 @@
             "forked_from": null,
             "initial_commit_date": "2020-04-03T14:36:22+02:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
                 "r0.5.0": 297,
                 "r0.6.0": 176
             },
+            "lag_all_by_tag": {},
             "last_commit_date": "2020-08-13T15:36:14-06:00",
             "maturity": "obsolete",
             "room_version_dates_by_commit": {},
@@ -3080,13 +3263,16 @@
             "forked_from": null,
             "initial_commit_date": "2017-11-14T10:00:44+00:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
                 "r0.0.1": 672,
                 "r0.1.0": 553,
                 "r0.2.0": 487
             },
+            "lag_all_by_tag": {},
             "last_commit_date": "2018-01-19T10:17:12+00:00",
             "maturity": "obsolete",
             "room_version_dates_by_commit": {},
@@ -3144,13 +3330,16 @@
             "forked_from": null,
             "initial_commit_date": "2018-05-10T17:35:47+02:00",
             "initial_release_date": "2020-06-14T12:18:42+04:00",
-            "lag_after_commit": {
+            "lag_after_commit_by_commit": {
                 "r0.6.0": 329
             },
-            "lag_after_release": {},
-            "lag_all": {
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
                 "r0.6.0": 329
             },
+            "lag_all_by_tag": {},
             "last_commit_date": "2021-02-28T16:40:19+04:00",
             "maturity": "obsolete",
             "room_version_dates_by_commit": {
@@ -3215,11 +3404,14 @@
             "forked_from": null,
             "initial_commit_date": "2016-11-12T16:45:39+00:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
                 "r0.2.0": 130
             },
+            "lag_all_by_tag": {},
             "last_commit_date": "2018-02-22T08:59:42-08:00",
             "maturity": "obsolete",
             "room_version_dates_by_commit": {},
@@ -3243,14 +3435,17 @@
             "forked_from": null,
             "initial_commit_date": "2017-08-13T16:01:06+02:00",
             "initial_release_date": null,
-            "lag_after_commit": {
+            "lag_after_commit_by_commit": {
                 "r0.3.0": 141
             },
-            "lag_after_release": {},
-            "lag_all": {
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
                 "r0.2.0": 486,
                 "r0.3.0": 141
             },
+            "lag_all_by_tag": {},
             "last_commit_date": "2018-10-19T23:44:02+02:00",
             "maturity": "obsolete",
             "room_version_dates_by_commit": {},
@@ -3282,9 +3477,12 @@
             "forked_from": null,
             "initial_commit_date": "2021-11-22T22:23:28-06:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {},
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {},
+            "lag_all_by_tag": {},
             "last_commit_date": "2021-11-30T23:04:15-06:00",
             "maturity": "unstarted",
             "room_version_dates_by_commit": {},
@@ -3308,9 +3506,11 @@
             "forked_from": null,
             "initial_commit_date": "2024-08-08T12:46:51+08:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
                 "r0.5.0": 1884,
                 "r0.6.0": 1735,
                 "v1.1": 1002,
@@ -3319,6 +3519,7 @@
                 "v1.4": 673,
                 "v1.5": 629
             },
+            "lag_all_by_tag": {},
             "last_commit_date": "2024-09-12T07:20:23+08:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
@@ -3479,12 +3680,15 @@
             "forked_from": null,
             "initial_commit_date": "2023-11-07T10:32:22+01:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
                 "v1.1": 749,
                 "v1.8": 97
             },
+            "lag_all_by_tag": {},
             "last_commit_date": "2024-03-28T11:40:34+01:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
@@ -3525,9 +3729,12 @@
             "forked_from": null,
             "initial_commit_date": "2022-01-08T21:32:03+04:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {},
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {},
+            "lag_all_by_tag": {},
             "last_commit_date": "2022-04-24T17:44:10+04:00",
             "maturity": "obsolete",
             "room_version_dates_by_commit": {},
@@ -3559,13 +3766,16 @@
             "forked_from": null,
             "initial_commit_date": "2019-01-07T22:16:20+01:00",
             "initial_release_date": null,
-            "lag_after_commit": {
+            "lag_after_commit_by_commit": {
                 "r0.6.1": 290
             },
-            "lag_after_release": {},
-            "lag_all": {
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
                 "r0.6.1": 290
             },
+            "lag_all_by_tag": {},
             "last_commit_date": "2021-07-31T12:03:42+04:00",
             "maturity": "obsolete",
             "room_version_dates_by_commit": {
@@ -3668,13 +3878,16 @@
             "forked_from": null,
             "initial_commit_date": "2015-11-29T02:58:41-08:00",
             "initial_release_date": null,
-            "lag_after_commit": {
+            "lag_after_commit_by_commit": {
                 "r0.2.0": 150
             },
-            "lag_after_release": {},
-            "lag_all": {
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
                 "r0.2.0": 150
             },
+            "lag_all_by_tag": {},
             "last_commit_date": "2020-03-22T14:26:18+01:00",
             "maturity": "obsolete",
             "room_version_dates_by_commit": {},
@@ -3698,13 +3911,16 @@
             "forked_from": null,
             "initial_commit_date": "2023-01-02T21:22:06-08:00",
             "initial_release_date": null,
-            "lag_after_commit": {
+            "lag_after_commit_by_commit": {
                 "v1.6": 40
             },
-            "lag_after_release": {},
-            "lag_all": {
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
                 "v1.6": 40
             },
+            "lag_all_by_tag": {},
             "last_commit_date": "2023-03-26T23:22:38-07:00",
             "maturity": "unstarted",
             "room_version_dates_by_commit": {},
@@ -3746,15 +3962,23 @@
             "forked_from": "synapse-legacy",
             "initial_commit_date": "2023-12-13T15:02:08+00:00",
             "initial_release_date": "2024-01-16T15:30:58+00:00",
-            "lag_after_commit": {
+            "lag_after_commit_by_commit": {
                 "v1.10": 37,
                 "v1.11": 17
             },
-            "lag_after_release": {
+            "lag_after_commit_by_tag": {
+                "v1.10": 52,
+                "v1.11": 25
+            },
+            "lag_after_release_by_commit": {
                 "v1.10": 37,
                 "v1.11": 17
             },
-            "lag_all": {
+            "lag_after_release_by_tag": {
+                "v1.10": 52,
+                "v1.11": 25
+            },
+            "lag_all_by_commit": {
                 "r0.0.1": 2892,
                 "r0.1.0": 2774,
                 "r0.2.0": 2707,
@@ -3774,6 +3998,27 @@
                 "v1.7": 201,
                 "v1.8": 111,
                 "v1.9": 13
+            },
+            "lag_all_by_tag": {
+                "r0.0.1": 2941,
+                "r0.1.0": 2822,
+                "r0.2.0": 2756,
+                "r0.3.0": 2255,
+                "r0.4.0": 1977,
+                "r0.5.0": 1693,
+                "r0.6.0": 1545,
+                "r0.6.1": 1343,
+                "v1.1": 812,
+                "v1.10": 52,
+                "v1.11": 25,
+                "v1.2": 726,
+                "v1.3": 545,
+                "v1.4": 483,
+                "v1.5": 439,
+                "v1.6": 350,
+                "v1.7": 250,
+                "v1.8": 160,
+                "v1.9": 61
             },
             "last_commit_date": "2024-09-12T13:05:43+01:00",
             "maturity": "stable",
@@ -4371,7 +4616,7 @@
             "forked_from": null,
             "initial_commit_date": "2014-08-12T15:10:52+01:00",
             "initial_release_date": "2014-08-14T03:36:03+01:00",
-            "lag_after_commit": {
+            "lag_after_commit_by_commit": {
                 "r0.0.1": 30,
                 "r0.1.0": 91,
                 "r0.2.0": 24,
@@ -4390,7 +4635,26 @@
                 "v1.8": 98,
                 "v1.9": 0
             },
-            "lag_after_release": {
+            "lag_after_commit_by_tag": {
+                "r0.0.1": 1043,
+                "r0.1.0": 924,
+                "r0.2.0": 858,
+                "r0.3.0": 357,
+                "r0.4.0": 479,
+                "r0.5.0": 196,
+                "r0.6.0": 216,
+                "r0.6.1": 538,
+                "v1.1": 118,
+                "v1.2": 33,
+                "v1.3": 84,
+                "v1.4": 21,
+                "v1.5": 33,
+                "v1.6": 97,
+                "v1.7": 201,
+                "v1.8": 111,
+                "v1.9": 12
+            },
+            "lag_after_release_by_commit": {
                 "r0.0.1": 30,
                 "r0.1.0": 91,
                 "r0.2.0": 24,
@@ -4409,7 +4673,26 @@
                 "v1.8": 98,
                 "v1.9": 0
             },
-            "lag_all": {
+            "lag_after_release_by_tag": {
+                "r0.0.1": 1043,
+                "r0.1.0": 924,
+                "r0.2.0": 858,
+                "r0.3.0": 357,
+                "r0.4.0": 479,
+                "r0.5.0": 196,
+                "r0.6.0": 216,
+                "r0.6.1": 538,
+                "v1.1": 118,
+                "v1.2": 33,
+                "v1.3": 84,
+                "v1.4": 21,
+                "v1.5": 33,
+                "v1.6": 97,
+                "v1.7": 201,
+                "v1.8": 111,
+                "v1.9": 12
+            },
+            "lag_all_by_commit": {
                 "r0.0.1": 30,
                 "r0.1.0": 91,
                 "r0.2.0": 24,
@@ -4427,6 +4710,25 @@
                 "v1.7": 188,
                 "v1.8": 98,
                 "v1.9": 0
+            },
+            "lag_all_by_tag": {
+                "r0.0.1": 1043,
+                "r0.1.0": 924,
+                "r0.2.0": 858,
+                "r0.3.0": 357,
+                "r0.4.0": 479,
+                "r0.5.0": 196,
+                "r0.6.0": 216,
+                "r0.6.1": 538,
+                "v1.1": 118,
+                "v1.2": 33,
+                "v1.3": 84,
+                "v1.4": 21,
+                "v1.5": 33,
+                "v1.6": 97,
+                "v1.7": 201,
+                "v1.8": 111,
+                "v1.9": 12
             },
             "last_commit_date": "2023-12-13T14:50:56+00:00",
             "maturity": "stable",
@@ -4912,24 +5214,37 @@
             "forked_from": null,
             "initial_commit_date": "2022-07-22T20:19:12-04:00",
             "initial_release_date": "2022-12-13T19:49:03+00:00",
-            "lag_after_commit": {
+            "lag_after_commit_by_commit": {
                 "v1.3": 526,
                 "v1.4": -5,
                 "v1.5": 23,
                 "v1.6": 1,
                 "v1.7": 167
             },
-            "lag_after_release": {
+            "lag_after_commit_by_tag": {
+                "v1.4": 70,
+                "v1.5": 26,
+                "v1.6": 20
+            },
+            "lag_after_release_by_commit": {
                 "v1.6": 1,
                 "v1.7": 167
             },
-            "lag_all": {
+            "lag_after_release_by_tag": {
+                "v1.6": 20
+            },
+            "lag_all_by_commit": {
                 "v1.2": 708,
                 "v1.3": 526,
                 "v1.4": -5,
                 "v1.5": 23,
                 "v1.6": 1,
                 "v1.7": 167
+            },
+            "lag_all_by_tag": {
+                "v1.4": 70,
+                "v1.5": 26,
+                "v1.6": 20
             },
             "last_commit_date": "2024-08-27T09:47:25-04:00",
             "maturity": "alpha",
@@ -5072,7 +5387,7 @@
             "forked_from": null,
             "initial_commit_date": "2021-01-02T06:38:03-08:00",
             "initial_release_date": null,
-            "lag_after_commit": {
+            "lag_after_commit_by_commit": {
                 "v1.1": 797,
                 "v1.2": 539,
                 "v1.3": 531,
@@ -5083,8 +5398,10 @@
                 "v1.8": 145,
                 "v1.9": 47
             },
-            "lag_after_release": {},
-            "lag_all": {
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
                 "r0.0.1": 2926,
                 "r0.1.0": 2808,
                 "r0.2.0": 2741,
@@ -5103,6 +5420,7 @@
                 "v1.8": 145,
                 "v1.9": 47
             },
+            "lag_all_by_tag": {},
             "last_commit_date": "2024-04-06T09:39:50-04:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
@@ -5263,14 +5581,17 @@
             "forked_from": null,
             "initial_commit_date": "2018-06-01T18:27:57+08:00",
             "initial_release_date": null,
-            "lag_after_commit": {},
-            "lag_after_release": {},
-            "lag_all": {
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
                 "r0.0.1": 892,
                 "r0.1.0": 773,
                 "r0.2.0": 707,
                 "r0.3.0": 206
             },
+            "lag_all_by_tag": {},
             "last_commit_date": "2018-06-30T13:31:19+01:00",
             "maturity": "obsolete",
             "room_version_dates_by_commit": {},

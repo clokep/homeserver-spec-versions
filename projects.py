@@ -35,9 +35,12 @@ class ProjectData:
     default_room_version_dates_by_tag: dict[
         str, list[tuple[str, datetime, str | None, datetime | None]]
     ]
-    lag_all: dict[str, int]
-    lag_after_commit: dict[str, int]
-    lag_after_release: dict[str, int]
+    lag_all_by_commit: dict[str, int]
+    lag_all_by_tag: dict[str, int]
+    lag_after_commit_by_commit: dict[str, int]
+    lag_after_commit_by_tag: dict[str, int]
+    lag_after_release_by_commit: dict[str, int]
+    lag_after_release_by_tag: dict[str, int]
     maturity: str
 
 
@@ -975,9 +978,12 @@ MANUAL_PROJECTS = {
         room_version_dates_by_tag={},
         default_room_version_dates_by_commit={},
         default_room_version_dates_by_tag={},
-        lag_all={},
-        lag_after_commit={},
-        lag_after_release={},
+        lag_all_by_commit={},
+        lag_all_by_tag={},
+        lag_after_commit_by_tag={},
+        lag_after_commit_by_commit={},
+        lag_after_release_by_commit={},
+        lag_after_release_by_tag={},
         maturity="alpha",
     ),
     "hungryserv": ProjectData(
@@ -994,9 +1000,12 @@ MANUAL_PROJECTS = {
         room_version_dates_by_tag={},
         default_room_version_dates_by_commit={},
         default_room_version_dates_by_tag={},
-        lag_all={},
-        lag_after_commit={},
-        lag_after_release={},
+        lag_all_by_commit={},
+        lag_all_by_tag={},
+        lag_after_commit_by_tag={},
+        lag_after_commit_by_commit={},
+        lag_after_release_by_commit={},
+        lag_after_release_by_tag={},
         maturity="beta",
     ),
 }

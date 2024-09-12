@@ -265,7 +265,7 @@ function renderData(data, displayType, dateType) {
     var scatterDatasets = [];
 
     for (let project in data.homeserver_versions) {
-        const projectVersions = data.homeserver_versions[project]["lag_" + displayType];
+        const projectVersions = data.homeserver_versions[project]["lag_" + displayType + "_" + dateType];
 
         // If there are no versions, don't bother adding them.
         if (!Object.keys(projectVersions).length) {

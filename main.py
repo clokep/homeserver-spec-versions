@@ -402,6 +402,19 @@ def get_project_dates(
         for version, version_info in versions.items()
     }
 
+    git_cmd = git.cmd.Git(repo.working_dir)
+
+    # Resolve the commit to the *next* tag.
+    versions_dates_all_by_tag = {}
+    for version, version_info in versions.items():
+        tags = git_cmd.execute(
+            ("git", "tag", "--contains", version_info[0].first_commit)
+        ).splitlines()
+        # If no tags were found than this wasn't released yet.
+        if tags:
+            tag = tags[0]
+            versions_dates_all_by_tag[version] = get_tag_datetime(repo.tags[tag])
+
     print(f"Loaded {project.name} dates: {list(versions_dates_all.keys())}")
 
     # Get the earliest release of this project.
@@ -418,6 +431,9 @@ def get_project_dates(
     version_dates_after_commit = calculate_versions_after_date(
         initial_commit_date, versions_dates_all, spec_versions
     )
+    version_dates_after_commit_by_tag = calculate_versions_after_date(
+        initial_commit_date, versions_dates_all_by_tag, spec_versions
+    )
 
     # Get the earliest release of this project.
     if project.earliest_tag:
@@ -432,6 +448,9 @@ def get_project_dates(
     # Remove any spec versions which existed before this project was released.
     version_dates_after_release = calculate_versions_after_date(
         release_date, versions_dates_all, spec_versions
+    )
+    version_dates_after_release_by_tag = calculate_versions_after_date(
+        release_date, versions_dates_all_by_tag, spec_versions
     )
 
     print()
@@ -448,9 +467,12 @@ def get_project_dates(
         room_version_dates_by_tag=version_info_to_dates(room_versions_by_tag),
         default_room_version_dates_by_commit=version_info_to_dates(default_room_versions),
         default_room_version_dates_by_tag=version_info_to_dates(default_room_versions_by_tag),
-        lag_all=calculate_lag(versions_dates_all, spec_versions),
-        lag_after_commit=calculate_lag(version_dates_after_commit, spec_versions),
-        lag_after_release=calculate_lag(version_dates_after_release, spec_versions),
+        lag_all_by_commit=calculate_lag(versions_dates_all, spec_versions),
+        lag_all_by_tag=calculate_lag(versions_dates_all_by_tag, spec_versions),
+        lag_after_commit_by_commit=calculate_lag(version_dates_after_commit, spec_versions),
+        lag_after_commit_by_tag=calculate_lag(version_dates_after_commit_by_tag, spec_versions),
+        lag_after_release_by_commit=calculate_lag(version_dates_after_release, spec_versions),
+        lag_after_release_by_tag=calculate_lag(version_dates_after_release_by_tag, spec_versions),
         maturity=project.maturity.lower(),
     )
 
