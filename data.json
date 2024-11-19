@@ -261,7 +261,7 @@
                 "v1.4": 310,
                 "v1.5": 524
             },
-            "last_commit_date": "2024-10-11T13:32:26+00:00",
+            "last_commit_date": "2024-11-03T23:57:29+00:00",
             "maturity": "beta",
             "room_version_dates_by_commit": {
                 "10": [
@@ -1732,6 +1732,207 @@
         },
         "dendrite": {
             "default_room_version_dates_by_commit": {
+                "10": [
+                    [
+                        "6bfe946bd2d82db12c1e49918612cc3d7139b8ce",
+                        "2024-10-17T17:16:37+02:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "default_room_version_dates_by_tag": {},
+            "forked_date": "2024-09-23T19:28:28+02:00",
+            "forked_from": "dendrite-legacy",
+            "initial_commit_date": "2024-10-17T17:16:37+02:00",
+            "initial_release_date": null,
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
+                "r0.0.1": 3201,
+                "r0.1.0": 3083,
+                "r0.2.0": 3016,
+                "r0.3.0": 2516,
+                "r0.4.0": 2238,
+                "r0.5.0": 1954,
+                "r0.6.1": 1604,
+                "v1.1": 1072,
+                "v1.2": 987
+            },
+            "lag_all_by_tag": {},
+            "last_commit_date": "2024-11-14T17:02:10+01:00",
+            "maturity": "beta",
+            "room_version_dates_by_commit": {
+                "1": [
+                    [
+                        "cc6847798a3ff74b5a0dda24cf71a2224dcd0fe5",
+                        "2020-03-16T14:40:58+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "10": [
+                    [
+                        "3a4b148706bc0aba684b8d572bf211092daa5862",
+                        "2022-05-30T09:49:46+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "11": [
+                    [
+                        "162387ab58e98ff4afdc66413498d0f928c08281",
+                        "2023-09-26T17:52:22+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "2": [
+                    [
+                        "cc6847798a3ff74b5a0dda24cf71a2224dcd0fe5",
+                        "2020-03-16T14:40:58+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "3": [
+                    [
+                        "cc6847798a3ff74b5a0dda24cf71a2224dcd0fe5",
+                        "2020-03-16T14:40:58+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "4": [
+                    [
+                        "cc6847798a3ff74b5a0dda24cf71a2224dcd0fe5",
+                        "2020-03-16T14:40:58+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "5": [
+                    [
+                        "cc6847798a3ff74b5a0dda24cf71a2224dcd0fe5",
+                        "2020-03-16T14:40:58+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "6": [
+                    [
+                        "c78145e2d6f2513f15993142a274c4683645dda9",
+                        "2020-06-04T09:11:34+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "7": [
+                    [
+                        "42ac4e797a585083e6fe87ecedc2bb9a6b265cbf",
+                        "2021-06-24T12:54:17+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "8": [
+                    [
+                        "2c080c15bbf14347b566cf1b67fd978e6c087c92",
+                        "2021-11-02T13:15:26+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "9": [
+                    [
+                        "2c080c15bbf14347b566cf1b67fd978e6c087c92",
+                        "2021-11-02T13:15:26+00:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
+                "r0.0.1": [
+                    [
+                        "6bfe946bd2d82db12c1e49918612cc3d7139b8ce",
+                        "2024-10-17T17:16:37+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.1.0": [
+                    [
+                        "6bfe946bd2d82db12c1e49918612cc3d7139b8ce",
+                        "2024-10-17T17:16:37+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.2.0": [
+                    [
+                        "6bfe946bd2d82db12c1e49918612cc3d7139b8ce",
+                        "2024-10-17T17:16:37+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.3.0": [
+                    [
+                        "6bfe946bd2d82db12c1e49918612cc3d7139b8ce",
+                        "2024-10-17T17:16:37+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.4.0": [
+                    [
+                        "6bfe946bd2d82db12c1e49918612cc3d7139b8ce",
+                        "2024-10-17T17:16:37+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.5.0": [
+                    [
+                        "6bfe946bd2d82db12c1e49918612cc3d7139b8ce",
+                        "2024-10-17T17:16:37+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.6.1": [
+                    [
+                        "6bfe946bd2d82db12c1e49918612cc3d7139b8ce",
+                        "2024-10-17T17:16:37+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.1": [
+                    [
+                        "6bfe946bd2d82db12c1e49918612cc3d7139b8ce",
+                        "2024-10-17T17:16:37+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.2": [
+                    [
+                        "6bfe946bd2d82db12c1e49918612cc3d7139b8ce",
+                        "2024-10-17T17:16:37+02:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "spec_version_dates_by_tag": {}
+        },
+        "dendrite-legacy": {
+            "default_room_version_dates_by_commit": {
                 "1": [
                     [
                         "452f393dd7de5203c5cd3ebe5697af6ea0f4b009",
@@ -1881,7 +2082,7 @@
                 "v1.1": 422,
                 "v1.2": 337
             },
-            "last_commit_date": "2024-09-23T19:28:28+02:00",
+            "last_commit_date": "2024-11-14T13:42:51+01:00",
             "maturity": "beta",
             "room_version_dates_by_commit": {
                 "1": [
@@ -2178,7 +2379,7 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit_date": "2024-10-28T17:02:10+01:00",
+            "last_commit_date": "2024-11-14T13:58:14+01:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {},
             "room_version_dates_by_tag": {},
@@ -2235,7 +2436,7 @@
                 "v1.5": 530
             },
             "lag_all_by_tag": {},
-            "last_commit_date": "2024-10-25T20:48:38+00:00",
+            "last_commit_date": "2024-11-12T00:36:36-08:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
                 "10": [
@@ -2559,7 +2760,7 @@
             },
             "default_room_version_dates_by_tag": {},
             "forked_date": "2024-03-05T20:41:35+01:00",
-            "forked_from": "dendrite",
+            "forked_from": "dendrite-legacy",
             "initial_commit_date": "2024-03-05T19:47:17+00:00",
             "initial_release_date": null,
             "lag_after_commit_by_commit": {},
@@ -2584,7 +2785,7 @@
                 "v1.8": 195
             },
             "lag_all_by_tag": {},
-            "last_commit_date": "2024-10-28T10:48:27+00:00",
+            "last_commit_date": "2024-11-08T09:45:49+00:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
                 "1": [
@@ -3011,7 +3212,7 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit_date": "2024-10-28T12:49:15.078146",
+            "last_commit_date": "2024-11-14T16:42:07.402447",
             "maturity": "beta",
             "room_version_dates_by_commit": {},
             "room_version_dates_by_tag": {},
@@ -3093,7 +3294,7 @@
             "default_room_version_dates_by_commit": {},
             "default_room_version_dates_by_tag": {},
             "forked_date": "2017-11-15T11:13:09+00:00",
-            "forked_from": "dendrite",
+            "forked_from": "dendrite-legacy",
             "initial_commit_date": "2020-06-03T13:41:57+08:00",
             "initial_release_date": "2020-08-07T10:29:40+08:00",
             "lag_after_commit_by_commit": {},
@@ -3520,7 +3721,7 @@
                 "v1.5": 629
             },
             "lag_all_by_tag": {},
-            "last_commit_date": "2024-10-24T15:11:02+08:00",
+            "last_commit_date": "2024-11-14T11:40:17+08:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
                 "1": [
@@ -4020,7 +4221,7 @@
                 "v1.8": 160,
                 "v1.9": 61
             },
-            "last_commit_date": "2024-10-25T10:44:12+01:00",
+            "last_commit_date": "2024-11-14T16:18:24+00:00",
             "maturity": "stable",
             "room_version_dates_by_commit": {
                 "1": [

@@ -1,7 +1,7 @@
 [[servers]]
 name = "Synapse"
-description = "Matrix.org homeserver"
-author = "Matrix.org team"
+description = "Synapse is a Matrix homeserver written in Python/Twisted. "
+author = "Element"
 maturity = "Stable"
 language = "Python"
 licence = "AGPL-3.0-or-later"
@@ -11,11 +11,11 @@ room = "#synapse:matrix.org"
 [[servers]]
 name = "Dendrite"
 description = "Dendrite is a second-generation Matrix homeserver written in Go!"
-author = "Matrix.org team"
+author = "Element"
 maturity = "Beta"
 language = "Go"
-licence = "Apache-2.0"
-repository = "https://github.com/matrix-org/dendrite"
+licence = "AGPL-3.0-or-later"
+repository = "https://github.com/element-hq/dendrite"
 room = "#dendrite:matrix.org"
 
 [[servers]]
