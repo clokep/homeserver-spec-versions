@@ -7,7 +7,7 @@ import os.path
 import subprocess
 
 import git
-from git import Repo
+from git import Commit, Repo, Tag
 
 from projects import ProjectMetadata, load_projects, ProjectData, MANUAL_PROJECTS
 
@@ -137,6 +137,16 @@ def get_tag_datetime(tag: git.TagReference) -> datetime:
         tag.tag.tagged_date,
         tz=timezone(offset=timedelta(seconds=-tag.tag.tagger_tz_offset)),
     )
+
+
+def get_tag_from_commit(git_cmd: git.Git, commit: str) -> str | None:
+    # Resolve the commit to the *next* tag.
+    tags = git_cmd.execute(("git", "tag", "--contains", commit)).splitlines()
+    # TODO Hack for Dendrite to remove the helm-dendrite-* tags.
+    tags = [t for t in tags if not t.startswith("helm-dendrite-")]
+    if tags:
+        return tags[0]
+    return None
 
 
 def get_spec_dates() -> (
@@ -298,16 +308,14 @@ def get_project_versions(
                 )
 
             # Resolve the commit to the *next* tag.
-            tags = git_cmd.execute(
-                ("git", "tag", "--contains", commit.hexsha)
-            ).splitlines()
+            tag = get_tag_from_commit(git_cmd, commit.hexsha)
             # If no tags were found than this wasn't released yet.
-            if tags:
-                tag = tags[0]
-
+            if tag:
                 if not versions_at_tag or versions_at_tag[-1].versions != cur_versions:
                     versions_at_tag.append(
-                        CommitVersionInfo(tag, get_tag_datetime(repo.tags[tag]), cur_versions)
+                        CommitVersionInfo(
+                            tag, get_tag_datetime(repo.tags[tag]), cur_versions
+                        )
                     )
 
     # Map of version to list of commit metadata for when support for that version changed.
@@ -407,12 +415,9 @@ def get_project_dates(
     # Resolve the commit to the *next* tag.
     versions_dates_all_by_tag = {}
     for version, version_info in versions.items():
-        tags = git_cmd.execute(
-            ("git", "tag", "--contains", version_info[0].first_commit)
-        ).splitlines()
+        tag = get_tag_from_commit(git_cmd, version_info[0].first_commit)
         # If no tags were found than this wasn't released yet.
-        if tags:
-            tag = tags[0]
+        if tag:
             versions_dates_all_by_tag[version] = get_tag_datetime(repo.tags[tag])
 
     print(f"Loaded {project.name} dates: {list(versions_dates_all.keys())}")
@@ -465,14 +470,26 @@ def get_project_dates(
         spec_version_dates_by_tag=version_info_to_dates(versions_by_tag),
         room_version_dates_by_commit=version_info_to_dates(room_versions),
         room_version_dates_by_tag=version_info_to_dates(room_versions_by_tag),
-        default_room_version_dates_by_commit=version_info_to_dates(default_room_versions),
-        default_room_version_dates_by_tag=version_info_to_dates(default_room_versions_by_tag),
+        default_room_version_dates_by_commit=version_info_to_dates(
+            default_room_versions
+        ),
+        default_room_version_dates_by_tag=version_info_to_dates(
+            default_room_versions_by_tag
+        ),
         lag_all_by_commit=calculate_lag(versions_dates_all, spec_versions),
         lag_all_by_tag=calculate_lag(versions_dates_all_by_tag, spec_versions),
-        lag_after_commit_by_commit=calculate_lag(version_dates_after_commit, spec_versions),
-        lag_after_commit_by_tag=calculate_lag(version_dates_after_commit_by_tag, spec_versions),
-        lag_after_release_by_commit=calculate_lag(version_dates_after_release, spec_versions),
-        lag_after_release_by_tag=calculate_lag(version_dates_after_release_by_tag, spec_versions),
+        lag_after_commit_by_commit=calculate_lag(
+            version_dates_after_commit, spec_versions
+        ),
+        lag_after_commit_by_tag=calculate_lag(
+            version_dates_after_commit_by_tag, spec_versions
+        ),
+        lag_after_release_by_commit=calculate_lag(
+            version_dates_after_release, spec_versions
+        ),
+        lag_after_release_by_tag=calculate_lag(
+            version_dates_after_release_by_tag, spec_versions
+        ),
         maturity=project.maturity.lower(),
     )
 

@@ -171,6 +171,7 @@ ADDITIONAL_METADATA = {
             "src/database/globals.rs",
             "src/server_server.rs",
             "src/service/globals/mod.rs",
+            "src/core/info/room_version.rs",
         ],
         room_version_pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)',
         default_room_version_paths=[

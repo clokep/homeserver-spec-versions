@@ -34,7 +34,6 @@ function cmpVersions(a, b) {
         } else if (A[i] > B[i]) {
             return 1;
         }
-
     }
 }
 
