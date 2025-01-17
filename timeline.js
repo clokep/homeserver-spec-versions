@@ -55,6 +55,38 @@ function build() {
         }
     });
 
+    // Timeline of homeserver history.
+    const activityContext = document.getElementById("homeserver-activity");
+    new Chart(activityContext, {
+        type: "line",
+        data: null,
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: "Actively Developed Homeservers",
+                },
+                zoom: zoomOptions,
+            },
+            scales: {
+                x: {
+                    min: "2014-08-01",
+                    title: {
+                        display: true,
+                        text: "Date"
+                    },
+                    type: "time"
+                },
+                y: {
+                    grid: {
+                        // Draw grid lines between timeline lines.
+                        offset: true,
+                    }
+                }
+            }
+        }
+    });
+
     // Add the initial data.
     render();
 }
@@ -110,8 +142,6 @@ function renderData(data) {
         return new Date(a_date) - new Date(b_date);
     });
 
-    console.log(projectsByFamily)
-
     for (let idx in projectsByFamily) {
         // If
         const [project, projectInfo] = projectsByFamily[idx];
@@ -151,6 +181,48 @@ function renderData(data) {
         return project;
     }
     homeserverHistoryChart.update();
+
+    // Order homeservers by date.
+
+    // Group homeservers by family.
+    let dates = Object.values(data.homeserver_versions).map(project =>
+        [[new Date(project.initial_commit_date), 1], [new Date(project.last_commit_date), -1]]
+    ).flat().sort((a, b) => a[0] > b[0]);
+
+    // The last date is when the script was last run. Remove any data from
+    // homeservers that would have gone deactive in the past 60 days.
+    const last_run = dates[dates.length - 1][0];
+    last_run.setHours(0, 0, 0, 0);
+    last_run.setDate(last_run.getDate() - 60);
+    dates = dates.filter(a => a[0] < last_run || a[1] > 0);
+
+    // Create the two data sets which accumulate from the previous values.
+    let total_count = 0;
+    let active_count = 0;
+    let total = dates.map(a => {
+        if (a[1] > 0) {
+            return [a[0], total_count += 1]
+        }
+        return null
+    }).filter(a => a !== null);
+    let active = dates.map(a => [a[0], active_count += a[1]]);
+
+    const homeserveractivityChart = Chart.getChart("homeserver-activity");
+    homeserveractivityChart.data = {
+        datasets: [
+            {
+                label: "Total",
+                data: total,
+                fill: 1,
+            },
+            {
+                label: "Active",
+                data: active,
+                fill: "origin",
+            },
+        ]
+    };
+    homeserveractivityChart.update();
 }
 
 // Build the initial version.
