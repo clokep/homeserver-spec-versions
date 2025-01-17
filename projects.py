@@ -584,15 +584,16 @@ ADDITIONAL_PROJECTS = [
         repository="https://github.com/processone/ejabberd",
         room=None,
         branch="master",
+        # Check src/mod_matrix* for matrix related files.
         spec_version_paths=[],
         room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
+        room_version_paths=["src/mod_matrix_gw_room.erl"],
+        room_version_pattern=r'binary_to_room_version\(<<"(\d+)">>\)',
         default_room_version_paths=[],
         default_room_version_pattern="",
-        # First commit w/ Matrix support.
+        # First commit & tag w/ Matrix support.
         earliest_commit="f44e23b8cc2c3ab7d1c36f702f00a6b5b947c5d0",
-        earliest_tag=None,
+        earliest_tag="24.02",
         forked_from=None,
     ),
     ProjectMetadata(
@@ -1078,6 +1079,29 @@ MANUAL_PROJECTS = {
         lag_after_release_by_commit={},
         lag_after_release_by_tag={},
         maturity="beta",
+    ),
+    "synapse-pro": ProjectData(
+        # See https://element.io/blog/synapse-pro-slashes-costs-for-running-nation-scale-matrix-deployments/
+        # <meta property="article:published_time" content="2024-12-10T08:27:21.000Z">
+        initial_release_date=datetime(2024, 12, 10, 8, 27, 21),
+        initial_commit_date=datetime(2024, 12, 10, 8, 27, 21),
+        forked_date=datetime(2024, 12, 10, 8, 27, 21),
+        forked_from="synapse",
+        # It is being actively developed.
+        last_commit_date=datetime.now(),
+        spec_version_dates_by_commit={},
+        spec_version_dates_by_tag={},
+        room_version_dates_by_commit={},
+        room_version_dates_by_tag={},
+        default_room_version_dates_by_commit={},
+        default_room_version_dates_by_tag={},
+        lag_all_by_commit={},
+        lag_all_by_tag={},
+        lag_after_commit_by_tag={},
+        lag_after_commit_by_commit={},
+        lag_after_release_by_commit={},
+        lag_after_release_by_tag={},
+        maturity="stable",
     ),
 }
 

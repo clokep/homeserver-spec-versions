@@ -140,6 +140,7 @@ def get_tag_datetime(tag: git.TagReference) -> datetime:
 
 
 def get_tag_from_commit(git_cmd: git.Git, commit: str) -> str | None:
+    """Find the first tag which contains a comit."""
     # Resolve the commit to the *next* tag.
     tags = git_cmd.execute(("git", "tag", "--contains", commit)).splitlines()
     # TODO Hack for Dendrite to remove the helm-dendrite-* tags.

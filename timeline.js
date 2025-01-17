@@ -88,9 +88,23 @@ function renderData(data) {
         let b_date = b.initial_commit_date;
 
         // If the homeservers are of different families, use the origin project's date.
-        if ((a.forked_from || a_name) !== (b.forked_from || b_name)) {
-            a_date = a.forked_from ? data.homeserver_versions[a.forked_from].initial_commit_date : a.initial_commit_date;
-            b_date = b.forked_from ? data.homeserver_versions[b.forked_from].initial_commit_date : b.initial_commit_date;
+        let a_parent = a;
+        let a_family = a_name;
+        while (a_parent.forked_from) {
+            a_family = a_parent.forked_from;
+            a_parent = data.homeserver_versions[a_family];
+        }
+
+        let b_parent = b;
+        let b_family = b_name;
+        while (b_parent.forked_from) {
+            b_family = b_parent.forked_from;
+            b_parent = data.homeserver_versions[b_family];
+        }
+
+        if (a_family !== b_family) {
+            a_date = a_parent.initial_commit_date;
+            b_date = b_parent.initial_commit_date;
         }
 
         return new Date(a_date) - new Date(b_date);
