@@ -2,7 +2,7 @@ import os.path
 import tomllib
 from dataclasses import asdict, dataclass
 from datetime import datetime
-from typing import Iterator
+from typing import Iterator, Callable
 from urllib.request import urlopen
 
 SERVER_METADATA_URL = "https://raw.githubusercontent.com/matrix-org/matrix.org/main/content/ecosystem/servers/servers.toml"
@@ -79,6 +79,8 @@ class AdditionalMetadata:
     #
     # This should have 0 or 1 single capturing group.
     room_version_pattern: str
+    # The parser for room_version_pattern, defaults to none.
+    room_version_parser: Callable[[str], set[str]] | None
     # The file paths (relative to repo root) to check for default
     # room version information.
     #
@@ -121,6 +123,7 @@ ADDITIONAL_METADATA = {
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -144,6 +147,7 @@ ADDITIONAL_METADATA = {
             "src/service/globals/mod.rs",
         ],
         room_version_pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)',
+        room_version_parser=None,
         default_room_version_paths=[
             "src/client_server.rs",
             "src/client_server/capabilities.rs",
@@ -174,6 +178,7 @@ ADDITIONAL_METADATA = {
             "src/core/info/room_version.rs",
         ],
         room_version_pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)',
+        room_version_parser=None,
         default_room_version_paths=[
             "src/client_server.rs",
             "src/client_server/capabilities.rs",
@@ -193,6 +198,7 @@ ADDITIONAL_METADATA = {
         room_version_repo=None,
         room_version_paths=["modules/client/capabilities.cc"],
         room_version_pattern=r'"(\d+)"',
+        room_version_parser=None,
         default_room_version_paths=[
             "modules/m_room_create.cc",
             "modules/client/createroom.cc",
@@ -214,6 +220,7 @@ ADDITIONAL_METADATA = {
         room_version_repo="https://github.com/matrix-org/gomatrixserverlib",
         room_version_paths=["eventversion.go"],
         room_version_pattern=r"RoomVersionV(\d+)",
+        room_version_parser=None,
         default_room_version_paths=[
             "roomserver/version/version.go",
             "setup/config/config_roomserver.go",
@@ -229,6 +236,7 @@ ADDITIONAL_METADATA = {
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -244,6 +252,7 @@ ADDITIONAL_METADATA = {
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit="bde8bc21a45a9dcffaaa812aa6a5a5341bca5f42",
@@ -256,6 +265,7 @@ ADDITIONAL_METADATA = {
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -271,6 +281,7 @@ ADDITIONAL_METADATA = {
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -285,6 +296,7 @@ ADDITIONAL_METADATA = {
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -297,6 +309,7 @@ ADDITIONAL_METADATA = {
         room_version_repo=None,
         room_version_paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
         room_version_pattern=r"RoomVersions.V(\d+)",
+        room_version_parser=None,
         default_room_version_paths=[
             "synapse/api/constants.py",
             "synapse/api/room_versions.py",
@@ -316,6 +329,7 @@ ADDITIONAL_METADATA = {
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -328,6 +342,7 @@ ADDITIONAL_METADATA = {
         room_version_repo=None,
         room_version_paths=["src/Routes/RouteCapabilities.c"],
         room_version_pattern=r'roomVersions, "(\d+)"',
+        room_version_parser=None,
         default_room_version_paths=["src/Routes/RouteCapabilities.c"],
         default_room_version_pattern=r'JsonValueString\("(\d+)"\), 2, "m.room_versions", "default"',
         earliest_commit=None,
@@ -351,6 +366,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=["lib/architex_web/client/controllers/info_controller.ex"],
         room_version_pattern=r'"(\d+)"',
+        room_version_parser=None,
         default_room_version_paths=[
             "lib/architex_web/client/controllers/info_controller.ex"
         ],
@@ -373,6 +389,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -393,6 +410,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -413,6 +431,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -433,6 +452,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -453,6 +473,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -476,6 +497,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo="https://github.com/matrix-org/gomatrixserverlib",
         room_version_paths=["eventversion.go"],
         room_version_pattern=r"RoomVersionV(\d+)",
+        room_version_parser=None,
         default_room_version_paths=[
             "roomserver/version/version.go",
             "setup/config/config_roomserver.go",
@@ -499,6 +521,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -519,6 +542,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -551,6 +575,7 @@ ADDITIONAL_PROJECTS = [
             "src/service/globals.rs",
         ],
         room_version_pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)',
+        room_version_parser=None,
         default_room_version_paths=[
             "src/client_server.rs",
             "src/client_server/capabilities.rs",
@@ -584,6 +609,7 @@ ADDITIONAL_PROJECTS = [
             "src/main/java/io/kamax/gridify/server/network/matrix/core/room/algo/BuiltinRoomAlgoLoader.java"
         ],
         room_version_pattern=r'versions\.add\("(\d+)"\);',
+        room_version_parser=None,
         default_room_version_paths=[
             "src/main/java/io/kamax/gridify/server/network/matrix/core/room/algo/RoomAlgos.java"
         ],
@@ -609,6 +635,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=["src/mod_matrix_gw_room.erl"],
         room_version_pattern=r'binary_to_room_version\(<<"(\d+)">>\)',
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         # First commit & tag w/ Matrix support.
@@ -630,6 +657,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -653,6 +681,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo="https://github.com/matrix-org/gomatrixserverlib",
         room_version_paths=["eventversion.go"],
         room_version_pattern=r"RoomVersionV(\d+)",
+        room_version_parser=None,
         default_room_version_paths=[
             "roomserver/version/version.go",
             "setup/config/config_roomserver.go",
@@ -677,6 +706,7 @@ ADDITIONAL_PROJECTS = [
         room_version_paths=["types/MatrixRoomVersion.ts"],
         room_version_pattern=r"MatrixRoomVersion\.V(\d+)",
         # TODO Should use room_version_repo.
+        room_version_parser=None,
         default_room_version_paths=["server/MatrixServerService.ts"],
         default_room_version_pattern=r"defaultRoomVersion : MatrixRoomVersion = MatrixRoomVersion\.V(\d+)",
         earliest_commit=None,
@@ -697,6 +727,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -717,6 +748,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -737,6 +769,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -757,6 +790,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -779,6 +813,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -803,6 +838,7 @@ ADDITIONAL_PROJECTS = [
             "homeserver/src/main/scala/org/mascarene/homeserver/internal/rooms/RoomAgent.scala"
         ],
         room_version_pattern=r'"(\d+)"',
+        room_version_parser=None,
         default_room_version_paths=["homeserver/src/main/resources/reference.conf"],
         default_room_version_pattern=r'default-room-version="(\d+)"',
         earliest_commit=None,
@@ -827,6 +863,7 @@ ADDITIONAL_PROJECTS = [
             "Mocktrix.RoomVersions/Support.cs",
         ],
         room_version_pattern=r'"(\d+)"',
+        room_version_parser=None,
         default_room_version_paths=["Mocktrix/client/r0.6.1/Capabilities.cs"],
         default_room_version_pattern=r'DefaultVersion = "(\d+)",',
         earliest_commit=None,
@@ -847,6 +884,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -867,6 +905,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=["crates/server/src/bl/mod.rs"],
         room_version_pattern=r"RoomVersionId::V(\d+)",
+        room_version_parser=None,
         default_room_version_paths=["crates/server/src/config/server_config.rs"],
         default_room_version_pattern=r"RoomVersionId::V(\d+)",
         earliest_commit=None,
@@ -890,6 +929,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=["src/utils/state_res.cpp"],
         room_version_pattern=r'"(\d+)"',
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -910,6 +950,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -934,8 +975,31 @@ ADDITIONAL_PROJECTS = [
         room_version_paths=["config/config.exs"],
         # Note that \d doesn't seem to work in [] for grep.
         room_version_pattern=r"supported_room_versions: ~w\(([0-9 ]+)\)",
+        room_version_parser=None,
         default_room_version_paths=["config/config.exs"],
         default_room_version_pattern=r'default_room_version: "(\d+)"',
+        earliest_commit=None,
+        earliest_tag=None,
+        forked_from=None,
+    ),
+    ProjectMetadata(
+        name="radio_beam",
+        description="A WIP Matrix homeserver, powered by the BEAM",
+        author="Ben W.",
+        maturity="Alpha",
+        language="Erlang",
+        licence="AGPL-3.0",
+        repository="https://github.com/Bentheburrito/radio_beam",
+        room=None,
+        branch="main",
+        spec_version_paths=["config/config.exs"],
+        room_version_repo=None,
+        room_version_paths=["config/config.exs"],
+        room_version_pattern=r"Map\.new\((.+),",
+        room_version_parser=lambda s: set(map(str, range(*map(int, s.split("..")))))
+        | {s.split("..")[1]},
+        default_room_version_paths=["config/config.exs"],
+        default_room_version_pattern=r'default: "(\d+)"',
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -954,6 +1018,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -974,6 +1039,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
+        room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",
         earliest_commit=None,
@@ -994,6 +1060,7 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
         room_version_pattern=r"RoomVersions.V(\d+)",
+        room_version_parser=None,
         default_room_version_paths=[
             "synapse/api/constants.py",
             "synapse/api/room_versions.py",
@@ -1021,6 +1088,7 @@ ADDITIONAL_PROJECTS = [
         room_version_paths=["config/config.exs"],
         # Note that \d doesn't seem to work in [] for grep.
         room_version_pattern=r"supported_room_versions: ~w\(([0-9 ]+)\)",
+        room_version_parser=None,
         default_room_version_paths=["config/config.exs"],
         default_room_version_pattern=r'default_room_version: "(\d+)"',
         earliest_commit=None,

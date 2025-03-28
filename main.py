@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import os.path
 import subprocess
+from typing import Callable
 
 import git
 from git import Commit, Repo, Tag
@@ -37,7 +38,11 @@ def json_encode(o: object) -> str | bool | int | float | None | list | dict:
 
 
 def get_versions_from_file(
-    root: str, paths: list[str], pattern: str, to_ignore: list[str]
+    root: str,
+    paths: list[str],
+    pattern: str,
+    parser: Callable[[str], set[str]],
+    to_ignore: list[str],
 ) -> set[str]:
     """
     Fetch the spec versions from one or more files.
@@ -72,7 +77,9 @@ def get_versions_from_file(
         # Search again for the versions.
         matches = re.findall(pattern, line)
         matches = [
-            [m for m in match if m] if isinstance(match, tuple) else match.split()
+            [m for m in match if m]
+            if isinstance(match, tuple)
+            else (parser(match) if parser else match.split())
             for match in matches
         ]
         # Flatten the list of lists
@@ -207,10 +214,8 @@ def get_spec_dates() -> (
             spec_repo.working_dir,
             DEFAULT_ROOM_VERSION_PATHS,
             r"Servers MUST have Room Version (\d+)|Servers SHOULD use (?:\*\*)?room version (\d+)(?:\*\*)?",
-            [
-                # Dendrite incorrectly set room version 2 as the default for a period.
-                "2"
-            ],
+            None,
+            [],
         )
         assert len(cur_versions) <= 1, "Found more than one default room version"
         if cur_versions:
@@ -258,6 +263,7 @@ def get_project_versions(
     repo: Repo,
     paths: list[str],
     pattern: str,
+    parser: Callable[[str], set[str]] | None,
     to_ignore: list[str],
 ) -> tuple[dict[str, list[VersionInfo]], dict[str, list[VersionInfo]]]:
     """
@@ -296,7 +302,7 @@ def get_project_versions(
             # Commits are ordered earliest to latest, only record if the
             # version info changed.
             cur_versions = get_versions_from_file(
-                repo.working_dir, paths, pattern, to_ignore
+                repo.working_dir, paths, pattern, parser, to_ignore
             )
             if (
                 not versions_at_commit
@@ -360,6 +366,7 @@ def get_project_dates(
         repo,
         project.spec_version_paths,
         r"[vr]\d[\d\.]+\d",
+        None,
         to_ignore=[
             # Dendrite declares a v1.0, which never existed.
             "v1.0",
@@ -386,6 +393,7 @@ def get_project_dates(
         room_version_repo,
         project.room_version_paths,
         project.room_version_pattern,
+        project.room_version_parser,
         to_ignore=[],
     )
     print(f"Loaded {project.name} room versions: {list(room_versions.keys())}")
@@ -397,6 +405,7 @@ def get_project_dates(
         repo,
         project.default_room_version_paths,
         project.default_room_version_pattern,
+        None,
         # Dendrite declared room version 2 as a default, but that was invalid.
         to_ignore=["2"],
     )
