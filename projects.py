@@ -77,7 +77,11 @@ class AdditionalMetadata:
     room_version_paths: list[str]
     # The pattern to use to fetch room versions.
     #
-    # This should have 0 or 1 single capturing group.
+    # This can have multiple capturing groups, all of which will be considered
+    # as a room version.
+    #
+    # If room_version_parser is provided then the results are further parsed with
+    # that.
     room_version_pattern: str
     # The parser for room_version_pattern, defaults to none.
     room_version_parser: Callable[[str], set[str]] | None
@@ -88,7 +92,8 @@ class AdditionalMetadata:
     default_room_version_paths: list[str]
     # The pattern to use to fetch the default room version.
     #
-    # This should have 0 or 1 single capturing group.
+    # This can have multiple capturing groups, all of which will be considered
+    # as a default room version.
     default_room_version_pattern: str
     # The earliest commit to consider.
     #
@@ -974,8 +979,8 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=["config/config.exs"],
         # Note that \d doesn't seem to work in [] for grep.
-        room_version_pattern=r"supported_room_versions: ~w\(([0-9 ]+)\)",
-        room_version_parser=None,
+        room_version_pattern=r"supported_room_versions: ~w\((.+)\)",
+        room_version_parser=lambda s: s.split(" "),
         default_room_version_paths=["config/config.exs"],
         default_room_version_pattern=r'default_room_version: "(\d+)"',
         earliest_commit=None,
@@ -1087,8 +1092,8 @@ ADDITIONAL_PROJECTS = [
         room_version_repo=None,
         room_version_paths=["config/config.exs"],
         # Note that \d doesn't seem to work in [] for grep.
-        room_version_pattern=r"supported_room_versions: ~w\(([0-9 ]+)\)",
-        room_version_parser=None,
+        room_version_pattern=r"supported_room_versions: ~w\((.+)\)",
+        room_version_parser=lambda s: s.split(" "),
         default_room_version_paths=["config/config.exs"],
         default_room_version_pattern=r'default_room_version: "(\d+)"',
         earliest_commit=None,

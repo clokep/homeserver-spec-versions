@@ -79,7 +79,9 @@ def get_versions_from_file(
         matches = [
             [m for m in match if m]
             if isinstance(match, tuple)
-            else (parser(match) if parser else match.split())
+            else parser(match)
+            if parser
+            else [match]
             for match in matches
         ]
         # Flatten the list of lists
