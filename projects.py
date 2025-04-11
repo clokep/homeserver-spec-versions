@@ -8,6 +8,11 @@ from urllib.request import urlopen
 SERVER_METADATA_URL = "https://raw.githubusercontent.com/matrix-org/matrix.org/main/content/ecosystem/servers/servers.toml"
 
 
+def parse_range_operator(s: str) -> set[str]:
+    """Parse a range operator in Elixir, e.g. 3..5 should become {3, 4, 5}."""
+    return set(map(str, range(*map(int, s.split(".."))))) | {s.split("..")[1]}
+
+
 @dataclass
 class ProjectData:
     """The project info that's dumped into the JSON file."""
@@ -298,6 +303,19 @@ ADDITIONAL_METADATA = {
         spec_version_paths=[
             "src/main/java/io/kamax/mxhsd/spring/client/controller/VersionController.java"
         ],
+        room_version_repo=None,
+        room_version_paths=[],
+        room_version_pattern="",
+        room_version_parser=None,
+        default_room_version_paths=[],
+        default_room_version_pattern="",
+        earliest_commit=None,
+        earliest_tag=None,
+        forked_from=None,
+    ),
+    "pallium": AdditionalMetadata(
+        "master",
+        spec_version_paths=[],
         room_version_repo=None,
         room_version_paths=[],
         room_version_pattern="",
@@ -957,8 +975,11 @@ ADDITIONAL_PROJECTS = [
         room_version_paths=["src/utils/state_res.cpp"],
         room_version_pattern=r'"(\d+)"',
         room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        default_room_version_paths=[
+            "src/webserver/client_server_api/ClientServerCtrl.cpp",
+            "src/webserver/client_server_api/ClientServerCtrl.hpp",
+        ],
+        default_room_version_pattern=r'default_room_version = "(\d+)"',
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -1022,9 +1043,10 @@ ADDITIONAL_PROJECTS = [
         spec_version_paths=["config/config.exs"],
         room_version_repo=None,
         room_version_paths=["config/config.exs"],
-        room_version_pattern=r"Map\.new\((.+),",
-        room_version_parser=lambda s: set(map(str, range(*map(int, s.split("..")))))
-        | {s.split("..")[1]},
+        room_version_pattern=r'Map\.new\((.+),|"(\d+)" => "stable"',
+        # If the first matching group matches, then split on .. and convert to a range
+        # of values. If the second group matches, it is just a single value.
+        room_version_parser=lambda s: parse_range_operator(s[0]) if s[0] else {s[1]},
         default_room_version_paths=["config/config.exs"],
         default_room_version_pattern=r'default: "(\d+)"',
         earliest_commit=None,
@@ -1121,6 +1143,46 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+    ),
+    ProjectMetadata(
+        name="tuwunel",
+        description="fork of conduwuit with more features, performance and stable governance",
+        author="Jason Volk",
+        maturity="Beta",
+        language="Rust",
+        licence="Apache-2.0",
+        repository="https://github.com/matrix-construct/tuwunel",
+        room=None,
+        branch="main",
+        spec_version_paths=[
+            "src/main.rs",
+            "src/client_server/unversioned.rs",
+            "src/api/client_server/unversioned.rs",
+            "src/api/client/unversioned.rs",
+        ],
+        room_version_repo=None,
+        room_version_paths=[
+            "src/client_server.rs",
+            "src/client_server/capabilities.rs",
+            "src/database/globals.rs",
+            "src/server_server.rs",
+            "src/service/globals/mod.rs",
+            "src/core/info/room_version.rs",
+        ],
+        room_version_pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)',
+        room_version_parser=None,
+        default_room_version_paths=[
+            "src/client_server.rs",
+            "src/client_server/capabilities.rs",
+            "src/database/globals.rs",
+            "src/server_server.rs",
+            "src/config/mod.rs",
+            "src/core/config/mod.rs",
+        ],
+        default_room_version_pattern=r'default: "(\d+)"|default: RoomVersionId::V(?:ersion)?(\d+),|default_room_version = RoomVersionId::V(?:ersion)?(\d+);|^ +RoomVersionId::V(?:ersion)?(\d+)$|default_default_room_version.+RoomVersionId::V(\d+)',
+        earliest_commit="ce6e5e48de2a3580e17609f382cd4520fb6d8c63",
+        earliest_tag=None,
+        forked_from="conduwuit",
     ),
 ]
 

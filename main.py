@@ -1,3 +1,4 @@
+import itertools
 import re
 from dataclasses import dataclass, asdict, astuple
 from datetime import datetime, timezone, timedelta
@@ -77,10 +78,10 @@ def get_versions_from_file(
         # Search again for the versions.
         matches = re.findall(pattern, line)
         matches = [
-            [m for m in match if m]
-            if isinstance(match, tuple)
-            else parser(match)
+            parser(match)
             if parser
+            else [m for m in match if m]
+            if isinstance(match, tuple)
             else [match]
             for match in matches
         ]
@@ -286,17 +287,23 @@ def get_project_versions(
 
     # If no paths are given, then no versions were ever supported.
     if paths:
-        # Calculate the set of versions each time these files were changed.
-        for commit in repo.iter_commits(
-            f"{earliest_commit}~..origin/{project.branch}"
-            if earliest_commit
-            else f"origin/{project.branch}",
-            paths=paths,
-            reverse=True,
-            # Follow the development branch through merges (i.e. use dates that
-            # changes are merged instead of original commit date).
-            first_parent=True,
-        ):
+        # Calculate the set of versions each time these files were changed, including
+        # the earliest commit, if one exists.
+        commits = list(
+            repo.iter_commits(
+                f"{earliest_commit}~..origin/{project.branch}"
+                if earliest_commit
+                else f"origin/{project.branch}",
+                paths=paths,
+                reverse=True,
+                # Follow the development branch through merges (i.e. use dates that
+                # changes are merged instead of original commit date).
+                first_parent=True,
+            )
+        )
+        if earliest_commit and (not commits or commits[0].hexsha != earliest_commit):
+            commits.insert(0, repo.commit(earliest_commit))
+        for commit in commits:
             # Checkout this commit (why is this so hard?).
             repo.head.reference = commit
             repo.head.reset(index=True, working_tree=True)
