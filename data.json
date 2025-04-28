@@ -1812,7 +1812,7 @@
                 "v1.4": 929,
                 "v1.5": 885
             },
-            "last_commit_date": "2025-04-27T18:52:20+00:00",
+            "last_commit_date": "2025-04-28T20:45:08+01:00",
             "maturity": "beta",
             "room_version_dates_by_commit": {
                 "10": [
@@ -1824,6 +1824,14 @@
                     ]
                 ],
                 "11": [
+                    [
+                        "e054a56b3286a6fb3091bedd5261089435ed26d1",
+                        "2025-04-15T10:10:21+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "2": [
                     [
                         "e054a56b3286a6fb3091bedd5261089435ed26d1",
                         "2025-04-15T10:10:21+01:00",
@@ -1898,6 +1906,14 @@
                     ]
                 ],
                 "11": [
+                    [
+                        "v0.5.0-rc.5",
+                        "2025-04-20T23:07:20+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "2": [
                     [
                         "v0.5.0-rc.5",
                         "2025-04-20T23:07:20+01:00",
@@ -3875,7 +3891,7 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit_date": "2025-04-28T11:52:02.313403",
+            "last_commit_date": "2025-04-28T15:51:30.048616",
             "maturity": "beta",
             "room_version_dates_by_commit": {},
             "room_version_dates_by_tag": {},
@@ -6418,7 +6434,7 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit_date": "2025-04-28T11:52:02.313419",
+            "last_commit_date": "2025-04-28T15:51:30.048635",
             "maturity": "stable",
             "room_version_dates_by_commit": {},
             "room_version_dates_by_tag": {},
@@ -6948,6 +6964,14 @@
                         null
                     ]
                 ],
+                "2": [
+                    [
+                        "ce6e5e48de2a3580e17609f382cd4520fb6d8c63",
+                        "2025-04-09T03:40:44+00:00",
+                        null,
+                        null
+                    ]
+                ],
                 "3": [
                     [
                         "ce6e5e48de2a3580e17609f382cd4520fb6d8c63",
@@ -7015,6 +7039,14 @@
                     ]
                 ],
                 "11": [
+                    [
+                        "v0.5.0",
+                        "2025-04-16T20:58:48-07:00",
+                        null,
+                        null
+                    ]
+                ],
+                "2": [
                     [
                         "v0.5.0",
                         "2025-04-16T20:58:48-07:00",

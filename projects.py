@@ -156,7 +156,7 @@ ADDITIONAL_METADATA = {
             "src/server_server.rs",
             "src/service/globals/mod.rs",
         ],
-        room_version_pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)',
+        room_version_pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)(?:,|])',
         room_version_parser=None,
         default_room_version_paths=[
             "src/client_server.rs",
@@ -187,7 +187,7 @@ ADDITIONAL_METADATA = {
             "src/service/globals/mod.rs",
             "src/core/info/room_version.rs",
         ],
-        room_version_pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)',
+        room_version_pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)(?:,|])',
         room_version_parser=None,
         default_room_version_paths=[
             "src/client_server.rs",
@@ -508,7 +508,7 @@ ADDITIONAL_PROJECTS = [
             "src/service/globals/mod.rs",
             "src/core/info/room_version.rs",
         ],
-        room_version_pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)',
+        room_version_pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)(?:,|])',
         room_version_parser=None,
         default_room_version_paths=[
             "src/client_server.rs",
@@ -659,7 +659,7 @@ ADDITIONAL_PROJECTS = [
             "src/service/globals/mod.rs",
             "src/service/globals.rs",
         ],
-        room_version_pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)',
+        room_version_pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)(?:,|])',
         room_version_parser=None,
         default_room_version_paths=[
             "src/client_server.rs",
@@ -1212,7 +1212,7 @@ ADDITIONAL_PROJECTS = [
             "src/service/globals/mod.rs",
             "src/core/info/room_version.rs",
         ],
-        room_version_pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)',
+        room_version_pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)(?:,|])',
         room_version_parser=None,
         default_room_version_paths=[
             "src/client_server.rs",
@@ -1343,7 +1343,7 @@ def load_projects() -> Iterator[ProjectMetadata]:
         data = tomllib.load(f)
 
     for server in data["servers"]:
-        server_name = server["name"].lower()
+        server_name = server["name"] = server["name"].lower()
 
         if server_name in INVALID_PROJECTS:
             print(f"Ignoring {server_name}.")
