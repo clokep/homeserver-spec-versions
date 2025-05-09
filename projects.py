@@ -991,6 +991,7 @@ ADDITIONAL_PROJECTS = [
         room_version_paths=[
             "crates/server/src/bl/mod.rs",
             "crates/server/src/global.rs",
+            "crates/server/src/config/mod.rs",
         ],
         room_version_pattern=r"RoomVersionId::V(\d+)",
         room_version_parser=None,
