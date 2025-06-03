@@ -1197,7 +1197,7 @@ ADDITIONAL_PROJECTS = [
         licence="Apache-2.0",
         repository="https://github.com/matrix-construct/tuwunel",
         room=None,
-        branch="main",
+        branch="dev",
         spec_version_paths=[
             "src/main.rs",
             "src/client_server/unversioned.rs",
