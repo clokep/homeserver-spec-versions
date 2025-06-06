@@ -324,7 +324,7 @@
                 "v1.8": 628,
                 "v1.9": 530
             },
-            "last_commit_date": "2025-05-31T14:33:53+00:00",
+            "last_commit_date": "2025-06-06T13:49:07+01:00",
             "maturity": "beta",
             "room_version_dates_by_commit": {
                 "10": [
@@ -2452,7 +2452,7 @@
                 "v1.1": 1134,
                 "v1.2": 1049
             },
-            "last_commit_date": "2025-05-17T21:05:45+02:00",
+            "last_commit_date": "2025-06-05T22:21:01+02:00",
             "maturity": "beta",
             "room_version_dates_by_commit": {
                 "1": [
@@ -3142,7 +3142,7 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit_date": "2025-06-02T18:39:51+02:00",
+            "last_commit_date": "2025-06-06T16:52:28+02:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
                 "10": [
@@ -4085,7 +4085,7 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit_date": "2025-06-03T16:33:10.974264",
+            "last_commit_date": "2025-06-06T11:29:05.697382",
             "maturity": "beta",
             "room_version_dates_by_commit": {},
             "room_version_dates_by_tag": {},
@@ -4537,7 +4537,7 @@
             "lag_all_by_tag": {
                 "r0.6.1": 1497
             },
-            "last_commit_date": "2025-05-21T16:41:56+02:00",
+            "last_commit_date": "2025-06-04T08:32:20+02:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
                 "1": [
@@ -5297,6 +5297,181 @@
             },
             "spec_version_dates_by_tag": {}
         },
+        "rocketchat-homeserver": {
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
+            "forked_date": null,
+            "forked_from": null,
+            "initial_commit_date": "2024-11-12T09:23:07-03:00",
+            "initial_release_date": null,
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {},
+            "lag_all_by_tag": {},
+            "last_commit_date": "2025-06-03T14:39:35-04:00",
+            "maturity": "alpha",
+            "room_version_dates_by_commit": {
+                "1": [
+                    [
+                        "aa880ab4b3dfbe01f16ae1b3a0a9cdb1414c522a",
+                        "2025-05-12T21:54:01-03:00",
+                        "d0921336a8dca1ca5c3ba45bca51a3d5b69c9fbc",
+                        "2025-05-19T10:33:26-03:00"
+                    ],
+                    [
+                        "cf4996cae6d09bf66f20bae251bc5c5a3debe269",
+                        "2025-05-30T08:40:38-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "10": [
+                    [
+                        "aa880ab4b3dfbe01f16ae1b3a0a9cdb1414c522a",
+                        "2025-05-12T21:54:01-03:00",
+                        "d0921336a8dca1ca5c3ba45bca51a3d5b69c9fbc",
+                        "2025-05-19T10:33:26-03:00"
+                    ],
+                    [
+                        "cf4996cae6d09bf66f20bae251bc5c5a3debe269",
+                        "2025-05-30T08:40:38-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "11": [
+                    [
+                        "aa880ab4b3dfbe01f16ae1b3a0a9cdb1414c522a",
+                        "2025-05-12T21:54:01-03:00",
+                        "d0921336a8dca1ca5c3ba45bca51a3d5b69c9fbc",
+                        "2025-05-19T10:33:26-03:00"
+                    ],
+                    [
+                        "cf4996cae6d09bf66f20bae251bc5c5a3debe269",
+                        "2025-05-30T08:40:38-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "2": [
+                    [
+                        "aa880ab4b3dfbe01f16ae1b3a0a9cdb1414c522a",
+                        "2025-05-12T21:54:01-03:00",
+                        "d0921336a8dca1ca5c3ba45bca51a3d5b69c9fbc",
+                        "2025-05-19T10:33:26-03:00"
+                    ],
+                    [
+                        "cf4996cae6d09bf66f20bae251bc5c5a3debe269",
+                        "2025-05-30T08:40:38-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "3": [
+                    [
+                        "aa880ab4b3dfbe01f16ae1b3a0a9cdb1414c522a",
+                        "2025-05-12T21:54:01-03:00",
+                        "d0921336a8dca1ca5c3ba45bca51a3d5b69c9fbc",
+                        "2025-05-19T10:33:26-03:00"
+                    ],
+                    [
+                        "cf4996cae6d09bf66f20bae251bc5c5a3debe269",
+                        "2025-05-30T08:40:38-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "4": [
+                    [
+                        "aa880ab4b3dfbe01f16ae1b3a0a9cdb1414c522a",
+                        "2025-05-12T21:54:01-03:00",
+                        "d0921336a8dca1ca5c3ba45bca51a3d5b69c9fbc",
+                        "2025-05-19T10:33:26-03:00"
+                    ],
+                    [
+                        "cf4996cae6d09bf66f20bae251bc5c5a3debe269",
+                        "2025-05-30T08:40:38-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "5": [
+                    [
+                        "aa880ab4b3dfbe01f16ae1b3a0a9cdb1414c522a",
+                        "2025-05-12T21:54:01-03:00",
+                        "d0921336a8dca1ca5c3ba45bca51a3d5b69c9fbc",
+                        "2025-05-19T10:33:26-03:00"
+                    ],
+                    [
+                        "cf4996cae6d09bf66f20bae251bc5c5a3debe269",
+                        "2025-05-30T08:40:38-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "6": [
+                    [
+                        "aa880ab4b3dfbe01f16ae1b3a0a9cdb1414c522a",
+                        "2025-05-12T21:54:01-03:00",
+                        "d0921336a8dca1ca5c3ba45bca51a3d5b69c9fbc",
+                        "2025-05-19T10:33:26-03:00"
+                    ],
+                    [
+                        "cf4996cae6d09bf66f20bae251bc5c5a3debe269",
+                        "2025-05-30T08:40:38-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "7": [
+                    [
+                        "aa880ab4b3dfbe01f16ae1b3a0a9cdb1414c522a",
+                        "2025-05-12T21:54:01-03:00",
+                        "d0921336a8dca1ca5c3ba45bca51a3d5b69c9fbc",
+                        "2025-05-19T10:33:26-03:00"
+                    ],
+                    [
+                        "cf4996cae6d09bf66f20bae251bc5c5a3debe269",
+                        "2025-05-30T08:40:38-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "8": [
+                    [
+                        "aa880ab4b3dfbe01f16ae1b3a0a9cdb1414c522a",
+                        "2025-05-12T21:54:01-03:00",
+                        "d0921336a8dca1ca5c3ba45bca51a3d5b69c9fbc",
+                        "2025-05-19T10:33:26-03:00"
+                    ],
+                    [
+                        "cf4996cae6d09bf66f20bae251bc5c5a3debe269",
+                        "2025-05-30T08:40:38-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "9": [
+                    [
+                        "aa880ab4b3dfbe01f16ae1b3a0a9cdb1414c522a",
+                        "2025-05-12T21:54:01-03:00",
+                        "d0921336a8dca1ca5c3ba45bca51a3d5b69c9fbc",
+                        "2025-05-19T10:33:26-03:00"
+                    ],
+                    [
+                        "cf4996cae6d09bf66f20bae251bc5c5a3debe269",
+                        "2025-05-30T08:40:38-04:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {},
+            "spec_version_dates_by_tag": {}
+        },
         "ruma": {
             "default_room_version_dates_by_commit": {},
             "default_room_version_dates_by_tag": {},
@@ -5446,7 +5621,7 @@
                 "v1.8": 138,
                 "v1.9": 40
             },
-            "last_commit_date": "2025-06-03T15:18:56+01:00",
+            "last_commit_date": "2025-06-06T16:14:09+01:00",
             "maturity": "stable",
             "room_version_dates_by_commit": {
                 "1": [
@@ -6628,7 +6803,7 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit_date": "2025-06-03T16:33:10.974281",
+            "last_commit_date": "2025-06-06T11:29:05.697398",
             "maturity": "stable",
             "room_version_dates_by_commit": {},
             "room_version_dates_by_tag": {},
@@ -7102,11 +7277,15 @@
             "forked_date": "2025-04-08T23:38:54-04:00",
             "forked_from": "conduwuit",
             "initial_commit_date": "2025-04-09T03:40:44+00:00",
-            "initial_release_date": "2024-10-24T23:51:02-04:00",
+            "initial_release_date": "2024-04-26T02:03:40-04:00",
             "lag_after_commit_by_commit": {},
             "lag_after_commit_by_tag": {},
-            "lag_after_release_by_commit": {},
-            "lag_after_release_by_tag": {},
+            "lag_after_release_by_commit": {
+                "v1.11": 292
+            },
+            "lag_after_release_by_tag": {
+                "v1.11": 300
+            },
             "lag_all_by_commit": {
                 "r0.0.1": 3375,
                 "r0.1.0": 3256,
@@ -7139,7 +7318,7 @@
                 "v1.4": 925,
                 "v1.5": 881
             },
-            "last_commit_date": "2025-06-03T20:39:22+00:00",
+            "last_commit_date": "2025-06-06T14:57:10+00:00",
             "maturity": "beta",
             "room_version_dates_by_commit": {
                 "10": [
