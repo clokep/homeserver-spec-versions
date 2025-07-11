@@ -1124,8 +1124,11 @@ ADDITIONAL_PROJECTS = [
         branch="main",
         spec_version_paths=[],
         room_version_repo=None,
-        room_version_paths=["packages/homeserver/src/services/event.service.ts"],
-        room_version_pattern=r"'(\d+)'",
+        room_version_paths=[
+            "packages/homeserver/src/services/event.service.ts",
+            "packages/federation-sdk/src/services/event.service.ts",
+        ],
+        room_version_pattern=r"""['"](\d+)['"]""",
         room_version_parser=None,
         default_room_version_paths=[],
         default_room_version_pattern="",

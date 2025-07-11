@@ -324,7 +324,7 @@
                 "v1.8": 628,
                 "v1.9": 530
             },
-            "last_commit_date": "2025-06-23T15:23:43+01:00",
+            "last_commit_date": "2025-07-10T12:22:00+00:00",
             "maturity": "beta",
             "room_version_dates_by_commit": {
                 "10": [
@@ -1929,7 +1929,10 @@
             "lag_after_commit_by_commit": {},
             "lag_after_commit_by_tag": {},
             "lag_after_release_by_commit": {
-                "v1.11": 298
+                "v1.11": 298,
+                "v1.12": 266,
+                "v1.13": 194,
+                "v1.14": 96
             },
             "lag_after_release_by_tag": {
                 "v1.11": 304
@@ -1945,10 +1948,14 @@
                 "r0.6.1": 1783,
                 "v1.1": 1252,
                 "v1.11": 298,
+                "v1.12": 266,
+                "v1.13": 194,
+                "v1.14": 96,
                 "v1.2": 1167,
                 "v1.3": 986,
                 "v1.4": 923,
-                "v1.5": 879
+                "v1.5": 879,
+                "v1.8": 678
             },
             "lag_all_by_tag": {
                 "r0.0.1": 3387,
@@ -1966,7 +1973,7 @@
                 "v1.4": 929,
                 "v1.5": 885
             },
-            "last_commit_date": "2025-06-25T18:17:06+01:00",
+            "last_commit_date": "2025-07-09T15:28:31+01:00",
             "maturity": "beta",
             "room_version_dates_by_commit": {
                 "10": [
@@ -2213,6 +2220,30 @@
                         null
                     ]
                 ],
+                "v1.12": [
+                    [
+                        "4f69da47c6899e5d6e3280c34524e6aa53f838f4",
+                        "2025-07-01T18:38:48+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.13": [
+                    [
+                        "4f69da47c6899e5d6e3280c34524e6aa53f838f4",
+                        "2025-07-01T18:38:48+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.14": [
+                    [
+                        "24d2a514e22930e15d27825063cb0a8e9244ddc9",
+                        "2025-07-01T18:00:28+01:00",
+                        null,
+                        null
+                    ]
+                ],
                 "v1.2": [
                     [
                         "e054a56b3286a6fb3091bedd5261089435ed26d1",
@@ -2241,6 +2272,14 @@
                     [
                         "e054a56b3286a6fb3091bedd5261089435ed26d1",
                         "2025-04-15T10:10:21+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.8": [
+                    [
+                        "4f69da47c6899e5d6e3280c34524e6aa53f838f4",
+                        "2025-07-01T18:38:48+01:00",
                         null,
                         null
                     ]
@@ -3142,7 +3181,7 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit_date": "2025-06-20T16:55:59+02:00",
+            "last_commit_date": "2025-07-11T13:15:26+02:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
                 "10": [
@@ -3223,6 +3262,46 @@
                     [
                         "24.02",
                         "2024-02-27T10:34:39+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "4": [
+                    [
+                        "25.07",
+                        "2025-07-11T13:17:16+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "5": [
+                    [
+                        "25.07",
+                        "2025-07-11T13:17:16+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "6": [
+                    [
+                        "25.07",
+                        "2025-07-11T13:17:16+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "7": [
+                    [
+                        "25.07",
+                        "2025-07-11T13:17:16+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "8": [
+                    [
+                        "25.07",
+                        "2025-07-11T13:17:16+02:00",
                         null,
                         null
                     ]
@@ -4085,7 +4164,7 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit_date": "2025-06-27T08:10:47.660577",
+            "last_commit_date": "2025-07-11T09:38:14.798432",
             "maturity": "beta",
             "room_version_dates_by_commit": {},
             "room_version_dates_by_tag": {},
@@ -4557,7 +4636,7 @@
             "lag_all_by_tag": {
                 "r0.6.1": 1497
             },
-            "last_commit_date": "2025-06-14T14:39:09+02:00",
+            "last_commit_date": "2025-07-09T02:37:01+02:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
                 "1": [
@@ -4733,7 +4812,7 @@
                 "v1.9": 504
             },
             "lag_all_by_tag": {},
-            "last_commit_date": "2025-06-24T18:20:23+08:00",
+            "last_commit_date": "2025-07-03T08:15:16+08:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
                 "1": [
@@ -5330,19 +5409,13 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit_date": "2025-06-24T16:49:41+05:30",
+            "last_commit_date": "2025-07-10T09:49:21-03:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
                 "1": [
                     [
                         "aa880ab4b3dfbe01f16ae1b3a0a9cdb1414c522a",
                         "2025-05-12T21:54:01-03:00",
-                        "d0921336a8dca1ca5c3ba45bca51a3d5b69c9fbc",
-                        "2025-05-19T10:33:26-03:00"
-                    ],
-                    [
-                        "cf4996cae6d09bf66f20bae251bc5c5a3debe269",
-                        "2025-05-30T08:40:38-04:00",
                         null,
                         null
                     ]
@@ -5351,12 +5424,6 @@
                     [
                         "aa880ab4b3dfbe01f16ae1b3a0a9cdb1414c522a",
                         "2025-05-12T21:54:01-03:00",
-                        "d0921336a8dca1ca5c3ba45bca51a3d5b69c9fbc",
-                        "2025-05-19T10:33:26-03:00"
-                    ],
-                    [
-                        "cf4996cae6d09bf66f20bae251bc5c5a3debe269",
-                        "2025-05-30T08:40:38-04:00",
                         null,
                         null
                     ]
@@ -5365,12 +5432,6 @@
                     [
                         "aa880ab4b3dfbe01f16ae1b3a0a9cdb1414c522a",
                         "2025-05-12T21:54:01-03:00",
-                        "d0921336a8dca1ca5c3ba45bca51a3d5b69c9fbc",
-                        "2025-05-19T10:33:26-03:00"
-                    ],
-                    [
-                        "cf4996cae6d09bf66f20bae251bc5c5a3debe269",
-                        "2025-05-30T08:40:38-04:00",
                         null,
                         null
                     ]
@@ -5379,12 +5440,6 @@
                     [
                         "aa880ab4b3dfbe01f16ae1b3a0a9cdb1414c522a",
                         "2025-05-12T21:54:01-03:00",
-                        "d0921336a8dca1ca5c3ba45bca51a3d5b69c9fbc",
-                        "2025-05-19T10:33:26-03:00"
-                    ],
-                    [
-                        "cf4996cae6d09bf66f20bae251bc5c5a3debe269",
-                        "2025-05-30T08:40:38-04:00",
                         null,
                         null
                     ]
@@ -5393,12 +5448,6 @@
                     [
                         "aa880ab4b3dfbe01f16ae1b3a0a9cdb1414c522a",
                         "2025-05-12T21:54:01-03:00",
-                        "d0921336a8dca1ca5c3ba45bca51a3d5b69c9fbc",
-                        "2025-05-19T10:33:26-03:00"
-                    ],
-                    [
-                        "cf4996cae6d09bf66f20bae251bc5c5a3debe269",
-                        "2025-05-30T08:40:38-04:00",
                         null,
                         null
                     ]
@@ -5407,12 +5456,6 @@
                     [
                         "aa880ab4b3dfbe01f16ae1b3a0a9cdb1414c522a",
                         "2025-05-12T21:54:01-03:00",
-                        "d0921336a8dca1ca5c3ba45bca51a3d5b69c9fbc",
-                        "2025-05-19T10:33:26-03:00"
-                    ],
-                    [
-                        "cf4996cae6d09bf66f20bae251bc5c5a3debe269",
-                        "2025-05-30T08:40:38-04:00",
                         null,
                         null
                     ]
@@ -5421,12 +5464,6 @@
                     [
                         "aa880ab4b3dfbe01f16ae1b3a0a9cdb1414c522a",
                         "2025-05-12T21:54:01-03:00",
-                        "d0921336a8dca1ca5c3ba45bca51a3d5b69c9fbc",
-                        "2025-05-19T10:33:26-03:00"
-                    ],
-                    [
-                        "cf4996cae6d09bf66f20bae251bc5c5a3debe269",
-                        "2025-05-30T08:40:38-04:00",
                         null,
                         null
                     ]
@@ -5435,12 +5472,6 @@
                     [
                         "aa880ab4b3dfbe01f16ae1b3a0a9cdb1414c522a",
                         "2025-05-12T21:54:01-03:00",
-                        "d0921336a8dca1ca5c3ba45bca51a3d5b69c9fbc",
-                        "2025-05-19T10:33:26-03:00"
-                    ],
-                    [
-                        "cf4996cae6d09bf66f20bae251bc5c5a3debe269",
-                        "2025-05-30T08:40:38-04:00",
                         null,
                         null
                     ]
@@ -5449,12 +5480,6 @@
                     [
                         "aa880ab4b3dfbe01f16ae1b3a0a9cdb1414c522a",
                         "2025-05-12T21:54:01-03:00",
-                        "d0921336a8dca1ca5c3ba45bca51a3d5b69c9fbc",
-                        "2025-05-19T10:33:26-03:00"
-                    ],
-                    [
-                        "cf4996cae6d09bf66f20bae251bc5c5a3debe269",
-                        "2025-05-30T08:40:38-04:00",
                         null,
                         null
                     ]
@@ -5463,12 +5488,6 @@
                     [
                         "aa880ab4b3dfbe01f16ae1b3a0a9cdb1414c522a",
                         "2025-05-12T21:54:01-03:00",
-                        "d0921336a8dca1ca5c3ba45bca51a3d5b69c9fbc",
-                        "2025-05-19T10:33:26-03:00"
-                    ],
-                    [
-                        "cf4996cae6d09bf66f20bae251bc5c5a3debe269",
-                        "2025-05-30T08:40:38-04:00",
                         null,
                         null
                     ]
@@ -5477,12 +5496,6 @@
                     [
                         "aa880ab4b3dfbe01f16ae1b3a0a9cdb1414c522a",
                         "2025-05-12T21:54:01-03:00",
-                        "d0921336a8dca1ca5c3ba45bca51a3d5b69c9fbc",
-                        "2025-05-19T10:33:26-03:00"
-                    ],
-                    [
-                        "cf4996cae6d09bf66f20bae251bc5c5a3debe269",
-                        "2025-05-30T08:40:38-04:00",
                         null,
                         null
                     ]
@@ -5641,7 +5654,7 @@
                 "v1.8": 138,
                 "v1.9": 40
             },
-            "last_commit_date": "2025-06-26T14:05:48+00:00",
+            "last_commit_date": "2025-07-11T13:26:59+00:00",
             "maturity": "stable",
             "room_version_dates_by_commit": {
                 "1": [
@@ -6823,7 +6836,7 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit_date": "2025-06-27T08:10:47.660593",
+            "last_commit_date": "2025-07-11T09:38:14.798461",
             "maturity": "stable",
             "room_version_dates_by_commit": {},
             "room_version_dates_by_tag": {},
@@ -7338,7 +7351,7 @@
                 "v1.4": 925,
                 "v1.5": 881
             },
-            "last_commit_date": "2025-06-26T00:21:13+00:00",
+            "last_commit_date": "2025-07-09T20:38:27+00:00",
             "maturity": "beta",
             "room_version_dates_by_commit": {
                 "10": [
