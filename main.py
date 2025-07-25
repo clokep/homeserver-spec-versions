@@ -558,6 +558,7 @@ if __name__ == "__main__":
 
     # For each project find the earliest known date the project supported it.
     for project in load_projects():
+        print(f"Starting {project.name}")
         result["homeserver_versions"][project.name.lower()] = asdict(
             get_project_dates(project, spec_versions)
         )
