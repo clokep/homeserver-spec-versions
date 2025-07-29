@@ -105,12 +105,15 @@ class AdditionalMetadata:
     # Useful for forks where the project contains many old commits.
     earliest_commit: str | None
     # The earliest tag to consider. If not given, the earliest tag in the repo
-    # is used.
+    # which contains the earliest commit is used. If there's no earliest commit,
+    # then the earliest tag is used.
     #
     # Note that earlier tags might exist in the repo due to forks or other reasons.
     earliest_tag: str | None
     # Project this is forked from.
     forked_from: str | None
+    # True to process updates, false to use what's currently in the JSON file.
+    process_updates: bool
 
 
 @dataclass
@@ -139,6 +142,7 @@ ADDITIONAL_METADATA = {
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     "conduit": AdditionalMetadata(
         "next",
@@ -169,6 +173,7 @@ ADDITIONAL_METADATA = {
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     "conduwuit": AdditionalMetadata(
         branch="main",
@@ -201,8 +206,9 @@ ADDITIONAL_METADATA = {
         earliest_commit="40908b24e74bda4c80a5a6183602afcc0c04449b",
         earliest_tag=None,
         forked_from="conduit",
+        process_updates=False,
     ),
-    "continuwuity" : AdditionalMetadata(
+    "continuwuity": AdditionalMetadata(
         branch="main",
         spec_version_paths=[
             "src/main.rs",
@@ -233,6 +239,7 @@ ADDITIONAL_METADATA = {
         earliest_commit="e054a56b3286a6fb3091bedd5261089435ed26d1",
         earliest_tag=None,
         forked_from="conduwuit",
+        process_updates=True,
     ),
     "construct": AdditionalMetadata(
         "master",
@@ -250,8 +257,9 @@ ADDITIONAL_METADATA = {
         # Earlier commits from charybdis.
         earliest_commit="b592b69b8670413340c297e5a41caf153d832e57",
         # Earlier tags from charybdis.
-        earliest_tag="0.0.10020",
+        earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     "dendrite": AdditionalMetadata(
         "main",
@@ -271,6 +279,7 @@ ADDITIONAL_METADATA = {
         earliest_commit="6bfe946bd2d82db12c1e49918612cc3d7139b8ce",
         earliest_tag=None,
         forked_from="dendrite-legacy",
+        process_updates=True,
     ),
     "jsynapse": AdditionalMetadata(
         "master",
@@ -284,6 +293,7 @@ ADDITIONAL_METADATA = {
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     "ligase": AdditionalMetadata(
         "develop",
@@ -300,6 +310,7 @@ ADDITIONAL_METADATA = {
         earliest_commit="bde8bc21a45a9dcffaaa812aa6a5a5341bca5f42",
         earliest_tag=None,
         forked_from="dendrite-legacy",
+        process_updates=True,
     ),
     "maelstrom": AdditionalMetadata(
         "master",
@@ -313,6 +324,7 @@ ADDITIONAL_METADATA = {
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     "matrex": AdditionalMetadata(
         "master",
@@ -329,6 +341,7 @@ ADDITIONAL_METADATA = {
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     "mxhsd": AdditionalMetadata(
         "master",
@@ -344,6 +357,7 @@ ADDITIONAL_METADATA = {
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     "pallium": AdditionalMetadata(
         "master",
@@ -357,6 +371,7 @@ ADDITIONAL_METADATA = {
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     "synapse": AdditionalMetadata(
         "develop",
@@ -375,8 +390,9 @@ ADDITIONAL_METADATA = {
         # First tag from AGPL Synapse.
         earliest_commit="230decd5b8deea78674f92b2c0c11bd41090470a",
         # Earlier tags exist from Apache Synapse.
-        earliest_tag="v1.99.0",
+        earliest_tag=None,
         forked_from="synapse-legacy",
+        process_updates=True,
     ),
     "transform": AdditionalMetadata(
         "master",
@@ -390,6 +406,7 @@ ADDITIONAL_METADATA = {
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     "telodendria": AdditionalMetadata(
         "master",
@@ -403,6 +420,7 @@ ADDITIONAL_METADATA = {
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
 }
 
@@ -429,6 +447,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="axiom",
@@ -450,6 +469,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="babbleserv",
@@ -472,6 +492,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="casniam",
@@ -493,6 +514,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="coignet",
@@ -514,6 +536,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="cortex",
@@ -535,6 +558,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="cubby",
@@ -556,6 +580,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="dendrite-legacy",
@@ -583,6 +608,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="dopamine",
@@ -604,6 +630,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="fluctlight",
@@ -625,6 +652,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="grapevine",
@@ -665,6 +693,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit="17a0b3430934fbb8370066ee9dc3506102c5b3f6",
         earliest_tag=None,
         forked_from="conduit",
+        process_updates=True,
     ),
     ProjectMetadata(
         name="Gridify",
@@ -694,6 +723,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     # Note that ejabberd doesn't implement the Client-Server API, thus it doesn't declare
     # itself compatible with any particular versions.
@@ -717,8 +747,9 @@ ADDITIONAL_PROJECTS = [
         default_room_version_pattern="",
         # First commit & tag w/ Matrix support.
         earliest_commit="f44e23b8cc2c3ab7d1c36f702f00a6b5b947c5d0",
-        earliest_tag="24.02",
+        earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="gopheus",
@@ -740,6 +771,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="Harmony",
@@ -767,6 +799,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit="6d1087df8dbd7982e7c7ad2f16b17588562c4048",
         earliest_tag=None,
         forked_from="dendrite-legacy",
+        process_updates=True,
     ),
     ProjectMetadata(
         name="HG",
@@ -789,6 +822,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="himatrix",
@@ -810,6 +844,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="Insomnium",
@@ -831,6 +866,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="jmatrix",
@@ -852,6 +888,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="Matrices",
@@ -873,6 +910,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="lomatia",
@@ -894,6 +932,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="MagnetHS",
@@ -917,6 +956,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="mascarene",
@@ -942,6 +982,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="mocktrix",
@@ -967,6 +1008,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="neuron",
@@ -988,6 +1030,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="palpo",
@@ -1013,6 +1056,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="persephone",
@@ -1040,6 +1084,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="plasma",
@@ -1061,6 +1106,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="plasma_old",
@@ -1086,6 +1132,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="radio_beam",
@@ -1109,6 +1156,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     # Note that RocketChat homeserver doesn't implement the Client-Server API, thus
     # it doesn't declare itself compatible with any particular versions.
@@ -1135,6 +1183,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="Ruma",
@@ -1156,6 +1205,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="Serverless-Matrix",
@@ -1177,6 +1227,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="synapse-legacy",
@@ -1204,6 +1255,7 @@ ADDITIONAL_PROJECTS = [
         # Earlier tags exist from DINSIC.
         earliest_tag="v0.0.0",
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="thurim",
@@ -1226,6 +1278,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="tuwunel",
@@ -1266,6 +1319,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit="ce6e5e48de2a3580e17609f382cd4520fb6d8c63",
         earliest_tag=None,
         forked_from="conduwuit",
+        process_updates=True,
     ),
 ]
 

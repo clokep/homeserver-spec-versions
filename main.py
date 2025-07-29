@@ -463,14 +463,19 @@ def get_project_dates(
     )
 
     # Get the earliest release of this project.
-    if project.earliest_tag:
-        release_date = get_tag_datetime(repo.tags[project.earliest_tag])
-    elif repo.tags:
-        # TODO Find tags after earliest commit.
-        earliest_tag = min(repo.tags, key=lambda t: get_tag_datetime(t))
-        release_date = get_tag_datetime(earliest_tag)
-    else:
-        release_date = None
+    release_date = None
+    if repo.tags:
+        earliest_tag = None
+        # Find the first tag after the earliest commit.
+        if project.earliest_commit:
+            earliest_tag_sha = get_tag_from_commit(git_cmd, project.earliest_commit)
+            if earliest_tag_sha:
+                earliest_tag = repo.tags[earliest_tag_sha]
+        else:
+            earliest_tag = min(repo.tags, key=lambda t: get_tag_datetime(t))
+        if earliest_tag:
+            print(f"Found earliest tag: {earliest_tag}")
+            release_date = get_tag_datetime(earliest_tag)
 
     # Remove any spec versions which existed before this project was released.
     version_dates_after_release = calculate_versions_after_date(
@@ -556,12 +561,23 @@ if __name__ == "__main__":
         "homeserver_versions": {},
     }
 
+    # Load the current project data.
+    with open("data.json", "r") as f:
+        old_result = json.load(f)
+
     # For each project find the earliest known date the project supported it.
     for project in load_projects():
         print(f"Starting {project.name}")
-        result["homeserver_versions"][project.name.lower()] = asdict(
-            get_project_dates(project, spec_versions)
-        )
+
+        if project.process_updates:
+            result["homeserver_versions"][project.name.lower()] = asdict(
+                get_project_dates(project, spec_versions)
+            )
+        else:
+            # Some projects no longer have a repository setup, just use the old version.
+            result["homeserver_versions"][project.name.lower()] = old_result[
+                "homeserver_versions"
+            ][project.name.lower()]
 
     for project, project_data in MANUAL_PROJECTS.items():
         result["homeserver_versions"][project.lower()] = asdict(project_data)
