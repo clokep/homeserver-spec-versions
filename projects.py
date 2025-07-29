@@ -424,6 +424,7 @@ ADDITIONAL_METADATA = {
     ),
 }
 
+# https://github.com/vlad-tokarev/go-matrix-homeserver
 ADDITIONAL_PROJECTS = [
     ProjectMetadata(
         name="architex",
