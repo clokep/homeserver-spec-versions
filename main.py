@@ -578,6 +578,7 @@ if __name__ == "__main__":
             result["homeserver_versions"][project.name.lower()] = old_result[
                 "homeserver_versions"
             ][project.name.lower()]
+            print()
 
     for project, project_data in MANUAL_PROJECTS.items():
         result["homeserver_versions"][project.lower()] = asdict(project_data)
