@@ -1987,7 +1987,7 @@
                 "v1.5": 885,
                 "v1.8": 701
             },
-            "last_commit_date": "2025-08-17T17:37:24+01:00",
+            "last_commit_date": "2025-08-22T00:51:54+01:00",
             "maturity": "beta",
             "room_version_dates_by_commit": {
                 "10": [
@@ -3235,7 +3235,7 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit_date": "2025-08-18T16:23:33+02:00",
+            "last_commit_date": "2025-08-22T14:46:59+03:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
                 "10": [
@@ -3324,6 +3324,14 @@
                     [
                         "24.02",
                         "2024-02-27T10:34:39+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "12": [
+                    [
+                        "25.08",
+                        "2025-08-22T11:16:11+02:00",
                         null,
                         null
                     ]
@@ -3450,7 +3458,7 @@
                 "v1.5": 529
             },
             "lag_all_by_tag": {},
-            "last_commit_date": "2025-08-10T14:57:28-07:00",
+            "last_commit_date": "2025-08-22T02:03:01-04:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
                 "10": [
@@ -4226,7 +4234,7 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit_date": "2025-08-18T19:56:22.995073",
+            "last_commit_date": "2025-08-22T08:28:44.237625",
             "maturity": "beta",
             "room_version_dates_by_commit": {},
             "room_version_dates_by_tag": {},
@@ -4698,7 +4706,7 @@
             "lag_all_by_tag": {
                 "r0.6.1": 1497
             },
-            "last_commit_date": "2025-08-12T00:14:41+02:00",
+            "last_commit_date": "2025-08-20T16:26:17+02:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
                 "1": [
@@ -4844,8 +4852,8 @@
                     [
                         "7054c4dece10d41a67c7fb51d73f92c443ac35d6",
                         "2025-04-25T23:18:15+08:00",
-                        "c369b5ff951e18b0c174ebbe80b18163d6a063a5",
-                        "2025-07-24T06:23:52+08:00"
+                        null,
+                        null
                     ]
                 ]
             },
@@ -4862,8 +4870,8 @@
                     [
                         "v0.1.1",
                         "2025-08-16T10:25:32+08:00",
-                        "v0.1.1",
-                        "2025-08-16T10:25:32+08:00"
+                        null,
+                        null
                     ]
                 ]
             },
@@ -5696,7 +5704,7 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit_date": "2025-08-18T13:04:50+05:30",
+            "last_commit_date": "2025-08-21T17:09:09-03:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
                 "1": [
@@ -5947,7 +5955,7 @@
                 "v1.8": 138,
                 "v1.9": 40
             },
-            "last_commit_date": "2025-08-18T09:28:59-05:00",
+            "last_commit_date": "2025-08-19T11:01:21+01:00",
             "maturity": "stable",
             "room_version_dates_by_commit": {
                 "1": [
@@ -6068,6 +6076,14 @@
                     [
                         "v1.99.0rc1",
                         "2024-01-09T15:11:06+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "12": [
+                    [
+                        "v1.137.0rc1",
+                        "2025-08-19T11:37:34+01:00",
                         null,
                         null
                     ]
@@ -7153,7 +7169,7 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit_date": "2025-08-18T19:56:22.995089",
+            "last_commit_date": "2025-08-22T08:28:44.237643",
             "maturity": "stable",
             "room_version_dates_by_commit": {},
             "room_version_dates_by_tag": {},
@@ -8080,6 +8096,7 @@
         "1": "2019-01-04T15:49:24-07:00",
         "10": "2022-06-08T15:22:47-06:00",
         "11": "2023-08-15T00:18:45-06:00",
+        "12": "2025-08-14T11:16:00-06:00",
         "2": "2019-01-04T15:49:24-07:00",
         "3": "2019-01-30T17:03:03-07:00",
         "4": "2019-05-24T15:50:05-06:00",
