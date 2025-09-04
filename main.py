@@ -3,15 +3,25 @@ import re
 from dataclasses import dataclass, asdict, astuple
 from datetime import datetime, timezone, timedelta
 import json
+from functools import cmp_to_key
 from pathlib import Path
 import os.path
 import subprocess
-from typing import Callable
+from typing import Callable, Iterator
 
 import git
-from git import Commit, Repo, Tag
+import git.cmd
+from git import Repo, Commit
 
-from projects import ProjectMetadata, load_projects, ProjectData, MANUAL_PROJECTS
+from projects import (
+    ProjectMetadata,
+    load_projects,
+    ProjectData,
+    MANUAL_PROJECTS,
+    PatternFinder,
+    SubRepoFinder,
+    SubModuleFinder,
+)
 
 
 @dataclass
@@ -38,11 +48,11 @@ def json_encode(o: object) -> str | bool | int | float | None | list | dict:
         return o.isoformat()
 
 
-def get_versions_from_file(
+def get_pattern_from_file(
     root: str,
     paths: list[str],
     pattern: str,
-    parser: Callable[[str], set[str]],
+    parser: Callable[[str], set[str]] | None,
     to_ignore: list[str],
 ) -> set[str]:
     """
@@ -95,6 +105,125 @@ def get_versions_from_file(
     return versions
 
 
+def get_modified_commits(
+    repo: Repo, earliest_commit: str | None, paths: list[str]
+) -> list[Commit]:
+    """
+    Get the commits where a file may have been modified.
+    """
+
+    # Calculate the set of versions each time these files were changed, including
+    # the earliest commit, if one exists.
+    commits = list(
+        repo.iter_commits(
+            f"{earliest_commit}~..origin/{project.branch}"
+            if earliest_commit
+            else f"origin/{project.branch}",
+            paths=paths,
+            reverse=True,
+            # Follow the development branch through merges (i.e. use dates that
+            # changes are merged instead of original commit date).
+            first_parent=True,
+        )
+    )
+    if earliest_commit and (not commits or commits[0].hexsha != earliest_commit):
+        commits.insert(0, repo.commit(earliest_commit))
+    return commits
+
+
+def get_pattern_from_subrepo(repo: Repo, finder: SubRepoFinder) -> set[str]:
+    # Get the sub-repository.
+    sub_repo = get_repo(finder.repository.split("/")[-1], finder.repository)
+
+    # The commit to checkout in the sub-repository.
+    sub_repo_commit = None
+
+    if isinstance(finder.commit_finder, PatternFinder):
+        commits = get_pattern_from_file(
+            repo.working_dir,
+            finder.commit_finder.paths,
+            finder.commit_finder.pattern,
+            finder.commit_finder.parser,
+            [],
+        )
+
+        if len(commits) > 1:
+            raise ValueError("Unexpected number of commits: {commits}")
+        elif len(commits) == 1:
+            sub_repo_commit = next(iter(commits))
+
+    elif isinstance(finder.commit_finder, SubModuleFinder):
+        # The commit of the sub-repo is found via the submodule path.
+        # Find the sub-module information, if it exists.
+        sub_module = next(
+            (s for s in repo.submodules if s.path == finder.commit_finder.path),
+            None,
+        )
+        if sub_module:
+            sub_repo_commit = sub_module.hexsha
+
+    else:
+        raise ValueError(
+            f"Unsupported commit finder: {finder.commit_finder.__class__.__name__}"
+        )
+
+    # No commit was found, sub-repo must not exist.
+    if not sub_repo_commit:
+        return set()
+
+    # Checkout this commit (why is this so hard?).
+    sub_repo.head.reference = sub_repo_commit
+    sub_repo.head.reset(index=True, working_tree=True)
+
+    return get_pattern_from_file(
+        sub_repo.working_dir,
+        finder.finder.paths,
+        finder.finder.pattern,
+        finder.finder.parser,
+        [],
+    )
+
+
+def get_subrepo_commits(
+    repo: Repo, earliest_commit: str | None, finder: SubRepoFinder
+) -> Iterator[Commit]:
+    """Get the commits which a referenced sub-repository was modified."""
+
+    if isinstance(finder.commit_finder, PatternFinder):
+        # The commit of the sub-repo is found via the pattern.
+        yield from get_modified_commits(
+            repo, earliest_commit, finder.commit_finder.paths
+        )
+
+    elif isinstance(finder.commit_finder, SubModuleFinder):
+        # The commit of the sub-repo is found via the submodule path.
+        yield from get_modified_commits(
+            repo, earliest_commit, [finder.commit_finder.path]
+        )
+
+    else:
+        raise ValueError(
+            f"Unsupported commit finder: {finder.commit_finder.__class__.__name__}"
+        )
+
+
+def _check_refspecs(repo: Repo) -> bool:
+    """Add a fetch refspec for pull requests as some sub-repos target pull requests of other repos."""
+    url = next(repo.remote().urls)
+    if "github.com" in url:
+        reader = repo.config_reader("repository")
+        refspecs = reader.get_values('remote "origin"', "fetch")
+        if len(refspecs) < 2:
+            with repo.config_writer("repository") as writer:
+                writer.add_value(
+                    'remote "origin"',
+                    "fetch",
+                    "+refs/pull/*:refs/remotes/origin/pull/*",
+                )
+            return True
+    return False
+
+
 def get_repo(name: str, remote: str) -> Repo:
     """
     Given a project name and the remote git URL, return a tuple of file path and git repo.
@@ -105,8 +234,13 @@ def get_repo(name: str, remote: str) -> Repo:
     repo_dir = Path(".") / ".projects" / name.lower()
     if not os.path.isdir(repo_dir):
         repo = Repo.clone_from(remote, repo_dir)
+
+        # Fetch again if the additional refspec is added.
+        if _check_refspecs(repo):
+            repo.remote().fetch()
     else:
         repo = Repo(repo_dir)
+        _check_refspecs(repo)
         repo.remote().fetch()
 
     return repo
@@ -150,11 +284,14 @@ def get_tag_datetime(tag: git.TagReference) -> datetime:
 
 
 def get_tag_from_commit(git_cmd: git.Git, commit: str) -> str | None:
-    """Find the first tag which contains a comit."""
+    """Find the first tag which contains a commit."""
     # Resolve the commit to the *next* tag. Sorting by creatordate will use the
     # tagged date for annotated tags, otherwise the commit date.
     tags = git_cmd.execute(
-        ("git", "tag", "--sort=creatordate", "--contains", commit)
+        ("git", "tag", "--sort=creatordate", "--contains", commit),
+        with_extended_output=False,
+        as_process=False,
+        stdout_as_string=True,
     ).splitlines()
     # TODO Hack for Dendrite to remove the helm-dendrite-* tags.
     tags = [t for t in tags if not t.startswith("helm-dendrite-")]
@@ -163,9 +300,9 @@ def get_tag_from_commit(git_cmd: git.Git, commit: str) -> str | None:
     return None
 
 
-def get_spec_dates() -> (
-    tuple[dict[str, datetime], dict[str, datetime], dict[str, datetime]]
-):
+def get_spec_dates() -> tuple[
+    dict[str, datetime], dict[str, datetime], dict[str, datetime]
+]:
     # First get the known versions according to the spec repo.
     spec_repo = get_repo("matrix-spec", "https://github.com/matrix-org/matrix-spec.git")
 
@@ -216,7 +353,7 @@ def get_spec_dates() -> (
         spec_repo.head.reference = commit
         spec_repo.head.reset(index=True, working_tree=True)
 
-        cur_versions = get_versions_from_file(
+        cur_versions = get_pattern_from_file(
             spec_repo.working_dir,
             DEFAULT_ROOM_VERSION_PATHS,
             r"Servers MUST have Room Version (\d+)|Servers SHOULD use (?:\*\*)?room version (\d+)(?:\*\*)?",
@@ -265,11 +402,8 @@ def resolve_versions_at_commit(
 
 def get_project_versions(
     project: ProjectMetadata,
-    earliest_commit: str | None,
     repo: Repo,
-    paths: list[str],
-    pattern: str,
-    parser: Callable[[str], set[str]] | None,
+    finders: list[PatternFinder | SubRepoFinder] | None,
     to_ignore: list[str],
 ) -> tuple[dict[str, list[VersionInfo]], dict[str, list[VersionInfo]]]:
     """
@@ -282,62 +416,89 @@ def get_project_versions(
     Each version may have more than one set of supported/removed versions.
     """
 
+    if not finders:
+        return {}, {}
+
     # List of commits with their version info.
     versions_at_commit = []
     versions_at_tag = []
 
     git_cmd = git.cmd.Git(repo.working_dir)
 
-    # If no paths are given, then no versions were ever supported.
-    if paths:
-        # Calculate the set of versions each time these files were changed, including
-        # the earliest commit, if one exists.
-        commits = list(
-            repo.iter_commits(
-                f"{earliest_commit}~..origin/{project.branch}"
-                if earliest_commit
-                else f"origin/{project.branch}",
-                paths=paths,
-                reverse=True,
-                # Follow the development branch through merges (i.e. use dates that
-                # changes are merged instead of original commit date).
-                first_parent=True,
+    # A list of iterators, each which contain
+    all_commits_iterators = []
+    for finder in finders:
+        if isinstance(finder, PatternFinder):
+            commits_iterator = get_modified_commits(
+                repo, project.earliest_commit, finder.paths
             )
-        )
-        if earliest_commit and (not commits or commits[0].hexsha != earliest_commit):
-            commits.insert(0, repo.commit(earliest_commit))
-        for commit in commits:
-            # Checkout this commit (why is this so hard?).
-            repo.head.reference = commit
-            repo.head.reset(index=True, working_tree=True)
+        elif isinstance(finder, SubRepoFinder):
+            commits_iterator = get_subrepo_commits(
+                repo, project.earliest_commit, finder
+            )
+        else:
+            raise ValueError(f"Unsupported finder: {finder.__class__.__name__}")
 
-            # Commits are ordered earliest to latest, only record if the
-            # version info changed.
-            cur_versions = get_versions_from_file(
-                repo.working_dir, paths, pattern, parser, to_ignore
+        all_commits_iterators.append(commits_iterator)
+
+    # Compare the commits to order them and ensure there are no duplicates.
+    if len(all_commits_iterators) > 1:
+        # De-duplicate commits.
+        commit_map = {c.hexsha: c for c in itertools.chain(*all_commits_iterators)}
+
+        commits = sorted(
+            commit_map.values(),
+            key=cmp_to_key(lambda a, b: -1 if repo.is_ancestor(a, b) else 1),
+        )
+    elif len(all_commits_iterators) == 1:
+        commits = all_commits_iterators[0]
+    else:
+        return {}, {}
+
+    for commit in commits:
+        # Checkout this commit (why is this so hard?).
+        repo.head.reference = commit
+        repo.head.reset(index=True, working_tree=True)
+
+        cur_versions = set()
+        for finder in finders:
+            if isinstance(finder, PatternFinder):
+                finder_versions = get_pattern_from_file(
+                    repo.working_dir,
+                    finder.paths,
+                    finder.pattern,
+                    finder.parser,
+                    to_ignore,
+                )
+            elif isinstance(finder, SubRepoFinder):
+                finder_versions = get_pattern_from_subrepo(repo, finder)
+
+            else:
+                raise ValueError(f"Unsupported finder: {finder.__class__.__name__}")
+
+            cur_versions.update(finder_versions)
+
+        # Commits are ordered earliest to latest, only record if the
+        # version info changed.
+        if not versions_at_commit or versions_at_commit[-1].versions != cur_versions:
+            versions_at_commit.append(
+                CommitVersionInfo(
+                    commit.hexsha, commit.committed_datetime, cur_versions
+                )
             )
-            if (
-                not versions_at_commit
-                or versions_at_commit[-1].versions != cur_versions
-            ):
-                versions_at_commit.append(
+
+        # Resolve the commit to the *next* tag.
+        tag = get_tag_from_commit(git_cmd, commit.hexsha)
+        # If no tags were found than this wasn't released yet.
+        if tag:
+            if not versions_at_tag or versions_at_tag[-1].versions != cur_versions:
+                versions_at_tag.append(
                     CommitVersionInfo(
-                        commit.hexsha, commit.committed_datetime, cur_versions
+                        tag, get_tag_datetime(repo.tags[tag]), cur_versions
                     )
                 )
 
-            # Resolve the commit to the *next* tag.
-            tag = get_tag_from_commit(git_cmd, commit.hexsha)
-            # If no tags were found than this wasn't released yet.
-            if tag:
-                if not versions_at_tag or versions_at_tag[-1].versions != cur_versions:
-                    versions_at_tag.append(
-                        CommitVersionInfo(
-                            tag, get_tag_datetime(repo.tags[tag]), cur_versions
-                        )
-                    )
-
-    # Map of version to list of commit metadata for when support for that version changed.
+    # Map of each version to a list of commit metadata for when support for that version changed.
     versions = resolve_versions_at_commit(versions_at_commit)
     tags = resolve_versions_at_commit(versions_at_tag)
 
@@ -374,11 +535,15 @@ def get_project_dates(
     # Map of spec version to list of commit metadata for when support for that version changed.
     versions, versions_by_tag = get_project_versions(
         project,
-        project.earliest_commit,
         repo,
-        project.spec_version_paths,
-        r"[vr]\d[\d\.]+\d",
-        None,
+        finders=[
+            PatternFinder(
+                paths=project.spec_version_paths,
+                pattern=r"[vr]\d[\d\.]+\d",
+            )
+        ]
+        if project.spec_version_paths
+        else None,
         to_ignore=[
             # Dendrite declares a v1.0, which never existed.
             "v1.0",
@@ -388,24 +553,11 @@ def get_project_dates(
     )
     print(f"Loaded {project.name} spec versions: {list(versions.keys())}")
 
-    # If a different repo is used for room versions, check it out.
-    if project.room_version_repo:
-        room_version_repo = get_repo(
-            project.room_version_repo.split("/")[-1], project.room_version_repo
-        )
-        earliest_room_version_commit = None
-    else:
-        room_version_repo = repo
-        earliest_room_version_commit = project.earliest_commit
-
     # Map of room version to list of commit metadata for when support for that version changed.
     room_versions, room_versions_by_tag = get_project_versions(
         project,
-        earliest_room_version_commit,
-        room_version_repo,
-        project.room_version_paths,
-        project.room_version_pattern,
-        project.room_version_parser,
+        repo,
+        project.room_version_finders,
         to_ignore=[],
     )
     print(f"Loaded {project.name} room versions: {list(room_versions.keys())}")
@@ -413,11 +565,8 @@ def get_project_dates(
     # Map of default room version to list of commit metadata for when support for that version changed.
     default_room_versions, default_room_versions_by_tag = get_project_versions(
         project,
-        project.earliest_commit,
         repo,
-        project.default_room_version_paths,
-        project.default_room_version_pattern,
-        None,
+        project.default_room_version_finders,
         # Dendrite declared room version 2 as a default, but that was invalid.
         to_ignore=["2"],
     )
@@ -525,6 +674,10 @@ if __name__ == "__main__":
     # Get information about the spec itself.
     spec_versions, room_versions, default_room_versions = get_spec_dates()
 
+    # Load the current project data.
+    with open("data.json", "r") as f:
+        result = json.load(f)
+
     # The final output data is an object:
     #
     # spec_versions:
@@ -545,25 +698,25 @@ if __name__ == "__main__":
     #   maturity: string of stable/beta/alpha/obsolete
     #   initial_release_date: date of project's first release
     spec_dates = sorted(spec_versions.items(), key=lambda v: v[1])
-    result = {
-        "spec_versions": {
-            "lag": dict(
-                [(spec_dates[0][0], 0)]
-                + [
-                    (y[0], (y[1] - x[1]).days)
-                    for x, y in zip(spec_dates[:-1], spec_dates[1:])
-                ]
-            ),
-            "version_dates": spec_versions,
-        },
-        "room_versions": room_versions,
-        "default_room_versions": default_room_versions,
-        "homeserver_versions": {},
-    }
+    result.update(
+        **{
+            "spec_versions": {
+                "lag": dict(
+                    [(spec_dates[0][0], 0)]
+                    + [
+                        (y[0], (y[1] - x[1]).days)
+                        for x, y in zip(spec_dates[:-1], spec_dates[1:])
+                    ]
+                ),
+                "version_dates": spec_versions,
+            },
+            "room_versions": room_versions,
+            "default_room_versions": default_room_versions,
+        }
+    )
 
-    # Load the current project data.
-    with open("data.json", "r") as f:
-        old_result = json.load(f)
+    if "homeserver_versions" not in result:
+        result["homeserver_versions"] = {}
 
     # For each project find the earliest known date the project supported it.
     for project in load_projects():
@@ -574,10 +727,7 @@ if __name__ == "__main__":
                 get_project_dates(project, spec_versions)
             )
         else:
-            # Some projects no longer have a repository setup, just use the old version.
-            result["homeserver_versions"][project.name.lower()] = old_result[
-                "homeserver_versions"
-            ][project.name.lower()]
+            # Some projects no longer have a repository setup, use the old version.
             print()
 
     for project, project_data in MANUAL_PROJECTS.items():

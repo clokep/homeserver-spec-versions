@@ -1,6 +1,6 @@
 import os.path
 import tomllib
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from datetime import datetime
 from typing import Iterator, Callable
 from urllib.request import urlopen
@@ -63,43 +63,59 @@ class ServerMetadata:
 
 
 @dataclass
+class PatternFinder:
+    # The file paths relative to the root to check for the pattern.
+    paths: list[str]
+
+    # The pattern to use to information.
+    #
+    # This can have multiple capturing groups, all of which will be considered.
+    #
+    # If parser is provided, then the results are further processed with that.
+    pattern: str
+
+    # The parser, defaults to none.
+    parser: Callable[[str], set[str]] | None = None
+
+
+@dataclass
+class SubModuleFinder:
+    # The path the submodule gets checked out at.
+    path: str
+
+
+@dataclass
+class SubRepoFinder:
+    # A separate repo to search in.
+    repository: str
+
+    # The finder to get the git hash to checkout from the main repository.
+    commit_finder: PatternFinder | SubModuleFinder
+
+    # The finder to use to get the desired information from the sub-repository.
+    finder: PatternFinder
+
+
+@dataclass
 class AdditionalMetadata:
     # The branch which has the latest commit.
     branch: str
+
     # The file paths (relative to repo root) to check for spec version information.
     #
     # Leave empty if no spec versions were ever implemented.
     spec_version_paths: list[str]
-    # Some homeservers store room version info in a different repo.
-    #
-    # Defaults to the project repo. If the project repo is used, earliest_commit
-    # still applies; otherwise it does not.
-    room_version_repo: str | None
-    # The file paths (relative to room version or project root) to check for room
-    # version information.
+
+    # The finder(s) to use to get supported room versions.
     #
     # Leave empty if no room versions were ever implemented.
-    room_version_paths: list[str]
-    # The pattern to use to fetch room versions.
+    room_version_finders: list[PatternFinder | SubRepoFinder] | None
+
+    # The finder(s) to use to get the default room version.
     #
-    # This can have multiple capturing groups, all of which will be considered
-    # as a room version.
-    #
-    # If room_version_parser is provided then the results are further parsed with
-    # that.
-    room_version_pattern: str
-    # The parser for room_version_pattern, defaults to none.
-    room_version_parser: Callable[[str], set[str]] | None
-    # The file paths (relative to repo root) to check for default
-    # room version information.
-    #
-    # Leave empty if no room versions were ever implemented.
-    default_room_version_paths: list[str]
-    # The pattern to use to fetch the default room version.
-    #
-    # This can have multiple capturing groups, all of which will be considered
-    # as a default room version.
-    default_room_version_pattern: str
+    # Leave empty if no default room version was ever implemented.
+    default_room_version_finders: list[PatternFinder | SubRepoFinder] | None
+
     # The earliest commit to consider.
     #
     # Useful for forks where the project contains many old commits.
@@ -110,8 +126,10 @@ class AdditionalMetadata:
     #
     # Note that earlier tags might exist in the repo due to forks or other reasons.
     earliest_tag: str | None
+
     # Project this is forked from.
     forked_from: str | None
+
     # True to process updates, false to use what's currently in the JSON file.
     process_updates: bool
 
@@ -133,12 +151,8 @@ ADDITIONAL_METADATA = {
     "bullettime": AdditionalMetadata(
         "master",
         spec_version_paths=[],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -152,24 +166,30 @@ ADDITIONAL_METADATA = {
             "src/client_server/unversioned.rs",
             "src/api/client_server/unversioned.rs",
         ],
-        room_version_repo=None,
-        room_version_paths=[
-            "src/client_server.rs",
-            "src/client_server/capabilities.rs",
-            "src/database/globals.rs",
-            "src/server_server.rs",
-            "src/service/globals/mod.rs",
+        room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "src/client_server.rs",
+                    "src/client_server/capabilities.rs",
+                    "src/database/globals.rs",
+                    "src/server_server.rs",
+                    "src/service/globals/mod.rs",
+                ],
+                pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)(?:,|])',
+            ),
         ],
-        room_version_pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)(?:,|])',
-        room_version_parser=None,
-        default_room_version_paths=[
-            "src/client_server.rs",
-            "src/client_server/capabilities.rs",
-            "src/database/globals.rs",
-            "src/server_server.rs",
-            "src/config/mod.rs",
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "src/client_server.rs",
+                    "src/client_server/capabilities.rs",
+                    "src/database/globals.rs",
+                    "src/server_server.rs",
+                    "src/config/mod.rs",
+                ],
+                pattern=r'default: "(\d+)"|default: RoomVersionId::V(?:ersion)?(\d+),|default_room_version = RoomVersionId::V(?:ersion)?(\d+);|^ +RoomVersionId::V(?:ersion)?(\d+)$',
+            ),
         ],
-        default_room_version_pattern=r'default: "(\d+)"|default: RoomVersionId::V(?:ersion)?(\d+),|default_room_version = RoomVersionId::V(?:ersion)?(\d+);|^ +RoomVersionId::V(?:ersion)?(\d+)$',
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -183,26 +203,32 @@ ADDITIONAL_METADATA = {
             "src/api/client_server/unversioned.rs",
             "src/api/client/unversioned.rs",
         ],
-        room_version_repo=None,
-        room_version_paths=[
-            "src/client_server.rs",
-            "src/client_server/capabilities.rs",
-            "src/database/globals.rs",
-            "src/server_server.rs",
-            "src/service/globals/mod.rs",
-            "src/core/info/room_version.rs",
+        room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "src/client_server.rs",
+                    "src/client_server/capabilities.rs",
+                    "src/database/globals.rs",
+                    "src/server_server.rs",
+                    "src/service/globals/mod.rs",
+                    "src/core/info/room_version.rs",
+                ],
+                pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)(?:,|])',
+            ),
         ],
-        room_version_pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)(?:,|])',
-        room_version_parser=None,
-        default_room_version_paths=[
-            "src/client_server.rs",
-            "src/client_server/capabilities.rs",
-            "src/database/globals.rs",
-            "src/server_server.rs",
-            "src/config/mod.rs",
-            "src/core/config/mod.rs",
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "src/client_server.rs",
+                    "src/client_server/capabilities.rs",
+                    "src/database/globals.rs",
+                    "src/server_server.rs",
+                    "src/config/mod.rs",
+                    "src/core/config/mod.rs",
+                ],
+                pattern=r'default: "(\d+)"|default: RoomVersionId::V(?:ersion)?(\d+),|default_room_version = RoomVersionId::V(?:ersion)?(\d+);|^ +RoomVersionId::V(?:ersion)?(\d+)$|default_default_room_version.+RoomVersionId::V(\d+)',
+            ),
         ],
-        default_room_version_pattern=r'default: "(\d+)"|default: RoomVersionId::V(?:ersion)?(\d+),|default_room_version = RoomVersionId::V(?:ersion)?(\d+);|^ +RoomVersionId::V(?:ersion)?(\d+)$|default_default_room_version.+RoomVersionId::V(\d+)',
         earliest_commit="40908b24e74bda4c80a5a6183602afcc0c04449b",
         earliest_tag=None,
         forked_from="conduit",
@@ -216,26 +242,32 @@ ADDITIONAL_METADATA = {
             "src/api/client_server/unversioned.rs",
             "src/api/client/unversioned.rs",
         ],
-        room_version_repo=None,
-        room_version_paths=[
-            "src/client_server.rs",
-            "src/client_server/capabilities.rs",
-            "src/database/globals.rs",
-            "src/server_server.rs",
-            "src/service/globals/mod.rs",
-            "src/core/info/room_version.rs",
+        room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "src/client_server.rs",
+                    "src/client_server/capabilities.rs",
+                    "src/database/globals.rs",
+                    "src/server_server.rs",
+                    "src/service/globals/mod.rs",
+                    "src/core/info/room_version.rs",
+                ],
+                pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)(?:,|])',
+            ),
         ],
-        room_version_pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)(?:,|])',
-        room_version_parser=None,
-        default_room_version_paths=[
-            "src/client_server.rs",
-            "src/client_server/capabilities.rs",
-            "src/database/globals.rs",
-            "src/server_server.rs",
-            "src/config/mod.rs",
-            "src/core/config/mod.rs",
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "src/client_server.rs",
+                    "src/client_server/capabilities.rs",
+                    "src/database/globals.rs",
+                    "src/server_server.rs",
+                    "src/config/mod.rs",
+                    "src/core/config/mod.rs",
+                ],
+                pattern=r'default: "(\d+)"|default: RoomVersionId::V(?:ersion)?(\d+),|default_room_version = RoomVersionId::V(?:ersion)?(\d+);|^ +RoomVersionId::V(?:ersion)?(\d+)$|default_default_room_version.+RoomVersionId::V(\d+)',
+            ),
         ],
-        default_room_version_pattern=r'default: "(\d+)"|default: RoomVersionId::V(?:ersion)?(\d+),|default_room_version = RoomVersionId::V(?:ersion)?(\d+);|^ +RoomVersionId::V(?:ersion)?(\d+)$|default_default_room_version.+RoomVersionId::V(\d+)',
         earliest_commit="e054a56b3286a6fb3091bedd5261089435ed26d1",
         earliest_tag=None,
         forked_from="conduwuit",
@@ -244,17 +276,19 @@ ADDITIONAL_METADATA = {
     "construct": AdditionalMetadata(
         "master",
         spec_version_paths=["ircd/json.cc", "modules/client/versions.cc"],
-        room_version_repo=None,
-        room_version_paths=["modules/client/capabilities.cc"],
-        room_version_pattern=r'"(\d+)"',
-        room_version_parser=None,
-        default_room_version_paths=[
-            "modules/m_room_create.cc",
-            "modules/client/createroom.cc",
-            "matrix/room_create.cc",
+        room_version_finders=[
+            PatternFinder(paths=["modules/client/capabilities.cc"], pattern=r'"(\d+)"'),
         ],
-        default_room_version_pattern=r'(?:"default",|"room_version", json::value {) +"(\d+)',
-        # Earlier commits from charybdis.
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "modules/m_room_create.cc",
+                    "modules/client/createroom.cc",
+                    "matrix/room_create.cc",
+                ],
+                pattern=r'(?:"default",|"room_version", json::value {) +"(\d+)',
+            ),
+        ],  # Earlier commits from charybdis.
         earliest_commit="b592b69b8670413340c297e5a41caf153d832e57",
         # Earlier tags from charybdis.
         earliest_tag=None,
@@ -267,15 +301,33 @@ ADDITIONAL_METADATA = {
             "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
             "clientapi/routing/routing.go",
         ],
-        room_version_repo="https://github.com/matrix-org/gomatrixserverlib",
-        room_version_paths=["eventversion.go"],
-        room_version_pattern=r"RoomVersionV(\d+)",
-        room_version_parser=None,
-        default_room_version_paths=[
-            "roomserver/version/version.go",
-            "setup/config/config_roomserver.go",
+        room_version_finders=[
+            # gomatrixserverlib was vendored early in the project, but before
+            # room versions were a thing.
+            PatternFinder(
+                paths=["roomserver/version/version.go"],
+                pattern=r"RoomVersionV(\d+)",
+            ),
+            SubRepoFinder(
+                repository="https://github.com/matrix-org/gomatrixserverlib",
+                commit_finder=PatternFinder(
+                    paths=["go.mod"],
+                    pattern=r"github.com/matrix-org/gomatrixserverlib v0.0.0-\d+-([0-9a-f]+)",
+                ),
+                finder=PatternFinder(
+                    paths=["eventversion.go"], pattern=r"RoomVersionV(\d+)"
+                ),
+            ),
         ],
-        default_room_version_pattern=r"return gomatrixserverlib.RoomVersionV(\d+)|DefaultRoomVersion = gomatrixserverlib.RoomVersionV(\d+)",
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "roomserver/version/version.go",
+                    "setup/config/config_roomserver.go",
+                ],
+                pattern=r"return gomatrixserverlib.RoomVersionV(\d+)|DefaultRoomVersion = gomatrixserverlib.RoomVersionV(\d+)",
+            ),
+        ],
         earliest_commit="6bfe946bd2d82db12c1e49918612cc3d7139b8ce",
         earliest_tag=None,
         forked_from="dendrite-legacy",
@@ -284,12 +336,8 @@ ADDITIONAL_METADATA = {
     "jsynapse": AdditionalMetadata(
         "master",
         spec_version_paths=[],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -301,12 +349,8 @@ ADDITIONAL_METADATA = {
             "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
             "proxy/routing/routing.go",
         ],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit="bde8bc21a45a9dcffaaa812aa6a5a5341bca5f42",
         earliest_tag=None,
         forked_from="dendrite-legacy",
@@ -315,12 +359,8 @@ ADDITIONAL_METADATA = {
     "maelstrom": AdditionalMetadata(
         "master",
         spec_version_paths=["src/server/handlers/admin.rs"],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -332,12 +372,8 @@ ADDITIONAL_METADATA = {
             "web/controllers/client_versions_controller.ex",
             "controllers/client/versions.ex",
         ],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -348,12 +384,8 @@ ADDITIONAL_METADATA = {
         spec_version_paths=[
             "src/main/java/io/kamax/mxhsd/spring/client/controller/VersionController.java"
         ],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -362,12 +394,8 @@ ADDITIONAL_METADATA = {
     "pallium": AdditionalMetadata(
         "master",
         spec_version_paths=[],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -376,17 +404,22 @@ ADDITIONAL_METADATA = {
     "synapse": AdditionalMetadata(
         "develop",
         spec_version_paths=["synapse/rest/client/versions.py"],
-        room_version_repo=None,
-        room_version_paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
-        room_version_pattern=r"RoomVersions.V(\d+)",
-        room_version_parser=None,
-        default_room_version_paths=[
-            "synapse/api/constants.py",
-            "synapse/api/room_versions.py",
-            "synapse/config/server.py",
+        room_version_finders=[
+            PatternFinder(
+                paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
+                pattern=r"RoomVersions.V(\d+)",
+            ),
         ],
-        # Either the constant or fetching the default_room_version from the config.
-        default_room_version_pattern=r'(?:DEFAULT_ROOM_VERSION = RoomVersions.V|DEFAULT_ROOM_VERSION = "|"default_room_version", ")(\d+)',
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "synapse/api/constants.py",
+                    "synapse/api/room_versions.py",
+                    "synapse/config/server.py",
+                ],
+                pattern=r'(?:DEFAULT_ROOM_VERSION = RoomVersions.V|DEFAULT_ROOM_VERSION = "|"default_room_version", ")(\d+)',
+            ),
+        ],
         # First tag from AGPL Synapse.
         earliest_commit="230decd5b8deea78674f92b2c0c11bd41090470a",
         # Earlier tags exist from Apache Synapse.
@@ -397,12 +430,8 @@ ADDITIONAL_METADATA = {
     "transform": AdditionalMetadata(
         "master",
         spec_version_paths=["config.json"],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -411,12 +440,18 @@ ADDITIONAL_METADATA = {
     "telodendria": AdditionalMetadata(
         "master",
         spec_version_paths=["src/Routes/RouteMatrix.c", "src/Routes/RouteVersions.c"],
-        room_version_repo=None,
-        room_version_paths=["src/Routes/RouteCapabilities.c"],
-        room_version_pattern=r'roomVersions, "(\d+)"',
-        room_version_parser=None,
-        default_room_version_paths=["src/Routes/RouteCapabilities.c"],
-        default_room_version_pattern=r'JsonValueString\("(\d+)"\), 2, "m.room_versions", "default"',
+        room_version_finders=[
+            PatternFinder(
+                paths=["src/Routes/RouteCapabilities.c"],
+                pattern=r'roomVersions, "(\d+)"',
+            ),
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["src/Routes/RouteCapabilities.c"],
+                pattern=r'JsonValueString\("(\d+)"\), 2, "m.room_versions", "default"',
+            ),
+        ],
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -430,26 +465,32 @@ ADDITIONAL_METADATA = {
             "src/api/client_server/unversioned.rs",
             "src/api/client/unversioned.rs",
         ],
-        room_version_repo=None,
-        room_version_paths=[
-            "src/client_server.rs",
-            "src/client_server/capabilities.rs",
-            "src/database/globals.rs",
-            "src/server_server.rs",
-            "src/service/globals/mod.rs",
-            "src/core/info/room_version.rs",
+        room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "src/client_server.rs",
+                    "src/client_server/capabilities.rs",
+                    "src/database/globals.rs",
+                    "src/server_server.rs",
+                    "src/service/globals/mod.rs",
+                    "src/core/info/room_version.rs",
+                ],
+                pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)(?:,|])',
+            ),
         ],
-        room_version_pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)(?:,|])',
-        room_version_parser=None,
-        default_room_version_paths=[
-            "src/client_server.rs",
-            "src/client_server/capabilities.rs",
-            "src/database/globals.rs",
-            "src/server_server.rs",
-            "src/config/mod.rs",
-            "src/core/config/mod.rs",
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "src/client_server.rs",
+                    "src/client_server/capabilities.rs",
+                    "src/database/globals.rs",
+                    "src/server_server.rs",
+                    "src/config/mod.rs",
+                    "src/core/config/mod.rs",
+                ],
+                pattern=r'default: "(\d+)"|default: RoomVersionId::V(?:ersion)?(\d+),|default_room_version = RoomVersionId::V(?:ersion)?(\d+);|^ +RoomVersionId::V(?:ersion)?(\d+)$|default_default_room_version.+RoomVersionId::V(\d+)',
+            ),
         ],
-        default_room_version_pattern=r'default: "(\d+)"|default: RoomVersionId::V(?:ersion)?(\d+),|default_room_version = RoomVersionId::V(?:ersion)?(\d+);|^ +RoomVersionId::V(?:ersion)?(\d+)$|default_default_room_version.+RoomVersionId::V(\d+)',
         earliest_commit="ce6e5e48de2a3580e17609f382cd4520fb6d8c63",
         earliest_tag=None,
         forked_from="conduwuit",
@@ -458,6 +499,7 @@ ADDITIONAL_METADATA = {
 }
 
 # https://github.com/vlad-tokarev/go-matrix-homeserver
+
 ADDITIONAL_PROJECTS = [
     ProjectMetadata(
         name="architex",
@@ -470,14 +512,18 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="master",
         spec_version_paths=["lib/architex_web/client/controllers/info_controller.ex"],
-        room_version_repo=None,
-        room_version_paths=["lib/architex_web/client/controllers/info_controller.ex"],
-        room_version_pattern=r'"(\d+)"',
-        room_version_parser=None,
-        default_room_version_paths=[
-            "lib/architex_web/client/controllers/info_controller.ex"
+        room_version_finders=[
+            PatternFinder(
+                paths=["lib/architex_web/client/controllers/info_controller.ex"],
+                pattern=r'"(\d+)"',
+            ),
         ],
-        default_room_version_pattern=r'"default: "(\d+)"',
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["lib/architex_web/client/controllers/info_controller.ex"],
+                pattern=r'"default: "(\d+)"',
+            ),
+        ],
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -494,12 +540,8 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="master",
         spec_version_paths=[],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -517,12 +559,8 @@ ADDITIONAL_PROJECTS = [
         branch="main",
         # Note that the spec version is wrong and is defined without a "v" prefix.
         spec_version_paths=["internal/routes/client/client.go"],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -539,12 +577,8 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="master",
         spec_version_paths=[],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -561,12 +595,8 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="master",
         spec_version_paths=["src/endpoints/client_server/mod.rs"],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -583,12 +613,8 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="master",
         spec_version_paths=[],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -605,12 +631,8 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="main",
         spec_version_paths=[],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -630,15 +652,33 @@ ADDITIONAL_PROJECTS = [
             "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
             "clientapi/routing/routing.go",
         ],
-        room_version_repo="https://github.com/matrix-org/gomatrixserverlib",
-        room_version_paths=["eventversion.go"],
-        room_version_pattern=r"RoomVersionV(\d+)",
-        room_version_parser=None,
-        default_room_version_paths=[
-            "roomserver/version/version.go",
-            "setup/config/config_roomserver.go",
+        room_version_finders=[
+            # gomatrixserverlib was vendored early in the project, but before
+            # room versions were a thing.
+            PatternFinder(
+                paths=["roomserver/version/version.go"],
+                pattern=r"RoomVersionV(\d+)",
+            ),
+            SubRepoFinder(
+                repository="https://github.com/matrix-org/gomatrixserverlib",
+                commit_finder=PatternFinder(
+                    paths=["go.mod"],
+                    pattern=r"github.com/matrix-org/gomatrixserverlib v0.0.0-\d+-([0-9a-f]+)",
+                ),
+                finder=PatternFinder(
+                    paths=["eventversion.go"], pattern=r"RoomVersionV(\d+)"
+                ),
+            ),
         ],
-        default_room_version_pattern=r"return gomatrixserverlib.RoomVersionV(\d+)|DefaultRoomVersion = gomatrixserverlib.RoomVersionV(\d+)",
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "roomserver/version/version.go",
+                    "setup/config/config_roomserver.go",
+                ],
+                pattern=r"return gomatrixserverlib.RoomVersionV(\d+)|DefaultRoomVersion = gomatrixserverlib.RoomVersionV(\d+)",
+            ),
+        ],
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -655,12 +695,8 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="master",
         spec_version_paths=["apps/dopamine_web/lib/dopamine_web/views/info_view.ex"],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -677,12 +713,8 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="master",
         spec_version_paths=[],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -704,26 +736,32 @@ ADDITIONAL_PROJECTS = [
             "src/client_server/unversioned.rs",
             "src/api/client_server/unversioned.rs",
         ],
-        room_version_repo=None,
-        room_version_paths=[
-            "src/client_server.rs",
-            "src/client_server/capabilities.rs",
-            "src/database/globals.rs",
-            "src/server_server.rs",
-            "src/service/globals/mod.rs",
-            "src/service/globals.rs",
+        room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "src/client_server.rs",
+                    "src/client_server/capabilities.rs",
+                    "src/database/globals.rs",
+                    "src/server_server.rs",
+                    "src/service/globals/mod.rs",
+                    "src/service/globals.rs",
+                ],
+                pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)(?:,|])',
+            ),
         ],
-        room_version_pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)(?:,|])',
-        room_version_parser=None,
-        default_room_version_paths=[
-            "src/client_server.rs",
-            "src/client_server/capabilities.rs",
-            "src/database/globals.rs",
-            "src/server_server.rs",
-            "src/config/mod.rs",
-            "src/config.rs",
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "src/client_server.rs",
+                    "src/client_server/capabilities.rs",
+                    "src/database/globals.rs",
+                    "src/server_server.rs",
+                    "src/config/mod.rs",
+                    "src/config.rs",
+                ],
+                pattern=r'default: "(\d+)"|default: RoomVersionId::V(?:ersion)?(\d+),|default_room_version = RoomVersionId::V(?:ersion)?(\d+);|^ +RoomVersionId::V(?:ersion)?(\d+)$',
+            ),
         ],
-        default_room_version_pattern=r'default: "(\d+)"|default: RoomVersionId::V(?:ersion)?(\d+),|default_room_version = RoomVersionId::V(?:ersion)?(\d+);|^ +RoomVersionId::V(?:ersion)?(\d+)$',
         earliest_commit="17a0b3430934fbb8370066ee9dc3506102c5b3f6",
         earliest_tag=None,
         forked_from="conduit",
@@ -744,16 +782,22 @@ ADDITIONAL_PROJECTS = [
             "src/main/java/io/kamax/grid/gridepo/network/grid/http/handler/matrix/home/client/VersionsHandler.java",
             "src/main/java/io/kamax/gridify/server/network/grid/http/handler/matrix/home/client/VersionsHandler.java",
         ],
-        room_version_repo=None,
-        room_version_paths=[
-            "src/main/java/io/kamax/gridify/server/network/matrix/core/room/algo/BuiltinRoomAlgoLoader.java"
+        room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "src/main/java/io/kamax/gridify/server/network/matrix/core/room/algo/BuiltinRoomAlgoLoader.java"
+                ],
+                pattern=r'versions\.add\("(\d+)"\);',
+            ),
         ],
-        room_version_pattern=r'versions\.add\("(\d+)"\);',
-        room_version_parser=None,
-        default_room_version_paths=[
-            "src/main/java/io/kamax/gridify/server/network/matrix/core/room/algo/RoomAlgos.java"
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "src/main/java/io/kamax/gridify/server/network/matrix/core/room/algo/RoomAlgos.java"
+                ],
+                pattern=r"RoomAlgoV(\d+)",
+            ),
         ],
-        default_room_version_pattern=r"RoomAlgoV(\d+)",
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -773,12 +817,13 @@ ADDITIONAL_PROJECTS = [
         branch="master",
         # Check src/mod_matrix* for matrix related files.
         spec_version_paths=[],
-        room_version_repo=None,
-        room_version_paths=["src/mod_matrix_gw_room.erl"],
-        room_version_pattern=r'binary_to_room_version\(<<"(\d+)">>\)',
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=[
+            PatternFinder(
+                paths=["src/mod_matrix_gw_room.erl"],
+                pattern=r'binary_to_room_version\(<<"(\d+)">>\)',
+            ),
+        ],
+        default_room_version_finders=None,
         # First commit & tag w/ Matrix support.
         earliest_commit="f44e23b8cc2c3ab7d1c36f702f00a6b5b947c5d0",
         earliest_tag=None,
@@ -796,12 +841,8 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="master",
         spec_version_paths=[],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -821,15 +862,37 @@ ADDITIONAL_PROJECTS = [
             "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
             "clientapi/routing/routing.go",
         ],
-        room_version_repo="https://github.com/matrix-org/gomatrixserverlib",
-        room_version_paths=["eventversion.go"],
-        room_version_pattern=r"RoomVersionV(\d+)",
-        room_version_parser=None,
-        default_room_version_paths=[
-            "roomserver/version/version.go",
-            "setup/config/config_roomserver.go",
+        room_version_finders=[
+            # gomatrixserverlib was vendored early in the project, but before
+            # room versions were a thing.
+            PatternFinder(
+                paths=["roomserver/version/version.go"],
+                pattern=r"RoomVersionV(\d+)",
+            ),
+            SubRepoFinder(
+                repository="https://github.com/matrix-org/gomatrixserverlib",
+                commit_finder=PatternFinder(
+                    paths=["go.mod"],
+                    pattern=r"github.com/matrix-org/gomatrixserverlib v0.0.0-\d+-([0-9a-f]+)",
+                ),
+                finder=PatternFinder(
+                    paths=["eventversion.go"], pattern=r"RoomVersionV(\d+)"
+                ),
+            ),
+            PatternFinder(
+                paths=["internal/gomatrixserverlib/eventversion.go"],
+                pattern=r"RoomVersionV(\d+)",
+            ),
         ],
-        default_room_version_pattern=r"return gomatrixserverlib.RoomVersionV(\d+)|DefaultRoomVersion = gomatrixserverlib.RoomVersionV(\d+)",
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "roomserver/version/version.go",
+                    "setup/config/config_roomserver.go",
+                ],
+                pattern=r"return gomatrixserverlib.RoomVersionV(\d+)|DefaultRoomVersion = gomatrixserverlib.RoomVersionV(\d+)",
+            ),
+        ],
         earliest_commit="6d1087df8dbd7982e7c7ad2f16b17588562c4048",
         earliest_tag=None,
         forked_from="dendrite-legacy",
@@ -846,13 +909,26 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="main",
         spec_version_paths=[],
-        room_version_repo="https://github.com/heusalagroup/fi.hg.matrix",
-        room_version_paths=["types/MatrixRoomVersion.ts"],
-        room_version_pattern=r"MatrixRoomVersion\.V(\d+)",
-        # TODO Should use room_version_repo.
-        room_version_parser=None,
-        default_room_version_paths=["server/MatrixServerService.ts"],
-        default_room_version_pattern=r"defaultRoomVersion : MatrixRoomVersion = MatrixRoomVersion\.V(\d+)",
+        room_version_finders=[
+            SubRepoFinder(
+                repository="https://github.com/heusalagroup/fi.hg.matrix",
+                commit_finder=SubModuleFinder(path="src/fi/hg/matrix"),
+                finder=PatternFinder(
+                    paths=["types/MatrixRoomVersion.ts"],
+                    pattern=r"MatrixRoomVersion\.V(\d+)",
+                ),
+            ),
+        ],
+        default_room_version_finders=[
+            SubRepoFinder(
+                repository="https://github.com/heusalagroup/fi.hg.matrix",
+                commit_finder=SubModuleFinder(path="src/fi/hg/matrix"),
+                finder=PatternFinder(
+                    paths=["server/MatrixServerService.ts"],
+                    pattern=r"defaultRoomVersion : MatrixRoomVersion = MatrixRoomVersion\.V(\d+)",
+                ),
+            ),
+        ],
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -869,12 +945,8 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="master",
         spec_version_paths=["client-server-api/src/routes/versions.rs"],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -891,12 +963,8 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="production",
         spec_version_paths=["Insomnium/src/Insomnium/Program.cs"],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -913,12 +981,8 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="master",
         spec_version_paths=[],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -935,12 +999,8 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="master",
         spec_version_paths=[],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -957,12 +1017,8 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="master",
         spec_version_paths=["src/server_administration.rs"],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -981,12 +1037,8 @@ ADDITIONAL_PROJECTS = [
         spec_version_paths=[
             "HalfShot.MagnetHS/Services/ClientServerAPIService/ClientServerAPI.cs"
         ],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -1005,14 +1057,20 @@ ADDITIONAL_PROJECTS = [
         spec_version_paths=[
             "homeserver/src/main/scala/org/mascarene/homeserver/matrix/server/client/ClientApiRoutes.scala"
         ],
-        room_version_repo=None,
-        room_version_paths=[
-            "homeserver/src/main/scala/org/mascarene/homeserver/internal/rooms/RoomAgent.scala"
+        room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "homeserver/src/main/scala/org/mascarene/homeserver/internal/rooms/RoomAgent.scala"
+                ],
+                pattern=r'"(\d+)"',
+            ),
         ],
-        room_version_pattern=r'"(\d+)"',
-        room_version_parser=None,
-        default_room_version_paths=["homeserver/src/main/resources/reference.conf"],
-        default_room_version_pattern=r'default-room-version="(\d+)"',
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["homeserver/src/main/resources/reference.conf"],
+                pattern=r'default-room-version="(\d+)"',
+            ),
+        ],
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -1031,14 +1089,20 @@ ADDITIONAL_PROJECTS = [
         spec_version_paths=[
             "Mocktrix/client/Versions.cs",
         ],
-        room_version_repo=None,
-        room_version_paths=[
-            "Mocktrix.RoomVersions/Support.cs",
+        room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "Mocktrix.RoomVersions/Support.cs",
+                ],
+                pattern=r'"(\d+)"',
+            ),
         ],
-        room_version_pattern=r'"(\d+)"',
-        room_version_parser=None,
-        default_room_version_paths=["Mocktrix/client/r0.6.1/Capabilities.cs"],
-        default_room_version_pattern=r'DefaultVersion = "(\d+)",',
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["Mocktrix/client/r0.6.1/Capabilities.cs"],
+                pattern=r'DefaultVersion = "(\d+)",',
+            ),
+        ],
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -1055,12 +1119,8 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="master",
         spec_version_paths=[],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -1077,17 +1137,25 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="main",
         spec_version_paths=["crates/server/src/routing/client/mod.rs"],
-        room_version_repo=None,
-        room_version_paths=[
-            "crates/server/src/bl/mod.rs",
-            "crates/server/src/global.rs",
-            "crates/server/src/config/mod.rs",
+        room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "crates/server/src/bl/mod.rs",
+                    "crates/server/src/global.rs",
+                    "crates/server/src/config/mod.rs",
+                ],
+                pattern=r"RoomVersionId::V(\d+)",
+            ),
         ],
-        room_version_pattern=r"RoomVersionId::V(\d+)",
-        room_version_parser=None,
-        default_room_version_paths=["crates/server/src/config/server_config.rs",
-                                    "crates/server/src/config/server.rs"],
-        default_room_version_pattern=r"RoomVersionId::V(\d+)",
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "crates/server/src/config/server_config.rs",
+                    "crates/server/src/config/server.rs",
+                ],
+                pattern=r"RoomVersionId::V(\d+)",
+            ),
+        ],
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -1107,15 +1175,18 @@ ADDITIONAL_PROJECTS = [
             "src/webserver/client_server_api/c_s_api.hpp",
             "src/webserver/client_server_api/ClientServerCtrl.cpp",
         ],
-        room_version_repo=None,
-        room_version_paths=["src/utils/state_res.cpp"],
-        room_version_pattern=r'"(\d+)"',
-        room_version_parser=None,
-        default_room_version_paths=[
-            "src/webserver/client_server_api/ClientServerCtrl.cpp",
-            "src/webserver/client_server_api/ClientServerCtrl.hpp",
+        room_version_finders=[
+            PatternFinder(paths=["src/utils/state_res.cpp"], pattern=r'"(\d+)"'),
         ],
-        default_room_version_pattern=r'default_room_version = "(\d+)"',
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "src/webserver/client_server_api/ClientServerCtrl.cpp",
+                    "src/webserver/client_server_api/ClientServerCtrl.hpp",
+                ],
+                pattern=r'default_room_version = "(\d+)"',
+            ),
+        ],
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -1132,12 +1203,8 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="main",
         spec_version_paths=[],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -1157,13 +1224,18 @@ ADDITIONAL_PROJECTS = [
             "lib/matrix_client_api/controllers/versions.ex",
             "lib/matrix_client_api/controllers/versions_controller.ex",
         ],
-        room_version_repo=None,
-        room_version_paths=["config/config.exs"],
-        # Note that \d doesn't seem to work in [] for grep.
-        room_version_pattern=r"supported_room_versions: ~w\((.+)\)",
-        room_version_parser=lambda s: s.split(" "),
-        default_room_version_paths=["config/config.exs"],
-        default_room_version_pattern=r'default_room_version: "(\d+)"',
+        room_version_finders=[
+            PatternFinder(
+                paths=["config/config.exs"],
+                pattern=r"supported_room_versions: ~w\((.+)\)",
+                parser=lambda s: s.split(" "),
+            ),
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["config/config.exs"], pattern=r'default_room_version: "(\d+)"'
+            ),
+        ],
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -1180,14 +1252,18 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="main",
         spec_version_paths=["config/config.exs"],
-        room_version_repo=None,
-        room_version_paths=["config/config.exs"],
-        room_version_pattern=r'Map\.new\((.+),|"(\d+)" => "stable"',
-        # If the first matching group matches, then split on .. and convert to a range
-        # of values. If the second group matches, it is just a single value.
-        room_version_parser=lambda s: parse_range_operator(s[0]) if s[0] else {s[1]},
-        default_room_version_paths=["config/config.exs"],
-        default_room_version_pattern=r'default: "(\d+)"',
+        room_version_finders=[
+            PatternFinder(
+                paths=["config/config.exs"],
+                pattern=r'Map\.new\((.+),|"(\d+)" => "stable"',
+                # If the first matching group matches, then split on .. and convert to a range
+                # of values. If the second group matches, it is just a single value.
+                parser=lambda s: parse_range_operator(s[0]) if s[0] else {s[1]},
+            ),
+        ],
+        default_room_version_finders=[
+            PatternFinder(paths=["config/config.exs"], pattern=r'default: "(\d+)"'),
+        ],
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -1206,15 +1282,16 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="main",
         spec_version_paths=[],
-        room_version_repo=None,
-        room_version_paths=[
-            "packages/homeserver/src/services/event.service.ts",
-            "packages/federation-sdk/src/services/event.service.ts",
+        room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "packages/homeserver/src/services/event.service.ts",
+                    "packages/federation-sdk/src/services/event.service.ts",
+                ],
+                pattern=r"""['"](\d+)['"]""",
+            ),
         ],
-        room_version_pattern=r"""['"](\d+)['"]""",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -1231,12 +1308,8 @@ ADDITIONAL_PROJECTS = [
         room="#ruma:matrix.org",
         branch="master",
         spec_version_paths=["src/api/r0/versions.rs"],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -1253,12 +1326,8 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="main",
         spec_version_paths=["Identity/src/version.ts"],
-        room_version_repo=None,
-        room_version_paths=[],
-        room_version_pattern="",
-        room_version_parser=None,
-        default_room_version_paths=[],
-        default_room_version_pattern="",
+        room_version_finders=None,
+        default_room_version_finders=None,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -1275,17 +1344,22 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="develop",
         spec_version_paths=["synapse/rest/client/versions.py"],
-        room_version_repo=None,
-        room_version_paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
-        room_version_pattern=r"RoomVersions.V(\d+)",
-        room_version_parser=None,
-        default_room_version_paths=[
-            "synapse/api/constants.py",
-            "synapse/api/room_versions.py",
-            "synapse/config/server.py",
+        room_version_finders=[
+            PatternFinder(
+                paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
+                pattern=r"RoomVersions.V(\d+)",
+            ),
         ],
-        # Either the constant or fetching the default_room_version from the config.
-        default_room_version_pattern=r'(?:DEFAULT_ROOM_VERSION = RoomVersions.V|DEFAULT_ROOM_VERSION = "|"default_room_version", ")(\d+)',
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "synapse/api/constants.py",
+                    "synapse/api/room_versions.py",
+                    "synapse/config/server.py",
+                ],
+                pattern=r'(?:DEFAULT_ROOM_VERSION = RoomVersions.V|DEFAULT_ROOM_VERSION = "|"default_room_version", ")(\d+)',
+            ),
+        ],
         earliest_commit=None,
         # Earlier tags exist from DINSIC.
         earliest_tag="v0.0.0",
@@ -1303,20 +1377,24 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="main",
         spec_version_paths=["lib/thurim_web/controllers/matrix/versions_controller.ex"],
-        room_version_repo=None,
-        room_version_paths=["config/config.exs"],
-        # Note that \d doesn't seem to work in [] for grep.
-        room_version_pattern=r"supported_room_versions: ~w\((.+)\)",
-        room_version_parser=lambda s: s.split(" "),
-        default_room_version_paths=["config/config.exs"],
-        default_room_version_pattern=r'default_room_version: "(\d+)"',
+        room_version_finders=[
+            PatternFinder(
+                paths=["config/config.exs"],
+                pattern=r"supported_room_versions: ~w\((.+)\)",
+                parser=lambda s: s.split(" "),
+            ),
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["config/config.exs"], pattern=r'default_room_version: "(\d+)"'
+            ),
+        ],
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
         process_updates=True,
     ),
 ]
-
 
 # Data to dump verbatim into data.json, this is for e.g. proprietary homeservers,
 # repos that have been deleted, etc.
@@ -1441,6 +1519,7 @@ def load_projects() -> Iterator[ProjectMetadata]:
             print(f"No metadata for {server_name}, skipping.")
             continue
 
-        yield ProjectMetadata(**server, **asdict(ADDITIONAL_METADATA[server_name]))
+        # Can't use asdict here since it recurses into inner classes.
+        yield ProjectMetadata(**server, **ADDITIONAL_METADATA[server_name].__dict__)  # ty: ignore[missing-argument]
 
     yield from ADDITIONAL_PROJECTS
