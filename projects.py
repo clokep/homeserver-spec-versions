@@ -559,8 +559,24 @@ ADDITIONAL_PROJECTS = [
         branch="main",
         # Note that the spec version is wrong and is defined without a "v" prefix.
         spec_version_paths=["internal/routes/client/client.go"],
-        room_version_finders=None,
-        default_room_version_finders=None,
+        room_version_finders=[
+            SubRepoFinder(
+                repository="https://github.com/matrix-org/gomatrixserverlib",
+                commit_finder=PatternFinder(
+                    paths=["go.mod"],
+                    pattern=r"github.com/matrix-org/gomatrixserverlib v0.0.0-\d+-([0-9a-f]+)",
+                ),
+                finder=PatternFinder(
+                    paths=["eventversion.go"], pattern=r"RoomVersionV(\d+)"
+                ),
+            ),
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["babbleserv/internal/routes/client/room_create.go"],
+                pattern=r'defaultRoomVersion = "(\d+)"',
+            )
+        ],
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -841,6 +857,28 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="master",
         spec_version_paths=[],
+        room_version_finders=None,
+        default_room_version_finders=None,
+        earliest_commit=None,
+        earliest_tag=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="hammerhead",
+        description='"Sublight thrusters, full power!" | nimble little matrix server you\'ll only see once',
+        author="nexy",
+        maturity="Alpha",
+        language="Go",
+        licence="MPL-2.0",
+        repository="https://git.nexy7574.co.uk/nex/hammerhead",
+        room=None,
+        branch="dev",
+        spec_version_paths=[
+            "nexserv/server/versions.go",
+            "nexserv/router/routes/client/versions.go",
+            "hammerhead/router/routes/client/versions.go",
+        ],
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
