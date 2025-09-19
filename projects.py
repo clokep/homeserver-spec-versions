@@ -2,6 +2,7 @@ import os.path
 import tomllib
 from dataclasses import dataclass
 from datetime import datetime
+from enum import StrEnum
 from typing import Iterator, Callable
 from urllib.request import urlopen
 
@@ -49,6 +50,17 @@ class ProjectData:
     maturity: str
 
 
+class RepositoryType(StrEnum):
+    HG = "HG"
+    GIT = "GIT"
+
+
+@dataclass
+class RepositoryMetadata:
+    url: str
+    type: RepositoryType = RepositoryType.GIT
+
+
 @dataclass
 class ServerMetadata:
     # From the TOML file.
@@ -58,7 +70,7 @@ class ServerMetadata:
     maturity: str
     language: str
     licence: str
-    repository: str
+    repository: RepositoryMetadata
     room: str | None = None
 
 
@@ -77,6 +89,9 @@ class PatternFinder:
     # The parser, defaults to none.
     parser: Callable[[str], set[str]] | None = None
 
+    # Invalid results that should be ignored.
+    to_ignore: list[str] | None = None
+
 
 @dataclass
 class SubModuleFinder:
@@ -87,7 +102,7 @@ class SubModuleFinder:
 @dataclass
 class SubRepoFinder:
     # A separate repo to search in.
-    repository: str
+    repository: RepositoryMetadata
 
     # The finder to get the git hash to checkout from the main repository.
     commit_finder: PatternFinder | SubModuleFinder
@@ -309,7 +324,9 @@ ADDITIONAL_METADATA = {
                 pattern=r"RoomVersionV(\d+)",
             ),
             SubRepoFinder(
-                repository="https://github.com/matrix-org/gomatrixserverlib",
+                repository=RepositoryMetadata(
+                    url="https://github.com/matrix-org/gomatrixserverlib"
+                ),
                 commit_finder=PatternFinder(
                     paths=["go.mod"],
                     pattern=r"github.com/matrix-org/gomatrixserverlib v0.0.0-\d+-([0-9a-f]+)",
@@ -326,6 +343,8 @@ ADDITIONAL_METADATA = {
                     "setup/config/config_roomserver.go",
                 ],
                 pattern=r"return gomatrixserverlib.RoomVersionV(\d+)|DefaultRoomVersion = gomatrixserverlib.RoomVersionV(\d+)",
+                # Dendrite declared room version 2 as a default, but that was invalid.
+                to_ignore=["2"],
             ),
         ],
         earliest_commit="6bfe946bd2d82db12c1e49918612cc3d7139b8ce",
@@ -508,7 +527,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Obsolete",
         language="Elixir",
         licence="AGPL-3.0",
-        repository="https://gitlab.com/pizzapim/architex",
+        repository=RepositoryMetadata(url="https://gitlab.com/pizzapim/architex"),
         room=None,
         branch="master",
         spec_version_paths=["lib/architex_web/client/controllers/info_controller.ex"],
@@ -536,7 +555,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Unstarted",
         language="Python",
         licence="EUPL-1.2",
-        repository="https://github.com/ShadowJonathan/Axiom",
+        repository=RepositoryMetadata(url="https://github.com/ShadowJonathan/Axiom"),
         room=None,
         branch="master",
         spec_version_paths=[],
@@ -554,14 +573,16 @@ ADDITIONAL_PROJECTS = [
         maturity="Alpha",
         language="Go",
         licence="AGPL-3.0",
-        repository="https://github.com/beeper/babbleserv",
+        repository=RepositoryMetadata(url="https://github.com/beeper/babbleserv"),
         room=None,
         branch="main",
         # Note that the spec version is wrong and is defined without a "v" prefix.
         spec_version_paths=["internal/routes/client/client.go"],
         room_version_finders=[
             SubRepoFinder(
-                repository="https://github.com/matrix-org/gomatrixserverlib",
+                repository=RepositoryMetadata(
+                    url="https://github.com/matrix-org/gomatrixserverlib"
+                ),
                 commit_finder=PatternFinder(
                     paths=["go.mod"],
                     pattern=r"github.com/matrix-org/gomatrixserverlib v0.0.0-\d+-([0-9a-f]+)",
@@ -589,7 +610,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Obsolete",
         language="Rust",
         licence="",
-        repository="https://github.com/erikjohnston/casniam",
+        repository=RepositoryMetadata(url="https://github.com/erikjohnston/casniam"),
         room=None,
         branch="master",
         spec_version_paths=[],
@@ -607,7 +628,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Unstarted",
         language="Rust",
         licence="AGPL-3.0",
-        repository="https://github.com/Magnap/coignet",
+        repository=RepositoryMetadata(url="https://github.com/Magnap/coignet"),
         room=None,
         branch="master",
         spec_version_paths=["src/endpoints/client_server/mod.rs"],
@@ -625,7 +646,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Unstarted",
         language="Go",
         licence="Apache-2.0",
-        repository="https://github.com/vedhavyas/cortex",
+        repository=RepositoryMetadata(url="https://github.com/vedhavyas/cortex"),
         room=None,
         branch="master",
         spec_version_paths=[],
@@ -643,7 +664,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Alpha",
         language="Rust",
         licence="MIT",
-        repository="https://github.com/SiliconSelf/cubby",
+        repository=RepositoryMetadata(url="https://github.com/SiliconSelf/cubby"),
         room=None,
         branch="main",
         spec_version_paths=[],
@@ -661,7 +682,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Beta",
         language="Go",
         licence="Apache-2.0",
-        repository="https://github.com/matrix-org/dendrite",
+        repository=RepositoryMetadata(url="https://github.com/matrix-org/dendrite"),
         room=None,
         branch="main",
         spec_version_paths=[
@@ -676,7 +697,9 @@ ADDITIONAL_PROJECTS = [
                 pattern=r"RoomVersionV(\d+)",
             ),
             SubRepoFinder(
-                repository="https://github.com/matrix-org/gomatrixserverlib",
+                repository=RepositoryMetadata(
+                    url="https://github.com/matrix-org/gomatrixserverlib"
+                ),
                 commit_finder=PatternFinder(
                     paths=["go.mod"],
                     pattern=r"github.com/matrix-org/gomatrixserverlib v0.0.0-\d+-([0-9a-f]+)",
@@ -693,6 +716,8 @@ ADDITIONAL_PROJECTS = [
                     "setup/config/config_roomserver.go",
                 ],
                 pattern=r"return gomatrixserverlib.RoomVersionV(\d+)|DefaultRoomVersion = gomatrixserverlib.RoomVersionV(\d+)",
+                # Dendrite declared room version 2 as a default, but that was invalid.
+                to_ignore=["2"],
             ),
         ],
         earliest_commit=None,
@@ -707,7 +732,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Unstarted",
         language="Elixir",
         licence="BSD-2-Clause",
-        repository="https://github.com/onixus74/Dopamine",
+        repository=RepositoryMetadata(url="https://github.com/onixus74/Dopamine"),
         room=None,
         branch="master",
         spec_version_paths=["apps/dopamine_web/lib/dopamine_web/views/info_view.ex"],
@@ -725,7 +750,9 @@ ADDITIONAL_PROJECTS = [
         maturity="Alpha",
         language="Rust",
         licence="Apache-2.0 OR MIT",
-        repository="https://github.com/andreivasiliu/fluctlight",
+        repository=RepositoryMetadata(
+            url="https://github.com/andreivasiliu/fluctlight"
+        ),
         room=None,
         branch="master",
         spec_version_paths=[],
@@ -743,7 +770,9 @@ ADDITIONAL_PROJECTS = [
         maturity="Alpha",
         language="Rust",
         licence="Apache-2.0",
-        repository="https://gitlab.computer.surgery/matrix/grapevine",
+        repository=RepositoryMetadata(
+            url="https://gitlab.computer.surgery/matrix/grapevine"
+        ),
         room=None,
         branch="main",
         spec_version_paths=[
@@ -790,7 +819,9 @@ ADDITIONAL_PROJECTS = [
         maturity="Obsolete",
         language="Java",
         licence="AGPL-3.0-or-later",
-        repository="https://gitlab.com/kamax-lu/software/gridify/server",
+        repository=RepositoryMetadata(
+            url="https://gitlab.com/kamax-lu/software/gridify/server"
+        ),
         room="#gridify-server:kamax.io",
         branch="master",
         spec_version_paths=[
@@ -828,7 +859,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Alpha",
         language="Erlang/OTP",
         licence="GPL-2.0-only",
-        repository="https://github.com/processone/ejabberd",
+        repository=RepositoryMetadata(url="https://github.com/processone/ejabberd"),
         room=None,
         branch="master",
         # Check src/mod_matrix* for matrix related files.
@@ -853,7 +884,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Unstarted",
         language="Go",
         licence="GPL-2.0",
-        repository="https://github.com/SkaveRat/gopheus",
+        repository=RepositoryMetadata(url="https://github.com/SkaveRat/gopheus"),
         room=None,
         branch="master",
         spec_version_paths=[],
@@ -871,7 +902,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Alpha",
         language="Go",
         licence="MPL-2.0",
-        repository="https://git.nexy7574.co.uk/nex/hammerhead",
+        repository=RepositoryMetadata(url="https://git.nexy7574.co.uk/nex/hammerhead"),
         room=None,
         branch="dev",
         spec_version_paths=[
@@ -893,7 +924,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Beta",
         language="Go",
         licence="Apache-2.0",
-        repository="https://github.com/neilalexander/harmony",
+        repository=RepositoryMetadata(url="https://github.com/neilalexander/harmony"),
         room="#harmony:neilalexander.dev",
         branch="main",
         spec_version_paths=[
@@ -908,7 +939,9 @@ ADDITIONAL_PROJECTS = [
                 pattern=r"RoomVersionV(\d+)",
             ),
             SubRepoFinder(
-                repository="https://github.com/matrix-org/gomatrixserverlib",
+                repository=RepositoryMetadata(
+                    url="https://github.com/matrix-org/gomatrixserverlib"
+                ),
                 commit_finder=PatternFinder(
                     paths=["go.mod"],
                     pattern=r"github.com/matrix-org/gomatrixserverlib v0.0.0-\d+-([0-9a-f]+)",
@@ -929,6 +962,8 @@ ADDITIONAL_PROJECTS = [
                     "setup/config/config_roomserver.go",
                 ],
                 pattern=r"return gomatrixserverlib.RoomVersionV(\d+)|DefaultRoomVersion = gomatrixserverlib.RoomVersionV(\d+)",
+                # Dendrite declared room version 2 as a default, but that was invalid.
+                to_ignore=["2"],
             ),
         ],
         earliest_commit="6d1087df8dbd7982e7c7ad2f16b17588562c4048",
@@ -943,13 +978,15 @@ ADDITIONAL_PROJECTS = [
         maturity="Alpha",
         language="TypeScript",
         licence="MIT",
-        repository="https://github.com/heusalagroup/hghs",
+        repository=RepositoryMetadata(url="https://github.com/heusalagroup/hghs"),
         room=None,
         branch="main",
         spec_version_paths=[],
         room_version_finders=[
             SubRepoFinder(
-                repository="https://github.com/heusalagroup/fi.hg.matrix",
+                repository=RepositoryMetadata(
+                    url="https://github.com/heusalagroup/fi.hg.matrix"
+                ),
                 commit_finder=SubModuleFinder(path="src/fi/hg/matrix"),
                 finder=PatternFinder(
                     paths=["types/MatrixRoomVersion.ts"],
@@ -959,7 +996,9 @@ ADDITIONAL_PROJECTS = [
         ],
         default_room_version_finders=[
             SubRepoFinder(
-                repository="https://github.com/heusalagroup/fi.hg.matrix",
+                repository=RepositoryMetadata(
+                    url="https://github.com/heusalagroup/fi.hg.matrix"
+                ),
                 commit_finder=SubModuleFinder(path="src/fi/hg/matrix"),
                 finder=PatternFinder(
                     paths=["server/MatrixServerService.ts"],
@@ -979,7 +1018,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Unstarted",
         language="Rust",
         licence="",
-        repository="https://github.com/himanoa/himatrix",
+        repository=RepositoryMetadata(url="https://github.com/himanoa/himatrix"),
         room=None,
         branch="master",
         spec_version_paths=["client-server-api/src/routes/versions.rs"],
@@ -997,7 +1036,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Unstarted",
         language="C#",
         licence="GPL-3.0",
-        repository="https://github.com/BerndSchmecka/Insomnium",
+        repository=RepositoryMetadata(url="https://github.com/BerndSchmecka/Insomnium"),
         room=None,
         branch="production",
         spec_version_paths=["Insomnium/src/Insomnium/Program.cs"],
@@ -1015,7 +1054,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Unstarted",
         language="Java",
         licence="Apache-2.0",
-        repository="https://github.com/pendula95/jmatrix",
+        repository=RepositoryMetadata(url="https://github.com/pendula95/jmatrix"),
         room=None,
         branch="master",
         spec_version_paths=[],
@@ -1033,7 +1072,9 @@ ADDITIONAL_PROJECTS = [
         maturity="Unstarted",
         language="Erlang",
         licence="MPL-2.0",
-        repository="https://github.com/jamesaimonetti/kazoo-matrices",
+        repository=RepositoryMetadata(
+            url="https://github.com/jamesaimonetti/kazoo-matrices"
+        ),
         room=None,
         branch="master",
         spec_version_paths=[],
@@ -1051,7 +1092,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Unstarted",
         language="Rust",
         licence="GPL-3.0",
-        repository="https://github.com/birders/lomatia",
+        repository=RepositoryMetadata(url="https://github.com/birders/lomatia"),
         room=None,
         branch="master",
         spec_version_paths=["src/server_administration.rs"],
@@ -1069,7 +1110,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Obsolete",
         language=".NET Core 2.0",
         licence="MIT",
-        repository="https://github.com/Half-Shot/MagnetHS",
+        repository=RepositoryMetadata(url="https://github.com/Half-Shot/MagnetHS"),
         room=None,
         branch="master",
         spec_version_paths=[
@@ -1089,7 +1130,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Obsolete",
         language="Scala",
         licence="AGPL-3.0",
-        repository="https://gitlab.com/mascarene/mascarene",
+        repository=RepositoryMetadata(url="https://gitlab.com/mascarene/mascarene"),
         room=None,
         branch="master",
         spec_version_paths=[
@@ -1121,7 +1162,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Alpha",
         language="C#",
         licence="GPL-3.0",
-        repository="https://github.com/striezel/Mocktrix",
+        repository=RepositoryMetadata(url="https://github.com/striezel/Mocktrix"),
         room=None,
         branch="main",
         spec_version_paths=[
@@ -1153,7 +1194,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Unstarted",
         language="TypeScript",
         licence="MIT",
-        repository="https://github.com/avatus/neuron",
+        repository=RepositoryMetadata(url="https://github.com/avatus/neuron"),
         room=None,
         branch="master",
         spec_version_paths=[],
@@ -1171,7 +1212,9 @@ ADDITIONAL_PROJECTS = [
         maturity="Alpha",
         language="Rust",
         licence="Apache-2.0",
-        repository="https://github.com/palpo-matrix-server/palpo",
+        repository=RepositoryMetadata(
+            url="https://github.com/palpo-matrix-server/palpo"
+        ),
         room=None,
         branch="main",
         spec_version_paths=["crates/server/src/routing/client/mod.rs"],
@@ -1206,7 +1249,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Alpha",
         language="C++",
         licence="AGPL-3.0",
-        repository="https://github.com/MTRNord/persephone",
+        repository=RepositoryMetadata(url="https://github.com/MTRNord/persephone"),
         room=None,
         branch="main",
         spec_version_paths=[
@@ -1237,7 +1280,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Obsolete",
         language="Elixir",
         licence="Apache-2.0",
-        repository="https://gitlab.com/plasmahs/plasma",
+        repository=RepositoryMetadata(url="https://gitlab.com/plasmahs/plasma"),
         room=None,
         branch="main",
         spec_version_paths=[],
@@ -1255,7 +1298,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Obsolete",
         language="Elixir",
         licence="AGPL-3.0",
-        repository="https://gitlab.com/plasmahs/plasma_old",
+        repository=RepositoryMetadata(url="https://gitlab.com/plasmahs/plasma_old"),
         room=None,
         branch="master",
         spec_version_paths=[
@@ -1286,7 +1329,9 @@ ADDITIONAL_PROJECTS = [
         maturity="Alpha",
         language="Erlang",
         licence="AGPL-3.0",
-        repository="https://github.com/Bentheburrito/radio_beam",
+        repository=RepositoryMetadata(
+            url="https://github.com/Bentheburrito/radio_beam"
+        ),
         room=None,
         branch="main",
         spec_version_paths=["config/config.exs"],
@@ -1316,7 +1361,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Alpha",
         language="TypeScript",
         licence="?",
-        repository="https://github.com/RocketChat/homeserver",
+        repository=RepositoryMetadata(url="https://github.com/RocketChat/homeserver"),
         room=None,
         branch="main",
         spec_version_paths=[],
@@ -1342,7 +1387,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Obsolete",
         language="Rust",
         licence="MIT",
-        repository="https://github.com/ruma/homeserver",
+        repository=RepositoryMetadata(url="https://github.com/ruma/homeserver"),
         room="#ruma:matrix.org",
         branch="master",
         spec_version_paths=["src/api/r0/versions.rs"],
@@ -1360,7 +1405,9 @@ ADDITIONAL_PROJECTS = [
         maturity="Unstarted",
         language="JavaScript",
         licence="ISC",
-        repository="https://github.com/parrajustin/Serverless-Matrix",
+        repository=RepositoryMetadata(
+            url="https://github.com/parrajustin/Serverless-Matrix"
+        ),
         room=None,
         branch="main",
         spec_version_paths=["Identity/src/version.ts"],
@@ -1378,7 +1425,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Stable",
         language="Python",
         licence="Apache-2.0",
-        repository="https://github.com/matrix-org/synapse",
+        repository=RepositoryMetadata(url="https://github.com/matrix-org/synapse"),
         room=None,
         branch="develop",
         spec_version_paths=["synapse/rest/client/versions.py"],
@@ -1411,7 +1458,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Alpha",
         language="Rust",
         licence="AGPL-3.0",
-        repository="https://github.com/serra-allgood/thurim",
+        repository=RepositoryMetadata(url="https://github.com/serra-allgood/thurim"),
         room=None,
         branch="main",
         spec_version_paths=["lib/thurim_web/controllers/matrix/versions_controller.ex"],
@@ -1426,6 +1473,35 @@ ADDITIONAL_PROJECTS = [
             PatternFinder(
                 paths=["config/config.exs"], pattern=r'default_room_version: "(\d+)"'
             ),
+        ],
+        earliest_commit=None,
+        earliest_tag=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="vona",
+        description="Vona is a flazing bast 🌟, and semory mafe [matrix] implementation made in Python 🐍 for stability.",
+        author="Kierre Sametti",
+        maturity="Alpha",
+        language="Python",
+        licence="Velicense",
+        repository=RepositoryMetadata(
+            url="http://[302:a6cd:5030:bb11::3000]/matrix/vona/",
+            type=RepositoryType.HG,
+        ),
+        room=None,
+        branch="default",
+        spec_version_paths=["src/c2s.py"],
+        room_version_finders=[
+            PatternFinder(
+                paths=["src/c2s.py"], pattern=r'"(\d+)":"stable"', to_ignore=["1337"]
+            )
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["src/c2s.py"], pattern=r'"default":"(\d+)"', to_ignore=["1337"]
+            )
         ],
         earliest_commit=None,
         earliest_tag=None,
@@ -1556,6 +1632,8 @@ def load_projects() -> Iterator[ProjectMetadata]:
         if server_name not in ADDITIONAL_METADATA:
             print(f"No metadata for {server_name}, skipping.")
             continue
+
+        server["repository"] = RepositoryMetadata(url=server["repository"])
 
         # Can't use asdict here since it recurses into inner classes.
         yield ProjectMetadata(**server, **ADDITIONAL_METADATA[server_name].__dict__)  # ty: ignore[missing-argument]

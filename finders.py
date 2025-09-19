@@ -8,7 +8,7 @@ def get_pattern_from_file(
     paths: list[str],
     pattern: str,
     parser: Callable[[str], set[str]] | None,
-    to_ignore: list[str],
+    to_ignore: list[str] | None,
 ) -> set[str]:
     """
     Fetch the spec versions from one or more files.
@@ -54,7 +54,8 @@ def get_pattern_from_file(
         versions.update([m for ma in matches for m in ma])
 
     # Ignore some versions that are "bad".
-    for v in to_ignore:
-        versions.discard(v)
+    if to_ignore:
+        for v in to_ignore:
+            versions.discard(v)
 
     return versions

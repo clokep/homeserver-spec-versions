@@ -12,7 +12,7 @@ from projects import (
     PatternFinder,
     SubRepoFinder,
 )
-from repository import GitRepository
+from repository import GitRepository, Repository
 
 
 @dataclass
@@ -164,9 +164,8 @@ def resolve_versions_at_commit(
 
 def get_project_versions(
     project: ProjectMetadata,
-    repo: GitRepository,
+    repo: Repository,
     finders: list[PatternFinder | SubRepoFinder] | None,
-    to_ignore: list[str],
 ) -> tuple[dict[str, list[VersionInfo]], dict[str, list[VersionInfo]]]:
     """
     Calculate the supported versions for a project and metadata about when support
@@ -198,7 +197,7 @@ def get_project_versions(
                     finder.paths,
                     finder.pattern,
                     finder.parser,
-                    to_ignore,
+                    finder.to_ignore,
                 )
             elif isinstance(finder, SubRepoFinder):
                 finder_versions = repo.get_pattern_from_subrepo(finder)
@@ -210,15 +209,14 @@ def get_project_versions(
 
         # Commits are ordered earliest to latest, only record if the
         # version info changed.
+        hexsha, committed_datetime = repo.get_commit_info(commit)
         if not versions_at_commit or versions_at_commit[-1].versions != cur_versions:
             versions_at_commit.append(
-                CommitVersionInfo(
-                    commit.hexsha, commit.committed_datetime, cur_versions
-                )
+                CommitVersionInfo(hexsha, committed_datetime, cur_versions)
             )
 
         # Resolve the commit to the *next* tag.
-        tag = repo.get_tag_from_commit(commit.hexsha)
+        tag = repo.get_tag_from_commit(hexsha)
         # If no tags were found than this wasn't released yet.
         if tag:
             if not versions_at_tag or versions_at_tag[-1].versions != cur_versions:
@@ -255,7 +253,7 @@ def get_project_dates(
     4. Calculate the lag and set of supported versions.
 
     """
-    repo = GitRepository(project.name.lower(), project.repository)
+    repo = Repository.create(project.name.lower(), project.repository)
 
     repo.checkout(f"origin/{project.branch}")
 
@@ -267,16 +265,16 @@ def get_project_dates(
             PatternFinder(
                 paths=project.spec_version_paths,
                 pattern=r"[vr]\d[\d\.]+\d",
+                to_ignore=[
+                    # Dendrite declares a v1.0, which never existed.
+                    "v1.0",
+                    # Construct declares a r2.0.0, which never existed.
+                    "r2.0.0",
+                ],
             )
         ]
         if project.spec_version_paths
         else None,
-        to_ignore=[
-            # Dendrite declares a v1.0, which never existed.
-            "v1.0",
-            # Construct declares a r2.0.0, which never existed.
-            "r2.0.0",
-        ],
     )
     print(f"Loaded {project.name} spec versions: {list(versions.keys())}")
 
@@ -285,7 +283,6 @@ def get_project_dates(
         project,
         repo,
         project.room_version_finders,
-        to_ignore=[],
     )
     print(f"Loaded {project.name} room versions: {list(room_versions.keys())}")
 
@@ -294,8 +291,6 @@ def get_project_dates(
         project,
         repo,
         project.default_room_version_finders,
-        # Dendrite declared room version 2 as a default, but that was invalid.
-        to_ignore=["2"],
     )
     print(
         f"Loaded {project.name} default room versions: {list(default_room_versions.keys())}"
@@ -318,9 +313,15 @@ def get_project_dates(
 
     print(f"Loaded {project.name} dates: {list(versions_dates_all.keys())}")
 
-    initial_commit_date, last_commit_date, forked_date, release_date = (
-        repo.get_project_datetimes(project)
+    initial_commit_date, last_commit_date, forked_date = repo.get_project_datetimes(
+        project
     )
+
+    release_date = None
+    earliest_tag = repo.get_earliest_tag(project)
+    if earliest_tag:
+        print(f"Found earliest tag: {earliest_tag}")
+        release_date = repo.get_tag_datetime(earliest_tag)
 
     # Remove any spec versions which existed before this project was started.
     version_dates_after_commit = calculate_versions_after_date(

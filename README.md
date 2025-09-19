@@ -20,6 +20,13 @@ latest commits) and information about forks, forming a family tree of homeserver
 
 Note that this repository deals with homeserver implementations and not particular deployments.
 
+## Prerequisities
+
+This assumes you have the following available on your `PATH`:
+
+* `git`
+* `hg`
+
 ## Updating
 
 ### Updating the metadata
