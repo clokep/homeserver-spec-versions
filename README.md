@@ -42,6 +42,10 @@ See the comments in that file for the necessary metadata to provide to add a hom
 3. Run the script: `python -m main`
 4. Check it for errors.
 
+You can also fetch individual projects by providing one or more projects:
+
+`python -m main spec synapse`
+
 ----
 
  [This work](https://patrick.cloke.us/homeserver-spec-versions/) © 2024 by [Patrick Cloke](https://github.com/clokep) is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)

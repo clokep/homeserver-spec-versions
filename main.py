@@ -1,3 +1,4 @@
+import sys
 from dataclasses import dataclass, asdict, astuple
 from datetime import datetime
 import json
@@ -304,14 +305,7 @@ def get_project_dates(
     )
 
 
-def main():
-    # Get information about the spec itself.
-    spec_versions, room_versions, default_room_versions = get_spec_dates()
-
-    # Load the current project data.
-    with open("data.json", "r") as f:
-        result = json.load(f)
-
+def main(projects: set[str]):
     # The final output data is an object:
     #
     # spec_versions:
@@ -331,29 +325,47 @@ def main():
     #   lag_after_release: map of version # to days to support it
     #   maturity: string of stable/beta/alpha/obsolete
     #   initial_release_date: date of project's first release
-    spec_dates = sorted(spec_versions.items(), key=lambda v: v[1])
-    result.update(
-        **{
-            "spec_versions": {
-                "lag": dict(
-                    [(spec_dates[0][0], 0)]
-                    + [
-                        (y[0], (y[1] - x[1]).days)
-                        for x, y in zip(spec_dates[:-1], spec_dates[1:])
-                    ]
-                ),
-                "version_dates": spec_versions,
-            },
-            "room_versions": room_versions,
-            "default_room_versions": default_room_versions,
+
+    # Load the current project data.
+    with open("data.json", "r") as f:
+        result = json.load(f)
+
+    if not projects or "spec" in projects:
+        # Get information about the spec itself.
+        spec_versions, room_versions, default_room_versions = get_spec_dates()
+        spec_dates = sorted(spec_versions.items(), key=lambda v: v[1])
+        result.update(
+            **{
+                "spec_versions": {
+                    "lag": dict(
+                        [(spec_dates[0][0], 0)]
+                        + [
+                            (y[0], (y[1] - x[1]).days)
+                            for x, y in zip(spec_dates[:-1], spec_dates[1:])
+                        ]
+                    ),
+                    "version_dates": spec_versions,
+                },
+                "room_versions": room_versions,
+                "default_room_versions": default_room_versions,
+            }
+        )
+    else:
+        # Load the previously fetch spec versions.
+        spec_versions = {
+            version: datetime.fromisoformat(date)
+            for version, date in result["spec_versions"]["version_dates"].items()
         }
-    )
 
     if "homeserver_versions" not in result:
         result["homeserver_versions"] = {}
 
     # For each project find the earliest known date the project supported it.
     for project in load_projects():
+        # Skip projects which were not included.
+        if projects and project.name.lower() not in projects:
+            continue
+
         print(f"Starting {project.name}")
 
         if project.process_updates:
@@ -372,4 +384,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(set(s.lower() for s in sys.argv[1:]))
