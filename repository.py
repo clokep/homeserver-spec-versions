@@ -1,9 +1,11 @@
+import abc
 import itertools
 from datetime import datetime, timezone, timedelta
 from functools import cmp_to_key
 from pathlib import Path
 import os.path
-from typing import Iterator, Iterable
+from typing import Iterator, Iterable, TypeVar, Generic
+
 from finders import get_pattern_from_file
 
 import git.cmd
@@ -17,7 +19,11 @@ from projects import (
 )
 
 
-class Repository:
+CommitType = TypeVar("CommitType")
+TagType = TypeVar("TagType")
+
+
+class Repository(Generic[CommitType, TagType], metaclass=abc.ABCMeta):
     def __init__(self, name: str, remote: str) -> None:
         """
         Given a project name and the remote git URL, return a tuple of file path and git repo.
@@ -26,18 +32,168 @@ class Repository:
         remote to update the repository.
         """
         repo_dir = Path(".") / ".projects" / name.lower()
-        if not os.path.isdir(repo_dir):
-            self._repo = Repo.clone_from(remote, repo_dir)
+        self.working_dir = str(repo_dir)
+
+    @abc.abstractmethod
+    def checkout(self, commit: str | CommitType) -> None:
+        """Checkout a specific commit or refspec."""
+
+    def get_modified_commits(
+        self,
+        project: ProjectMetadata,
+        finders: list[PatternFinder | SubRepoFinder] | None,
+    ) -> Iterable[CommitType]:
+        """
+        Find the ordered list of commits that have modifications based on a set of finders.
+
+        The commits from each finder are combined and re-ordered.
+        """
+
+        if not finders:
+            return []
+
+        # A list of iterators, each which contain
+        all_commits_iterators = []
+        for finder in finders:
+            if isinstance(finder, PatternFinder):
+                commits_iterator = self._get_commits_by_paths(project, finder.paths)
+            elif isinstance(finder, SubRepoFinder):
+                commits_iterator = self._get_commits_by_subrepo(project, finder)
+            else:
+                raise ValueError(f"Unsupported finder: {finder.__class__.__name__}")
+
+            all_commits_iterators.append(commits_iterator)
+
+        # Compare the commits to order them and ensure there are no duplicates.
+        return self._dedup_and_order_commits(all_commits_iterators)
+
+    @abc.abstractmethod
+    def _dedup_and_order_commits(self) -> Iterable[CommitType]:
+        """
+        De-duplicate and order the commits from multiple iterators.
+        """
+
+    @abc.abstractmethod
+    def _get_commits_by_paths(
+        self, project: ProjectMetadata, paths: list[str]
+    ) -> list[CommitType]:
+        """
+        Get the commits where a file may have been modified.
+        """
+
+    def get_pattern_from_subrepo(self, finder: SubRepoFinder) -> set[str]:
+        """
+        Search a sub-repository for a pattern, this works by searching the main
+        repo for the sub-repository commit, then checking it out and searching
+        the sub-repository for the pattern.
+        """
+        # Get the sub-repository.
+        sub_repo = self.__class__(finder.repository.split("/")[-1], finder.repository)
+
+        # The commit to checkout in the sub-repository.
+        sub_repo_commit = None
+
+        if isinstance(finder.commit_finder, PatternFinder):
+            commits = get_pattern_from_file(
+                self.working_dir,
+                finder.commit_finder.paths,
+                finder.commit_finder.pattern,
+                finder.commit_finder.parser,
+                [],
+            )
+
+            if len(commits) > 1:
+                raise ValueError("Unexpected number of commits: {commits}")
+            elif len(commits) == 1:
+                sub_repo_commit = next(iter(commits))
+
+        elif isinstance(finder.commit_finder, SubModuleFinder):
+            # The commit of the sub-repo is found via the submodule path.
+            # Find the sub-module information, if it exists.
+            sub_repo_commit = self._get_submodule_commit(finder.commit_finder.path)
+
+        else:
+            raise ValueError(
+                f"Unsupported commit finder: {finder.commit_finder.__class__.__name__}"
+            )
+
+        # No commit was found, sub-repo must not exist.
+        if not sub_repo_commit:
+            return set()
+
+        sub_repo.checkout(sub_repo_commit)
+
+        return get_pattern_from_file(
+            sub_repo.working_dir,
+            finder.finder.paths,
+            finder.finder.pattern,
+            finder.finder.parser,
+            [],
+        )
+
+    @abc.abstractmethod
+    def _get_submodule_commit(self, path: str) -> str | None:
+        """Find the commit of a sub-module checked out at the given path."""
+
+    def _get_commits_by_subrepo(
+        self,
+        project: ProjectMetadata,
+        finder: SubRepoFinder,
+    ) -> Iterator[CommitType]:
+        """Get the commits which a referenced sub-repository was modified."""
+
+        if isinstance(finder.commit_finder, PatternFinder):
+            # The commit of the sub-repo is found via the pattern.
+            yield from self._get_commits_by_paths(project, finder.commit_finder.paths)
+
+        elif isinstance(finder.commit_finder, SubModuleFinder):
+            # The commit of the sub-repo is found via the submodule path.
+            yield from self._get_commits_by_paths(project, [finder.commit_finder.path])
+
+        else:
+            raise ValueError(
+                f"Unsupported commit finder: {finder.commit_finder.__class__.__name__}"
+            )
+
+    @abc.abstractmethod
+    def get_project_datetimes(
+        self, project: ProjectMetadata
+    ) -> tuple[datetime, datetime, datetime | None, datetime | None]:
+        """Get some important dates for the project."""
+
+    @abc.abstractmethod
+    def get_tag_from_commit(self, commit: str) -> str | None:
+        """Find the first tag which contains a commit."""
+
+    @abc.abstractmethod
+    def get_tag_datetime(self, tag: str | TagType) -> datetime:
+        """
+        Generate a datetime from a tag.
+
+        This prefers the tagged date, but falls back to the commit date.
+        """
+
+
+class GitRepository(Repository[Commit, TagReference]):
+    def __init__(self, name: str, remote: str) -> None:
+        """
+        Given a project name and the remote git URL, return a tuple of file path and git repo.
+
+        This will either clone the project (if it doesn't exist) or fetch from the
+        remote to update the repository.
+        """
+        super().__init__(name, remote)
+        if not os.path.isdir(self.working_dir):
+            self._repo = Repo.clone_from(remote, self.working_dir)
 
             # Fetch again if the additional refspec is added.
             if self._check_refspecs():
                 self._repo.remote().fetch()
         else:
-            self._repo = Repo(repo_dir)
+            self._repo = Repo(self.working_dir)
             self._check_refspecs()
             self._repo.remote().fetch()
 
-        self.working_dir = self._repo.working_dir
         self._git_cmd = git.cmd.Git(self.working_dir)
 
     def _check_refspecs(self) -> bool:
@@ -62,43 +218,22 @@ class Repository:
         self._repo.head.reference = commit
         self._repo.head.reset(index=True, working_tree=True)
 
-    def get_modified_commits(
-        self,
-        project: ProjectMetadata,
-        finders: list[PatternFinder | SubRepoFinder] | None,
+    def _dedup_and_order_commits(
+        self, commits: list[Iterable[Commit | Commit]]
     ) -> Iterable[Commit]:
         """
-        Find the ordered list of commits that have modifications based on a set of finders.
-
-        The commits from each finder are combined and re-ordered.
+        De-duplicate and order the commits from multiple iterators.
         """
-
-        if not finders:
-            return []
-
-        # A list of iterators, each which contain
-        all_commits_iterators = []
-        for finder in finders:
-            if isinstance(finder, PatternFinder):
-                commits_iterator = self._get_commits_by_paths(project, finder.paths)
-            elif isinstance(finder, SubRepoFinder):
-                commits_iterator = self._get_commits_by_subrepo(project, finder)
-            else:
-                raise ValueError(f"Unsupported finder: {finder.__class__.__name__}")
-
-            all_commits_iterators.append(commits_iterator)
-
-        # Compare the commits to order them and ensure there are no duplicates.
-        if len(all_commits_iterators) > 1:
+        if len(commits) > 1:
             # De-duplicate commits.
-            commit_map = {c.hexsha: c for c in itertools.chain(*all_commits_iterators)}
+            commit_map = {c.hexsha: c for c in itertools.chain(*commits)}
 
             return sorted(
                 commit_map.values(),
                 key=cmp_to_key(lambda a, b: -1 if self._repo.is_ancestor(a, b) else 1),
             )
-        elif len(all_commits_iterators) == 1:
-            return all_commits_iterators[0]
+        elif len(commits) == 1:
+            return commits[0]
 
         return []
 
@@ -129,79 +264,17 @@ class Repository:
             commits.insert(0, self._repo.commit(project.earliest_commit))
         return commits
 
-    def get_pattern_from_subrepo(self, finder: SubRepoFinder) -> set[str]:
-        # Get the sub-repository.
-        sub_repo = Repository(finder.repository.split("/")[-1], finder.repository)
-
-        # The commit to checkout in the sub-repository.
-        sub_repo_commit = None
-
-        if isinstance(finder.commit_finder, PatternFinder):
-            commits = get_pattern_from_file(
-                self.working_dir,
-                finder.commit_finder.paths,
-                finder.commit_finder.pattern,
-                finder.commit_finder.parser,
-                [],
-            )
-
-            if len(commits) > 1:
-                raise ValueError("Unexpected number of commits: {commits}")
-            elif len(commits) == 1:
-                sub_repo_commit = next(iter(commits))
-
-        elif isinstance(finder.commit_finder, SubModuleFinder):
-            # The commit of the sub-repo is found via the submodule path.
-            # Find the sub-module information, if it exists.
-            sub_module = next(
-                (
-                    s
-                    for s in self._repo.submodules
-                    if s.path == finder.commit_finder.path
-                ),
-                None,
-            )
-            if sub_module:
-                sub_repo_commit = sub_module.hexsha
-
-        else:
-            raise ValueError(
-                f"Unsupported commit finder: {finder.commit_finder.__class__.__name__}"
-            )
-
-        # No commit was found, sub-repo must not exist.
-        if not sub_repo_commit:
-            return set()
-
-        sub_repo.checkout(sub_repo_commit)
-
-        return get_pattern_from_file(
-            sub_repo._repo.working_dir,
-            finder.finder.paths,
-            finder.finder.pattern,
-            finder.finder.parser,
-            [],
+    def _get_submodule_commit(self, path: str) -> str | None:
+        """Find the commit of a sub-module checked out at the given path."""
+        # The commit of the sub-repo is found via the submodule path.
+        # Find the sub-module information, if it exists.
+        sub_module = next(
+            (s for s in self._repo.submodules if s.path == path),
+            None,
         )
-
-    def _get_commits_by_subrepo(
-        self,
-        project: ProjectMetadata,
-        finder: SubRepoFinder,
-    ) -> Iterator[Commit]:
-        """Get the commits which a referenced sub-repository was modified."""
-
-        if isinstance(finder.commit_finder, PatternFinder):
-            # The commit of the sub-repo is found via the pattern.
-            yield from self._get_commits_by_paths(project, finder.commit_finder.paths)
-
-        elif isinstance(finder.commit_finder, SubModuleFinder):
-            # The commit of the sub-repo is found via the submodule path.
-            yield from self._get_commits_by_paths(project, [finder.commit_finder.path])
-
-        else:
-            raise ValueError(
-                f"Unsupported commit finder: {finder.commit_finder.__class__.__name__}"
-            )
+        if sub_module:
+            return sub_module.hexsha
+        return None
 
     def get_project_datetimes(
         self, project: ProjectMetadata

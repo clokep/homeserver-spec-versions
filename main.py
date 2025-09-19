@@ -12,7 +12,7 @@ from projects import (
     PatternFinder,
     SubRepoFinder,
 )
-from repository import Repository
+from repository import GitRepository
 
 
 @dataclass
@@ -66,7 +66,7 @@ def get_spec_dates() -> tuple[
     dict[str, datetime], dict[str, datetime], dict[str, datetime]
 ]:
     # First get the known versions according to the spec repo.
-    spec_repo = Repository(
+    spec_repo = GitRepository(
         "matrix-spec", "https://github.com/matrix-org/matrix-spec.git"
     )
 
@@ -164,7 +164,7 @@ def resolve_versions_at_commit(
 
 def get_project_versions(
     project: ProjectMetadata,
-    repo: Repository,
+    repo: GitRepository,
     finders: list[PatternFinder | SubRepoFinder] | None,
     to_ignore: list[str],
 ) -> tuple[dict[str, list[VersionInfo]], dict[str, list[VersionInfo]]]:
@@ -255,7 +255,7 @@ def get_project_dates(
     4. Calculate the lag and set of supported versions.
 
     """
-    repo = Repository(project.name.lower(), project.repository)
+    repo = GitRepository(project.name.lower(), project.repository)
 
     repo.checkout(f"origin/{project.branch}")
 
