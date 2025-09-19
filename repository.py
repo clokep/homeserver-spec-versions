@@ -54,6 +54,13 @@ def get_repo(name: str, remote: str) -> Repo:
     return repo
 
 
+def checkout(repo: Repo, commit: str | Commit) -> None:
+    """Checkout a specific commit or refspec."""
+    # Checkout this commit (why is this so hard?).
+    repo.head.reference = commit
+    repo.head.reset(index=True, working_tree=True)
+
+
 def get_modified_commits(
     project: ProjectMetadata, repo: Repo, paths: list[str]
 ) -> list[Commit]:
@@ -122,9 +129,7 @@ def get_pattern_from_subrepo(repo: Repo, finder: SubRepoFinder) -> set[str]:
     if not sub_repo_commit:
         return set()
 
-    # Checkout this commit (why is this so hard?).
-    sub_repo.head.reference = sub_repo_commit
-    sub_repo.head.reset(index=True, working_tree=True)
+    checkout(sub_repo, sub_repo_commit)
 
     return get_pattern_from_file(
         sub_repo.working_dir,

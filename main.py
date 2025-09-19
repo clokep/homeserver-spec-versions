@@ -25,6 +25,7 @@ from repository import (
     get_tag_from_commit,
     get_tag_datetime,
     get_pattern_from_subrepo,
+    checkout,
 )
 
 
@@ -124,9 +125,7 @@ def get_spec_dates() -> tuple[
     for commit in spec_repo.iter_commits(
         "origin/main", paths=DEFAULT_ROOM_VERSION_PATHS, reverse=True
     ):
-        # Checkout this commit (why is this so hard?).
-        spec_repo.head.reference = commit
-        spec_repo.head.reset(index=True, working_tree=True)
+        checkout(spec_repo, commit)
 
         cur_versions = get_pattern_from_file(
             spec_repo.working_dir,
@@ -227,9 +226,7 @@ def get_project_versions(
         return {}, {}
 
     for commit in commits:
-        # Checkout this commit (why is this so hard?).
-        repo.head.reference = commit
-        repo.head.reset(index=True, working_tree=True)
+        checkout(repo, commit)
 
         cur_versions = set()
         for finder in finders:
@@ -300,8 +297,7 @@ def get_project_dates(
     """
     repo = get_repo(project.name.lower(), project.repository)
 
-    repo.head.reference = f"origin/{project.branch}"
-    repo.head.reset(index=True, working_tree=True)
+    checkout(repo, f"origin/{project.branch}")
 
     # Map of spec version to list of commit metadata for when support for that version changed.
     versions, versions_by_tag = get_project_versions(
