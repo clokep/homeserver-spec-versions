@@ -3,10 +3,6 @@ from dataclasses import dataclass, asdict, astuple
 from datetime import datetime
 import json
 
-import git
-import git.cmd
-from git import Repo
-
 from finders import get_pattern_from_file
 from projects import (
     ProjectMetadata,
@@ -16,14 +12,7 @@ from projects import (
     PatternFinder,
     SubRepoFinder,
 )
-from repository import (
-    get_repo,
-    get_tag_from_commit,
-    get_tag_datetime,
-    get_pattern_from_subrepo,
-    checkout,
-    get_modified_commits,
-)
+from repository import get_tag_datetime, Repository
 
 
 @dataclass
@@ -77,12 +66,14 @@ def get_spec_dates() -> tuple[
     dict[str, datetime], dict[str, datetime], dict[str, datetime]
 ]:
     # First get the known versions according to the spec repo.
-    spec_repo = get_repo("matrix-spec", "https://github.com/matrix-org/matrix-spec.git")
+    spec_repo = Repository(
+        "matrix-spec", "https://github.com/matrix-org/matrix-spec.git"
+    )
 
     # Map of version -> commit date.
     spec_versions = {
         t.name.split("/")[-1]: get_tag_datetime(t)
-        for t in spec_repo.tags
+        for t in spec_repo._repo.tags
         if t.name.startswith("v")
         or t.name.startswith("r")
         or t.name.startswith("client_server/r")
@@ -97,7 +88,7 @@ def get_spec_dates() -> tuple[
         ":(exclude)content/rooms/fragments",
     ]
     ROOM_VERSION_FILE_PATTERN = re.compile(r".+/v(\d+)\.(?:md|rst)$")
-    for commit in spec_repo.iter_commits(paths=ROOM_VERSION_PATHS, reverse=True):
+    for commit in spec_repo._repo.iter_commits(paths=ROOM_VERSION_PATHS, reverse=True):
         # Find the added files in the diff from the previous commit which match
         # the expected paths.
         # room_version_paths = [
@@ -119,10 +110,10 @@ def get_spec_dates() -> tuple[
         "content/rooms/_index.md",
     ]
     default_room_versions = {}
-    for commit in spec_repo.iter_commits(
+    for commit in spec_repo._repo.iter_commits(
         "origin/main", paths=DEFAULT_ROOM_VERSION_PATHS, reverse=True
     ):
-        checkout(spec_repo, commit)
+        spec_repo.checkout(commit)
 
         cur_versions = get_pattern_from_file(
             spec_repo.working_dir,
@@ -173,7 +164,7 @@ def resolve_versions_at_commit(
 
 def get_project_versions(
     project: ProjectMetadata,
-    repo: Repo,
+    repo: Repository,
     finders: list[PatternFinder | SubRepoFinder] | None,
     to_ignore: list[str],
 ) -> tuple[dict[str, list[VersionInfo]], dict[str, list[VersionInfo]]]:
@@ -194,12 +185,10 @@ def get_project_versions(
     versions_at_commit = []
     versions_at_tag = []
 
-    git_cmd = git.cmd.Git(repo.working_dir)
-
-    commits = get_modified_commits(repo, project, finders)
+    commits = repo.get_modified_commits(project, finders)
 
     for commit in commits:
-        checkout(repo, commit)
+        repo.checkout(commit)
 
         cur_versions = set()
         for finder in finders:
@@ -212,7 +201,7 @@ def get_project_versions(
                     to_ignore,
                 )
             elif isinstance(finder, SubRepoFinder):
-                finder_versions = get_pattern_from_subrepo(repo, finder)
+                finder_versions = repo.get_pattern_from_subrepo(finder)
 
             else:
                 raise ValueError(f"Unsupported finder: {finder.__class__.__name__}")
@@ -229,13 +218,13 @@ def get_project_versions(
             )
 
         # Resolve the commit to the *next* tag.
-        tag = get_tag_from_commit(git_cmd, commit.hexsha)
+        tag = repo.get_tag_from_commit(commit.hexsha)
         # If no tags were found than this wasn't released yet.
         if tag:
             if not versions_at_tag or versions_at_tag[-1].versions != cur_versions:
                 versions_at_tag.append(
                     CommitVersionInfo(
-                        tag, get_tag_datetime(repo.tags[tag]), cur_versions
+                        tag, get_tag_datetime(repo._repo.tags[tag]), cur_versions
                     )
                 )
 
@@ -268,9 +257,9 @@ def get_project_dates(
     4. Calculate the lag and set of supported versions.
 
     """
-    repo = get_repo(project.name.lower(), project.repository)
+    repo = Repository(project.name.lower(), project.repository)
 
-    checkout(repo, f"origin/{project.branch}")
+    repo.checkout(f"origin/{project.branch}")
 
     # Map of spec version to list of commit metadata for when support for that version changed.
     versions, versions_by_tag = get_project_versions(
@@ -321,27 +310,25 @@ def get_project_dates(
         for version, version_info in versions.items()
     }
 
-    git_cmd = git.cmd.Git(repo.working_dir)
-
     # Resolve the commit to the *next* tag.
     versions_dates_all_by_tag = {}
     for version, version_info in versions.items():
-        tag = get_tag_from_commit(git_cmd, version_info[0].first_commit)
+        tag = repo.get_tag_from_commit(version_info[0].first_commit)
         # If no tags were found than this wasn't released yet.
         if tag:
-            versions_dates_all_by_tag[version] = get_tag_datetime(repo.tags[tag])
+            versions_dates_all_by_tag[version] = get_tag_datetime(repo._repo.tags[tag])
 
     print(f"Loaded {project.name} dates: {list(versions_dates_all.keys())}")
 
     # Get the earliest release of this project.
     if project.earliest_commit:
-        earliest_commit = repo.commit(project.earliest_commit)
+        earliest_commit = repo._repo.commit(project.earliest_commit)
         forked_date = earliest_commit.parents[0].committed_datetime
     else:
-        earliest_commit = next(repo.iter_commits(reverse=True))
+        earliest_commit = next(repo._repo.iter_commits(reverse=True))
         forked_date = None
     initial_commit_date = earliest_commit.committed_datetime
-    last_commit_date = repo.commit(f"origin/{project.branch}").committed_datetime
+    last_commit_date = repo._repo.commit(f"origin/{project.branch}").committed_datetime
 
     # Remove any spec versions which existed before this project was started.
     version_dates_after_commit = calculate_versions_after_date(
@@ -353,15 +340,15 @@ def get_project_dates(
 
     # Get the earliest release of this project.
     release_date = None
-    if repo.tags:
+    if repo._repo.tags:
         earliest_tag = None
         # Find the first tag after the earliest commit.
         if project.earliest_commit:
-            earliest_tag_sha = get_tag_from_commit(git_cmd, project.earliest_commit)
+            earliest_tag_sha = repo.get_tag_from_commit(project.earliest_commit)
             if earliest_tag_sha:
-                earliest_tag = repo.tags[earliest_tag_sha]
+                earliest_tag = repo._repo.tags[earliest_tag_sha]
         else:
-            earliest_tag = min(repo.tags, key=lambda t: get_tag_datetime(t))
+            earliest_tag = min(repo._repo.tags, key=lambda t: get_tag_datetime(t))
         if earliest_tag:
             print(f"Found earliest tag: {earliest_tag}")
             release_date = get_tag_datetime(earliest_tag)
