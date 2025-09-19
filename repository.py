@@ -1,7 +1,9 @@
+import itertools
 from datetime import datetime, timezone, timedelta
+from functools import cmp_to_key
 from pathlib import Path
 import os.path
-from typing import Iterator
+from typing import Iterator, Iterable
 from finders import get_pattern_from_file
 
 import git.cmd
@@ -62,6 +64,47 @@ def checkout(repo: Repo, commit: str | Commit) -> None:
 
 
 def get_modified_commits(
+    repo: Repo,
+    project: ProjectMetadata,
+    finders: list[PatternFinder | SubRepoFinder] | None,
+) -> Iterable[Commit]:
+    """
+    Find the ordered list of commits that have modifications based on a set of finders.
+
+    The commits from each finder are combined and re-ordered.
+    """
+
+    if not finders:
+        return []
+
+    # A list of iterators, each which contain
+    all_commits_iterators = []
+    for finder in finders:
+        if isinstance(finder, PatternFinder):
+            commits_iterator = _get_commits_by_paths(project, repo, finder.paths)
+        elif isinstance(finder, SubRepoFinder):
+            commits_iterator = _get_commits_by_subrepo(project, repo, finder)
+        else:
+            raise ValueError(f"Unsupported finder: {finder.__class__.__name__}")
+
+        all_commits_iterators.append(commits_iterator)
+
+    # Compare the commits to order them and ensure there are no duplicates.
+    if len(all_commits_iterators) > 1:
+        # De-duplicate commits.
+        commit_map = {c.hexsha: c for c in itertools.chain(*all_commits_iterators)}
+
+        return sorted(
+            commit_map.values(),
+            key=cmp_to_key(lambda a, b: -1 if repo.is_ancestor(a, b) else 1),
+        )
+    elif len(all_commits_iterators) == 1:
+        return all_commits_iterators[0]
+
+    return []
+
+
+def _get_commits_by_paths(
     project: ProjectMetadata, repo: Repo, paths: list[str]
 ) -> list[Commit]:
     """
@@ -140,7 +183,7 @@ def get_pattern_from_subrepo(repo: Repo, finder: SubRepoFinder) -> set[str]:
     )
 
 
-def get_subrepo_commits(
+def _get_commits_by_subrepo(
     project: ProjectMetadata,
     repo: Repo,
     finder: SubRepoFinder,
@@ -149,11 +192,11 @@ def get_subrepo_commits(
 
     if isinstance(finder.commit_finder, PatternFinder):
         # The commit of the sub-repo is found via the pattern.
-        yield from get_modified_commits(project, repo, finder.commit_finder.paths)
+        yield from _get_commits_by_paths(project, repo, finder.commit_finder.paths)
 
     elif isinstance(finder.commit_finder, SubModuleFinder):
         # The commit of the sub-repo is found via the submodule path.
-        yield from get_modified_commits(project, repo, [finder.commit_finder.path])
+        yield from _get_commits_by_paths(project, repo, [finder.commit_finder.path])
 
     else:
         raise ValueError(

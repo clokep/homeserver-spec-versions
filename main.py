@@ -1,9 +1,7 @@
-import itertools
 import re
 from dataclasses import dataclass, asdict, astuple
 from datetime import datetime
 import json
-from functools import cmp_to_key
 
 import git
 import git.cmd
@@ -20,12 +18,11 @@ from projects import (
 )
 from repository import (
     get_repo,
-    get_subrepo_commits,
-    get_modified_commits,
     get_tag_from_commit,
     get_tag_datetime,
     get_pattern_from_subrepo,
     checkout,
+    get_modified_commits,
 )
 
 
@@ -199,31 +196,7 @@ def get_project_versions(
 
     git_cmd = git.cmd.Git(repo.working_dir)
 
-    # A list of iterators, each which contain
-    all_commits_iterators = []
-    for finder in finders:
-        if isinstance(finder, PatternFinder):
-            commits_iterator = get_modified_commits(project, repo, finder.paths)
-        elif isinstance(finder, SubRepoFinder):
-            commits_iterator = get_subrepo_commits(project, repo, finder)
-        else:
-            raise ValueError(f"Unsupported finder: {finder.__class__.__name__}")
-
-        all_commits_iterators.append(commits_iterator)
-
-    # Compare the commits to order them and ensure there are no duplicates.
-    if len(all_commits_iterators) > 1:
-        # De-duplicate commits.
-        commit_map = {c.hexsha: c for c in itertools.chain(*all_commits_iterators)}
-
-        commits = sorted(
-            commit_map.values(),
-            key=cmp_to_key(lambda a, b: -1 if repo.is_ancestor(a, b) else 1),
-        )
-    elif len(all_commits_iterators) == 1:
-        commits = all_commits_iterators[0]
-    else:
-        return {}, {}
+    commits = get_modified_commits(repo, project, finders)
 
     for commit in commits:
         checkout(repo, commit)
