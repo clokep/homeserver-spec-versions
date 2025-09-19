@@ -12,7 +12,7 @@ from projects import (
     PatternFinder,
     SubRepoFinder,
 )
-from repository import get_tag_datetime, Repository
+from repository import Repository
 
 
 @dataclass
@@ -72,7 +72,7 @@ def get_spec_dates() -> tuple[
 
     # Map of version -> commit date.
     spec_versions = {
-        t.name.split("/")[-1]: get_tag_datetime(t)
+        t.name.split("/")[-1]: spec_repo.get_tag_datetime(t)
         for t in spec_repo._repo.tags
         if t.name.startswith("v")
         or t.name.startswith("r")
@@ -223,9 +223,7 @@ def get_project_versions(
         if tag:
             if not versions_at_tag or versions_at_tag[-1].versions != cur_versions:
                 versions_at_tag.append(
-                    CommitVersionInfo(
-                        tag, get_tag_datetime(repo._repo.tags[tag]), cur_versions
-                    )
+                    CommitVersionInfo(tag, repo.get_tag_datetime(tag), cur_versions)
                 )
 
     # Map of each version to a list of commit metadata for when support for that version changed.
@@ -316,19 +314,13 @@ def get_project_dates(
         tag = repo.get_tag_from_commit(version_info[0].first_commit)
         # If no tags were found than this wasn't released yet.
         if tag:
-            versions_dates_all_by_tag[version] = get_tag_datetime(repo._repo.tags[tag])
+            versions_dates_all_by_tag[version] = repo.get_tag_datetime(tag)
 
     print(f"Loaded {project.name} dates: {list(versions_dates_all.keys())}")
 
-    # Get the earliest release of this project.
-    if project.earliest_commit:
-        earliest_commit = repo._repo.commit(project.earliest_commit)
-        forked_date = earliest_commit.parents[0].committed_datetime
-    else:
-        earliest_commit = next(repo._repo.iter_commits(reverse=True))
-        forked_date = None
-    initial_commit_date = earliest_commit.committed_datetime
-    last_commit_date = repo._repo.commit(f"origin/{project.branch}").committed_datetime
+    initial_commit_date, last_commit_date, forked_date, release_date = (
+        repo.get_project_datetimes(project)
+    )
 
     # Remove any spec versions which existed before this project was started.
     version_dates_after_commit = calculate_versions_after_date(
@@ -337,21 +329,6 @@ def get_project_dates(
     version_dates_after_commit_by_tag = calculate_versions_after_date(
         initial_commit_date, versions_dates_all_by_tag, spec_versions
     )
-
-    # Get the earliest release of this project.
-    release_date = None
-    if repo._repo.tags:
-        earliest_tag = None
-        # Find the first tag after the earliest commit.
-        if project.earliest_commit:
-            earliest_tag_sha = repo.get_tag_from_commit(project.earliest_commit)
-            if earliest_tag_sha:
-                earliest_tag = repo._repo.tags[earliest_tag_sha]
-        else:
-            earliest_tag = min(repo._repo.tags, key=lambda t: get_tag_datetime(t))
-        if earliest_tag:
-            print(f"Found earliest tag: {earliest_tag}")
-            release_date = get_tag_datetime(earliest_tag)
 
     # Remove any spec versions which existed before this project was released.
     version_dates_after_release = calculate_versions_after_date(

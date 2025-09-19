@@ -203,6 +203,41 @@ class Repository:
                 f"Unsupported commit finder: {finder.commit_finder.__class__.__name__}"
             )
 
+    def get_project_datetimes(
+        self, project: ProjectMetadata
+    ) -> tuple[datetime, datetime, datetime | None, datetime | None]:
+        """Get some important dates for the project."""
+        # Get the earliest and latest commit of this project.
+        if project.earliest_commit:
+            earliest_commit = self._repo.commit(project.earliest_commit)
+            forked_date = earliest_commit.parents[0].committed_datetime
+        else:
+            earliest_commit = next(self._repo.iter_commits(reverse=True))
+            forked_date = None
+        initial_commit_date = earliest_commit.committed_datetime
+        last_commit_date = self._repo.commit(
+            f"origin/{project.branch}"
+        ).committed_datetime
+
+        # Get the earliest release of this project.
+        release_date = None
+        if self._repo.tags:
+            earliest_tag = None
+            # Find the first tag after the earliest commit.
+            if project.earliest_commit:
+                earliest_tag_sha = self.get_tag_from_commit(project.earliest_commit)
+                if earliest_tag_sha:
+                    earliest_tag = self._repo.tags[earliest_tag_sha]
+            else:
+                earliest_tag = min(
+                    self._repo.tags, key=lambda t: self.get_tag_datetime(t)
+                )
+            if earliest_tag:
+                print(f"Found earliest tag: {earliest_tag}")
+                release_date = self.get_tag_datetime(earliest_tag)
+
+        return initial_commit_date, last_commit_date, forked_date, release_date
+
     def get_tag_from_commit(self, commit: str) -> str | None:
         """Find the first tag which contains a commit."""
         # Resolve the commit to the *next* tag. Sorting by creatordate will use the
@@ -219,16 +254,18 @@ class Repository:
             return tags[0]
         return None
 
+    def get_tag_datetime(self, tag: str | TagReference) -> datetime:
+        """
+        Generate a datetime from a tag.
 
-def get_tag_datetime(tag: git.TagReference) -> datetime:
-    """
-    Generate a datetime from a tag.
+        This prefers the tagged date, but falls back to the commit date.
+        """
+        if isinstance(tag, str):
+            tag = self._repo.tags[tag]
 
-    This prefers the tagged date, but falls back to the commit date.
-    """
-    if tag.tag is None:
-        return tag.commit.committed_datetime
-    return datetime.fromtimestamp(
-        tag.tag.tagged_date,
-        tz=timezone(offset=timedelta(seconds=-tag.tag.tagger_tz_offset)),
-    )
+        if tag.tag is None:
+            return tag.commit.committed_datetime
+        return datetime.fromtimestamp(
+            tag.tag.tagged_date,
+            tz=timezone(offset=timedelta(seconds=-tag.tag.tagger_tz_offset)),
+        )
