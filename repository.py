@@ -1,4 +1,5 @@
 import abc
+import contextlib
 import itertools
 import subprocess
 from datetime import datetime, timezone, timedelta
@@ -6,6 +7,7 @@ from functools import cmp_to_key
 from pathlib import Path
 import os.path
 from typing import Iterator, Iterable, TypeVar, Generic
+from urllib.parse import urlsplit, urlunsplit
 
 from finders import get_pattern_from_file
 
@@ -19,11 +21,51 @@ from projects import (
     ProjectMetadata,
     RepositoryMetadata,
     RepositoryType,
+    ProxyType,
 )
 
 
 CommitType = TypeVar("CommitType")
 TagType = TypeVar("TagType")
+
+
+@contextlib.contextmanager
+def ProxyContextManager(repository: RepositoryMetadata):
+    """
+    Start-up a proxy process, swap URLs to the proxy (yielding the new URL to use),
+    and cleanly shutdown the proxy.
+    """
+    # Start with the original URL and no proxy.
+    url = repository.url
+    proxy_process = None
+
+    if repository.proxy_type == ProxyType.YGGDRASIL:
+        # Parse the URL to pull out the IPv6 address/port.
+        parts = urlsplit(url)
+        remote_url = parts.netloc if parts.port else f"{parts.netloc}:80"
+
+        # Bind this remote to a local IP/port.
+        local_url = "127.0.0.1:11080"
+        proxy_process = subprocess.Popen(
+            [
+                "./yggstack",
+                "-useconffile",
+                "./yggdrasil.conf",
+                "-local-tcp",
+                f"{local_url}:{remote_url}",
+            ],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+
+        # Clone from the local URL, but add the path, etc. back.
+        url = urlunsplit((parts[0], local_url, parts[2], parts[3], parts[4]))
+
+    try:
+        yield url
+    finally:
+        if proxy_process:
+            proxy_process.terminate()
 
 
 class Repository(Generic[CommitType, TagType], metaclass=abc.ABCMeta):
@@ -39,12 +81,13 @@ class Repository(Generic[CommitType, TagType], metaclass=abc.ABCMeta):
 
     @classmethod
     def create(self, name: str, metadata: RepositoryMetadata):
-        if metadata.type == RepositoryType.GIT:
-            return GitRepository(name, metadata.url)
-        elif metadata.type == RepositoryType.HG:
-            return HgRepository(name, metadata.url)
-        else:
-            raise ValueError(f"Unknown repository type: {metadata.type}")
+        with ProxyContextManager(metadata) as url:
+            if metadata.type == RepositoryType.GIT:
+                return GitRepository(name, url)
+            elif metadata.type == RepositoryType.HG:
+                return HgRepository(name, url)
+            else:
+                raise ValueError(f"Unknown repository type: {metadata.type}")
 
     @abc.abstractmethod
     def checkout(self, commit: str | CommitType) -> None:
@@ -388,9 +431,12 @@ class HgRepository(Repository[str, str]):
             self._run_command("pull")
 
     def _run_command(self, *args: str) -> subprocess.CompletedProcess:
-        return subprocess.run(
+        result = subprocess.run(
             ["hg", *args], capture_output=True, text=True, cwd=self.working_dir
         )
+        if result.returncode != 0:
+            raise RuntimeError(f"Command failed to complete: hg {' '.join(args)}")
+        return result
 
     def checkout(self, commit: str | CommitType) -> None:
         """Checkout a specific commit or refspec."""

@@ -10,7 +10,7 @@ It aims to provide some information related to the [Matrix specficiation](https:
 2. The latency from a spec version being released to homeservers supporting it.
 3. The correlation between the amount of time between spec versions and the amount of time it took a homeserver to support that version after release.
 
-It also contain some information specific to [room versions](https://spec.matrix.org/v1.10/rooms/):
+It also contains some information specific to [room versions](https://spec.matrix.org/v1.10/rooms/):
 
 1. When each homeserver started (and stopped) supporting each room version.
 2. When each homeserver declared a room version as the "default" room version.
@@ -26,6 +26,7 @@ This assumes you have the following available on your `PATH`:
 
 * `git`
 * `hg`
+* [`yggstack`](https://github.com/yggdrasil-network/yggstack)
 
 ## Updating
 

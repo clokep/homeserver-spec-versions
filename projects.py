@@ -51,14 +51,20 @@ class ProjectData:
 
 
 class RepositoryType(StrEnum):
-    HG = "HG"
-    GIT = "GIT"
+    HG = "hg"
+    GIT = "git"
+
+
+class ProxyType(StrEnum):
+    NONE = "none"
+    YGGDRASIL = "yggdrasil"
 
 
 @dataclass
 class RepositoryMetadata:
     url: str
     type: RepositoryType = RepositoryType.GIT
+    proxy_type: ProxyType = ProxyType.NONE
 
 
 @dataclass
@@ -1489,6 +1495,7 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(
             url="http://[302:a6cd:5030:bb11::3000]/matrix/vona/",
             type=RepositoryType.HG,
+            proxy_type=ProxyType.YGGDRASIL,
         ),
         room=None,
         branch="default",

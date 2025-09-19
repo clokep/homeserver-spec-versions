@@ -255,8 +255,6 @@ def get_project_dates(
     """
     repo = Repository.create(project.name.lower(), project.repository)
 
-    repo.checkout(f"origin/{project.branch}")
-
     # Map of spec version to list of commit metadata for when support for that version changed.
     versions, versions_by_tag = get_project_versions(
         project,
