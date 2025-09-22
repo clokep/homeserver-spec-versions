@@ -1,6 +1,7 @@
 import abc
 import contextlib
 import itertools
+import json
 import subprocess
 from datetime import datetime, timezone, timedelta
 from functools import cmp_to_key
@@ -29,6 +30,29 @@ CommitType = TypeVar("CommitType")
 TagType = TypeVar("TagType")
 
 
+YGGDRASIL_CONF_FILENAME = "./yggdrasil.conf"
+
+def _generate_yggdrasil_conf():
+    result = subprocess.run(["./yggstack", "-genconf", "--json"], capture_output=True)
+    if result.returncode != 0:
+        raise RuntimeError(f"Failed to generate config: {result.stderr}")
+
+    # Get the output.
+    data = json.loads(result.stdout)
+
+    # Add some default peers.
+    # See https://github.com/yggdrasil-network/public-peers/blob/master/north-america/united-states.md
+    data["Peers"] = [
+        "tls://redcatho.de:9494",
+        "quic://redcatho.de:9494",
+        "tcp://longseason.1200bps.xyz:13121",
+        "tls://longseason.1200bps.xyz:13122",
+    ]
+
+    with open(YGGDRASIL_CONF_FILENAME, "w") as f:
+        json.dump(data, f, indent=4)
+
+
 @contextlib.contextmanager
 def ProxyContextManager(repository: RepositoryMetadata):
     """
@@ -44,13 +68,16 @@ def ProxyContextManager(repository: RepositoryMetadata):
         parts = urlsplit(url)
         remote_url = parts.netloc if parts.port else f"{parts.netloc}:80"
 
+        if not Path(YGGDRASIL_CONF_FILENAME).exists():
+            _generate_yggdrasil_conf()
+
         # Bind this remote to a local IP/port.
         local_url = "127.0.0.1:11080"
         proxy_process = subprocess.Popen(
             [
                 "./yggstack",
                 "-useconffile",
-                "./yggdrasil.conf",
+                YGGDRASIL_CONF_FILENAME,
                 "-local-tcp",
                 f"{local_url}:{remote_url}",
             ],
