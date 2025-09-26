@@ -1,0 +1,8 @@
+target-version = "py310"
+
+[lint]
+# Also enable flake8-builtins and isort.
+extend-select = ["A", "I"]
+#  E203: whitespace before ':'
+#  E501: Line too long
+ignore = ["E203", "E501"]

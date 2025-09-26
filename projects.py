@@ -1,10 +1,11 @@
 import os.path
-import tomllib
 from dataclasses import dataclass
 from datetime import datetime
 from enum import StrEnum
-from typing import Iterator, Callable
+from typing import Callable, Iterator
 from urllib.request import urlopen
+
+import tomllib
 
 SERVER_METADATA_URL = "https://raw.githubusercontent.com/matrix-org/matrix.org/main/content/ecosystem/servers/servers.toml"
 

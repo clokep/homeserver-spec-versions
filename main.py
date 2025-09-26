@@ -1,16 +1,16 @@
-import sys
-from dataclasses import dataclass, asdict, astuple
-from datetime import datetime
 import json
+import sys
+from dataclasses import asdict, astuple, dataclass
+from datetime import datetime
 
 from finders import get_pattern_from_file
 from projects import (
-    ProjectMetadata,
-    load_projects,
-    ProjectData,
     MANUAL_PROJECTS,
     PatternFinder,
+    ProjectData,
+    ProjectMetadata,
     SubRepoFinder,
+    load_projects,
 )
 from repository import Repository
 from spec import get_spec_dates

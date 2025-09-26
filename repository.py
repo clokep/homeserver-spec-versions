@@ -2,35 +2,34 @@ import abc
 import contextlib
 import itertools
 import json
+import os.path
 import subprocess
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone
 from functools import cmp_to_key
 from pathlib import Path
-import os.path
-from typing import Iterator, Iterable, TypeVar, Generic
+from typing import Generic, Iterable, Iterator, TypeVar
 from urllib.parse import urlsplit, urlunsplit
 
-from finders import get_pattern_from_file
-
 import git.cmd
-from git import Repo, Commit, TagReference
+from git import Commit, Repo, TagReference
 
+from finders import get_pattern_from_file
 from projects import (
     PatternFinder,
-    SubRepoFinder,
-    SubModuleFinder,
     ProjectMetadata,
+    ProxyType,
     RepositoryMetadata,
     RepositoryType,
-    ProxyType,
+    SubModuleFinder,
+    SubRepoFinder,
 )
-
 
 CommitType = TypeVar("CommitType")
 TagType = TypeVar("TagType")
 
 
 YGGDRASIL_CONF_FILENAME = "./yggdrasil.conf"
+
 
 def _generate_yggdrasil_conf():
     result = subprocess.run(["./yggstack", "-genconf", "--json"], capture_output=True)
