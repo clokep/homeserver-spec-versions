@@ -3,11 +3,11 @@ import sys
 from dataclasses import asdict, astuple, dataclass
 from datetime import datetime
 
+from data import ManualProjectData, ProjectData, VersionInfo
 from finders import get_pattern_from_file
 from projects import (
     MANUAL_PROJECTS,
     PatternFinder,
-    ProjectData,
     ProjectMetadata,
     SubRepoFinder,
     load_projects,
@@ -24,14 +24,6 @@ class CommitVersionInfo:
     commit: str
     date: datetime
     versions: set[str]
-
-
-@dataclass
-class VersionInfo:
-    first_commit: str
-    start_date: datetime
-    last_commit: str | None = None
-    end_date: datetime | None = None
 
 
 def json_encode(o: object) -> str | bool | int | float | None | list | dict:
@@ -227,22 +219,6 @@ def get_project_dates(
     )
     # TODO Validate there's no overlap of default room versions?
 
-    # Resolve commits to date for when each version was first supported.
-    versions_dates_all = {
-        version: version_info[0].start_date
-        for version, version_info in versions.items()
-    }
-
-    # Resolve the commit to the *next* tag.
-    versions_dates_all_by_tag = {}
-    for version, version_info in versions.items():
-        tag = repo.get_tag_from_commit(version_info[0].first_commit)
-        # If no tags were found than this wasn't released yet.
-        if tag:
-            versions_dates_all_by_tag[version] = repo.get_tag_datetime(tag)
-
-    print(f"Loaded {project.name} dates: {list(versions_dates_all.keys())}")
-
     initial_commit_date, last_commit_date, forked_date = repo.get_project_datetimes(
         project
     )
@@ -253,55 +229,120 @@ def get_project_dates(
         print(f"Found earliest tag: {earliest_tag}")
         release_date = repo.get_tag_datetime(earliest_tag)
 
-    # Remove any spec versions which existed before this project was started.
-    version_dates_after_commit = calculate_versions_after_date(
-        initial_commit_date, versions_dates_all, spec_versions
-    )
-    version_dates_after_commit_by_tag = calculate_versions_after_date(
-        initial_commit_date, versions_dates_all_by_tag, spec_versions
+    return get_project_data_for_manual(
+        ManualProjectData(
+            initial_release_date=release_date,
+            initial_commit_date=initial_commit_date,
+            forked_date=forked_date,
+            forked_from=project.forked_from,
+            last_commit_date=last_commit_date,
+            maturity=project.maturity.lower(),
+            spec_version_dates_by_commit=versions,
+            spec_version_dates_by_tag=versions_by_tag,
+            room_version_dates_by_commit=room_versions,
+            room_version_dates_by_tag=room_versions_by_tag,
+            default_room_version_dates_by_commit=(default_room_versions),
+            default_room_version_dates_by_tag=(default_room_versions_by_tag),
+        ),
+        spec_versions,
     )
 
-    # Remove any spec versions which existed before this project was released.
-    version_dates_after_release = calculate_versions_after_date(
-        release_date, versions_dates_all, spec_versions
+
+def _get_versions_after(
+    initial_commit_date: datetime,
+    initial_release_date: datetime | None,
+    all_version_dates: dict[str, list[VersionInfo]],
+    spec_versions: dict[str, datetime],
+) -> tuple[dict[str, datetime], dict[str, datetime], dict[str, datetime]]:
+    """Calculate the supported spec versions which happened after the project's initial commit/release."""
+
+    # Resolve to date for when each version was first supported.
+    version_dates = {
+        version: version_info[0].start_date
+        for version, version_info in all_version_dates.items()
+    }
+
+    # Remove any versions which existed before this project was started.
+    version_dates_after_commit = calculate_versions_after_date(
+        initial_commit_date, version_dates, spec_versions
     )
+
+    # Remove any versions which existed before this project was released.
     version_dates_after_release_by_tag = calculate_versions_after_date(
-        release_date, versions_dates_all_by_tag, spec_versions
+        initial_release_date, version_dates, spec_versions
+    )
+
+    return version_dates, version_dates_after_commit, version_dates_after_release_by_tag
+
+
+def get_project_data_for_manual(
+    project_data: ManualProjectData,
+    spec_versions: dict[str, datetime],
+) -> ProjectData:
+    """Calculate latency/lags & prep for dumping to JSON."""
+    (
+        spec_version_dates_by_commit,
+        spec_version_dates_after_commit,
+        spec_version_dates_after_release,
+    ) = _get_versions_after(
+        project_data.initial_commit_date,
+        project_data.initial_release_date,
+        project_data.spec_version_dates_by_commit,
+        spec_versions,
+    )
+
+    (
+        spec_version_dates_by_tag,
+        spec_version_dates_after_commit_by_tag,
+        spec_version_dates_after_release_by_tag,
+    ) = _get_versions_after(
+        project_data.initial_commit_date,
+        project_data.initial_release_date,
+        project_data.spec_version_dates_by_tag,
+        spec_versions,
     )
 
     print()
 
     return ProjectData(
-        initial_release_date=release_date,
-        initial_commit_date=initial_commit_date,
-        forked_date=forked_date,
-        forked_from=project.forked_from,
-        last_commit_date=last_commit_date,
-        spec_version_dates_by_commit=version_info_to_dates(versions),
-        spec_version_dates_by_tag=version_info_to_dates(versions_by_tag),
-        room_version_dates_by_commit=version_info_to_dates(room_versions),
-        room_version_dates_by_tag=version_info_to_dates(room_versions_by_tag),
+        initial_release_date=project_data.initial_release_date,
+        initial_commit_date=project_data.initial_commit_date,
+        forked_date=project_data.forked_date,
+        forked_from=project_data.forked_from,
+        last_commit_date=project_data.last_commit_date,
+        maturity=project_data.maturity,
+        spec_version_dates_by_commit=version_info_to_dates(
+            project_data.spec_version_dates_by_commit
+        ),
+        spec_version_dates_by_tag=version_info_to_dates(
+            project_data.spec_version_dates_by_tag
+        ),
+        room_version_dates_by_commit=version_info_to_dates(
+            project_data.room_version_dates_by_commit
+        ),
+        room_version_dates_by_tag=version_info_to_dates(
+            project_data.room_version_dates_by_tag
+        ),
         default_room_version_dates_by_commit=version_info_to_dates(
-            default_room_versions
+            project_data.default_room_version_dates_by_commit
         ),
         default_room_version_dates_by_tag=version_info_to_dates(
-            default_room_versions_by_tag
+            project_data.default_room_version_dates_by_tag
         ),
-        lag_all_by_commit=calculate_lag(versions_dates_all, spec_versions),
-        lag_all_by_tag=calculate_lag(versions_dates_all_by_tag, spec_versions),
+        lag_all_by_commit=calculate_lag(spec_version_dates_by_commit, spec_versions),
+        lag_all_by_tag=calculate_lag(spec_version_dates_by_tag, spec_versions),
         lag_after_commit_by_commit=calculate_lag(
-            version_dates_after_commit, spec_versions
+            spec_version_dates_after_commit, spec_versions
         ),
         lag_after_commit_by_tag=calculate_lag(
-            version_dates_after_commit_by_tag, spec_versions
+            spec_version_dates_after_commit_by_tag, spec_versions
         ),
         lag_after_release_by_commit=calculate_lag(
-            version_dates_after_release, spec_versions
+            spec_version_dates_after_release, spec_versions
         ),
         lag_after_release_by_tag=calculate_lag(
-            version_dates_after_release_by_tag, spec_versions
+            spec_version_dates_after_release_by_tag, spec_versions
         ),
-        maturity=project.maturity.lower(),
     )
 
 
@@ -376,8 +417,16 @@ def main(projects: set[str]):
             # Some projects no longer have a repository setup, use the old version.
             print()
 
-    for project, project_data in MANUAL_PROJECTS.items():
-        result["homeserver_versions"][project.lower()] = asdict(project_data)
+    for project_name, project_data in MANUAL_PROJECTS.items():
+        # Skip projects which were not included.
+        if projects and project_name.lower() not in projects:
+            continue
+
+        print(f"Starting {project_name}")
+
+        result["homeserver_versions"][project_name.lower()] = asdict(
+            get_project_data_for_manual(project_data, spec_versions)
+        )
 
     with open("data.json", "w") as f:
         json.dump(result, f, default=json_encode, sort_keys=True, indent=4)

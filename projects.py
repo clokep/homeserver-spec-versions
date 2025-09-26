@@ -7,48 +7,15 @@ from urllib.request import urlopen
 
 import tomllib
 
+from data import ManualProjectData
+from manual_projects import SYNAPSE_PRO
+
 SERVER_METADATA_URL = "https://raw.githubusercontent.com/matrix-org/matrix.org/main/content/ecosystem/servers/servers.toml"
 
 
 def parse_range_operator(s: str) -> set[str]:
     """Parse a range operator in Elixir, e.g. 3..5 should become {3, 4, 5}."""
     return set(map(str, range(*map(int, s.split(".."))))) | {s.split("..")[1]}
-
-
-@dataclass
-class ProjectData:
-    """The project info that's dumped into the JSON file."""
-
-    initial_release_date: datetime | None
-    initial_commit_date: datetime
-    forked_date: datetime | None
-    forked_from: str | None
-    last_commit_date: datetime
-    spec_version_dates_by_commit: dict[
-        str, list[tuple[str, datetime, str | None, datetime | None]]
-    ]
-    spec_version_dates_by_tag: dict[
-        str, list[tuple[str, datetime, str | None, datetime | None]]
-    ]
-    room_version_dates_by_commit: dict[
-        str, list[tuple[str, datetime, str | None, datetime | None]]
-    ]
-    room_version_dates_by_tag: dict[
-        str, list[tuple[str, datetime, str | None, datetime | None]]
-    ]
-    default_room_version_dates_by_commit: dict[
-        str, list[tuple[str, datetime, str | None, datetime | None]]
-    ]
-    default_room_version_dates_by_tag: dict[
-        str, list[tuple[str, datetime, str | None, datetime | None]]
-    ]
-    lag_all_by_commit: dict[str, int]
-    lag_all_by_tag: dict[str, int]
-    lag_after_commit_by_commit: dict[str, int]
-    lag_after_commit_by_tag: dict[str, int]
-    lag_after_release_by_commit: dict[str, int]
-    lag_after_release_by_tag: dict[str, int]
-    maturity: str
 
 
 class RepositoryType(StrEnum):
@@ -1526,7 +1493,7 @@ MANUAL_PROJECTS = {
     # https://github.com/binex-dsk/calcium
     #
     # matrix homeserver... but BASED!
-    # "calcium": ProjectData(
+    # "calcium": ManualProjectData(
     #     initial_release_date=None,
     #     initial_commit_date=datetime(2022, 6, 5, 0, 0, 0),
     #     forked_date=None,
@@ -1535,13 +1502,10 @@ MANUAL_PROJECTS = {
     #     spec_version_dates={},
     #     room_version_dates={},
     #     default_room_version_dates={},
-    #     lag_all={},
-    #     lag_after_commit={},
-    #     lag_after_release={},
     #     maturity="unstarted",
     # ),
     # https://git.spec.cat/Nyaaori/catalyst
-    "catalyst": ProjectData(
+    "catalyst": ManualProjectData(
         initial_release_date=None,
         # Pre-end of 2022-10-10:
         # https://matrix.org/blog/2023/01/03/matrix-community-year-in-review-2022
@@ -1558,15 +1522,9 @@ MANUAL_PROJECTS = {
         room_version_dates_by_tag={},
         default_room_version_dates_by_commit={},
         default_room_version_dates_by_tag={},
-        lag_all_by_commit={},
-        lag_all_by_tag={},
-        lag_after_commit_by_tag={},
-        lag_after_commit_by_commit={},
-        lag_after_release_by_commit={},
-        lag_after_release_by_tag={},
         maturity="alpha",
     ),
-    "hungryserv": ProjectData(
+    "hungryserv": ManualProjectData(
         initial_release_date=None,
         # Pre 2022-06-10: https://sumnerevans.com/posts/travel/2022-lisbon-and-paris/ericeira-portugal/
         initial_commit_date=datetime(2022, 6, 5, 0, 0, 0),
@@ -1580,37 +1538,9 @@ MANUAL_PROJECTS = {
         room_version_dates_by_tag={},
         default_room_version_dates_by_commit={},
         default_room_version_dates_by_tag={},
-        lag_all_by_commit={},
-        lag_all_by_tag={},
-        lag_after_commit_by_tag={},
-        lag_after_commit_by_commit={},
-        lag_after_release_by_commit={},
-        lag_after_release_by_tag={},
         maturity="beta",
     ),
-    "synapse-pro": ProjectData(
-        # See https://element.io/blog/synapse-pro-slashes-costs-for-running-nation-scale-matrix-deployments/
-        # <meta property="article:published_time" content="2024-12-10T08:27:21.000Z">
-        initial_release_date=datetime(2024, 12, 10, 8, 27, 21),
-        initial_commit_date=datetime(2024, 12, 10, 8, 27, 21),
-        forked_date=datetime(2024, 12, 10, 8, 27, 21),
-        forked_from="synapse",
-        # It is being actively developed.
-        last_commit_date=datetime.now(),
-        spec_version_dates_by_commit={},
-        spec_version_dates_by_tag={},
-        room_version_dates_by_commit={},
-        room_version_dates_by_tag={},
-        default_room_version_dates_by_commit={},
-        default_room_version_dates_by_tag={},
-        lag_all_by_commit={},
-        lag_all_by_tag={},
-        lag_after_commit_by_tag={},
-        lag_after_commit_by_commit={},
-        lag_after_release_by_commit={},
-        lag_after_release_by_tag={},
-        maturity="stable",
-    ),
+    "synapse-pro": SYNAPSE_PRO,
 }
 
 
@@ -1635,6 +1565,7 @@ def load_projects() -> Iterator[ProjectMetadata]:
 
         if server_name in INVALID_PROJECTS:
             print(f"Ignoring {server_name}.")
+            print()
             continue
 
         if server_name not in ADDITIONAL_METADATA:
