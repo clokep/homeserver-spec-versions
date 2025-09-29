@@ -181,22 +181,7 @@ def get_project_dates(
 
     # Map of spec version to list of commit metadata for when support for that version changed.
     versions, versions_by_tag = get_project_versions(
-        project,
-        repo,
-        finders=[
-            PatternFinder(
-                paths=project.spec_version_paths,
-                pattern=r"[vr]\d[\d\.]+\d",
-                to_ignore=[
-                    # Dendrite declares a v1.0, which never existed.
-                    "v1.0",
-                    # Construct declares a r2.0.0, which never existed.
-                    "r2.0.0",
-                ],
-            )
-        ]
-        if project.spec_version_paths
-        else None,
+        project, repo, finders=project.spec_version_finders
     )
     print(f"Loaded {project.name} spec versions: {list(versions.keys())}")
 

@@ -13,7 +13,7 @@ from manual_projects import SYNAPSE_PRO
 SERVER_METADATA_URL = "https://raw.githubusercontent.com/matrix-org/matrix.org/main/content/ecosystem/servers/servers.toml"
 
 
-def parse_range_operator(s: str) -> set[str]:
+def parse_elixir_range_operator(s: str) -> set[str]:
     """Parse a range operator in Elixir, e.g. 3..5 should become {3, 4, 5}."""
     return set(map(str, range(*map(int, s.split(".."))))) | {s.split("..")[1]}
 
@@ -61,6 +61,8 @@ class PatternFinder:
     pattern: str
 
     # The parser, defaults to none.
+    #
+    # This is called with a tuple of capturing groups from pattern.
     parser: Callable[[str], set[str]] | None = None
 
     # Invalid results that should be ignored.
@@ -86,14 +88,19 @@ class SubRepoFinder:
 
 
 @dataclass
+class SpecVersionFinder(PatternFinder):
+    pattern: str = r"[vr]\d[\d\.]+\d"
+
+
+@dataclass
 class AdditionalMetadata:
     # The branch which has the latest commit.
     branch: str
 
-    # The file paths (relative to repo root) to check for spec version information.
+    # The finder(s) to use to get supported spec versions.
     #
     # Leave empty if no spec versions were ever implemented.
-    spec_version_paths: list[str]
+    spec_version_finders: list[PatternFinder | SubRepoFinder] | None
 
     # The finder(s) to use to get supported room versions.
     #
@@ -139,7 +146,7 @@ INVALID_PROJECTS = {
 ADDITIONAL_METADATA = {
     "bullettime": AdditionalMetadata(
         "master",
-        spec_version_paths=[],
+        spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
@@ -149,11 +156,15 @@ ADDITIONAL_METADATA = {
     ),
     "conduit": AdditionalMetadata(
         "next",
-        spec_version_paths=[
-            "src/client_server.rs",
-            "src/main.rs",
-            "src/client_server/unversioned.rs",
-            "src/api/client_server/unversioned.rs",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "src/client_server.rs",
+                    "src/main.rs",
+                    "src/client_server/unversioned.rs",
+                    "src/api/client_server/unversioned.rs",
+                ]
+            )
         ],
         room_version_finders=[
             PatternFinder(
@@ -186,11 +197,15 @@ ADDITIONAL_METADATA = {
     ),
     "conduwuit": AdditionalMetadata(
         branch="main",
-        spec_version_paths=[
-            "src/main.rs",
-            "src/client_server/unversioned.rs",
-            "src/api/client_server/unversioned.rs",
-            "src/api/client/unversioned.rs",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "src/main.rs",
+                    "src/client_server/unversioned.rs",
+                    "src/api/client_server/unversioned.rs",
+                    "src/api/client/unversioned.rs",
+                ]
+            )
         ],
         room_version_finders=[
             PatternFinder(
@@ -225,11 +240,15 @@ ADDITIONAL_METADATA = {
     ),
     "continuwuity": AdditionalMetadata(
         branch="main",
-        spec_version_paths=[
-            "src/main.rs",
-            "src/client_server/unversioned.rs",
-            "src/api/client_server/unversioned.rs",
-            "src/api/client/unversioned.rs",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "src/main.rs",
+                    "src/client_server/unversioned.rs",
+                    "src/api/client_server/unversioned.rs",
+                    "src/api/client/unversioned.rs",
+                ]
+            )
         ],
         room_version_finders=[
             PatternFinder(
@@ -264,7 +283,13 @@ ADDITIONAL_METADATA = {
     ),
     "construct": AdditionalMetadata(
         "master",
-        spec_version_paths=["ircd/json.cc", "modules/client/versions.cc"],
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=["ircd/json.cc", "modules/client/versions.cc"],
+                # Construct declares a r2.0.0, which never existed.
+                to_ignore=["r2.0.0"],
+            )
+        ],
         room_version_finders=[
             PatternFinder(paths=["modules/client/capabilities.cc"], pattern=r'"(\d+)"'),
         ],
@@ -286,9 +311,15 @@ ADDITIONAL_METADATA = {
     ),
     "dendrite": AdditionalMetadata(
         "main",
-        spec_version_paths=[
-            "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
-            "clientapi/routing/routing.go",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
+                    "clientapi/routing/routing.go",
+                ],
+                # Dendrite declares a v1.0, which never existed.
+                to_ignore=["v1.0"],
+            )
         ],
         room_version_finders=[
             # gomatrixserverlib was vendored early in the project, but before
@@ -328,7 +359,7 @@ ADDITIONAL_METADATA = {
     ),
     "jsynapse": AdditionalMetadata(
         "master",
-        spec_version_paths=[],
+        spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
@@ -338,9 +369,13 @@ ADDITIONAL_METADATA = {
     ),
     "ligase": AdditionalMetadata(
         "develop",
-        spec_version_paths=[
-            "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
-            "proxy/routing/routing.go",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
+                    "proxy/routing/routing.go",
+                ]
+            )
         ],
         room_version_finders=None,
         default_room_version_finders=None,
@@ -351,7 +386,9 @@ ADDITIONAL_METADATA = {
     ),
     "maelstrom": AdditionalMetadata(
         "master",
-        spec_version_paths=["src/server/handlers/admin.rs"],
+        spec_version_finders=[
+            SpecVersionFinder(paths=["src/server/handlers/admin.rs"])
+        ],
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
@@ -361,9 +398,13 @@ ADDITIONAL_METADATA = {
     ),
     "matrex": AdditionalMetadata(
         "master",
-        spec_version_paths=[
-            "web/controllers/client_versions_controller.ex",
-            "controllers/client/versions.ex",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "web/controllers/client_versions_controller.ex",
+                    "controllers/client/versions.ex",
+                ]
+            )
         ],
         room_version_finders=None,
         default_room_version_finders=None,
@@ -374,8 +415,12 @@ ADDITIONAL_METADATA = {
     ),
     "mxhsd": AdditionalMetadata(
         "master",
-        spec_version_paths=[
-            "src/main/java/io/kamax/mxhsd/spring/client/controller/VersionController.java"
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "src/main/java/io/kamax/mxhsd/spring/client/controller/VersionController.java"
+                ]
+            )
         ],
         room_version_finders=None,
         default_room_version_finders=None,
@@ -386,7 +431,7 @@ ADDITIONAL_METADATA = {
     ),
     "pallium": AdditionalMetadata(
         "master",
-        spec_version_paths=[],
+        spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
@@ -396,7 +441,9 @@ ADDITIONAL_METADATA = {
     ),
     "synapse": AdditionalMetadata(
         "develop",
-        spec_version_paths=["synapse/rest/client/versions.py"],
+        spec_version_finders=[
+            SpecVersionFinder(paths=["synapse/rest/client/versions.py"])
+        ],
         room_version_finders=[
             PatternFinder(
                 paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
@@ -422,7 +469,7 @@ ADDITIONAL_METADATA = {
     ),
     "transform": AdditionalMetadata(
         "master",
-        spec_version_paths=["config.json"],
+        spec_version_finders=[SpecVersionFinder(paths=["config.json"])],
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
@@ -432,7 +479,11 @@ ADDITIONAL_METADATA = {
     ),
     "telodendria": AdditionalMetadata(
         "master",
-        spec_version_paths=["src/Routes/RouteMatrix.c", "src/Routes/RouteVersions.c"],
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=["src/Routes/RouteMatrix.c", "src/Routes/RouteVersions.c"]
+            )
+        ],
         room_version_finders=[
             PatternFinder(
                 paths=["src/Routes/RouteCapabilities.c"],
@@ -452,11 +503,15 @@ ADDITIONAL_METADATA = {
     ),
     "tuwunel": AdditionalMetadata(
         branch="dev",
-        spec_version_paths=[
-            "src/main.rs",
-            "src/client_server/unversioned.rs",
-            "src/api/client_server/unversioned.rs",
-            "src/api/client/unversioned.rs",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "src/main.rs",
+                    "src/client_server/unversioned.rs",
+                    "src/api/client_server/unversioned.rs",
+                    "src/api/client/unversioned.rs",
+                ]
+            )
         ],
         room_version_finders=[
             PatternFinder(
@@ -504,7 +559,11 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://gitlab.com/pizzapim/architex"),
         room=None,
         branch="master",
-        spec_version_paths=["lib/architex_web/client/controllers/info_controller.ex"],
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=["lib/architex_web/client/controllers/info_controller.ex"]
+            )
+        ],
         room_version_finders=[
             PatternFinder(
                 paths=["lib/architex_web/client/controllers/info_controller.ex"],
@@ -532,7 +591,7 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://github.com/ShadowJonathan/Axiom"),
         room=None,
         branch="master",
-        spec_version_paths=[],
+        spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
@@ -551,7 +610,9 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="main",
         # Note that the spec version is wrong and is defined without a "v" prefix.
-        spec_version_paths=["internal/routes/client/client.go"],
+        spec_version_finders=[
+            SpecVersionFinder(paths=["internal/routes/client/client.go"])
+        ],
         room_version_finders=[
             SubRepoFinder(
                 repository=RepositoryMetadata(
@@ -587,7 +648,7 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://github.com/erikjohnston/casniam"),
         room=None,
         branch="master",
-        spec_version_paths=[],
+        spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
@@ -605,7 +666,9 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://github.com/Magnap/coignet"),
         room=None,
         branch="master",
-        spec_version_paths=["src/endpoints/client_server/mod.rs"],
+        spec_version_finders=[
+            SpecVersionFinder(paths=["src/endpoints/client_server/mod.rs"])
+        ],
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
@@ -623,7 +686,7 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://github.com/vedhavyas/cortex"),
         room=None,
         branch="master",
-        spec_version_paths=[],
+        spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
@@ -641,7 +704,7 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://github.com/SiliconSelf/cubby"),
         room=None,
         branch="main",
-        spec_version_paths=[],
+        spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
@@ -659,9 +722,15 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://github.com/matrix-org/dendrite"),
         room=None,
         branch="main",
-        spec_version_paths=[
-            "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
-            "clientapi/routing/routing.go",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
+                    "clientapi/routing/routing.go",
+                ],
+                # Dendrite declares a v1.0, which never existed.
+                to_ignore=["v1.0"],
+            )
         ],
         room_version_finders=[
             # gomatrixserverlib was vendored early in the project, but before
@@ -709,7 +778,11 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://github.com/onixus74/Dopamine"),
         room=None,
         branch="master",
-        spec_version_paths=["apps/dopamine_web/lib/dopamine_web/views/info_view.ex"],
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=["apps/dopamine_web/lib/dopamine_web/views/info_view.ex"]
+            )
+        ],
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
@@ -729,7 +802,7 @@ ADDITIONAL_PROJECTS = [
         ),
         room=None,
         branch="master",
-        spec_version_paths=[],
+        spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
@@ -749,11 +822,15 @@ ADDITIONAL_PROJECTS = [
         ),
         room=None,
         branch="main",
-        spec_version_paths=[
-            "src/client_server.rs",
-            "src/main.rs",
-            "src/client_server/unversioned.rs",
-            "src/api/client_server/unversioned.rs",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "src/client_server.rs",
+                    "src/main.rs",
+                    "src/client_server/unversioned.rs",
+                    "src/api/client_server/unversioned.rs",
+                ]
+            )
         ],
         room_version_finders=[
             PatternFinder(
@@ -798,10 +875,14 @@ ADDITIONAL_PROJECTS = [
         ),
         room="#gridify-server:kamax.io",
         branch="master",
-        spec_version_paths=[
-            "src/main/java/io/kamax/grid/gridepo/http/handler/matrix/VersionsHandler.java",
-            "src/main/java/io/kamax/grid/gridepo/network/grid/http/handler/matrix/home/client/VersionsHandler.java",
-            "src/main/java/io/kamax/gridify/server/network/grid/http/handler/matrix/home/client/VersionsHandler.java",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "src/main/java/io/kamax/grid/gridepo/http/handler/matrix/VersionsHandler.java",
+                    "src/main/java/io/kamax/grid/gridepo/network/grid/http/handler/matrix/home/client/VersionsHandler.java",
+                    "src/main/java/io/kamax/gridify/server/network/grid/http/handler/matrix/home/client/VersionsHandler.java",
+                ]
+            )
         ],
         room_version_finders=[
             PatternFinder(
@@ -837,7 +918,7 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="master",
         # Check src/mod_matrix* for matrix related files.
-        spec_version_paths=[],
+        spec_version_finders=None,
         room_version_finders=[
             PatternFinder(
                 paths=["src/mod_matrix_gw_room.erl"],
@@ -861,7 +942,7 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://github.com/SkaveRat/gopheus"),
         room=None,
         branch="master",
-        spec_version_paths=[],
+        spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
@@ -879,10 +960,14 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://git.nexy7574.co.uk/nex/hammerhead"),
         room=None,
         branch="dev",
-        spec_version_paths=[
-            "nexserv/server/versions.go",
-            "nexserv/router/routes/client/versions.go",
-            "hammerhead/router/routes/client/versions.go",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "nexserv/server/versions.go",
+                    "nexserv/router/routes/client/versions.go",
+                    "hammerhead/router/routes/client/versions.go",
+                ]
+            )
         ],
         room_version_finders=None,
         default_room_version_finders=None,
@@ -901,9 +986,15 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://github.com/neilalexander/harmony"),
         room="#harmony:neilalexander.dev",
         branch="main",
-        spec_version_paths=[
-            "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
-            "clientapi/routing/routing.go",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
+                    "clientapi/routing/routing.go",
+                ],
+                # Dendrite declares a v1.0, which never existed.
+                to_ignore=["v1.0"],
+            )
         ],
         room_version_finders=[
             # gomatrixserverlib was vendored early in the project, but before
@@ -955,7 +1046,7 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://github.com/heusalagroup/hghs"),
         room=None,
         branch="main",
-        spec_version_paths=[],
+        spec_version_finders=None,
         room_version_finders=[
             SubRepoFinder(
                 repository=RepositoryMetadata(
@@ -995,7 +1086,9 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://github.com/himanoa/himatrix"),
         room=None,
         branch="master",
-        spec_version_paths=["client-server-api/src/routes/versions.rs"],
+        spec_version_finders=[
+            SpecVersionFinder(paths=["client-server-api/src/routes/versions.rs"])
+        ],
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
@@ -1013,7 +1106,9 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://github.com/BerndSchmecka/Insomnium"),
         room=None,
         branch="production",
-        spec_version_paths=["Insomnium/src/Insomnium/Program.cs"],
+        spec_version_finders=[
+            SpecVersionFinder(paths=["Insomnium/src/Insomnium/Program.cs"])
+        ],
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
@@ -1031,7 +1126,7 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://github.com/pendula95/jmatrix"),
         room=None,
         branch="master",
-        spec_version_paths=[],
+        spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
@@ -1051,7 +1146,7 @@ ADDITIONAL_PROJECTS = [
         ),
         room=None,
         branch="master",
-        spec_version_paths=[],
+        spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
@@ -1069,7 +1164,9 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://github.com/birders/lomatia"),
         room=None,
         branch="master",
-        spec_version_paths=["src/server_administration.rs"],
+        spec_version_finders=[
+            SpecVersionFinder(paths=["src/server_administration.rs"])
+        ],
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
@@ -1087,8 +1184,12 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://github.com/Half-Shot/MagnetHS"),
         room=None,
         branch="master",
-        spec_version_paths=[
-            "HalfShot.MagnetHS/Services/ClientServerAPIService/ClientServerAPI.cs"
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "HalfShot.MagnetHS/Services/ClientServerAPIService/ClientServerAPI.cs"
+                ]
+            )
         ],
         room_version_finders=None,
         default_room_version_finders=None,
@@ -1107,8 +1208,12 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://gitlab.com/mascarene/mascarene"),
         room=None,
         branch="master",
-        spec_version_paths=[
-            "homeserver/src/main/scala/org/mascarene/homeserver/matrix/server/client/ClientApiRoutes.scala"
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "homeserver/src/main/scala/org/mascarene/homeserver/matrix/server/client/ClientApiRoutes.scala"
+                ]
+            )
         ],
         room_version_finders=[
             PatternFinder(
@@ -1139,8 +1244,12 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://github.com/striezel/Mocktrix"),
         room=None,
         branch="main",
-        spec_version_paths=[
-            "Mocktrix/client/Versions.cs",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "Mocktrix/client/Versions.cs",
+                ]
+            )
         ],
         room_version_finders=[
             PatternFinder(
@@ -1171,7 +1280,7 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://github.com/avatus/neuron"),
         room=None,
         branch="master",
-        spec_version_paths=[],
+        spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
@@ -1191,7 +1300,9 @@ ADDITIONAL_PROJECTS = [
         ),
         room=None,
         branch="main",
-        spec_version_paths=["crates/server/src/routing/client/mod.rs"],
+        spec_version_finders=[
+            SpecVersionFinder(paths=["crates/server/src/routing/client/mod.rs"])
+        ],
         room_version_finders=[
             PatternFinder(
                 paths=[
@@ -1226,9 +1337,13 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://github.com/MTRNord/persephone"),
         room=None,
         branch="main",
-        spec_version_paths=[
-            "src/webserver/client_server_api/c_s_api.hpp",
-            "src/webserver/client_server_api/ClientServerCtrl.cpp",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "src/webserver/client_server_api/c_s_api.hpp",
+                    "src/webserver/client_server_api/ClientServerCtrl.cpp",
+                ]
+            )
         ],
         room_version_finders=[
             PatternFinder(paths=["src/utils/state_res.cpp"], pattern=r'"(\d+)"'),
@@ -1257,7 +1372,7 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://gitlab.com/plasmahs/plasma"),
         room=None,
         branch="main",
-        spec_version_paths=[],
+        spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
@@ -1275,9 +1390,13 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://gitlab.com/plasmahs/plasma_old"),
         room=None,
         branch="master",
-        spec_version_paths=[
-            "lib/matrix_client_api/controllers/versions.ex",
-            "lib/matrix_client_api/controllers/versions_controller.ex",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "lib/matrix_client_api/controllers/versions.ex",
+                    "lib/matrix_client_api/controllers/versions_controller.ex",
+                ]
+            )
         ],
         room_version_finders=[
             PatternFinder(
@@ -1308,14 +1427,14 @@ ADDITIONAL_PROJECTS = [
         ),
         room=None,
         branch="main",
-        spec_version_paths=["config/config.exs"],
+        spec_version_finders=[SpecVersionFinder(paths=["config/config.exs"])],
         room_version_finders=[
             PatternFinder(
                 paths=["config/config.exs"],
                 pattern=r'Map\.new\((.+),|"(\d+)" => "stable"',
                 # If the first matching group matches, then split on .. and convert to a range
                 # of values. If the second group matches, it is just a single value.
-                parser=lambda s: parse_range_operator(s[0]) if s[0] else {s[1]},
+                parser=lambda s: parse_elixir_range_operator(s[0]) if s[0] else {s[1]},
             ),
         ],
         default_room_version_finders=[
@@ -1338,7 +1457,7 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://github.com/RocketChat/homeserver"),
         room=None,
         branch="main",
-        spec_version_paths=[],
+        spec_version_finders=None,
         room_version_finders=[
             PatternFinder(
                 paths=[
@@ -1364,7 +1483,7 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://github.com/ruma/homeserver"),
         room="#ruma:matrix.org",
         branch="master",
-        spec_version_paths=["src/api/r0/versions.rs"],
+        spec_version_finders=[SpecVersionFinder(paths=["src/api/r0/versions.rs"])],
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
@@ -1384,7 +1503,7 @@ ADDITIONAL_PROJECTS = [
         ),
         room=None,
         branch="main",
-        spec_version_paths=["Identity/src/version.ts"],
+        spec_version_finders=[SpecVersionFinder(paths=["Identity/src/version.ts"])],
         room_version_finders=None,
         default_room_version_finders=None,
         earliest_commit=None,
@@ -1402,7 +1521,9 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://github.com/matrix-org/synapse"),
         room=None,
         branch="develop",
-        spec_version_paths=["synapse/rest/client/versions.py"],
+        spec_version_finders=[
+            SpecVersionFinder(paths=["synapse/rest/client/versions.py"])
+        ],
         room_version_finders=[
             PatternFinder(
                 paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
@@ -1435,7 +1556,11 @@ ADDITIONAL_PROJECTS = [
         repository=RepositoryMetadata(url="https://github.com/serra-allgood/thurim"),
         room=None,
         branch="main",
-        spec_version_paths=["lib/thurim_web/controllers/matrix/versions_controller.ex"],
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=["lib/thurim_web/controllers/matrix/versions_controller.ex"]
+            )
+        ],
         room_version_finders=[
             PatternFinder(
                 paths=["config/config.exs"],
@@ -1467,7 +1592,16 @@ ADDITIONAL_PROJECTS = [
         ),
         room=None,
         branch="default",
-        spec_version_paths=["src/c2s.py"],
+        spec_version_finders=[
+            SpecVersionFinder(paths=["src/c2s.py"]),
+            PatternFinder(
+                paths=["src/c2s.py"],
+                pattern=r"""f"(r0.{i}.0|v1.{i})" for i in range\((\d+), (\d+)\)""",
+                parser=lambda s: {s[0].format(i=i) for i in range(int(s[1]), int(s[2]))}
+                if s
+                else {},
+            ),
+        ],
         room_version_finders=[
             PatternFinder(
                 paths=["src/c2s.py"], pattern=r'"(\d+)": ?"stable"', to_ignore=["1337"]
