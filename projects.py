@@ -1470,12 +1470,12 @@ ADDITIONAL_PROJECTS = [
         spec_version_paths=["src/c2s.py"],
         room_version_finders=[
             PatternFinder(
-                paths=["src/c2s.py"], pattern=r'"(\d+)":"stable"', to_ignore=["1337"]
+                paths=["src/c2s.py"], pattern=r'"(\d+)": ?"stable"', to_ignore=["1337"]
             )
         ],
         default_room_version_finders=[
             PatternFinder(
-                paths=["src/c2s.py"], pattern=r'"default":"(\d+)"', to_ignore=["1337"]
+                paths=["src/c2s.py"], pattern=r'"default": ?"(\d+)"', to_ignore=["1337"]
             )
         ],
         earliest_commit=None,
