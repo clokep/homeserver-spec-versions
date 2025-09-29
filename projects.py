@@ -969,8 +969,18 @@ ADDITIONAL_PROJECTS = [
                 ]
             )
         ],
-        room_version_finders=None,
-        default_room_version_finders=None,
+        room_version_finders=[
+            PatternFinder(
+                paths=["hammerhead/router/routes/client/v3/createRoom.go"],
+                pattern=r"RoomV(\d+)",
+            )
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["cmd/hammerhead/hammerhead.go"],
+                pattern=r"RoomV(\d+)",
+            )
+        ],
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
