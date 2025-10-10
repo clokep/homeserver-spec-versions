@@ -461,6 +461,7 @@ class HgRepository(Repository[str, str]):
             ["hg", *args], capture_output=True, text=True, cwd=self.working_dir
         )
         if result.returncode != 0:
+            print(result.stderr)
             raise RuntimeError(f"Command failed to complete: hg {' '.join(args)}")
         return result
 
