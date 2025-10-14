@@ -1595,17 +1595,13 @@ ADDITIONAL_PROJECTS = [
         maturity="Alpha",
         language="Python",
         licence="Velicense",
-        repository=RepositoryMetadata(
-            url="http://[302:a6cd:5030:bb11::3000]/matrix/vona/",
-            type=RepositoryType.HG,
-            proxy_type=ProxyType.YGGDRASIL,
-        ),
+        repository=RepositoryMetadata(url="https://foundry.fsky.io/vel/matrix-vona"),
         room=None,
-        branch="default",
+        branch="master",
         spec_version_finders=[
             SpecVersionFinder(paths=["src/c2s.py"]),
             PatternFinder(
-                paths=["src/c2s.py"],
+                paths=["src/c2s.py", "vona/client/__init__.py"],
                 pattern=r"""f"(r0.{i}.0|v1.{i})" for i in range\((\d+), (\d+)\)""",
                 parser=lambda s: {s[0].format(i=i) for i in range(int(s[1]), int(s[2]))}
                 if s
@@ -1614,12 +1610,16 @@ ADDITIONAL_PROJECTS = [
         ],
         room_version_finders=[
             PatternFinder(
-                paths=["src/c2s.py"], pattern=r'"(\d+)": ?"stable"', to_ignore=["1337"]
+                paths=["src/c2s.py", "vona/client/__init__.py"],
+                pattern=r'"(\d+)": ?"stable"',
+                to_ignore=["1337"],
             )
         ],
         default_room_version_finders=[
             PatternFinder(
-                paths=["src/c2s.py"], pattern=r'"default": ?"(\d+)"', to_ignore=["1337"]
+                paths=["src/c2s.py", "vona/client/__init__.py"],
+                pattern=r'"default": ?"(\d+)"',
+                to_ignore=["1337"],
             )
         ],
         earliest_commit=None,
