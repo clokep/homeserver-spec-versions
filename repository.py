@@ -1,7 +1,6 @@
 import abc
 import itertools
 import os.path
-import subprocess
 from datetime import datetime, timedelta, timezone
 from functools import cmp_to_key
 from pathlib import Path
@@ -11,14 +10,7 @@ import git.cmd
 from git import Commit, Repo, TagReference
 
 from finders import get_pattern_from_file
-from projects import (
-    PatternFinder,
-    ProjectMetadata,
-    RepositoryMetadata,
-    RepositoryType,
-    SubModuleFinder,
-    SubRepoFinder,
-)
+from projects import PatternFinder, ProjectMetadata, SubModuleFinder, SubRepoFinder
 
 CommitType = TypeVar("CommitType")
 TagType = TypeVar("TagType")
@@ -36,13 +28,8 @@ class Repository(Generic[CommitType, TagType], metaclass=abc.ABCMeta):
         self.working_dir = str(repo_dir)
 
     @classmethod
-    def create(self, name: str, metadata: RepositoryMetadata):
-        if metadata.type == RepositoryType.GIT:
-            return GitRepository(name, metadata.url)
-        elif metadata.type == RepositoryType.HG:
-            return HgRepository(name, metadata.url)
-        else:
-            raise ValueError(f"Unknown repository type: {metadata.type}")
+    def create(self, name: str, url: str):
+        return GitRepository(name, url)
 
     @abc.abstractmethod
     def checkout(self, commit: str | CommitType) -> None:
@@ -106,7 +93,7 @@ class Repository(Generic[CommitType, TagType], metaclass=abc.ABCMeta):
         """
         # Get the sub-repository.
         sub_repo = Repository.create(
-            finder.repository.url.split("/")[-1], finder.repository
+            finder.repository.split("/")[-1], finder.repository
         )
 
         # The commit to checkout in the sub-repository.
@@ -365,114 +352,3 @@ class GitRepository(Repository[Commit, TagReference]):
             tag.tag.tagged_date,
             tz=timezone(offset=timedelta(seconds=-tag.tag.tagger_tz_offset)),
         )
-
-
-class HgRepository(Repository[str, str]):
-    def __init__(self, name: str, remote: str) -> None:
-        """
-        Given a project name and the remote git URL, return a tuple of file path and git repo.
-
-        This will either clone the project (if it doesn't exist) or fetch from the
-        remote to update the repository.
-        """
-        super().__init__(name, remote)
-        if not os.path.isdir(self.working_dir):
-            # This doesn't use _run_command since that starts in the working directory which does not yet exist.
-            subprocess.run(
-                ["hg", "clone", remote, self.working_dir], capture_output=True
-            )
-
-        else:
-            self._run_command("pull")
-
-    def _run_command(self, *args: str) -> subprocess.CompletedProcess:
-        result = subprocess.run(
-            ["hg", *args], capture_output=True, text=True, cwd=self.working_dir
-        )
-        if result.returncode != 0:
-            print(result.stderr)
-            raise RuntimeError(f"Command failed to complete: hg {' '.join(args)}")
-        return result
-
-    def checkout(self, commit: str | CommitType) -> None:
-        """Checkout a specific commit or refspec."""
-        self._run_command("update", "--clean", "--rev", commit)
-
-    def _dedup_and_order_commits(self, commits: list[Iterable[str]]) -> Iterable[str]:
-        """
-        De-duplicate and order the commits from multiple iterators.
-        """
-        # Feed them all into hg log, it will de-duplicate and order them for us.
-        revs = "+".join(itertools.chain(*commits))
-        result = self._run_command(
-            "log", "--template", "{node}\n", "--rev", f"sort({revs})"
-        )
-        return result.stdout.splitlines()
-
-    def _get_commits_by_paths(
-        self, project: ProjectMetadata, paths: list[str]
-    ) -> list[str]:
-        """
-        Get the commits where a file may have been modified.
-        """
-        # Calculate the set of versions each time these files were changed, including
-        # the earliest commit, if one exists.
-        result = self._run_command(
-            "log",
-            "--template",
-            "{node}\n",
-            "--rev",
-            f"{project.earliest_commit}:{project.branch}"
-            if project.earliest_commit
-            else f":{project.branch}",
-            *paths,
-        )
-        return result.stdout.splitlines()
-
-    def _get_submodule_commit(self, path: str) -> str | None:
-        """Find the commit of a sub-module checked out at the given path."""
-        raise NotImplementedError("Submodules are not implemented for hg")
-
-    def get_project_datetimes(
-        self, project: ProjectMetadata
-    ) -> tuple[datetime, datetime, datetime | None]:
-        """Get some important dates for the project."""
-        # Get the earliest and latest commit of this project.
-        if project.earliest_commit:
-            initial_commit_date = self.get_tag_datetime(project.earliest_commit)
-            forked_date = self.get_tag_datetime(f"{project.earliest_commit}^")
-        else:
-            initial_commit_date = self.get_tag_datetime("0")
-            forked_date = None
-        return initial_commit_date, self.get_tag_datetime(project.branch), forked_date
-
-    def get_earliest_tag(self, project: ProjectMetadata) -> str | None:
-        """Get the earliest release of this project."""
-        result = self._run_command(
-            "log", "--template", "{tags}", "--rev", "first(tag())"
-        )
-        return result.stdout.strip() if result.stdout else None
-
-    def get_commit_info(self, commit: str) -> tuple[str, datetime]:
-        """
-        Get the sha and datetime of a commit.
-        """
-        return commit, self.get_tag_datetime(commit)
-
-    def get_tag_from_commit(self, commit: str) -> str | None:
-        """Find the first tag which contains a commit."""
-        result = self._run_command(
-            "log", "--template", "{tags}\n", "--rev", f"first({commit}: and tag())"
-        )
-        return result.stdout.strip() if result.stdout else None
-
-    def get_tag_datetime(self, tag: str) -> datetime:
-        """
-        Generate a datetime from a tag.
-
-        This prefers the tagged date, but falls back to the commit date.
-        """
-        result = self._run_command(
-            "log", "--template", "{date|isodate}\n", "--rev", tag
-        )
-        return datetime.fromisoformat(result.stdout.strip())

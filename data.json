@@ -6543,7 +6543,7 @@
                 "v1.8": 138,
                 "v1.9": 40
             },
-            "last_commit_date": "2025-10-10T11:20:48+01:00",
+            "last_commit_date": "2025-10-13T11:13:07-05:00",
             "maturity": "stable",
             "room_version_dates_by_commit": {
                 "1": [

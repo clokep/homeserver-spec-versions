@@ -25,7 +25,6 @@ Note that this repository deals with homeserver implementations and not particul
 This assumes you have the following available on your `PATH`:
 
 * `git`
-* `hg`
 
 ## Updating
 
