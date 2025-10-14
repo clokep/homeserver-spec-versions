@@ -1,14 +1,11 @@
 import abc
-import contextlib
 import itertools
-import json
 import os.path
 import subprocess
 from datetime import datetime, timedelta, timezone
 from functools import cmp_to_key
 from pathlib import Path
 from typing import Generic, Iterable, Iterator, TypeVar
-from urllib.parse import urlsplit, urlunsplit
 
 import git.cmd
 from git import Commit, Repo, TagReference
@@ -17,7 +14,6 @@ from finders import get_pattern_from_file
 from projects import (
     PatternFinder,
     ProjectMetadata,
-    ProxyType,
     RepositoryMetadata,
     RepositoryType,
     SubModuleFinder,
@@ -26,72 +22,6 @@ from projects import (
 
 CommitType = TypeVar("CommitType")
 TagType = TypeVar("TagType")
-
-
-YGGDRASIL_CONF_FILENAME = "./yggdrasil.conf"
-
-
-def _generate_yggdrasil_conf():
-    result = subprocess.run(["./yggstack", "-genconf", "--json"], capture_output=True)
-    if result.returncode != 0:
-        raise RuntimeError(f"Failed to generate config: {result.stderr}")
-
-    # Get the output.
-    data = json.loads(result.stdout)
-
-    # Add some default peers.
-    # See https://github.com/yggdrasil-network/public-peers/blob/master/north-america/united-states.md
-    data["Peers"] = [
-        "tls://redcatho.de:9494",
-        "quic://redcatho.de:9494",
-        "tcp://longseason.1200bps.xyz:13121",
-        "tls://longseason.1200bps.xyz:13122",
-    ]
-
-    with open(YGGDRASIL_CONF_FILENAME, "w") as f:
-        json.dump(data, f, indent=4)
-
-
-@contextlib.contextmanager
-def ProxyContextManager(repository: RepositoryMetadata):
-    """
-    Start-up a proxy process, swap URLs to the proxy (yielding the new URL to use),
-    and cleanly shutdown the proxy.
-    """
-    # Start with the original URL and no proxy.
-    url = repository.url
-    proxy_process = None
-
-    if repository.proxy_type == ProxyType.YGGDRASIL:
-        # Parse the URL to pull out the IPv6 address/port.
-        parts = urlsplit(url)
-        remote_url = parts.netloc if parts.port else f"{parts.netloc}:80"
-
-        if not Path(YGGDRASIL_CONF_FILENAME).exists():
-            _generate_yggdrasil_conf()
-
-        # Bind this remote to a local IP/port.
-        local_url = "127.0.0.1:11080"
-        proxy_process = subprocess.Popen(
-            [
-                "./yggstack",
-                "-useconffile",
-                YGGDRASIL_CONF_FILENAME,
-                "-local-tcp",
-                f"{local_url}:{remote_url}",
-            ],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-
-        # Clone from the local URL, but add the path, etc. back.
-        url = urlunsplit((parts[0], local_url, parts[2], parts[3], parts[4]))
-
-    try:
-        yield url
-    finally:
-        if proxy_process:
-            proxy_process.terminate()
 
 
 class Repository(Generic[CommitType, TagType], metaclass=abc.ABCMeta):
@@ -107,13 +37,12 @@ class Repository(Generic[CommitType, TagType], metaclass=abc.ABCMeta):
 
     @classmethod
     def create(self, name: str, metadata: RepositoryMetadata):
-        with ProxyContextManager(metadata) as url:
-            if metadata.type == RepositoryType.GIT:
-                return GitRepository(name, url)
-            elif metadata.type == RepositoryType.HG:
-                return HgRepository(name, url)
-            else:
-                raise ValueError(f"Unknown repository type: {metadata.type}")
+        if metadata.type == RepositoryType.GIT:
+            return GitRepository(name, metadata.url)
+        elif metadata.type == RepositoryType.HG:
+            return HgRepository(name, metadata.url)
+        else:
+            raise ValueError(f"Unknown repository type: {metadata.type}")
 
     @abc.abstractmethod
     def checkout(self, commit: str | CommitType) -> None:

@@ -26,7 +26,6 @@ This assumes you have the following available on your `PATH`:
 
 * `git`
 * `hg`
-* [`yggstack`](https://github.com/yggdrasil-network/yggstack)
 
 ## Updating
 

@@ -23,16 +23,10 @@ class RepositoryType(StrEnum):
     GIT = "git"
 
 
-class ProxyType(StrEnum):
-    NONE = "none"
-    YGGDRASIL = "yggdrasil"
-
-
 @dataclass
 class RepositoryMetadata:
     url: str
     type: RepositoryType = RepositoryType.GIT
-    proxy_type: ProxyType = ProxyType.NONE
 
 
 @dataclass
