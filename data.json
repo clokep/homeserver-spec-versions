@@ -2076,7 +2076,7 @@
                 "v1.5": 885,
                 "v1.8": 701
             },
-            "last_commit_date": "2025-10-10T05:01:39+00:00",
+            "last_commit_date": "2025-10-16T23:57:07+01:00",
             "maturity": "beta",
             "room_version_dates_by_commit": {
                 "10": [
@@ -3526,7 +3526,7 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit_date": "2025-10-09T12:47:30+02:00",
+            "last_commit_date": "2025-10-16T15:07:17+02:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
                 "10": [
@@ -4695,7 +4695,7 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit_date": "2025-10-10T10:12:11.842161",
+            "last_commit_date": "2025-10-16T13:52:25.520107",
             "maturity": "beta",
             "room_version_dates_by_commit": {},
             "room_version_dates_by_tag": {},
@@ -5167,7 +5167,7 @@
             "lag_all_by_tag": {
                 "r0.6.1": 1497
             },
-            "last_commit_date": "2025-10-04T23:09:50+02:00",
+            "last_commit_date": "2025-10-15T22:08:52+02:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
                 "1": [
@@ -5380,7 +5380,7 @@
                 "v1.8": 723,
                 "v1.9": 625
             },
-            "last_commit_date": "2025-10-09T09:49:28+08:00",
+            "last_commit_date": "2025-10-16T15:16:20+08:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
                 "1": [
@@ -6203,7 +6203,7 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit_date": "2025-10-09T18:10:05-03:00",
+            "last_commit_date": "2025-10-16T10:07:21-03:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
                 "1": [
@@ -6543,7 +6543,7 @@
                 "v1.8": 138,
                 "v1.9": 40
             },
-            "last_commit_date": "2025-10-13T11:13:07-05:00",
+            "last_commit_date": "2025-10-14T16:58:19+01:00",
             "maturity": "stable",
             "room_version_dates_by_commit": {
                 "1": [
@@ -7775,6 +7775,8 @@
                 "r0.6.0": 1859,
                 "r0.6.1": 1657,
                 "v1.1": 1126,
+                "v1.10": 262,
+                "v1.11": 172,
                 "v1.12": 302,
                 "v1.2": 1041,
                 "v1.3": 860,
@@ -7785,7 +7787,7 @@
                 "v1.8": 474,
                 "v1.9": 376
             },
-            "last_commit_date": "2025-09-15T00:00:00+00:00",
+            "last_commit_date": "2025-10-08T00:00:00+00:00",
             "maturity": "stable",
             "room_version_dates_by_commit": {},
             "room_version_dates_by_tag": {
@@ -7953,6 +7955,22 @@
                     ]
                 ],
                 "v1.1": [
+                    [
+                        "0.1.0",
+                        "2024-12-10T08:27:21+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.10": [
+                    [
+                        "0.1.0",
+                        "2024-12-10T08:27:21+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.11": [
                     [
                         "0.1.0",
                         "2024-12-10T08:27:21+00:00",
@@ -8538,7 +8556,7 @@
                 "v1.4": 925,
                 "v1.5": 881
             },
-            "last_commit_date": "2025-10-10T12:56:57+00:00",
+            "last_commit_date": "2025-10-16T01:55:43+00:00",
             "maturity": "stable",
             "room_version_dates_by_commit": {
                 "1": [
@@ -8643,8 +8661,8 @@
                     [
                         "v1.4.0-rc",
                         "2025-08-30T20:27:39+00:00",
-                        null,
-                        null
+                        "v1.4.3.1",
+                        "2025-10-11T02:12:43+00:00"
                     ]
                 ],
                 "10": [
@@ -9056,7 +9074,7 @@
                 "v1.8": 744,
                 "v1.9": 646
             },
-            "last_commit_date": "2025-10-13T17:55:48-04:00",
+            "last_commit_date": "2025-10-15T13:46:00-04:00",
             "maturity": "alpha",
             "room_version_dates_by_commit": {
                 "1": [

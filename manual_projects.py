@@ -7,10 +7,11 @@ from data import ManualProjectData, VersionInfo
 release_date = datetime(2024, 12, 10, 8, 27, 21, tzinfo=timezone.utc)
 
 # See https://docs.element.io/latest/element-server-suite-pro/release-notes/
-latest_release_date = datetime(2025, 9, 15, tzinfo=timezone.utc)
+latest_release_date = datetime(2025, 10, 8, tzinfo=timezone.utc)
 
 # The early release notes are not good, but the initial version was likely based on Synapse v1.121.0
-# which was released on 2024-12-11.
+# which was released on 2024-12-11. This already supported spec versions up to v1.11 and room versions
+# up to 11.
 initial_tag_version = [VersionInfo("0.1.0", release_date, None, None)]
 
 versions_by_tag = {
@@ -31,6 +32,8 @@ versions_by_tag = {
     "v1.7": initial_tag_version,
     "v1.8": initial_tag_version,
     "v1.9": initial_tag_version,
+    "v1.10": initial_tag_version,
+    "v1.11": initial_tag_version,
     # See https://docs.element.io/latest/element-server-suite-pro/release-notes/#ess-pro-2580-2025-08-06
     "v1.12": [
         VersionInfo("25.8.0", datetime(2025, 8, 6, tzinfo=timezone.utc), None, None)
