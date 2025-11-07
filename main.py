@@ -402,12 +402,13 @@ def main(projects: set[str]):
             # Some projects no longer have a repository setup, use the old version.
             print()
 
-    for project_name, project_data in MANUAL_PROJECTS.items():
+    for project_name, project_generator in MANUAL_PROJECTS.items():
         # Skip projects which were not included.
         if projects and project_name.lower() not in projects:
             continue
 
         print(f"Starting {project_name}")
+        project_data = project_generator()
 
         result["homeserver_versions"][project_name.lower()] = asdict(
             get_project_data_for_manual(project_data, spec_versions)

@@ -7,7 +7,7 @@ from urllib.request import urlopen
 import tomllib
 
 from data import ManualProjectData
-from manual_projects import SYNAPSE_PRO
+from manual_projects import generate_synapse_pro
 
 SERVER_METADATA_URL = "https://raw.githubusercontent.com/matrix-org/matrix.org/main/content/ecosystem/servers/servers.toml"
 
@@ -1605,7 +1605,7 @@ MANUAL_PROJECTS = {
     #     maturity="unstarted",
     # ),
     # https://git.spec.cat/Nyaaori/catalyst
-    "catalyst": ManualProjectData(
+    "catalyst": lambda: ManualProjectData(
         initial_release_date=None,
         # Pre-end of 2022-10-10:
         # https://matrix.org/blog/2023/01/03/matrix-community-year-in-review-2022
@@ -1624,7 +1624,7 @@ MANUAL_PROJECTS = {
         default_room_version_dates_by_tag={},
         maturity="alpha",
     ),
-    "hungryserv": ManualProjectData(
+    "hungryserv": lambda: ManualProjectData(
         initial_release_date=None,
         # Pre 2022-06-10: https://sumnerevans.com/posts/travel/2022-lisbon-and-paris/ericeira-portugal/
         initial_commit_date=datetime(2022, 6, 5, 0, 0, 0),
@@ -1640,7 +1640,7 @@ MANUAL_PROJECTS = {
         default_room_version_dates_by_tag={},
         maturity="beta",
     ),
-    "synapse-pro": SYNAPSE_PRO,
+    "synapse-pro": generate_synapse_pro,
 }
 
 

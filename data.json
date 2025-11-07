@@ -7787,7 +7787,7 @@
                 "v1.8": 474,
                 "v1.9": 376
             },
-            "last_commit_date": "2025-10-08T00:00:00+00:00",
+            "last_commit_date": "2025-11-06T00:00:00+00:00",
             "maturity": "stable",
             "room_version_dates_by_commit": {},
             "room_version_dates_by_tag": {
