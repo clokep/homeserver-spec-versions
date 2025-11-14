@@ -1262,12 +1262,12 @@ ADDITIONAL_PROJECTS = [
     ),
     ProjectMetadata(
         name="palpo",
-        description="A Rust Matrix Server Implementation",
+        description="Palpo is a Matrix homeserver written in Rust",
         author="Chrislearn Young",
         maturity="Alpha",
         language="Rust",
         licence="Apache-2.0",
-        repository="https://github.com/palpo-matrix-server/palpo",
+        repository="https://github.com/palpo-im/palpo",
         room=None,
         branch="main",
         spec_version_finders=[
