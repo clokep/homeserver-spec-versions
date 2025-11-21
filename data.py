@@ -37,6 +37,8 @@ class ProjectData:
     forked_date: datetime | None
     forked_from: str | None
     last_commit_date: datetime
+    last_commit: str | None
+    project_data_hash: str | None
     maturity: str
     spec_version_dates_by_commit: dict[
         str, list[tuple[str, datetime, str | None, datetime | None]]

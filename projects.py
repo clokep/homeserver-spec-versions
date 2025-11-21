@@ -1,5 +1,7 @@
+import hashlib
+import inspect
 import os.path
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from datetime import datetime
 from typing import Callable, Iterator
 from urllib.request import urlopen
@@ -114,7 +116,40 @@ class AdditionalMetadata:
 
 @dataclass
 class ProjectMetadata(ServerMetadata, AdditionalMetadata):
-    pass
+    def get_project_hash(self) -> str:
+        props = asdict(self)
+
+        # Replace some references to memory locations.
+        for prop_name in [
+            "spec_version_finders",
+            "room_version_finders",
+            "default_room_version_finders",
+        ]:
+            prop = props[prop_name]
+            if not prop:
+                continue
+
+            for serialized_finder, finder in zip(prop, getattr(self, prop_name)):
+                if isinstance(finder, SubRepoFinder):
+                    if (
+                        isinstance(finder.commit_finder, PatternFinder)
+                        and finder.commit_finder.parser is not None
+                    ):
+                        serialized_finder["commit_finder"]["parser"] = (
+                            inspect.getsource(finder.finder.parser).strip()
+                        )
+
+                    if finder.finder.parser is not None:
+                        serialized_finder["finder"]["parser"] = inspect.getsource(
+                            finder.finder.parser
+                        ).strip()
+
+                if isinstance(finder, PatternFinder) and finder.parser is not None:
+                    serialized_finder["parser"] = inspect.getsource(
+                        finder.parser
+                    ).strip()
+
+        return hashlib.md5(str(props).encode()).hexdigest()
 
 
 # Projects to ignore.
@@ -1271,7 +1306,12 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="main",
         spec_version_finders=[
-            SpecVersionFinder(paths=["crates/server/src/routing/client/mod.rs"])
+            SpecVersionFinder(
+                paths=[
+                    "crates/server/src/routing/client/mod.rs",
+                    "crates/server/src/routing/client.rs",
+                ]
+            )
         ],
         room_version_finders=[
             PatternFinder(
@@ -1279,6 +1319,7 @@ ADDITIONAL_PROJECTS = [
                     "crates/server/src/bl/mod.rs",
                     "crates/server/src/global.rs",
                     "crates/server/src/config/mod.rs",
+                    "crates/server/src/config.rs",
                 ],
                 pattern=r"RoomVersionId::V(\d+)",
             ),

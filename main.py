@@ -166,8 +166,11 @@ def version_info_to_dates(
 
 
 def get_project_dates(
-    project: ProjectMetadata, spec_versions: dict[str, datetime]
-) -> ProjectData:
+    project: ProjectMetadata,
+    spec_versions: dict[str, datetime],
+    prev_last_commit: str | None,
+    prev_project_data_hash: str | None,
+) -> ProjectData | None:
     """
     Generate the project's version information.
 
@@ -178,6 +181,12 @@ def get_project_dates(
 
     """
     repo = Repository.create(project.name.lower(), project.repository)
+
+    last_commit = repo.get_last_commit(project).hexsha
+    project_data_hash = project.get_project_hash()
+    if prev_last_commit == last_commit and prev_project_data_hash == project_data_hash:
+        print("Skipping, project data unchanged and no new commits")
+        return None
 
     # Map of spec version to list of commit metadata for when support for that version changed.
     versions, versions_by_tag = get_project_versions(
@@ -230,6 +239,8 @@ def get_project_dates(
             default_room_version_dates_by_tag=(default_room_versions_by_tag),
         ),
         spec_versions,
+        last_commit,
+        project_data_hash,
     )
 
 
@@ -263,6 +274,8 @@ def _get_versions_after(
 def get_project_data_for_manual(
     project_data: ManualProjectData,
     spec_versions: dict[str, datetime],
+    last_commit: str | None = None,
+    project_data_hash: str | None = None,
 ) -> ProjectData:
     """Calculate latency/lags & prep for dumping to JSON."""
     (
@@ -287,14 +300,14 @@ def get_project_data_for_manual(
         spec_versions,
     )
 
-    print()
-
     return ProjectData(
         initial_release_date=project_data.initial_release_date,
         initial_commit_date=project_data.initial_commit_date,
         forked_date=project_data.forked_date,
         forked_from=project_data.forked_from,
         last_commit_date=project_data.last_commit_date,
+        last_commit=last_commit,
+        project_data_hash=project_data_hash,
         maturity=project_data.maturity,
         spec_version_dates_by_commit=version_info_to_dates(
             project_data.spec_version_dates_by_commit
@@ -394,13 +407,27 @@ def main(projects: set[str]):
 
         print(f"Starting {project.name}")
 
-        if project.process_updates:
-            result["homeserver_versions"][project.name.lower()] = asdict(
-                get_project_dates(project, spec_versions)
-            )
-        else:
+        if not project.process_updates:
             # Some projects no longer have a repository setup, use the old version.
-            print()
+            print("Repository unavailable, skipping.")
+        else:
+            prev_project_dates = result["homeserver_versions"].get(project.name.lower())
+            if prev_project_dates:
+                prev_last_commit = prev_project_dates.get("last_commit")
+                prev_project_data_hash = prev_project_dates.get("project_data_hash")
+            else:
+                prev_last_commit = None
+                prev_project_data_hash = None
+
+            project_dates = get_project_dates(
+                project, spec_versions, prev_last_commit, prev_project_data_hash
+            )
+            if project_dates is not None:
+                result["homeserver_versions"][project.name.lower()] = asdict(
+                    project_dates
+                )
+
+        print()
 
     for project_name, project_generator in MANUAL_PROJECTS.items():
         # Skip projects which were not included.
@@ -413,6 +440,8 @@ def main(projects: set[str]):
         result["homeserver_versions"][project_name.lower()] = asdict(
             get_project_data_for_manual(project_data, spec_versions)
         )
+
+        print()
 
     with open("data.json", "w") as f:
         json.dump(result, f, default=json_encode, sort_keys=True, indent=4)

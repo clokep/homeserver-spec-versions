@@ -162,6 +162,10 @@ class Repository(Generic[CommitType, TagType], metaclass=abc.ABCMeta):
             )
 
     @abc.abstractmethod
+    def get_last_commit(self, project: ProjectMetadata) -> CommitType:
+        """Get the latest commit on the main branch."""
+
+    @abc.abstractmethod
     def get_project_datetimes(
         self, project: ProjectMetadata
     ) -> tuple[datetime, datetime, datetime | None]:
@@ -285,10 +289,14 @@ class GitRepository(Repository[Commit, TagReference]):
             return sub_module.hexsha
         return None
 
+    def get_last_commit(self, project: ProjectMetadata) -> Commit:
+        """Get the latest commit on the main branch."""
+        return self._repo.commit(f"origin/{project.branch}")
+
     def get_project_datetimes(
         self, project: ProjectMetadata
     ) -> tuple[datetime, datetime, datetime | None]:
-        """Get some important dates for the project."""
+        """Get some important dates/commits for the project."""
         # Get the earliest and latest commit of this project.
         if project.earliest_commit:
             earliest_commit = self._repo.commit(project.earliest_commit)
@@ -297,9 +305,7 @@ class GitRepository(Repository[Commit, TagReference]):
             earliest_commit = next(self._repo.iter_commits(reverse=True))
             forked_date = None
         initial_commit_date = earliest_commit.committed_datetime
-        last_commit_date = self._repo.commit(
-            f"origin/{project.branch}"
-        ).committed_datetime
+        last_commit_date = self.get_last_commit(project).committed_datetime
 
         return initial_commit_date, last_commit_date, forked_date
 
