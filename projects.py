@@ -624,7 +624,6 @@ ADDITIONAL_PROJECTS = [
         repository="https://github.com/beeper/babbleserv",
         room=None,
         branch="main",
-        # Note that the spec version is wrong and is defined without a "v" prefix.
         spec_version_finders=[
             SpecVersionFinder(paths=["internal/routes/client/client.go"])
         ],
@@ -971,12 +970,16 @@ ADDITIONAL_PROJECTS = [
                     "nexserv/server/versions.go",
                     "nexserv/router/routes/client/versions.go",
                     "hammerhead/router/routes/client/versions.go",
+                    "hammerhead/config/config.go",
                 ]
             )
         ],
         room_version_finders=[
             PatternFinder(
-                paths=["hammerhead/router/routes/client/v3/createRoom.go"],
+                paths=[
+                    "hammerhead/router/routes/client/v3/createRoom.go",
+                    "hammerhead/config/config.go",
+                ],
                 pattern=r"RoomV(\d+)",
             )
         ],
