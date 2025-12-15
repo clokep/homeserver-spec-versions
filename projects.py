@@ -971,6 +971,7 @@ ADDITIONAL_PROJECTS = [
                     "nexserv/router/routes/client/versions.go",
                     "hammerhead/router/routes/client/versions.go",
                     "hammerhead/config/config.go",
+                    "pkg/hammerhead/config/config.go",
                 ]
             )
         ],
@@ -979,6 +980,7 @@ ADDITIONAL_PROJECTS = [
                 paths=[
                     "hammerhead/router/routes/client/v3/createRoom.go",
                     "hammerhead/config/config.go",
+                    "pkg/hammerhead/config/config.go",
                 ],
                 pattern=r"RoomV(\d+)",
             )
