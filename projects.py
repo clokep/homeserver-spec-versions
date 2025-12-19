@@ -514,7 +514,7 @@ ADDITIONAL_METADATA = {
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
-        process_updates=True,
+        process_updates=False,
     ),
     "tuwunel": AdditionalMetadata(
         branch="dev",
