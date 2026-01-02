@@ -973,7 +973,12 @@ ADDITIONAL_PROJECTS = [
                     "hammerhead/config/config.go",
                     "pkg/hammerhead/config/config.go",
                 ]
-            )
+            ),
+            PatternFinder(
+                paths=["pkg/hammerhead/config/consts.go"],
+                pattern=r"mautrix.SpecV(\d+)",
+                parser=lambda s: {f"v{s[0]}.{s[1:]}"},
+            ),
         ],
         room_version_finders=[
             PatternFinder(
@@ -981,6 +986,7 @@ ADDITIONAL_PROJECTS = [
                     "hammerhead/router/routes/client/v3/createRoom.go",
                     "hammerhead/config/config.go",
                     "pkg/hammerhead/config/config.go",
+                    "pkg/hammerhead/config/consts.go",
                 ],
                 pattern=r"RoomV(\d+)",
             )
