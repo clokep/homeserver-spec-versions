@@ -1465,6 +1465,36 @@ ADDITIONAL_PROJECTS = [
         forked_from=None,
         process_updates=True,
     ),
+    ProjectMetadata(
+        name="relapse",
+        description="",
+        author="Patrick Cloke",
+        maturity="Alpha",
+        language="Python",
+        licence="Apache-2.0",
+        repository="https://github.com/clokep/relapse",
+        room=None,
+        branch="develop",
+        spec_version_finders=[
+            SpecVersionFinder(paths=["relapse/rest/client/versions.py"])
+        ],
+        room_version_finders=[
+            PatternFinder(
+                paths=["relapse/api/room_versions.py"],
+                pattern=r"RoomVersions.V(\d+)",
+            ),
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["relapse/config/server.py"],
+                pattern=r'DEFAULT_ROOM_VERSION = "(\d+)',
+            ),
+        ],
+        earliest_commit="fbd498c65cb0a0a82de4e63588d2c91c54bf24ee",
+        earliest_tag=None,
+        forked_from="synapse-legacy",
+        process_updates=True,
+    ),
     # Note that RocketChat homeserver doesn't implement the Client-Server API, thus
     # it doesn't declare itself compatible with any particular versions.
     ProjectMetadata(
@@ -1630,6 +1660,24 @@ ADDITIONAL_PROJECTS = [
                 to_ignore=["1337"],
             )
         ],
+        earliest_commit=None,
+        earliest_tag=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="worrywart",
+        description="A Matrix Homeserver written with modern tools",
+        author="Jason Little",
+        maturity="Alpha",
+        language="Python",
+        licence="",
+        repository="https://forgejo.littlevortex.net/jason/worrywart",
+        room=None,
+        branch="main",
+        spec_version_finders=[],
+        room_version_finders=[],
+        default_room_version_finders=[],
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
