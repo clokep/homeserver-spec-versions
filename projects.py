@@ -1253,6 +1253,28 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
+        name="matrix-workers",
+        description="Matrix Homeserver on Cloudflare Workers",
+        author="Nick Kuntz",
+        maturity="Alpha",
+        language="TypeScript",
+        licence="MIT",
+        repository="https://github.com/nkuntz1934/matrix-workers",
+        room=None,
+        branch="main",
+        spec_version_finders=[SpecVersionFinder(paths=["main/src/api/versions.ts"])],
+        room_version_finders=[
+            PatternFinder(paths=["src/index.ts"], pattern=r"'(\d+)'")
+        ],
+        default_room_version_finders=[
+            PatternFinder(paths=["src/index.ts"], pattern=r"default: '(\d+)'")
+        ],
+        earliest_commit=None,
+        earliest_tag=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
         name="mocktrix",
         description="Partial implementation of a Matrix homeserver (work in progress)",
         author="Dirk Stolle",
@@ -1326,21 +1348,13 @@ ADDITIONAL_PROJECTS = [
         ],
         room_version_finders=[
             PatternFinder(
-                paths=[
-                    "crates/server/src/bl/mod.rs",
-                    "crates/server/src/global.rs",
-                    "crates/server/src/config/mod.rs",
-                    "crates/server/src/config.rs",
-                ],
+                paths=["crates/server/src/bl/mod.rs"],
                 pattern=r"RoomVersionId::V(\d+)",
             ),
         ],
         default_room_version_finders=[
             PatternFinder(
-                paths=[
-                    "crates/server/src/config/server_config.rs",
-                    "crates/server/src/config/server.rs",
-                ],
+                paths=["crates/server/src/config/server_config.rs"],
                 pattern=r"RoomVersionId::V(\d+)",
             ),
         ],
