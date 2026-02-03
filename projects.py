@@ -1665,7 +1665,11 @@ ADDITIONAL_PROJECTS = [
                 paths=["src/c2s.py", "vona/client/__init__.py"],
                 pattern=r'"(\d+)": ?"stable"',
                 to_ignore=["1337"],
-            )
+            ),
+            PatternFinder(
+                paths=["vona/globals/room_versions.py"],
+                pattern=r"V(\d+)",
+            ),
         ],
         default_room_version_finders=[
             PatternFinder(
