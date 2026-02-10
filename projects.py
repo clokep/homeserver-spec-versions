@@ -100,6 +100,7 @@ class AdditionalMetadata:
     #
     # Useful for forks where the project contains many old commits.
     earliest_commit: str | None
+
     # The earliest tag to consider. If not given, the earliest tag in the repo
     # which contains the earliest commit is used. If there's no earliest commit,
     # then the earliest tag is used.
@@ -561,7 +562,7 @@ ADDITIONAL_METADATA = {
     ),
 }
 
-# https://github.com/vlad-tokarev/go-matrix-homeserver
+# Consider other Synapse "friendly" forks: dinum, beeper
 
 ADDITIONAL_PROJECTS = [
     ProjectMetadata(
@@ -808,6 +809,24 @@ ADDITIONAL_PROJECTS = [
         language="Rust",
         licence="Apache-2.0 OR MIT",
         repository="https://github.com/andreivasiliu/fluctlight",
+        room=None,
+        branch="master",
+        spec_version_finders=None,
+        room_version_finders=None,
+        default_room_version_finders=None,
+        earliest_commit=None,
+        earliest_tag=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="go-matrix-homeserver",
+        description="",
+        author="Vlad Tokarev",
+        maturity="Unstarted",
+        language="Golang",
+        licence="",
+        repository="https://github.com/vlad-tokarev/go-matrix-homeserver",
         room=None,
         branch="master",
         spec_version_finders=None,
@@ -1717,10 +1736,13 @@ MANUAL_PROJECTS = {
     #     forked_date=None,
     #     forked_from=None,
     #     last_commit_date=datetime(),
-    #     spec_version_dates={},
-    #     room_version_dates={},
-    #     default_room_version_dates={},
-    #     maturity="unstarted",
+    #     spec_version_dates_by_commit={},
+    #     spec_version_dates_by_tag={},
+    #     room_version_dates_by_commit={},
+    #     room_version_dates_by_tag={},
+    #     default_room_version_dates_by_commit={},
+    #     default_room_version_dates_by_tag={},
+    #     maturity="Unstarted",
     # ),
     # https://git.spec.cat/Nyaaori/catalyst
     "catalyst": lambda: ManualProjectData(
@@ -1758,7 +1780,62 @@ MANUAL_PROJECTS = {
         default_room_version_dates_by_tag={},
         maturity="beta",
     ),
+    # Reddit is forked from dendrite, but there's little public information about this.
+    # It does not have federation enabled.
+    #
+    # See matrix.redditspace.com
+    "reddit": lambda: ManualProjectData(
+        initial_release_date=None,
+        # Earliest known reference: https://macaw.social/@wongmjane/109529583352532543
+        initial_commit_date=datetime(2022, 12, 7, 0, 0, 0),
+        forked_date=datetime(2022, 12, 7, 0, 0, 0),
+        forked_from="dendrite-legacy",
+        # It is being actively developed.
+        last_commit_date=datetime.now(),
+        spec_version_dates_by_commit={},
+        spec_version_dates_by_tag={},
+        room_version_dates_by_commit={},
+        room_version_dates_by_tag={},
+        default_room_version_dates_by_commit={},
+        default_room_version_dates_by_tag={},
+        maturity="stable",
+    ),
+    "StashCat": lambda: ManualProjectData(
+        initial_release_date=None,
+        # Earliest known reference: https://element.io/blog/element-sponsors-public-sector-track-at-the-matrix-conference/
+        initial_commit_date=datetime(2024, 8, 6, 0, 0, 0),
+        forked_date=None,
+        forked_from=None,
+        # It is being actively developed.
+        last_commit_date=datetime.now(),
+        spec_version_dates_by_commit={},
+        spec_version_dates_by_tag={},
+        room_version_dates_by_commit={},
+        room_version_dates_by_tag={},
+        default_room_version_dates_by_commit={},
+        default_room_version_dates_by_tag={},
+        maturity="stable",
+    ),
     "synapse-pro": generate_synapse_pro,
+    # TeamSpeak 5 added support for Matrix, which was then dropped in TeamSpeak 6.
+    # Was this actually homegrown or is this a fork?
+    "TeamSpeak5": lambda: ManualProjectData(
+        initial_release_date=None,
+        # Earliest known reference: https://x.com/teamspeak/status/1589621116032585728
+        initial_commit_date=datetime(2022, 11, 7, 14, 9, 0),
+        forked_date=None,
+        forked_from=None,
+        # TeamSpeak 6 does not include Matrix support: https://github.com/teamspeak/teamspeak6-server/issues/31#issuecomment-3563104693
+        # First release of TeamSpeak 6 beta: https://community.teamspeak.com/t/teamspeak-6-0-0-beta1-screen-camera-sharing-communities-design-overhaul/54925
+        last_commit_date=datetime(2025, 1, 21, 15, 15, 0),
+        spec_version_dates_by_commit={},
+        spec_version_dates_by_tag={},
+        room_version_dates_by_commit={},
+        room_version_dates_by_tag={},
+        default_room_version_dates_by_commit={},
+        default_room_version_dates_by_tag={},
+        maturity="alpha",
+    ),
 }
 
 
