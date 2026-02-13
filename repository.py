@@ -28,8 +28,9 @@ class Repository(Generic[CommitType, TagType], metaclass=abc.ABCMeta):
         self.working_dir = str(repo_dir)
 
     @classmethod
-    def create(self, name: str, url: str):
-        return GitRepository(name, url)
+    def create(self, url: str):
+        org, name = url.rsplit("/", maxsplit=2)[-2:]
+        return GitRepository(f"{org}/{name}".lower(), url)
 
     @abc.abstractmethod
     def checkout(self, commit: str | CommitType) -> None:
@@ -92,9 +93,7 @@ class Repository(Generic[CommitType, TagType], metaclass=abc.ABCMeta):
         the sub-repository for the pattern.
         """
         # Get the sub-repository.
-        sub_repo = Repository.create(
-            finder.repository.split("/")[-1], finder.repository
-        )
+        sub_repo = Repository.create(finder.repository)
 
         # The commit to checkout in the sub-repository.
         sub_repo_commit = None

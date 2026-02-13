@@ -9,9 +9,7 @@ def get_spec_dates() -> tuple[
     dict[str, datetime], dict[str, datetime], dict[str, datetime]
 ]:
     # First get the known versions according to the spec repo.
-    spec_repo = GitRepository(
-        "matrix-spec", "https://github.com/matrix-org/matrix-spec.git"
-    )
+    spec_repo = GitRepository.create("https://github.com/matrix-org/matrix-spec.git")
 
     # Map of version -> commit date.
     spec_versions = {

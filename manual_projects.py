@@ -2,7 +2,7 @@ import re
 from datetime import datetime, timezone
 from urllib.request import urlopen
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 
 from data import ManualProjectData, VersionInfo
 
@@ -73,7 +73,9 @@ def generate_synapse_pro() -> ManualProjectData:
         # Find all siblings to the next h2 and consider that the current release notes.
         siblings = []
         current_tag = release_tag.next_sibling
-        while current_tag and current_tag.name != "h2":
+        while current_tag and (
+            not isinstance(current_tag, Tag) or current_tag.name != "h2"
+        ):
             siblings.append(current_tag)
             current_tag = current_tag.next_sibling
         content = "".join(str(s) for s in siblings)

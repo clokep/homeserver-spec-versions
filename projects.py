@@ -350,7 +350,7 @@ ADDITIONAL_METADATA = {
                 repository="https://github.com/matrix-org/gomatrixserverlib",
                 commit_finder=PatternFinder(
                     paths=["go.mod"],
-                    pattern=r"github.com/matrix-org/gomatrixserverlib v0.0.0-\d+-([0-9a-f]+)",
+                    pattern=r"github.com/matrix-org/gomatrixserverlib v0\.0\.0-\d+-([0-9a-f]+)",
                 ),
                 finder=PatternFinder(
                     paths=["eventversion.go"], pattern=r"RoomVersionV(\d+)"
@@ -538,6 +538,7 @@ ADDITIONAL_METADATA = {
                     "src/server_server.rs",
                     "src/service/globals/mod.rs",
                     "src/core/info/room_version.rs",
+                    "src/core/config/room_version.rs",
                 ],
                 pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)(?:,|])',
             ),
@@ -633,7 +634,7 @@ ADDITIONAL_PROJECTS = [
                 repository="https://github.com/matrix-org/gomatrixserverlib",
                 commit_finder=PatternFinder(
                     paths=["go.mod"],
-                    pattern=r"github.com/matrix-org/gomatrixserverlib v0.0.0-\d+-([0-9a-f]+)",
+                    pattern=r"github.com/matrix-org/gomatrixserverlib v0\.0\.0-\d+-([0-9a-f]+)",
                 ),
                 finder=PatternFinder(
                     paths=["eventversion.go"], pattern=r"RoomVersionV(\d+)"
@@ -756,7 +757,7 @@ ADDITIONAL_PROJECTS = [
                 repository="https://github.com/matrix-org/gomatrixserverlib",
                 commit_finder=PatternFinder(
                     paths=["go.mod"],
-                    pattern=r"github.com/matrix-org/gomatrixserverlib v0.0.0-\d+-([0-9a-f]+)",
+                    pattern=r"github.com/matrix-org/gomatrixserverlib v0\.0\.0-\d+-([0-9a-f]+)",
                 ),
                 finder=PatternFinder(
                     paths=["eventversion.go"], pattern=r"RoomVersionV(\d+)"
@@ -777,6 +778,72 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="zendrite",
+        description=" An opinionated fork of element-hq/dendrite",
+        author="Patrick Schratz",
+        maturity="Beta",
+        language="Go",
+        licence="AGPL-3.0-or-later OR Element Commercial License",
+        repository="https://codefloe.com/pat-s/zendrite",
+        room=None,
+        branch="main",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
+                    "clientapi/routing/routing.go",
+                ],
+                # Dendrite declares a v1.0, which never existed.
+                to_ignore=["v1.0"],
+            )
+        ],
+        room_version_finders=[
+            # gomatrixserverlib was vendored early in the project, but before
+            # room versions were a thing.
+            PatternFinder(
+                paths=["roomserver/version/version.go"],
+                pattern=r"RoomVersionV(\d+)",
+            ),
+            SubRepoFinder(
+                repository="https://github.com/matrix-org/gomatrixserverlib",
+                commit_finder=PatternFinder(
+                    paths=["go.mod"],
+                    pattern=r"github.com/matrix-org/gomatrixserverlib v0\.0\.0-\d+-([0-9a-f]+)",
+                ),
+                finder=PatternFinder(
+                    paths=["eventversion.go"], pattern=r"RoomVersionV(\d+)"
+                ),
+            ),
+            # For a period github.com/jackmaninov/gomatrixserverlib was used to replace github.com/matrix-org/gomatrixserverlib
+            # but this didn't have any impact on supported versions.
+            SubRepoFinder(
+                repository="https://codefloe.com/pat-s/gomatrixserverlib",
+                commit_finder=PatternFinder(
+                    paths=["go.mod"],
+                    pattern=r"codefloe.com/pat-s/gomatrixserverlib (?:v0\.0\.0-\d+-([0-9a-f]+)|(v\d\.\d.\d))",
+                ),
+                finder=PatternFinder(
+                    paths=["eventversion.go"], pattern=r"RoomVersionV(\d+)"
+                ),
+            ),
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "roomserver/version/version.go",
+                    "setup/config/config_roomserver.go",
+                ],
+                pattern=r"return gomatrixserverlib.RoomVersionV(\d+)|DefaultRoomVersion = gomatrixserverlib.RoomVersionV(\d+)",
+                # Dendrite declared room version 2 as a default, but that was invalid.
+                to_ignore=["2"],
+            ),
+        ],
+        earliest_commit="379ffff1f6673ddd39164f65194716d2e3c2ebb0",
+        earliest_tag=None,
+        forked_from="dendrite",
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1052,7 +1119,7 @@ ADDITIONAL_PROJECTS = [
                 repository="https://github.com/matrix-org/gomatrixserverlib",
                 commit_finder=PatternFinder(
                     paths=["go.mod"],
-                    pattern=r"github.com/matrix-org/gomatrixserverlib v0.0.0-\d+-([0-9a-f]+)",
+                    pattern=r"github.com/matrix-org/gomatrixserverlib v0\.0\.0-\d+-([0-9a-f]+)",
                 ),
                 finder=PatternFinder(
                     paths=["eventversion.go"], pattern=r"RoomVersionV(\d+)"
@@ -1401,7 +1468,10 @@ ADDITIONAL_PROJECTS = [
             )
         ],
         room_version_finders=[
-            PatternFinder(paths=["src/utils/state_res.cpp"], pattern=r'"(\d+)"'),
+            PatternFinder(
+                paths=["src/utils/room_version.hpp"],
+                pattern=r'supported_versions = {(?:"(\d+)"(?:, )?)+}',
+            ),
         ],
         default_room_version_finders=[
             PatternFinder(
@@ -1870,6 +1940,6 @@ def load_projects() -> Iterator[ProjectMetadata]:
         server["repository"] = server["repository"]
 
         # Can't use asdict here since it recurses into inner classes.
-        yield ProjectMetadata(**server, **ADDITIONAL_METADATA[server_name].__dict__)  # ty: ignore[missing-argument]
+        yield ProjectMetadata(**server, **ADDITIONAL_METADATA[server_name].__dict__)
 
     yield from ADDITIONAL_PROJECTS

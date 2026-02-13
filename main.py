@@ -180,7 +180,7 @@ def get_project_dates(
     4. Calculate the lag and set of supported versions.
 
     """
-    repo = Repository.create(project.name.lower(), project.repository)
+    repo = Repository.create(project.repository)
 
     last_commit = repo.get_last_commit(project).hexsha
     project_data_hash = project.get_project_hash()
