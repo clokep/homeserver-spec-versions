@@ -526,6 +526,7 @@ ADDITIONAL_METADATA = {
                     "src/client_server/unversioned.rs",
                     "src/api/client_server/unversioned.rs",
                     "src/api/client/unversioned.rs",
+                    "src/api/client/versions.rs",
                 ]
             )
         ],
