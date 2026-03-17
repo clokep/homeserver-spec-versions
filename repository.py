@@ -299,14 +299,19 @@ class GitRepository(Repository[Commit, TagReference]):
         # Get the earliest and latest commit of this project.
         if project.earliest_commit:
             earliest_commit = self._repo.commit(project.earliest_commit)
-            forked_date = earliest_commit.parents[0].committed_datetime
+            forked_from_date = earliest_commit.parents[0].committed_datetime
         else:
             earliest_commit = next(self._repo.iter_commits(reverse=True))
-            forked_date = None
+            forked_from_date = None
+
         initial_commit_date = earliest_commit.committed_datetime
         last_commit_date = self.get_last_commit(project).committed_datetime
 
-        return initial_commit_date, last_commit_date, forked_date
+        # Maybe override the forked from date.
+        if project.forked_from_date:
+            forked_from_date = project.forked_from_date
+
+        return initial_commit_date, last_commit_date, forked_from_date
 
     def get_earliest_tag(self, project: ProjectMetadata) -> TagReference | None:
         """Get the earliest release of this project."""

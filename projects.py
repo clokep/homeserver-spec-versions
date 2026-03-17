@@ -5,6 +5,7 @@ from dataclasses import asdict, dataclass
 from datetime import datetime
 from typing import Callable, Iterator
 from urllib.request import urlopen
+from zoneinfo import ZoneInfo
 
 import tomllib
 
@@ -111,6 +112,9 @@ class AdditionalMetadata:
     # Project this is forked from.
     forked_from: str | None
 
+    # Date of the last commit in the project this was forked from.
+    forked_from_date: datetime | None
+
     # True to process updates, false to use what's currently in the JSON file.
     process_updates: bool
 
@@ -170,6 +174,7 @@ ADDITIONAL_METADATA = {
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     "conduit": AdditionalMetadata(
@@ -211,6 +216,7 @@ ADDITIONAL_METADATA = {
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     "conduwuit": AdditionalMetadata(
@@ -254,6 +260,7 @@ ADDITIONAL_METADATA = {
         earliest_commit="40908b24e74bda4c80a5a6183602afcc0c04449b",
         earliest_tag=None,
         forked_from="conduit",
+        forked_from_date=None,
         process_updates=False,
     ),
     "continuwuity": AdditionalMetadata(
@@ -297,6 +304,7 @@ ADDITIONAL_METADATA = {
         earliest_commit="e054a56b3286a6fb3091bedd5261089435ed26d1",
         earliest_tag=None,
         forked_from="conduwuit",
+        forked_from_date=None,
         process_updates=True,
     ),
     "construct": AdditionalMetadata(
@@ -325,6 +333,7 @@ ADDITIONAL_METADATA = {
         # Earlier tags from charybdis.
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     "dendrite": AdditionalMetadata(
@@ -371,6 +380,7 @@ ADDITIONAL_METADATA = {
         earliest_commit="6bfe946bd2d82db12c1e49918612cc3d7139b8ce",
         earliest_tag=None,
         forked_from="dendrite-legacy",
+        forked_from_date=None,
         process_updates=True,
     ),
     "jsynapse": AdditionalMetadata(
@@ -381,6 +391,7 @@ ADDITIONAL_METADATA = {
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     "ligase": AdditionalMetadata(
@@ -398,6 +409,7 @@ ADDITIONAL_METADATA = {
         earliest_commit="bde8bc21a45a9dcffaaa812aa6a5a5341bca5f42",
         earliest_tag=None,
         forked_from="dendrite-legacy",
+        forked_from_date=None,
         process_updates=True,
     ),
     "maelstrom": AdditionalMetadata(
@@ -410,6 +422,7 @@ ADDITIONAL_METADATA = {
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     "matrex": AdditionalMetadata(
@@ -427,6 +440,7 @@ ADDITIONAL_METADATA = {
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     "mxhsd": AdditionalMetadata(
@@ -443,6 +457,7 @@ ADDITIONAL_METADATA = {
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     "pallium": AdditionalMetadata(
@@ -453,6 +468,7 @@ ADDITIONAL_METADATA = {
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     "synapse": AdditionalMetadata(
@@ -481,6 +497,7 @@ ADDITIONAL_METADATA = {
         # Earlier tags exist from Apache Synapse.
         earliest_tag=None,
         forked_from="synapse-legacy",
+        forked_from_date=None,
         process_updates=True,
     ),
     "transform": AdditionalMetadata(
@@ -491,6 +508,7 @@ ADDITIONAL_METADATA = {
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     "telodendria": AdditionalMetadata(
@@ -515,6 +533,7 @@ ADDITIONAL_METADATA = {
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=False,
     ),
     "tuwunel": AdditionalMetadata(
@@ -560,6 +579,7 @@ ADDITIONAL_METADATA = {
         earliest_commit="ce6e5e48de2a3580e17609f382cd4520fb6d8c63",
         earliest_tag=None,
         forked_from="conduwuit",
+        forked_from_date=None,
         process_updates=True,
     ),
 }
@@ -597,6 +617,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -615,6 +636,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -651,6 +673,46 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="calyx",
+        description="A soft fork of Synapse",
+        author="Kierre Sametti",
+        maturity="Beta",
+        language="Python",
+        licence="AGPL-3.0",
+        repository="https://leakedsynapsepro.nhjkl.com/matrix/calyx",
+        room=None,
+        branch="master",
+        spec_version_finders=[
+            SpecVersionFinder(paths=["synapse/rest/client/versions.py"])
+        ],
+        room_version_finders=[
+            PatternFinder(
+                paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
+                pattern=r"RoomVersions.V(\d+)",
+            ),
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "synapse/api/constants.py",
+                    "synapse/api/room_versions.py",
+                    "synapse/config/server.py",
+                ],
+                pattern=r'(?:DEFAULT_ROOM_VERSION = RoomVersions.V|DEFAULT_ROOM_VERSION = "|"default_room_version", ")(\d+)',
+            ),
+        ],
+        earliest_commit=None,
+        earliest_tag=None,
+        forked_from="synapse",
+        # TODO Find this automatically.
+        # git show v1.145.0 on element-hq/synapse
+        forked_from_date=datetime(
+            2026, 1, 13, 9, 29, 9, tzinfo=ZoneInfo("Canada/Mountain")
+        ),
         process_updates=True,
     ),
     ProjectMetadata(
@@ -669,6 +731,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -689,6 +752,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -707,6 +771,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -725,6 +790,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -779,6 +845,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -845,6 +912,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit="379ffff1f6673ddd39164f65194716d2e3c2ebb0",
         earliest_tag=None,
         forked_from="dendrite",
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -867,6 +935,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -885,6 +954,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -903,6 +973,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -954,6 +1025,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit="17a0b3430934fbb8370066ee9dc3506102c5b3f6",
         earliest_tag=None,
         forked_from="conduit",
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -994,6 +1066,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     # Note that ejabberd doesn't implement the Client-Server API, thus it doesn't declare
@@ -1021,6 +1094,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit="f44e23b8cc2c3ab7d1c36f702f00a6b5b947c5d0",
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1039,6 +1113,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1087,6 +1162,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1145,6 +1221,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit="6d1087df8dbd7982e7c7ad2f16b17588562c4048",
         earliest_tag=None,
         forked_from="dendrite-legacy",
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1181,6 +1258,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1201,6 +1279,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1221,6 +1300,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1239,6 +1319,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1259,6 +1340,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1283,6 +1365,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1319,6 +1402,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1337,6 +1421,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1359,6 +1444,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1395,6 +1481,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1413,6 +1500,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1448,6 +1536,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1486,6 +1575,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1504,6 +1594,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1539,6 +1630,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1567,6 +1659,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1597,6 +1690,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit="fbd498c65cb0a0a82de4e63588d2c91c54bf24ee",
         earliest_tag=None,
         forked_from="synapse-legacy",
+        forked_from_date=None,
         process_updates=True,
     ),
     # Note that RocketChat homeserver doesn't implement the Client-Server API, thus
@@ -1625,6 +1719,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1643,6 +1738,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1661,6 +1757,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1696,6 +1793,7 @@ ADDITIONAL_PROJECTS = [
         # Earlier tags exist from DINSIC.
         earliest_tag="v0.0.0",
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1728,6 +1826,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1737,7 +1836,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Alpha",
         language="Python",
         licence="Velicense",
-        repository="https://foundry.fsky.io/vel/matrix-vona",
+        repository="https://leakedsynapsepro.nhjkl.com/matrix/vona",
         room=None,
         branch="master",
         spec_version_finders=[
@@ -1771,6 +1870,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1789,6 +1889,7 @@ ADDITIONAL_PROJECTS = [
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
+        forked_from_date=None,
         process_updates=True,
     ),
 ]
@@ -1805,7 +1906,7 @@ MANUAL_PROJECTS = {
     #     initial_release_date=None,
     #     initial_commit_date=datetime(2022, 6, 5, 0, 0, 0),
     #     forked_date=None,
-    #     forked_from=None,
+    #     forked_from=None, forked_from_date=None,
     #     last_commit_date=datetime(),
     #     spec_version_dates_by_commit={},
     #     spec_version_dates_by_tag={},
