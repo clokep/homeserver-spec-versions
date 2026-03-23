@@ -1123,7 +1123,7 @@ ADDITIONAL_PROJECTS = [
         maturity="Alpha",
         language="Go",
         licence="MPL-2.0",
-        repository="https://git.nexy7574.co.uk/nex/hammerhead",
+        repository="https://codeberg.org/timedout/hammerhead",
         room=None,
         branch="dev",
         spec_version_finders=[
@@ -1155,8 +1155,11 @@ ADDITIONAL_PROJECTS = [
         ],
         default_room_version_finders=[
             PatternFinder(
-                paths=["cmd/hammerhead/hammerhead.go"],
-                pattern=r"RoomV(\d+)",
+                paths=[
+                    "cmd/hammerhead/hammerhead.go",
+                    "pkg/hammerhead/config/consts.go",
+                ],
+                pattern=r"DefaultRoomVersion(?::| =) id\.RoomV(\d+)",
             )
         ],
         earliest_commit=None,
