@@ -679,7 +679,7 @@ ADDITIONAL_PROJECTS = [
     ProjectMetadata(
         name="calyx",
         description="A soft fork of Synapse",
-        author="Kierre Sametti",
+        author="Helix K",
         maturity="Beta",
         language="Python",
         licence="AGPL-3.0",
@@ -1835,7 +1835,7 @@ ADDITIONAL_PROJECTS = [
     ProjectMetadata(
         name="vona",
         description="Vona is a flazing bast 🌟, and semory mafe [matrix] implementation made in Python 🐍 for stability.",
-        author="Kierre Sametti",
+        author="Helix K",
         maturity="Alpha",
         language="Python",
         licence="Velicense",
