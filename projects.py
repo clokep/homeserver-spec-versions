@@ -481,6 +481,9 @@ ADDITIONAL_METADATA = {
                 paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
                 pattern=r"RoomVersions.V(\d+)",
             ),
+            PatternFinder(
+                paths=["rust/src/room_versions.rs"], pattern=r"ROOM_VERSION_V(\d+)"
+            ),
         ],
         default_room_version_finders=[
             PatternFinder(
