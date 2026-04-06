@@ -57,21 +57,33 @@ class ForkInfo:
 
 
 @dataclass
+class CommitInfo:
+    # The earliest commit to consider.
+    #
+    # Useful for forks where the project contains many old commits.
+    earliest_commit: str | None = None
+
+    # The earliest commit to consider.
+    #
+    # Useful for if a project is archived and has documentation commits much later
+    # than the last real commit.
+    latest_commit: str | None = None
+
+    # The earliest tag to consider. If not given, the earliest tag which contains
+    # the earliest commit is used. If there's no earliest commit, then the earliest
+    # tag is used.
+    #
+    # Note that earlier tags might exist in the repo due to forks or other reasons.
+    earliest_tag: str | None = None
+
+
+@dataclass
 class AdditionalMetadata(Finders):
     # The branch which has the latest commit.
     branch: str
 
-    # The earliest commit to consider.
-    #
-    # Useful for forks where the project contains many old commits.
-    earliest_commit: str | None
-
-    # The earliest tag to consider. If not given, the earliest tag in the repo
-    # which contains the earliest commit is used. If there's no earliest commit,
-    # then the earliest tag is used.
-    #
-    # Note that earlier tags might exist in the repo due to forks or other reasons.
-    earliest_tag: str | None
+    # Override earliest/latest commit information.
+    commits: CommitInfo | None
 
     # Project this is forked from.
     forked_from: ForkInfo | None
@@ -132,8 +144,7 @@ ADDITIONAL_METADATA = {
         spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -142,8 +153,7 @@ ADDITIONAL_METADATA = {
         spec_version_finders=ConduitFinders.spec_version_finders,
         room_version_finders=ConduitFinders.room_version_finders,
         default_room_version_finders=ConduitFinders.default_room_version_finders,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -152,8 +162,7 @@ ADDITIONAL_METADATA = {
         spec_version_finders=ConduwuitFinders.spec_version_finders,
         room_version_finders=ConduwuitFinders.room_version_finders,
         default_room_version_finders=ConduwuitFinders.default_room_version_finders,
-        earliest_commit="40908b24e74bda4c80a5a6183602afcc0c04449b",
-        earliest_tag=None,
+        commits=CommitInfo(earliest_commit="40908b24e74bda4c80a5a6183602afcc0c04449b"),
         forked_from=ForkInfo(name="conduit"),
         process_updates=False,
     ),
@@ -162,8 +171,7 @@ ADDITIONAL_METADATA = {
         spec_version_finders=ConduwuitFinders.spec_version_finders,
         room_version_finders=ConduwuitFinders.room_version_finders,
         default_room_version_finders=ConduwuitFinders.default_room_version_finders,
-        earliest_commit="e054a56b3286a6fb3091bedd5261089435ed26d1",
-        earliest_tag=None,
+        commits=CommitInfo(earliest_commit="e054a56b3286a6fb3091bedd5261089435ed26d1"),
         forked_from=ForkInfo(name="conduwuit"),
         process_updates=True,
     ),
@@ -188,10 +196,11 @@ ADDITIONAL_METADATA = {
                 ],
                 pattern=r'(?:"default",|"room_version", json::value {) +"(\d+)',
             ),
-        ],  # Earlier commits from charybdis.
-        earliest_commit="b592b69b8670413340c297e5a41caf153d832e57",
-        # Earlier tags from charybdis.
-        earliest_tag=None,
+        ],
+        commits=CommitInfo(
+            # Earlier commits/tags from charybdis.
+            earliest_commit="b592b69b8670413340c297e5a41caf153d832e57",
+        ),
         forked_from=None,
         process_updates=True,
     ),
@@ -200,8 +209,10 @@ ADDITIONAL_METADATA = {
         spec_version_finders=DendriteFinders.spec_version_finders,
         room_version_finders=DendriteFinders.room_version_finders,
         default_room_version_finders=DendriteFinders.default_room_version_finders,
-        earliest_commit="6bfe946bd2d82db12c1e49918612cc3d7139b8ce",
-        earliest_tag=None,
+        commits=CommitInfo(
+            earliest_commit="6bfe946bd2d82db12c1e49918612cc3d7139b8ce",
+            earliest_tag=None,
+        ),
         forked_from=ForkInfo(name="dendrite-legacy"),
         process_updates=True,
     ),
@@ -210,8 +221,7 @@ ADDITIONAL_METADATA = {
         spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -227,8 +237,10 @@ ADDITIONAL_METADATA = {
         ],
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit="bde8bc21a45a9dcffaaa812aa6a5a5341bca5f42",
-        earliest_tag=None,
+        commits=CommitInfo(
+            earliest_commit="bde8bc21a45a9dcffaaa812aa6a5a5341bca5f42",
+            earliest_tag=None,
+        ),
         forked_from=ForkInfo(name="dendrite-legacy"),
         process_updates=True,
     ),
@@ -239,8 +251,7 @@ ADDITIONAL_METADATA = {
         ],
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -256,8 +267,7 @@ ADDITIONAL_METADATA = {
         ],
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -272,8 +282,7 @@ ADDITIONAL_METADATA = {
         ],
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -282,8 +291,7 @@ ADDITIONAL_METADATA = {
         spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -292,10 +300,10 @@ ADDITIONAL_METADATA = {
         spec_version_finders=SynapseFinders.spec_version_finders,
         room_version_finders=SynapseFinders.room_version_finders,
         default_room_version_finders=SynapseFinders.default_room_version_finders,
-        # First tag from AGPL Synapse.
-        earliest_commit="230decd5b8deea78674f92b2c0c11bd41090470a",
-        # Earlier tags exist from Apache Synapse.
-        earliest_tag=None,
+        commits=CommitInfo(
+            # Earlier commits/tags from Apache Synapse.
+            earliest_commit="230decd5b8deea78674f92b2c0c11bd41090470a",
+        ),
         forked_from=ForkInfo(name="synapse-legacy"),
         process_updates=True,
     ),
@@ -304,8 +312,7 @@ ADDITIONAL_METADATA = {
         spec_version_finders=[SpecVersionFinder(paths=["config.json"])],
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -328,8 +335,7 @@ ADDITIONAL_METADATA = {
                 pattern=r'JsonValueString\("(\d+)"\), 2, "m.room_versions", "default"',
             ),
         ],
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=False,
     ),
@@ -342,8 +348,10 @@ ADDITIONAL_METADATA = {
             ["src/core/info/room_version.rs", "src/core/config/room_version.rs"]
         ),
         default_room_version_finders=ConduwuitFinders.default_room_version_finders,
-        earliest_commit="ce6e5e48de2a3580e17609f382cd4520fb6d8c63",
-        earliest_tag=None,
+        commits=CommitInfo(
+            earliest_commit="ce6e5e48de2a3580e17609f382cd4520fb6d8c63",
+            earliest_tag=None,
+        ),
         forked_from=ForkInfo(name="conduwuit"),
         process_updates=True,
     ),
@@ -379,8 +387,7 @@ ADDITIONAL_PROJECTS = [
                 pattern=r'"default: "(\d+)"',
             ),
         ],
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -397,8 +404,7 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -422,8 +428,7 @@ ADDITIONAL_PROJECTS = [
                 pattern=r'defaultRoomVersion = "(\d+)"',
             )
         ],
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -441,8 +446,7 @@ ADDITIONAL_PROJECTS = [
         # calyx did not include the Rust rewrite of room versions.
         room_version_finders=SynapseLegacyFinders.room_version_finders,
         default_room_version_finders=SynapseFinders.default_room_version_finders,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=ForkInfo(
             "synapse",
             # TODO Find this automatically.
@@ -464,8 +468,7 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -484,8 +487,7 @@ ADDITIONAL_PROJECTS = [
         ],
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -502,8 +504,7 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -520,8 +521,7 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -538,8 +538,7 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=DendriteFinders.spec_version_finders,
         room_version_finders=DendriteFinders.room_version_finders,
         default_room_version_finders=DendriteFinders.default_room_version_finders,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -570,8 +569,10 @@ ADDITIONAL_PROJECTS = [
             ),
         ],
         default_room_version_finders=DendriteFinders.default_room_version_finders,
-        earliest_commit="379ffff1f6673ddd39164f65194716d2e3c2ebb0",
-        earliest_tag=None,
+        commits=CommitInfo(
+            earliest_commit="379ffff1f6673ddd39164f65194716d2e3c2ebb0",
+            earliest_tag=None,
+        ),
         forked_from=ForkInfo(name="dendrite"),
         process_updates=True,
     ),
@@ -592,8 +593,7 @@ ADDITIONAL_PROJECTS = [
         ],
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -610,8 +610,7 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -628,8 +627,7 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -650,8 +648,10 @@ ADDITIONAL_PROJECTS = [
         default_room_version_finders=ConduitFinders.get_default_room_version_finders(
             ["src/config.rs"]
         ),
-        earliest_commit="17a0b3430934fbb8370066ee9dc3506102c5b3f6",
-        earliest_tag=None,
+        commits=CommitInfo(
+            earliest_commit="17a0b3430934fbb8370066ee9dc3506102c5b3f6",
+            earliest_tag=None,
+        ),
         forked_from=ForkInfo(name="conduit"),
         process_updates=True,
     ),
@@ -690,8 +690,7 @@ ADDITIONAL_PROJECTS = [
                 pattern=r"RoomAlgoV(\d+)",
             ),
         ],
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -717,8 +716,10 @@ ADDITIONAL_PROJECTS = [
         ],
         default_room_version_finders=None,
         # First commit & tag w/ Matrix support.
-        earliest_commit="f44e23b8cc2c3ab7d1c36f702f00a6b5b947c5d0",
-        earliest_tag=None,
+        commits=CommitInfo(
+            earliest_commit="f44e23b8cc2c3ab7d1c36f702f00a6b5b947c5d0",
+            earliest_tag=None,
+        ),
         forked_from=None,
         process_updates=True,
     ),
@@ -735,8 +736,7 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -786,8 +786,7 @@ ADDITIONAL_PROJECTS = [
                 pattern=r"DefaultRoomVersion(?::| =) id\.RoomV(\d+)",
             )
         ],
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -811,8 +810,10 @@ ADDITIONAL_PROJECTS = [
             ),
         ],
         default_room_version_finders=DendriteFinders.default_room_version_finders,
-        earliest_commit="6d1087df8dbd7982e7c7ad2f16b17588562c4048",
-        earliest_tag=None,
+        commits=CommitInfo(
+            earliest_commit="6d1087df8dbd7982e7c7ad2f16b17588562c4048",
+            earliest_tag=None,
+        ),
         forked_from=ForkInfo(name="dendrite-legacy"),
         process_updates=True,
     ),
@@ -847,8 +848,7 @@ ADDITIONAL_PROJECTS = [
                 ),
             ),
         ],
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -867,8 +867,7 @@ ADDITIONAL_PROJECTS = [
         ],
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -887,8 +886,7 @@ ADDITIONAL_PROJECTS = [
         ],
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -905,8 +903,7 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -925,8 +922,7 @@ ADDITIONAL_PROJECTS = [
         ],
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -949,8 +945,7 @@ ADDITIONAL_PROJECTS = [
         ],
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -985,8 +980,7 @@ ADDITIONAL_PROJECTS = [
                 pattern=r'default-room-version="(\d+)"',
             ),
         ],
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -1003,8 +997,7 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -1025,8 +1018,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_finders=[
             PatternFinder(paths=["src/index.ts"], pattern=r"default: '(\d+)'")
         ],
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -1061,8 +1053,7 @@ ADDITIONAL_PROJECTS = [
                 pattern=r'DefaultVersion = "(\d+)",',
             ),
         ],
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -1079,8 +1070,7 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -1114,8 +1104,7 @@ ADDITIONAL_PROJECTS = [
                 pattern=r"RoomVersionId::V(\d+)",
             ),
         ],
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -1152,8 +1141,7 @@ ADDITIONAL_PROJECTS = [
                 pattern=r'default_room_version = "(\d+)"',
             ),
         ],
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -1170,8 +1158,7 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -1205,8 +1192,7 @@ ADDITIONAL_PROJECTS = [
                 paths=["config/config.exs"], pattern=r'default_room_version: "(\d+)"'
             ),
         ],
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -1233,8 +1219,7 @@ ADDITIONAL_PROJECTS = [
         default_room_version_finders=[
             PatternFinder(paths=["config/config.exs"], pattern=r'default: "(\d+)"'),
         ],
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -1264,8 +1249,10 @@ ADDITIONAL_PROJECTS = [
                 pattern=r'DEFAULT_ROOM_VERSION = "(\d+)',
             ),
         ],
-        earliest_commit="fbd498c65cb0a0a82de4e63588d2c91c54bf24ee",
-        earliest_tag=None,
+        commits=CommitInfo(
+            earliest_commit="fbd498c65cb0a0a82de4e63588d2c91c54bf24ee",
+            earliest_tag=None,
+        ),
         forked_from=ForkInfo(name="synapse-legacy"),
         process_updates=True,
     ),
@@ -1292,8 +1279,7 @@ ADDITIONAL_PROJECTS = [
             ),
         ],
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -1310,8 +1296,7 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=[SpecVersionFinder(paths=["src/api/r0/versions.rs"])],
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -1328,8 +1313,7 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=[SpecVersionFinder(paths=["Identity/src/version.ts"])],
         room_version_finders=None,
         default_room_version_finders=None,
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -1346,9 +1330,31 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=SynapseFinders.spec_version_finders,
         room_version_finders=SynapseFinders.room_version_finders,
         default_room_version_finders=SynapseFinders.default_room_version_finders,
-        earliest_commit="e6d156fae5ec3244b24af6e6037902a950430278",
-        earliest_tag=None,
+        commits=CommitInfo(
+            earliest_commit="e6d156fae5ec3244b24af6e6037902a950430278",
+            earliest_tag=None,
+        ),
         forked_from=ForkInfo(name="synapse"),
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="synapse-ancient",
+        description="The pre-release repo for synapse from git.openmarket.com/tng/synapse ",
+        author="OpenMarket",
+        maturity="Obsolete",
+        language="Python",
+        licence="Apache-2.0",
+        repository="https://github.com/matrix-org/synapse-ancient",
+        room=None,
+        branch="master",
+        spec_version_finders=[],
+        room_version_finders=[],
+        default_room_version_finders=[],
+        commits=CommitInfo(
+            # Ignore "archaeological notes" from commit b1553fb57fe440c59538e093014d6fc232482176.
+            latest_commit="578fb13fe6dca01c8542c5c2e25a1f43c96588d1"
+        ),
+        forked_from=None,
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1364,8 +1370,7 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=SynapseFinders.spec_version_finders,
         room_version_finders=SynapseFinders.room_version_finders,
         default_room_version_finders=SynapseFinders.default_room_version_finders,
-        earliest_commit="9c9759c22b7fa5def10366e64f6ceceffc229a20",
-        earliest_tag=None,
+        commits=CommitInfo(earliest_commit="9c9759c22b7fa5def10366e64f6ceceffc229a20"),
         forked_from=ForkInfo(name="synapse"),
         process_updates=True,
     ),
@@ -1382,8 +1387,7 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=SynapseLegacyFinders.spec_version_finders,
         room_version_finders=SynapseLegacyFinders.room_version_finders,
         default_room_version_finders=SynapseLegacyFinders.default_room_version_finders,
-        earliest_commit="40fdd06ab6c55d8f38fca5d23f10be31bc5e054d",
-        earliest_tag=None,
+        commits=CommitInfo(earliest_commit="40fdd06ab6c55d8f38fca5d23f10be31bc5e054d"),
         forked_from=ForkInfo(name="synapse-legacy"),
         process_updates=True,
     ),
@@ -1400,9 +1404,13 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=SynapseLegacyFinders.spec_version_finders,
         room_version_finders=SynapseLegacyFinders.room_version_finders,
         default_room_version_finders=SynapseLegacyFinders.default_room_version_finders,
-        earliest_commit="3f79378d4bc27efd80e302f3c8c512ea41cbd395",
-        # First tag in synapse-dinsic that is not in synapse.
-        earliest_tag="dinsic_2019-09-19",
+        commits=CommitInfo(
+            earliest_commit="3f79378d4bc27efd80e302f3c8c512ea41cbd395",
+            # First tag in synapse-dinsic that is not in synapse.
+            earliest_tag="dinsic_2019-09-19",
+            # Ignore cleanup and archival notice.
+            latest_commit="a694353ec4e59f9ba331a7aa691f22d49a415b0b",
+        ),
         forked_from=ForkInfo(name="synapse-legacy", merged_back=True),
         process_updates=True,
     ),
@@ -1419,10 +1427,9 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=SynapseLegacyFinders.spec_version_finders,
         room_version_finders=SynapseLegacyFinders.room_version_finders,
         default_room_version_finders=SynapseLegacyFinders.default_room_version_finders,
-        earliest_commit=None,
         # Earlier tags exist from DINSIC.
-        earliest_tag="v0.0.0",
-        forked_from=None,
+        commits=CommitInfo(earliest_tag="v0.0.0"),
+        forked_from=ForkInfo("synapse-ancient"),
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1452,8 +1459,7 @@ ADDITIONAL_PROJECTS = [
                 paths=["config/config.exs"], pattern=r'default_room_version: "(\d+)"'
             ),
         ],
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -1497,8 +1503,7 @@ ADDITIONAL_PROJECTS = [
                 to_ignore=["1337"],
             )
         ],
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -1515,8 +1520,7 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=[],
         room_version_finders=[],
         default_room_version_finders=[],
-        earliest_commit=None,
-        earliest_tag=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),

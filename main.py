@@ -176,7 +176,7 @@ def get_project_dates(
     """
     repo = Repository.create(project.repository)
 
-    last_commit = repo.get_last_commit(project).hexsha
+    last_commit = repo.get_latest_commit(project).hexsha
     project_data_hash = project.get_project_hash()
     if prev_last_commit == last_commit and prev_project_data_hash == project_data_hash:
         print("Skipping, project data unchanged and no new commits")

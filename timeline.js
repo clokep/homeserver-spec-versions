@@ -32,7 +32,7 @@ function build() {
             },
             scales: {
                 x: {
-                    min: "2014-08-01",
+                    min: "2014-06-01",
                     title: {
                         display: true,
                         text: "Date"

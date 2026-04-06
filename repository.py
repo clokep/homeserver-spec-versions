@@ -161,7 +161,11 @@ class Repository(Generic[CommitType, TagType], metaclass=abc.ABCMeta):
             )
 
     @abc.abstractmethod
-    def get_last_commit(self, project: ProjectMetadata) -> CommitType:
+    def get_earliest_commit(self, project: ProjectMetadata) -> CommitType:
+        """Get the earliest commit on the main branch."""
+
+    @abc.abstractmethod
+    def get_latest_commit(self, project: ProjectMetadata) -> CommitType:
         """Get the latest commit on the main branch."""
 
     @abc.abstractmethod
@@ -255,13 +259,18 @@ class GitRepository(Repository[Commit, TagReference]):
         """
         Get the commits where a file may have been modified.
         """
+        earliest_commit = (
+            project.commits.earliest_commit
+            if project.commits and project.commits.earliest_commit
+            else None
+        )
 
         # Calculate the set of versions each time these files were changed, including
         # the earliest commit, if one exists.
         commits = list(
             self._repo.iter_commits(
-                f"{project.earliest_commit}~..origin/{project.branch}"
-                if project.earliest_commit
+                f"{earliest_commit}~..origin/{project.branch}"
+                if earliest_commit
                 else f"origin/{project.branch}",
                 paths=paths,
                 reverse=True,
@@ -270,10 +279,8 @@ class GitRepository(Repository[Commit, TagReference]):
                 first_parent=True,
             )
         )
-        if project.earliest_commit and (
-            not commits or commits[0].hexsha != project.earliest_commit
-        ):
-            commits.insert(0, self._repo.commit(project.earliest_commit))
+        if earliest_commit and (not commits or commits[0].hexsha != earliest_commit):
+            commits.insert(0, self._repo.commit(earliest_commit))
         return commits
 
     def _get_submodule_commit(self, path: str) -> str | None:
@@ -288,8 +295,18 @@ class GitRepository(Repository[Commit, TagReference]):
             return sub_module.hexsha
         return None
 
-    def get_last_commit(self, project: ProjectMetadata) -> Commit:
+    def get_earliest_commit(self, project: ProjectMetadata) -> Commit:
         """Get the latest commit on the main branch."""
+        if project.commits and project.commits.earliest_commit:
+            return self._repo.commit(project.commits.earliest_commit)
+
+        return next(self._repo.iter_commits(reverse=True))
+
+    def get_latest_commit(self, project: ProjectMetadata) -> Commit:
+        """Get the latest commit on the main branch."""
+        if project.commits and project.commits.latest_commit:
+            return self._repo.commit(project.commits.latest_commit)
+
         return self._repo.commit(f"origin/{project.branch}")
 
     def get_project_datetimes(
@@ -304,19 +321,24 @@ class GitRepository(Repository[Commit, TagReference]):
 
         """
         # Get the earliest and latest commit of this project.
-        if project.earliest_commit:
-            earliest_commit = self._repo.commit(project.earliest_commit)
-            forked_from_date = earliest_commit.parents[0].committed_datetime
-        else:
-            earliest_commit = next(self._repo.iter_commits(reverse=True))
-            forked_from_date = None
-
+        earliest_commit = self.get_earliest_commit(project)
         initial_commit_date = earliest_commit.committed_datetime
-        last_commit_date = self.get_last_commit(project).committed_datetime
+        last_commit_date = self.get_latest_commit(project).committed_datetime
 
-        # Maybe override the forked from date.
-        if project.forked_from and project.forked_from.date:
-            forked_from_date = project.forked_from.date
+        # Maybe add fork information.
+        if project.forked_from:
+            # Maybe override the forked from a manual date.
+            if project.forked_from.date:
+                forked_from_date = project.forked_from.date
+
+            elif project.commits and project.commits.earliest_commit:
+                forked_from_date = earliest_commit.parents[0].committed_datetime
+
+            # If there's no date info, then use the initial commit.
+            else:
+                forked_from_date = initial_commit_date
+        else:
+            forked_from_date = None
 
         return initial_commit_date, last_commit_date, forked_from_date
 
@@ -324,8 +346,10 @@ class GitRepository(Repository[Commit, TagReference]):
         """Get the earliest release of this project."""
         if self._repo.tags:
             # Find the first tag after the earliest commit.
-            if project.earliest_commit:
-                earliest_tag_sha = self.get_tag_from_commit(project.earliest_commit)
+            if project.commits and project.commits.earliest_commit:
+                earliest_tag_sha = self.get_tag_from_commit(
+                    project.commits.earliest_commit
+                )
                 if earliest_tag_sha:
                     return self._repo.tags[earliest_tag_sha]
             else:

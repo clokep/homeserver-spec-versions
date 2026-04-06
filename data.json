@@ -8419,6 +8419,29 @@
                 ]
             }
         },
+        "synapse-ancient": {
+            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_tag": {},
+            "forked_date": null,
+            "forked_from": null,
+            "initial_commit_date": "2014-06-03T13:02:05+00:00",
+            "initial_release_date": "2014-08-07T14:15:16+01:00",
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {},
+            "lag_all_by_tag": {},
+            "last_commit": "578fb13fe6dca01c8542c5c2e25a1f43c96588d1",
+            "last_commit_date": "2014-08-11T19:30:01+01:00",
+            "maturity": "obsolete",
+            "merged_back": false,
+            "project_data_hash": "0a7d1a6f7f866775236c963850646dc6",
+            "room_version_dates_by_commit": {},
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {},
+            "spec_version_dates_by_tag": {}
+        },
         "synapse-beeper": {
             "default_room_version_dates_by_commit": {
                 "10": [
@@ -9138,11 +9161,11 @@
                 "r0.5.0": 7,
                 "r0.6.0": 229
             },
-            "last_commit": "9036b693c49568b62ee7b6037662d5e3ce342e88",
-            "last_commit_date": "2024-04-12T11:48:02+01:00",
+            "last_commit": "a694353ec4e59f9ba331a7aa691f22d49a415b0b",
+            "last_commit_date": "2022-05-04T17:25:01+01:00",
             "maturity": "obsolete",
             "merged_back": true,
-            "project_data_hash": "c9e99b8198d0167042e4a71b2a5fb47e",
+            "project_data_hash": "6cfdf568fafc571e012308477fd37127",
             "room_version_dates_by_commit": {
                 "1": [
                     [
@@ -9517,8 +9540,8 @@
                     ]
                 ]
             },
-            "forked_date": null,
-            "forked_from": null,
+            "forked_date": "2014-08-12T15:10:52+01:00",
+            "forked_from": "synapse-ancient",
             "initial_commit_date": "2014-08-12T15:10:52+01:00",
             "initial_release_date": "2014-08-14T03:36:03+01:00",
             "lag_after_commit_by_commit": {
@@ -9639,7 +9662,7 @@
             "last_commit_date": "2023-12-13T14:50:56+00:00",
             "maturity": "stable",
             "merged_back": false,
-            "project_data_hash": "ea07e527954a3240913415d9223f9b83",
+            "project_data_hash": "d689c393416781ee04fee9e95ab4101d",
             "room_version_dates_by_commit": {
                 "1": [
                     [
