@@ -213,8 +213,8 @@ def get_project_dates(
     )
     # TODO Validate there's no overlap of default room versions?
 
-    initial_commit_date, last_commit_date, forked_date = repo.get_project_datetimes(
-        project
+    initial_commit_date, last_commit_date, forked_date = (
+        repo.get_project_datetimes(project)
     )
 
     release_date = None
@@ -228,7 +228,10 @@ def get_project_dates(
             initial_release_date=release_date,
             initial_commit_date=initial_commit_date,
             forked_date=forked_date,
-            forked_from=project.forked_from,
+            merged_back=project.forked_from.merged_back
+            if project.forked_from
+            else False,
+            forked_from=project.forked_from.name if project.forked_from else None,
             last_commit_date=last_commit_date,
             maturity=project.maturity.lower(),
             spec_version_dates_by_commit=versions,
@@ -304,6 +307,7 @@ def get_project_data_for_manual(
         initial_release_date=project_data.initial_release_date,
         initial_commit_date=project_data.initial_commit_date,
         forked_date=project_data.forked_date,
+        merged_back=project_data.merged_back,
         forked_from=project_data.forked_from,
         last_commit_date=project_data.last_commit_date,
         last_commit=last_commit,
@@ -414,7 +418,9 @@ def main(projects: set[str]):
             prev_project_dates = result["homeserver_versions"].get(project.name.lower())
             if prev_project_dates:
                 prev_last_commit = prev_project_dates.get("last_commit")
-                prev_project_data_hash = prev_project_dates.get("project_data_hash")
+                prev_project_data_hash = (
+                    "XX"  # prev_project_dates.get("project_data_hash")
+                )
             else:
                 prev_last_commit = None
                 prev_project_data_hash = None

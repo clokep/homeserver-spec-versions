@@ -17,6 +17,7 @@ class ManualProjectData:
     initial_release_date: datetime | None
     initial_commit_date: datetime
     forked_date: datetime | None
+    merged_back: bool
     forked_from: str | None
     last_commit_date: datetime
     maturity: str
@@ -35,6 +36,7 @@ class ProjectData:
     initial_release_date: datetime | None
     initial_commit_date: datetime
     forked_date: datetime | None
+    merged_back: bool
     forked_from: str | None
     last_commit_date: datetime
     last_commit: str | None

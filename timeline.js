@@ -44,7 +44,8 @@ function build() {
                     reverse: true,
                     ticks: {
                         // Show every project.
-                        stepSize: 1
+                        stepSize: 1,
+                        autoSkip: false
                     },
                     grid: {
                         // Draw grid lines between timeline lines.
@@ -142,9 +143,11 @@ function renderData(data) {
         return new Date(a_date) - new Date(b_date);
     });
 
+    // Create the line for each project.
     for (let idx in projectsByFamily) {
-        // If
         const [project, projectInfo] = projectsByFamily[idx];
+
+        // The start and end dates of the project.
         let data = [
             {
                 x: projectInfo.initial_commit_date,
@@ -156,12 +159,23 @@ function renderData(data) {
             }
         ];
 
+        // If the project is a fork, create a line from the fork date.
         if (projectInfo.forked_from) {
+            const parentIdx = projectsByFamily.findIndex(
+                  ([p, pInfo]) => p === projectInfo.forked_from);
+
             data.unshift({
                 x: projectInfo.forked_date,
-                y: projectsByFamily.findIndex(
-                  ([p, pInfo]) => p === projectInfo.forked_from)
+                y: parentIdx
             });
+
+            // If the project merged back, then also add a line back to the parent.
+            if (projectInfo.merged_back) {
+                data.push({
+                    x: projectInfo.last_commit_date,
+                    y: parentIdx
+                });
+            }
         }
 
         homeserverHistoryDataset.push(
@@ -183,8 +197,6 @@ function renderData(data) {
     homeserverHistoryChart.update();
 
     // Order homeservers by date.
-
-    // Group homeservers by family.
     let dates = Object.values(data.homeserver_versions).map(project =>
         [[new Date(project.initial_commit_date), 1], [new Date(project.last_commit_date), -1]]
     ).flat().sort((a, b) => a[0] > b[0]);

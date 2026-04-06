@@ -295,7 +295,14 @@ class GitRepository(Repository[Commit, TagReference]):
     def get_project_datetimes(
         self, project: ProjectMetadata
     ) -> tuple[datetime, datetime, datetime | None]:
-        """Get some important dates/commits for the project."""
+        """
+        Gets important dates/commits for the project:
+
+        * The initial commit
+        * The latest commit
+        * The forked from date (if one exists)
+
+        """
         # Get the earliest and latest commit of this project.
         if project.earliest_commit:
             earliest_commit = self._repo.commit(project.earliest_commit)
@@ -308,8 +315,8 @@ class GitRepository(Repository[Commit, TagReference]):
         last_commit_date = self.get_last_commit(project).committed_datetime
 
         # Maybe override the forked from date.
-        if project.forked_from_date:
-            forked_from_date = project.forked_from_date
+        if project.forked_from and project.forked_from.date:
+            forked_from_date = project.forked_from.date
 
         return initial_commit_date, last_commit_date, forked_from_date
 

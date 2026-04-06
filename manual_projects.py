@@ -107,6 +107,7 @@ def generate_synapse_pro() -> ManualProjectData:
         initial_release_date=initial_release_date,
         initial_commit_date=initial_release_date,  # This can't be None, even though we don't know this info.
         forked_date=initial_release_date,  # Forked sometime before this date.
+        merged_back=False,
         forked_from="synapse",
         last_commit_date=latest_release_date,
         maturity="stable",
