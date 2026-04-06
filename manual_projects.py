@@ -4,7 +4,7 @@ from urllib.request import urlopen
 
 from bs4 import BeautifulSoup, Tag
 
-from data import ManualProjectData, VersionInfo
+from data import ManualProjectData, Maturity, VersionInfo
 
 RELEASE_NOTES_URL = (
     "https://docs.element.io/latest/element-server-suite-pro/release-notes/"
@@ -110,7 +110,7 @@ def generate_synapse_pro() -> ManualProjectData:
         merged_back=False,
         forked_from="synapse",
         last_commit_date=latest_release_date,
-        maturity="stable",
+        maturity=Maturity.Stable,
         spec_version_dates_by_commit={},
         spec_version_dates_by_tag=versions_by_tag,
         room_version_dates_by_commit={},

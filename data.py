@@ -1,5 +1,14 @@
 from dataclasses import dataclass
 from datetime import datetime
+from enum import Enum
+
+
+class Maturity(str, Enum):
+    Stable = "stable"
+    Beta = "beta"
+    Alpha = "alpha"
+    Obsolete = "obsolete"
+    Unstarted = "unstarted"
 
 
 @dataclass
@@ -20,7 +29,7 @@ class ManualProjectData:
     merged_back: bool
     forked_from: str | None
     last_commit_date: datetime
-    maturity: str
+    maturity: Maturity
     spec_version_dates_by_commit: dict[str, list[VersionInfo]]
     spec_version_dates_by_tag: dict[str, list[VersionInfo]]
     room_version_dates_by_commit: dict[str, list[VersionInfo]]

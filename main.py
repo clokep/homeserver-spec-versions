@@ -227,7 +227,7 @@ def get_project_dates(
             else False,
             forked_from=project.forked_from.name if project.forked_from else None,
             last_commit_date=last_commit_date,
-            maturity=project.maturity.lower(),
+            maturity=project.maturity,
             spec_version_dates_by_commit=versions,
             spec_version_dates_by_tag=versions_by_tag,
             room_version_dates_by_commit=room_versions,
@@ -412,9 +412,7 @@ def main(projects: set[str]):
             prev_project_dates = result["homeserver_versions"].get(project.name.lower())
             if prev_project_dates:
                 prev_last_commit = prev_project_dates.get("last_commit")
-                prev_project_data_hash = (
-                    "XX"  # prev_project_dates.get("project_data_hash")
-                )
+                prev_project_data_hash = prev_project_dates.get("project_data_hash")
             else:
                 prev_last_commit = None
                 prev_project_data_hash = None

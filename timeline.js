@@ -129,10 +129,14 @@ function renderData(data) {
         }
 
         let b_parent = b;
+        console.log(b_parent);
         let b_family = b_name;
+        console.log(Object.keys(data.homeserver_versions));
         while (b_parent.forked_from) {
             b_family = b_parent.forked_from;
+            console.log(b_family);
             b_parent = data.homeserver_versions[b_family];
+            console.log(b_parent);
         }
 
         if (a_family !== b_family) {
