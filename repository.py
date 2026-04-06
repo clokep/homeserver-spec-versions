@@ -9,8 +9,8 @@ from typing import Generic, Iterable, Iterator, TypeVar
 import git.cmd
 from git import Commit, Repo, TagReference
 
-from finders import get_pattern_from_file
-from projects import PatternFinder, ProjectMetadata, SubModuleFinder, SubRepoFinder
+from finders import PatternFinder, SubModuleFinder, SubRepoFinder, get_pattern_from_file
+from projects import ProjectMetadata
 
 CommitType = TypeVar("CommitType")
 TagType = TypeVar("TagType")

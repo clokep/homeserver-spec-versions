@@ -3,14 +3,22 @@ import inspect
 import os.path
 from dataclasses import asdict, dataclass
 from datetime import datetime
-from typing import Callable, Iterator
+from typing import Iterator
 from urllib.request import urlopen
 from zoneinfo import ZoneInfo
 
 import tomllib
 
 from data import ManualProjectData
+from finders import PatternFinder, SpecVersionFinder, SubModuleFinder, SubRepoFinder
 from manual_projects import generate_synapse_pro
+from project_finders import (
+    ConduitFinders,
+    ConduwuitFinders,
+    DendriteFinders,
+    SynapseFinders,
+    SynapseLegacyFinders,
+)
 
 SERVER_METADATA_URL = "https://raw.githubusercontent.com/matrix-org/matrix.org/main/content/ecosystem/servers/servers.toml"
 
@@ -31,50 +39,6 @@ class ServerMetadata:
     licence: str
     repository: str
     room: str | None = None
-
-
-@dataclass
-class PatternFinder:
-    # The file paths relative to the root to check for the pattern.
-    paths: list[str]
-
-    # The pattern to use to information.
-    #
-    # This can have multiple capturing groups, all of which will be considered.
-    #
-    # If parser is provided, then the results are further processed with that.
-    pattern: str
-
-    # The parser, defaults to none.
-    #
-    # This is called with a tuple of capturing groups from pattern.
-    parser: Callable[[str], set[str]] | None = None
-
-    # Invalid results that should be ignored.
-    to_ignore: list[str] | None = None
-
-
-@dataclass
-class SubModuleFinder:
-    # The path the submodule gets checked out at.
-    path: str
-
-
-@dataclass
-class SubRepoFinder:
-    # A separate repo to search in.
-    repository: str
-
-    # The finder to get the git hash to checkout from the main repository.
-    commit_finder: PatternFinder | SubModuleFinder
-
-    # The finder to use to get the desired information from the sub-repository.
-    finder: PatternFinder
-
-
-@dataclass
-class SpecVersionFinder(PatternFinder):
-    pattern: str = r"[vr]\d[\d\.]+\d"
 
 
 @dataclass
@@ -189,126 +153,29 @@ ADDITIONAL_METADATA = {
     ),
     "conduit": AdditionalMetadata(
         "next",
-        spec_version_finders=[
-            SpecVersionFinder(
-                paths=[
-                    "src/client_server.rs",
-                    "src/main.rs",
-                    "src/client_server/unversioned.rs",
-                    "src/api/client_server/unversioned.rs",
-                ]
-            )
-        ],
-        room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "src/client_server.rs",
-                    "src/client_server/capabilities.rs",
-                    "src/database/globals.rs",
-                    "src/server_server.rs",
-                    "src/service/globals/mod.rs",
-                ],
-                pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)(?:,|])',
-            ),
-        ],
-        default_room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "src/client_server.rs",
-                    "src/client_server/capabilities.rs",
-                    "src/database/globals.rs",
-                    "src/server_server.rs",
-                    "src/config/mod.rs",
-                ],
-                pattern=r'default: "(\d+)"|default: RoomVersionId::V(?:ersion)?(\d+),|default_room_version = RoomVersionId::V(?:ersion)?(\d+);|^ +RoomVersionId::V(?:ersion)?(\d+)$',
-            ),
-        ],
+        spec_version_finders=ConduitFinders.spec_version_finders,
+        room_version_finders=ConduitFinders.room_version_finders,
+        default_room_version_finders=ConduitFinders.default_room_version_finders,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
         process_updates=True,
     ),
     "conduwuit": AdditionalMetadata(
-        branch="main",
-        spec_version_finders=[
-            SpecVersionFinder(
-                paths=[
-                    "src/main.rs",
-                    "src/client_server/unversioned.rs",
-                    "src/api/client_server/unversioned.rs",
-                    "src/api/client/unversioned.rs",
-                ]
-            )
-        ],
-        room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "src/client_server.rs",
-                    "src/client_server/capabilities.rs",
-                    "src/database/globals.rs",
-                    "src/server_server.rs",
-                    "src/service/globals/mod.rs",
-                    "src/core/info/room_version.rs",
-                ],
-                pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)(?:,|])',
-            ),
-        ],
-        default_room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "src/client_server.rs",
-                    "src/client_server/capabilities.rs",
-                    "src/database/globals.rs",
-                    "src/server_server.rs",
-                    "src/config/mod.rs",
-                    "src/core/config/mod.rs",
-                ],
-                pattern=r'default: "(\d+)"|default: RoomVersionId::V(?:ersion)?(\d+),|default_room_version = RoomVersionId::V(?:ersion)?(\d+);|^ +RoomVersionId::V(?:ersion)?(\d+)$|default_default_room_version.+RoomVersionId::V(\d+)',
-            ),
-        ],
+        "main",
+        spec_version_finders=ConduwuitFinders.spec_version_finders,
+        room_version_finders=ConduwuitFinders.room_version_finders,
+        default_room_version_finders=ConduwuitFinders.default_room_version_finders,
         earliest_commit="40908b24e74bda4c80a5a6183602afcc0c04449b",
         earliest_tag=None,
         forked_from=ForkInfo(name="conduit"),
         process_updates=False,
     ),
     "continuwuity": AdditionalMetadata(
-        branch="main",
-        spec_version_finders=[
-            SpecVersionFinder(
-                paths=[
-                    "src/main.rs",
-                    "src/client_server/unversioned.rs",
-                    "src/api/client_server/unversioned.rs",
-                    "src/api/client/unversioned.rs",
-                ]
-            )
-        ],
-        room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "src/client_server.rs",
-                    "src/client_server/capabilities.rs",
-                    "src/database/globals.rs",
-                    "src/server_server.rs",
-                    "src/service/globals/mod.rs",
-                    "src/core/info/room_version.rs",
-                ],
-                pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)(?:,|])',
-            ),
-        ],
-        default_room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "src/client_server.rs",
-                    "src/client_server/capabilities.rs",
-                    "src/database/globals.rs",
-                    "src/server_server.rs",
-                    "src/config/mod.rs",
-                    "src/core/config/mod.rs",
-                ],
-                pattern=r'default: "(\d+)"|default: RoomVersionId::V(?:ersion)?(\d+),|default_room_version = RoomVersionId::V(?:ersion)?(\d+);|^ +RoomVersionId::V(?:ersion)?(\d+)$|default_default_room_version.+RoomVersionId::V(\d+)',
-            ),
-        ],
+        "main",
+        spec_version_finders=ConduwuitFinders.spec_version_finders,
+        room_version_finders=ConduwuitFinders.room_version_finders,
+        default_room_version_finders=ConduwuitFinders.default_room_version_finders,
         earliest_commit="e054a56b3286a6fb3091bedd5261089435ed26d1",
         earliest_tag=None,
         forked_from=ForkInfo(name="conduwuit"),
@@ -344,45 +211,9 @@ ADDITIONAL_METADATA = {
     ),
     "dendrite": AdditionalMetadata(
         "main",
-        spec_version_finders=[
-            SpecVersionFinder(
-                paths=[
-                    "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
-                    "clientapi/routing/routing.go",
-                ],
-                # Dendrite declares a v1.0, which never existed.
-                to_ignore=["v1.0"],
-            )
-        ],
-        room_version_finders=[
-            # gomatrixserverlib was vendored early in the project, but before
-            # room versions were a thing.
-            PatternFinder(
-                paths=["roomserver/version/version.go"],
-                pattern=r"RoomVersionV(\d+)",
-            ),
-            SubRepoFinder(
-                repository="https://github.com/matrix-org/gomatrixserverlib",
-                commit_finder=PatternFinder(
-                    paths=["go.mod"],
-                    pattern=r"github.com/matrix-org/gomatrixserverlib v0\.0\.0-\d+-([0-9a-f]+)",
-                ),
-                finder=PatternFinder(
-                    paths=["eventversion.go"], pattern=r"RoomVersionV(\d+)"
-                ),
-            ),
-        ],
-        default_room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "roomserver/version/version.go",
-                    "setup/config/config_roomserver.go",
-                ],
-                pattern=r"return gomatrixserverlib.RoomVersionV(\d+)|DefaultRoomVersion = gomatrixserverlib.RoomVersionV(\d+)",
-                # Dendrite declared room version 2 as a default, but that was invalid.
-                to_ignore=["2"],
-            ),
-        ],
+        spec_version_finders=DendriteFinders.spec_version_finders,
+        room_version_finders=DendriteFinders.room_version_finders,
+        default_room_version_finders=DendriteFinders.default_room_version_finders,
         earliest_commit="6bfe946bd2d82db12c1e49918612cc3d7139b8ce",
         earliest_tag=None,
         forked_from=ForkInfo(name="dendrite-legacy"),
@@ -472,28 +303,9 @@ ADDITIONAL_METADATA = {
     ),
     "synapse": AdditionalMetadata(
         "develop",
-        spec_version_finders=[
-            SpecVersionFinder(paths=["synapse/rest/client/versions.py"])
-        ],
-        room_version_finders=[
-            PatternFinder(
-                paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
-                pattern=r"RoomVersions.V(\d+)",
-            ),
-            PatternFinder(
-                paths=["rust/src/room_versions.rs"], pattern=r"ROOM_VERSION_V(\d+)"
-            ),
-        ],
-        default_room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "synapse/api/constants.py",
-                    "synapse/api/room_versions.py",
-                    "synapse/config/server.py",
-                ],
-                pattern=r'(?:DEFAULT_ROOM_VERSION = RoomVersions.V|DEFAULT_ROOM_VERSION = "|"default_room_version", ")(\d+)',
-            ),
-        ],
+        spec_version_finders=SynapseFinders.spec_version_finders,
+        room_version_finders=SynapseFinders.room_version_finders,
+        default_room_version_finders=SynapseFinders.default_room_version_finders,
         # First tag from AGPL Synapse.
         earliest_commit="230decd5b8deea78674f92b2c0c11bd41090470a",
         # Earlier tags exist from Apache Synapse.
@@ -536,45 +348,14 @@ ADDITIONAL_METADATA = {
         process_updates=False,
     ),
     "tuwunel": AdditionalMetadata(
-        branch="dev",
-        spec_version_finders=[
-            SpecVersionFinder(
-                paths=[
-                    "src/main.rs",
-                    "src/client_server/unversioned.rs",
-                    "src/api/client_server/unversioned.rs",
-                    "src/api/client/unversioned.rs",
-                    "src/api/client/versions.rs",
-                ]
-            )
-        ],
-        room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "src/client_server.rs",
-                    "src/client_server/capabilities.rs",
-                    "src/database/globals.rs",
-                    "src/server_server.rs",
-                    "src/service/globals/mod.rs",
-                    "src/core/info/room_version.rs",
-                    "src/core/config/room_version.rs",
-                ],
-                pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)(?:,|])',
-            ),
-        ],
-        default_room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "src/client_server.rs",
-                    "src/client_server/capabilities.rs",
-                    "src/database/globals.rs",
-                    "src/server_server.rs",
-                    "src/config/mod.rs",
-                    "src/core/config/mod.rs",
-                ],
-                pattern=r'default: "(\d+)"|default: RoomVersionId::V(?:ersion)?(\d+),|default_room_version = RoomVersionId::V(?:ersion)?(\d+);|^ +RoomVersionId::V(?:ersion)?(\d+)$|default_default_room_version.+RoomVersionId::V(\d+)',
-            ),
-        ],
+        "dev",
+        spec_version_finders=ConduitFinders.get_spec_version_finders(
+            ["src/api/client/unversioned.rs", "src/api/client/versions.rs"]
+        ),
+        room_version_finders=ConduitFinders.get_room_version_finders(
+            ["src/core/info/room_version.rs", "src/core/config/room_version.rs"]
+        ),
+        default_room_version_finders=ConduwuitFinders.default_room_version_finders,
         earliest_commit="ce6e5e48de2a3580e17609f382cd4520fb6d8c63",
         earliest_tag=None,
         forked_from=ForkInfo(name="conduwuit"),
@@ -648,18 +429,7 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=[
             SpecVersionFinder(paths=["internal/routes/client/client.go"])
         ],
-        room_version_finders=[
-            SubRepoFinder(
-                repository="https://github.com/matrix-org/gomatrixserverlib",
-                commit_finder=PatternFinder(
-                    paths=["go.mod"],
-                    pattern=r"github.com/matrix-org/gomatrixserverlib v0\.0\.0-\d+-([0-9a-f]+)",
-                ),
-                finder=PatternFinder(
-                    paths=["eventversion.go"], pattern=r"RoomVersionV(\d+)"
-                ),
-            ),
-        ],
+        room_version_finders=DendriteFinders.room_version_finders,
         default_room_version_finders=[
             PatternFinder(
                 paths=["babbleserv/internal/routes/client/room_create.go"],
@@ -681,25 +451,10 @@ ADDITIONAL_PROJECTS = [
         repository="https://leakedsynapsepro.nhjkl.com/matrix/calyx",
         room=None,
         branch="master",
-        spec_version_finders=[
-            SpecVersionFinder(paths=["synapse/rest/client/versions.py"])
-        ],
-        room_version_finders=[
-            PatternFinder(
-                paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
-                pattern=r"RoomVersions.V(\d+)",
-            ),
-        ],
-        default_room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "synapse/api/constants.py",
-                    "synapse/api/room_versions.py",
-                    "synapse/config/server.py",
-                ],
-                pattern=r'(?:DEFAULT_ROOM_VERSION = RoomVersions.V|DEFAULT_ROOM_VERSION = "|"default_room_version", ")(\d+)',
-            ),
-        ],
+        spec_version_finders=SynapseFinders.spec_version_finders,
+        # calyx did not include the Rust rewrite of room versions.
+        room_version_finders=SynapseLegacyFinders.room_version_finders,
+        default_room_version_finders=SynapseFinders.default_room_version_finders,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=ForkInfo(
@@ -794,45 +549,9 @@ ADDITIONAL_PROJECTS = [
         repository="https://github.com/matrix-org/dendrite",
         room=None,
         branch="main",
-        spec_version_finders=[
-            SpecVersionFinder(
-                paths=[
-                    "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
-                    "clientapi/routing/routing.go",
-                ],
-                # Dendrite declares a v1.0, which never existed.
-                to_ignore=["v1.0"],
-            )
-        ],
-        room_version_finders=[
-            # gomatrixserverlib was vendored early in the project, but before
-            # room versions were a thing.
-            PatternFinder(
-                paths=["roomserver/version/version.go"],
-                pattern=r"RoomVersionV(\d+)",
-            ),
-            SubRepoFinder(
-                repository="https://github.com/matrix-org/gomatrixserverlib",
-                commit_finder=PatternFinder(
-                    paths=["go.mod"],
-                    pattern=r"github.com/matrix-org/gomatrixserverlib v0\.0\.0-\d+-([0-9a-f]+)",
-                ),
-                finder=PatternFinder(
-                    paths=["eventversion.go"], pattern=r"RoomVersionV(\d+)"
-                ),
-            ),
-        ],
-        default_room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "roomserver/version/version.go",
-                    "setup/config/config_roomserver.go",
-                ],
-                pattern=r"return gomatrixserverlib.RoomVersionV(\d+)|DefaultRoomVersion = gomatrixserverlib.RoomVersionV(\d+)",
-                # Dendrite declared room version 2 as a default, but that was invalid.
-                to_ignore=["2"],
-            ),
-        ],
+        spec_version_finders=DendriteFinders.spec_version_finders,
+        room_version_finders=DendriteFinders.room_version_finders,
+        default_room_version_finders=DendriteFinders.default_room_version_finders,
         earliest_commit=None,
         earliest_tag=None,
         forked_from=None,
@@ -848,33 +567,9 @@ ADDITIONAL_PROJECTS = [
         repository="https://codefloe.com/pat-s/zendrite",
         room=None,
         branch="main",
-        spec_version_finders=[
-            SpecVersionFinder(
-                paths=[
-                    "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
-                    "clientapi/routing/routing.go",
-                ],
-                # Dendrite declares a v1.0, which never existed.
-                to_ignore=["v1.0"],
-            )
-        ],
-        room_version_finders=[
-            # gomatrixserverlib was vendored early in the project, but before
-            # room versions were a thing.
-            PatternFinder(
-                paths=["roomserver/version/version.go"],
-                pattern=r"RoomVersionV(\d+)",
-            ),
-            SubRepoFinder(
-                repository="https://github.com/matrix-org/gomatrixserverlib",
-                commit_finder=PatternFinder(
-                    paths=["go.mod"],
-                    pattern=r"github.com/matrix-org/gomatrixserverlib v0\.0\.0-\d+-([0-9a-f]+)",
-                ),
-                finder=PatternFinder(
-                    paths=["eventversion.go"], pattern=r"RoomVersionV(\d+)"
-                ),
-            ),
+        spec_version_finders=DendriteFinders.spec_version_finders,
+        room_version_finders=DendriteFinders.room_version_finders
+        + [
             # For a period github.com/jackmaninov/gomatrixserverlib was used to replace github.com/matrix-org/gomatrixserverlib
             # but this didn't have any impact on supported versions.
             SubRepoFinder(
@@ -888,17 +583,7 @@ ADDITIONAL_PROJECTS = [
                 ),
             ),
         ],
-        default_room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "roomserver/version/version.go",
-                    "setup/config/config_roomserver.go",
-                ],
-                pattern=r"return gomatrixserverlib.RoomVersionV(\d+)|DefaultRoomVersion = gomatrixserverlib.RoomVersionV(\d+)",
-                # Dendrite declared room version 2 as a default, but that was invalid.
-                to_ignore=["2"],
-            ),
-        ],
+        default_room_version_finders=DendriteFinders.default_room_version_finders,
         earliest_commit="379ffff1f6673ddd39164f65194716d2e3c2ebb0",
         earliest_tag=None,
         forked_from=ForkInfo(name="dendrite"),
@@ -972,42 +657,13 @@ ADDITIONAL_PROJECTS = [
         repository="https://gitlab.computer.surgery/matrix/grapevine",
         room=None,
         branch="main",
-        spec_version_finders=[
-            SpecVersionFinder(
-                paths=[
-                    "src/client_server.rs",
-                    "src/main.rs",
-                    "src/client_server/unversioned.rs",
-                    "src/api/client_server/unversioned.rs",
-                ]
-            )
-        ],
-        room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "src/client_server.rs",
-                    "src/client_server/capabilities.rs",
-                    "src/database/globals.rs",
-                    "src/server_server.rs",
-                    "src/service/globals/mod.rs",
-                    "src/service/globals.rs",
-                ],
-                pattern=r'"(\d+)".to_owned\(\)|RoomVersionId::V(?:ersion)?(\d+)(?:,|])',
-            ),
-        ],
-        default_room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "src/client_server.rs",
-                    "src/client_server/capabilities.rs",
-                    "src/database/globals.rs",
-                    "src/server_server.rs",
-                    "src/config/mod.rs",
-                    "src/config.rs",
-                ],
-                pattern=r'default: "(\d+)"|default: RoomVersionId::V(?:ersion)?(\d+),|default_room_version = RoomVersionId::V(?:ersion)?(\d+);|^ +RoomVersionId::V(?:ersion)?(\d+)$',
-            ),
-        ],
+        spec_version_finders=ConduitFinders.spec_version_finders,
+        room_version_finders=ConduitFinders.get_room_version_finders(
+            ["src/service/globals.rs"]
+        ),
+        default_room_version_finders=ConduitFinders.get_default_room_version_finders(
+            ["src/config.rs"]
+        ),
         earliest_commit="17a0b3430934fbb8370066ee9dc3506102c5b3f6",
         earliest_tag=None,
         forked_from=ForkInfo(name="conduit"),
@@ -1159,49 +815,16 @@ ADDITIONAL_PROJECTS = [
         repository="https://github.com/neilalexander/harmony",
         room="#harmony:neilalexander.dev",
         branch="main",
-        spec_version_finders=[
-            SpecVersionFinder(
-                paths=[
-                    "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
-                    "clientapi/routing/routing.go",
-                ],
-                # Dendrite declares a v1.0, which never existed.
-                to_ignore=["v1.0"],
-            )
-        ],
-        room_version_finders=[
-            # gomatrixserverlib was vendored early in the project, but before
-            # room versions were a thing.
-            PatternFinder(
-                paths=["roomserver/version/version.go"],
-                pattern=r"RoomVersionV(\d+)",
-            ),
-            SubRepoFinder(
-                repository="https://github.com/matrix-org/gomatrixserverlib",
-                commit_finder=PatternFinder(
-                    paths=["go.mod"],
-                    pattern=r"github.com/matrix-org/gomatrixserverlib v0\.0\.0-\d+-([0-9a-f]+)",
-                ),
-                finder=PatternFinder(
-                    paths=["eventversion.go"], pattern=r"RoomVersionV(\d+)"
-                ),
-            ),
+        spec_version_finders=DendriteFinders.spec_version_finders,
+        room_version_finders=DendriteFinders.room_version_finders
+        + [
+            # Harmony re-vendored gomatrixserverlib
             PatternFinder(
                 paths=["internal/gomatrixserverlib/eventversion.go"],
                 pattern=r"RoomVersionV(\d+)",
             ),
         ],
-        default_room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "roomserver/version/version.go",
-                    "setup/config/config_roomserver.go",
-                ],
-                pattern=r"return gomatrixserverlib.RoomVersionV(\d+)|DefaultRoomVersion = gomatrixserverlib.RoomVersionV(\d+)",
-                # Dendrite declared room version 2 as a default, but that was invalid.
-                to_ignore=["2"],
-            ),
-        ],
+        default_room_version_finders=DendriteFinders.default_room_version_finders,
         earliest_commit="6d1087df8dbd7982e7c7ad2f16b17588562c4048",
         earliest_tag=None,
         forked_from=ForkInfo(name="dendrite-legacy"),
@@ -1639,6 +1262,7 @@ ADDITIONAL_PROJECTS = [
         repository="https://github.com/clokep/relapse",
         room=None,
         branch="develop",
+        # These are equivalent to SynapseLegacyFinder with a different base path.
         spec_version_finders=[
             SpecVersionFinder(paths=["relapse/rest/client/versions.py"])
         ],
@@ -1733,25 +1357,9 @@ ADDITIONAL_PROJECTS = [
         repository="https://git.nexy7574.co.uk/star/starnapse",
         room=None,
         branch="starnapse",
-        spec_version_finders=[
-            SpecVersionFinder(paths=["synapse/rest/client/versions.py"])
-        ],
-        room_version_finders=[
-            PatternFinder(
-                paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
-                pattern=r"RoomVersions.V(\d+)",
-            ),
-        ],
-        default_room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "synapse/api/constants.py",
-                    "synapse/api/room_versions.py",
-                    "synapse/config/server.py",
-                ],
-                pattern=r'(?:DEFAULT_ROOM_VERSION = RoomVersions.V|DEFAULT_ROOM_VERSION = "|"default_room_version", ")(\d+)',
-            ),
-        ],
+        spec_version_finders=SynapseFinders.spec_version_finders,
+        room_version_finders=SynapseFinders.room_version_finders,
+        default_room_version_finders=SynapseFinders.default_room_version_finders,
         earliest_commit="e6d156fae5ec3244b24af6e6037902a950430278",
         earliest_tag=None,
         forked_from=ForkInfo(name="synapse"),
@@ -1767,28 +1375,9 @@ ADDITIONAL_PROJECTS = [
         repository="https://github.com/beeper/synapse",
         room=None,
         branch="beeper",
-        spec_version_finders=[
-            SpecVersionFinder(paths=["synapse/rest/client/versions.py"])
-        ],
-        room_version_finders=[
-            PatternFinder(
-                paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
-                pattern=r"RoomVersions.V(\d+)",
-            ),
-            PatternFinder(
-                paths=["rust/src/room_versions.rs"], pattern=r"ROOM_VERSION_V(\d+)"
-            ),
-        ],
-        default_room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "synapse/api/constants.py",
-                    "synapse/api/room_versions.py",
-                    "synapse/config/server.py",
-                ],
-                pattern=r'(?:DEFAULT_ROOM_VERSION = RoomVersions.V|DEFAULT_ROOM_VERSION = "|"default_room_version", ")(\d+)',
-            ),
-        ],
+        spec_version_finders=SynapseFinders.spec_version_finders,
+        room_version_finders=SynapseFinders.room_version_finders,
+        default_room_version_finders=SynapseFinders.default_room_version_finders,
         earliest_commit="9c9759c22b7fa5def10366e64f6ceceffc229a20",
         earliest_tag=None,
         forked_from=ForkInfo(name="synapse"),
@@ -1804,25 +1393,9 @@ ADDITIONAL_PROJECTS = [
         repository="https://github.com/beeper/synapse-legacy-fork",
         room=None,
         branch="beeper",
-        spec_version_finders=[
-            SpecVersionFinder(paths=["synapse/rest/client/versions.py"])
-        ],
-        room_version_finders=[
-            PatternFinder(
-                paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
-                pattern=r"RoomVersions.V(\d+)",
-            ),
-        ],
-        default_room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "synapse/api/constants.py",
-                    "synapse/api/room_versions.py",
-                    "synapse/config/server.py",
-                ],
-                pattern=r'(?:DEFAULT_ROOM_VERSION = RoomVersions.V|DEFAULT_ROOM_VERSION = "|"default_room_version", ")(\d+)',
-            ),
-        ],
+        spec_version_finders=SynapseLegacyFinders.spec_version_finders,
+        room_version_finders=SynapseLegacyFinders.room_version_finders,
+        default_room_version_finders=SynapseLegacyFinders.default_room_version_finders,
         earliest_commit="40fdd06ab6c55d8f38fca5d23f10be31bc5e054d",
         earliest_tag=None,
         forked_from=ForkInfo(name="synapse-legacy"),
@@ -1838,25 +1411,9 @@ ADDITIONAL_PROJECTS = [
         repository="https://github.com/matrix-org/synapse-dinsic",
         room=None,
         branch="dinsic",
-        spec_version_finders=[
-            SpecVersionFinder(paths=["synapse/rest/client/versions.py"])
-        ],
-        room_version_finders=[
-            PatternFinder(
-                paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
-                pattern=r"RoomVersions.V(\d+)",
-            ),
-        ],
-        default_room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "synapse/api/constants.py",
-                    "synapse/api/room_versions.py",
-                    "synapse/config/server.py",
-                ],
-                pattern=r'(?:DEFAULT_ROOM_VERSION = RoomVersions.V|DEFAULT_ROOM_VERSION = "|"default_room_version", ")(\d+)',
-            ),
-        ],
+        spec_version_finders=SynapseLegacyFinders.spec_version_finders,
+        room_version_finders=SynapseLegacyFinders.room_version_finders,
+        default_room_version_finders=SynapseLegacyFinders.default_room_version_finders,
         earliest_commit="3f79378d4bc27efd80e302f3c8c512ea41cbd395",
         # First tag in synapse-dinsic that is not in synapse.
         earliest_tag="dinsic_2019-09-19",
@@ -1873,25 +1430,9 @@ ADDITIONAL_PROJECTS = [
         repository="https://github.com/matrix-org/synapse",
         room=None,
         branch="develop",
-        spec_version_finders=[
-            SpecVersionFinder(paths=["synapse/rest/client/versions.py"])
-        ],
-        room_version_finders=[
-            PatternFinder(
-                paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
-                pattern=r"RoomVersions.V(\d+)",
-            ),
-        ],
-        default_room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "synapse/api/constants.py",
-                    "synapse/api/room_versions.py",
-                    "synapse/config/server.py",
-                ],
-                pattern=r'(?:DEFAULT_ROOM_VERSION = RoomVersions.V|DEFAULT_ROOM_VERSION = "|"default_room_version", ")(\d+)',
-            ),
-        ],
+        spec_version_finders=SynapseLegacyFinders.spec_version_finders,
+        room_version_finders=SynapseLegacyFinders.room_version_finders,
+        default_room_version_finders=SynapseLegacyFinders.default_room_version_finders,
         earliest_commit=None,
         # Earlier tags exist from DINSIC.
         earliest_tag="v0.0.0",

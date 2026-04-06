@@ -1,6 +1,51 @@
 import re
 import subprocess
+from dataclasses import dataclass
 from typing import Callable
+
+
+@dataclass
+class PatternFinder:
+    # The file paths relative to the root to check for the pattern.
+    paths: list[str]
+
+    # The pattern to use to information.
+    #
+    # This can have multiple capturing groups, all of which will be considered.
+    #
+    # If parser is provided, then the results are further processed with that.
+    pattern: str
+
+    # The parser, defaults to none.
+    #
+    # This is called with a tuple of capturing groups from pattern.
+    parser: Callable[[str], set[str]] | None = None
+
+    # Invalid results that should be ignored.
+    to_ignore: list[str] | None = None
+
+
+@dataclass
+class SubModuleFinder:
+    # The path the submodule gets checked out at.
+    path: str
+
+
+@dataclass
+class SubRepoFinder:
+    # A separate repo to search in.
+    repository: str
+
+    # The finder to get the git hash to checkout from the main repository.
+    commit_finder: PatternFinder | SubModuleFinder
+
+    # The finder to use to get the desired information from the sub-repository.
+    finder: PatternFinder
+
+
+@dataclass
+class SpecVersionFinder(PatternFinder):
+    pattern: str = r"[vr]\d[\d\.]+\d"
 
 
 def get_pattern_from_file(

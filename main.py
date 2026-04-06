@@ -4,14 +4,8 @@ from dataclasses import asdict, astuple, dataclass
 from datetime import datetime
 
 from data import ManualProjectData, ProjectData, VersionInfo
-from finders import get_pattern_from_file
-from projects import (
-    MANUAL_PROJECTS,
-    PatternFinder,
-    ProjectMetadata,
-    SubRepoFinder,
-    load_projects,
-)
+from finders import PatternFinder, SubRepoFinder, get_pattern_from_file
+from projects import MANUAL_PROJECTS, ProjectMetadata, load_projects
 from repository import Repository
 from spec import get_spec_dates
 
@@ -213,8 +207,8 @@ def get_project_dates(
     )
     # TODO Validate there's no overlap of default room versions?
 
-    initial_commit_date, last_commit_date, forked_date = (
-        repo.get_project_datetimes(project)
+    initial_commit_date, last_commit_date, forked_date = repo.get_project_datetimes(
+        project
     )
 
     release_date = None
