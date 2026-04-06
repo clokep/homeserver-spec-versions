@@ -2,32 +2,32 @@ from dataclasses import dataclass
 
 from finders import PatternFinder, SpecVersionFinder, SubRepoFinder
 
+PatternFinderType = list[PatternFinder | SubRepoFinder]
+
 
 @dataclass
 class Finders:
     # The finder(s) to use to get supported spec versions.
     #
     # Leave empty if no spec versions were ever implemented.
-    spec_version_finders: list[PatternFinder | SubRepoFinder] | None
+    spec_version_finders: PatternFinderType | None
 
     # The finder(s) to use to get supported room versions.
     #
     # Leave empty if no room versions were ever implemented.
-    room_version_finders: list[PatternFinder | SubRepoFinder] | None
+    room_version_finders: PatternFinderType | None
 
     # The finder(s) to use to get the default room version.
     #
     # Leave empty if no default room version was ever implemented.
-    default_room_version_finders: list[PatternFinder | SubRepoFinder] | None
+    default_room_version_finders: PatternFinderType | None
 
 
 class ConduitFinders(Finders):
     """Base finders for Conduit=based projects."""
 
     @staticmethod
-    def get_spec_version_finders(
-        extra_paths: list[str],
-    ) -> list[PatternFinder | SubRepoFinder] | None:
+    def get_spec_version_finders(extra_paths: list[str]) -> PatternFinderType:
         return [
             SpecVersionFinder(
                 paths=[
@@ -40,12 +40,10 @@ class ConduitFinders(Finders):
             )
         ]
 
-    spec_version_finders = get_spec_version_finders([])
+    spec_version_finders: PatternFinderType = get_spec_version_finders([])
 
     @staticmethod
-    def get_room_version_finders(
-        extra_paths: list[str],
-    ) -> list[PatternFinder | SubRepoFinder] | None:
+    def get_room_version_finders(extra_paths: list[str]) -> PatternFinderType:
         return [
             PatternFinder(
                 paths=[
@@ -60,12 +58,12 @@ class ConduitFinders(Finders):
             ),
         ]
 
-    room_version_finders = get_room_version_finders([])
+    room_version_finders: PatternFinderType = get_room_version_finders([])
 
     @staticmethod
     def get_default_room_version_finders(
         extra_paths: list[str], additional_pattern: str = r""
-    ) -> list[PatternFinder | SubRepoFinder] | None:
+    ) -> PatternFinderType:
         return [
             PatternFinder(
                 paths=[
@@ -81,26 +79,30 @@ class ConduitFinders(Finders):
             ),
         ]
 
-    default_room_version_finders = get_default_room_version_finders([])
+    default_room_version_finders: PatternFinderType = get_default_room_version_finders(
+        []
+    )
 
 
 class ConduwuitFinders(ConduitFinders):
-    spec_version_finders = ConduitFinders.get_spec_version_finders(
+    spec_version_finders: PatternFinderType = ConduitFinders.get_spec_version_finders(
         ["src/api/client/unversioned.rs"]
     )
-    room_version_finders = ConduitFinders.get_room_version_finders(
+    room_version_finders: PatternFinderType = ConduitFinders.get_room_version_finders(
         ["src/core/info/room_version.rs"]
     )
-    default_room_version_finders = ConduitFinders.get_default_room_version_finders(
-        ["src/core/config/mod.rs"],
-        r"|default_default_room_version.+RoomVersionId::V(\d+)",
+    default_room_version_finders: PatternFinderType = (
+        ConduitFinders.get_default_room_version_finders(
+            ["src/core/config/mod.rs"],
+            r"|default_default_room_version.+RoomVersionId::V(\d+)",
+        )
     )
 
 
 class DendriteFinders(Finders):
     """Base finders for Dendrite-based projects."""
 
-    spec_version_finders = [
+    spec_version_finders: PatternFinderType = [
         SpecVersionFinder(
             paths=[
                 "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
@@ -110,7 +112,7 @@ class DendriteFinders(Finders):
             to_ignore=["v1.0"],
         )
     ]
-    room_version_finders = [
+    room_version_finders: PatternFinderType = [
         # gomatrixserverlib was vendored early in the project, but before room versions were a thing.
         PatternFinder(
             paths=["roomserver/version/version.go"],
@@ -127,7 +129,7 @@ class DendriteFinders(Finders):
             ),
         ),
     ]
-    default_room_version_finders = [
+    default_room_version_finders: PatternFinderType = [
         PatternFinder(
             paths=[
                 "roomserver/version/version.go",
@@ -143,16 +145,16 @@ class DendriteFinders(Finders):
 class SynapseLegacyFinders(Finders):
     """Base finders for Synapse legacy-based projects."""
 
-    spec_version_finders = [
+    spec_version_finders: PatternFinderType = [
         SpecVersionFinder(paths=["synapse/rest/client/versions.py"])
     ]
-    room_version_finders = [
+    room_version_finders: PatternFinderType = [
         PatternFinder(
             paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
             pattern=r"RoomVersions.V(\d+)",
         ),
     ]
-    default_room_version_finders = [
+    default_room_version_finders: PatternFinderType = [
         PatternFinder(
             paths=[
                 "synapse/api/constants.py",
@@ -167,8 +169,11 @@ class SynapseLegacyFinders(Finders):
 class SynapseFinders(SynapseLegacyFinders):
     """Base finders for Synapse-based projects."""
 
-    room_version_finders = SynapseLegacyFinders.room_version_finders + [
-        PatternFinder(
-            paths=["rust/src/room_versions.rs"], pattern=r"ROOM_VERSION_V(\d+)"
-        ),
-    ]
+    room_version_finders: PatternFinderType = (
+        SynapseLegacyFinders.room_version_finders
+        + [
+            PatternFinder(
+                paths=["rust/src/room_versions.rs"], pattern=r"ROOM_VERSION_V(\d+)"
+            ),
+        ]
+    )

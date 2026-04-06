@@ -16,6 +16,7 @@ from project_finders import (
     ConduitFinders,
     ConduwuitFinders,
     DendriteFinders,
+    Finders,
     SynapseFinders,
     SynapseLegacyFinders,
 )
@@ -56,24 +57,9 @@ class ForkInfo:
 
 
 @dataclass
-class AdditionalMetadata:
+class AdditionalMetadata(Finders):
     # The branch which has the latest commit.
     branch: str
-
-    # The finder(s) to use to get supported spec versions.
-    #
-    # Leave empty if no spec versions were ever implemented.
-    spec_version_finders: list[PatternFinder | SubRepoFinder] | None
-
-    # The finder(s) to use to get supported room versions.
-    #
-    # Leave empty if no room versions were ever implemented.
-    room_version_finders: list[PatternFinder | SubRepoFinder] | None
-
-    # The finder(s) to use to get the default room version.
-    #
-    # Leave empty if no default room version was ever implemented.
-    default_room_version_finders: list[PatternFinder | SubRepoFinder] | None
 
     # The earliest commit to consider.
     #
@@ -142,7 +128,7 @@ INVALID_PROJECTS = {
 # Constants.
 ADDITIONAL_METADATA = {
     "bullettime": AdditionalMetadata(
-        "master",
+        branch="master",
         spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
@@ -152,7 +138,7 @@ ADDITIONAL_METADATA = {
         process_updates=True,
     ),
     "conduit": AdditionalMetadata(
-        "next",
+        branch="next",
         spec_version_finders=ConduitFinders.spec_version_finders,
         room_version_finders=ConduitFinders.room_version_finders,
         default_room_version_finders=ConduitFinders.default_room_version_finders,
@@ -162,7 +148,7 @@ ADDITIONAL_METADATA = {
         process_updates=True,
     ),
     "conduwuit": AdditionalMetadata(
-        "main",
+        branch="main",
         spec_version_finders=ConduwuitFinders.spec_version_finders,
         room_version_finders=ConduwuitFinders.room_version_finders,
         default_room_version_finders=ConduwuitFinders.default_room_version_finders,
@@ -172,7 +158,7 @@ ADDITIONAL_METADATA = {
         process_updates=False,
     ),
     "continuwuity": AdditionalMetadata(
-        "main",
+        branch="main",
         spec_version_finders=ConduwuitFinders.spec_version_finders,
         room_version_finders=ConduwuitFinders.room_version_finders,
         default_room_version_finders=ConduwuitFinders.default_room_version_finders,
@@ -182,7 +168,7 @@ ADDITIONAL_METADATA = {
         process_updates=True,
     ),
     "construct": AdditionalMetadata(
-        "master",
+        branch="master",
         spec_version_finders=[
             SpecVersionFinder(
                 paths=["ircd/json.cc", "modules/client/versions.cc"],
@@ -210,7 +196,7 @@ ADDITIONAL_METADATA = {
         process_updates=True,
     ),
     "dendrite": AdditionalMetadata(
-        "main",
+        branch="main",
         spec_version_finders=DendriteFinders.spec_version_finders,
         room_version_finders=DendriteFinders.room_version_finders,
         default_room_version_finders=DendriteFinders.default_room_version_finders,
@@ -220,7 +206,7 @@ ADDITIONAL_METADATA = {
         process_updates=True,
     ),
     "jsynapse": AdditionalMetadata(
-        "master",
+        branch="master",
         spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
@@ -230,7 +216,7 @@ ADDITIONAL_METADATA = {
         process_updates=True,
     ),
     "ligase": AdditionalMetadata(
-        "develop",
+        branch="develop",
         spec_version_finders=[
             SpecVersionFinder(
                 paths=[
@@ -247,7 +233,7 @@ ADDITIONAL_METADATA = {
         process_updates=True,
     ),
     "maelstrom": AdditionalMetadata(
-        "master",
+        branch="master",
         spec_version_finders=[
             SpecVersionFinder(paths=["src/server/handlers/admin.rs"])
         ],
@@ -259,7 +245,7 @@ ADDITIONAL_METADATA = {
         process_updates=True,
     ),
     "matrex": AdditionalMetadata(
-        "master",
+        branch="master",
         spec_version_finders=[
             SpecVersionFinder(
                 paths=[
@@ -276,7 +262,7 @@ ADDITIONAL_METADATA = {
         process_updates=True,
     ),
     "mxhsd": AdditionalMetadata(
-        "master",
+        branch="master",
         spec_version_finders=[
             SpecVersionFinder(
                 paths=[
@@ -292,7 +278,7 @@ ADDITIONAL_METADATA = {
         process_updates=True,
     ),
     "pallium": AdditionalMetadata(
-        "master",
+        branch="master",
         spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
@@ -302,7 +288,7 @@ ADDITIONAL_METADATA = {
         process_updates=True,
     ),
     "synapse": AdditionalMetadata(
-        "develop",
+        branch="develop",
         spec_version_finders=SynapseFinders.spec_version_finders,
         room_version_finders=SynapseFinders.room_version_finders,
         default_room_version_finders=SynapseFinders.default_room_version_finders,
@@ -314,7 +300,7 @@ ADDITIONAL_METADATA = {
         process_updates=True,
     ),
     "transform": AdditionalMetadata(
-        "master",
+        branch="master",
         spec_version_finders=[SpecVersionFinder(paths=["config.json"])],
         room_version_finders=None,
         default_room_version_finders=None,
@@ -324,7 +310,7 @@ ADDITIONAL_METADATA = {
         process_updates=True,
     ),
     "telodendria": AdditionalMetadata(
-        "master",
+        branch="master",
         spec_version_finders=[
             SpecVersionFinder(
                 paths=["src/Routes/RouteMatrix.c", "src/Routes/RouteVersions.c"]
@@ -348,7 +334,7 @@ ADDITIONAL_METADATA = {
         process_updates=False,
     ),
     "tuwunel": AdditionalMetadata(
-        "dev",
+        branch="dev",
         spec_version_finders=ConduitFinders.get_spec_version_finders(
             ["src/api/client/unversioned.rs", "src/api/client/versions.rs"]
         ),
@@ -1486,9 +1472,11 @@ ADDITIONAL_PROJECTS = [
             PatternFinder(
                 paths=["src/c2s.py", "vona/client/__init__.py"],
                 pattern=r"""f"(r0.{i}.0|v1.{i})" for i in range\((\d+), (\d+)\)""",
-                parser=lambda s: {s[0].format(i=i) for i in range(int(s[1]), int(s[2]))}
-                if s
-                else {},
+                parser=lambda s: (
+                    {s[0].format(i=i) for i in range(int(s[1]), int(s[2]))}
+                    if s
+                    else set()
+                ),
             ),
         ],
         room_version_finders=[
