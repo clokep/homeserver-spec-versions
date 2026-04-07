@@ -247,7 +247,12 @@ ADDITIONAL_METADATA = {
     "maelstrom": AdditionalMetadata(
         branch="master",
         spec_version_finders=[
-            SpecVersionFinder(paths=["src/server/handlers/admin.rs"])
+            SpecVersionFinder(
+                paths=[
+                    "src/server/handlers/admin.rs",
+                    "crates/maelstrom-api/src/handlers/versions.rs",
+                ]
+            ),
         ],
         room_version_finders=None,
         default_room_version_finders=None,
