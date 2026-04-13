@@ -410,7 +410,7 @@ def main(projects: set[str]):
             print("Repository unavailable, skipping.")
         else:
             prev_project_dates = result["homeserver_versions"].get(project.name.lower())
-            if prev_project_dates:
+            if prev_project_dates and False:
                 prev_last_commit = prev_project_dates.get("last_commit")
                 prev_project_data_hash = prev_project_dates.get("project_data_hash")
             else:

@@ -83,7 +83,7 @@ def get_pattern_from_file(
         # Strip comments.
         #
         # TODO This only handles line comments, not block comments.
-        line = re.split(r"#|//", line)[0]
+        line = re.split(r"(^| )(#|//)", line)[0]
 
         # Search again for the versions.
         matches = re.findall(pattern, line)

@@ -1215,7 +1215,7 @@ ADDITIONAL_PROJECTS = [
         room_version_finders=[
             PatternFinder(
                 paths=["config/config.exs"],
-                pattern=r'Map\.new\((.+),|"(\d+)" => "stable"',
+                pattern=r'Map\.new\((\d+\.\.\d+),|"(\d+)" => "stable"',
                 # If the first matching group matches, then split on .. and convert to a range
                 # of values. If the second group matches, it is just a single value.
                 parser=lambda s: parse_elixir_range_operator(s[0]) if s[0] else {s[1]},
@@ -1336,7 +1336,7 @@ ADDITIONAL_PROJECTS = [
         room_version_finders=SynapseFinders.room_version_finders,
         default_room_version_finders=SynapseFinders.default_room_version_finders,
         commits=CommitInfo(
-            earliest_commit="e6d156fae5ec3244b24af6e6037902a950430278",
+            earliest_commit="c3549368bd7f804d8172a93f5064b83cec75df9a",
             earliest_tag=None,
         ),
         forked_from=ForkInfo(name="synapse"),
