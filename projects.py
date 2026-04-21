@@ -746,56 +746,6 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
-        name="hammerhead",
-        description='"Sublight thrusters, full power!" | nimble little matrix server you\'ll only see once',
-        author="nexy",
-        maturity=Maturity.Alpha,
-        language="Go",
-        licence="MPL-2.0",
-        repository="https://codeberg.org/timedout/hammerhead",
-        room=None,
-        branch="dev",
-        spec_version_finders=[
-            SpecVersionFinder(
-                paths=[
-                    "nexserv/server/versions.go",
-                    "nexserv/router/routes/client/versions.go",
-                    "hammerhead/router/routes/client/versions.go",
-                    "hammerhead/config/config.go",
-                    "pkg/hammerhead/config/config.go",
-                ]
-            ),
-            PatternFinder(
-                paths=["pkg/hammerhead/config/consts.go"],
-                pattern=r"mautrix.SpecV(\d+)",
-                parser=lambda s: {f"v{s[0]}.{s[1:]}"},
-            ),
-        ],
-        room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "hammerhead/router/routes/client/v3/createRoom.go",
-                    "hammerhead/config/config.go",
-                    "pkg/hammerhead/config/config.go",
-                    "pkg/hammerhead/config/consts.go",
-                ],
-                pattern=r"RoomV(\d+)",
-            )
-        ],
-        default_room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "cmd/hammerhead/hammerhead.go",
-                    "pkg/hammerhead/config/consts.go",
-                ],
-                pattern=r"DefaultRoomVersion(?::| =) id\.RoomV(\d+)",
-            )
-        ],
-        commits=None,
-        forked_from=None,
-        process_updates=True,
-    ),
-    ProjectMetadata(
         name="Harmony",
         description="A lighter-weight fork of the Dendrite homeserver for the Matrix protocol",
         author="Neil Alexander",
@@ -1463,6 +1413,61 @@ ADDITIONAL_PROJECTS = [
             PatternFinder(
                 paths=["config/config.exs"], pattern=r'default_room_version: "(\d+)"'
             ),
+        ],
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="venator",
+        description='"Matrix Venator - versatile capital Matrix homeserver written from scratch in mautrix-go',
+        author="nexy",
+        maturity=Maturity.Alpha,
+        language="Go",
+        licence="MPL-2.0",
+        repository="https://codeberg.org/timedout/venator",
+        room=None,
+        branch="dev",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "nexserv/server/versions.go",
+                    "nexserv/router/routes/client/versions.go",
+                    "hammerhead/router/routes/client/versions.go",
+                    "hammerhead/config/config.go",
+                    "pkg/hammerhead/config/config.go",
+                ]
+            ),
+            PatternFinder(
+                paths=[
+                    "pkg/hammerhead/config/consts.go",
+                    "pkg/venatord/config/consts.go",
+                ],
+                pattern=r"mautrix.SpecV(\d+)",
+                parser=lambda s: {f"v{s[0]}.{s[1:]}"},
+            ),
+        ],
+        room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "hammerhead/router/routes/client/v3/createRoom.go",
+                    "hammerhead/config/config.go",
+                    "pkg/hammerhead/config/config.go",
+                    "pkg/hammerhead/config/consts.go",
+                    "pkg/venatord/config/consts.go",
+                ],
+                pattern=r"RoomV(\d+)",
+            )
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "cmd/hammerhead/hammerhead.go",
+                    "pkg/hammerhead/config/consts.go",
+                    "pkg/venatord/config/consts.go",
+                ],
+                pattern=r"DefaultRoomVersion(?::| =) id\.RoomV(\d+)",
+            )
         ],
         commits=None,
         forked_from=None,
