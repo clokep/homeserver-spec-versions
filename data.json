@@ -2586,8 +2586,8 @@
                 "v1.5": 885,
                 "v1.8": 701
             },
-            "last_commit": "027f6a4b025e75a76354a1912f6186f941d6147f",
-            "last_commit_date": "2026-04-20T17:49:03+00:00",
+            "last_commit": "0344bf71d835c819c309a8a38a3b25dad715207f",
+            "last_commit_date": "2026-04-24T12:11:48+01:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": "d0fa738ec853dca8fabbcee263d66f63",
@@ -5037,7 +5037,7 @@
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
             "last_commit": null,
-            "last_commit_date": "2026-04-21T11:07:03.915814",
+            "last_commit_date": "2026-04-24T08:15:35.917659",
             "maturity": "beta",
             "merged_back": false,
             "project_data_hash": null,
@@ -5851,8 +5851,8 @@
             "lag_all_by_tag": {
                 "r0.6.1": 1497
             },
-            "last_commit": "e898f0aa79a8dd1374c38df38b8318d6ed98e30c",
-            "last_commit_date": "2026-04-18T18:45:12+02:00",
+            "last_commit": "d702cfa1b37b0bbfb5c246bd25cea186e6bb0a00",
+            "last_commit_date": "2026-04-22T19:27:34+02:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "0178434a03f9fc610a705be60c537a73",
@@ -6839,7 +6839,7 @@
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
             "last_commit": null,
-            "last_commit_date": "2026-04-21T11:07:03.915857",
+            "last_commit_date": "2026-04-24T08:15:35.917686",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": null,
@@ -7722,7 +7722,7 @@
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
             "last_commit": null,
-            "last_commit_date": "2026-04-21T11:07:03.915886",
+            "last_commit_date": "2026-04-24T08:15:35.917706",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": null,
@@ -7820,8 +7820,8 @@
                 "v1.8": 138,
                 "v1.9": 40
             },
-            "last_commit": "3cdae2e27828daf9508144fe76423e45cb796853",
-            "last_commit_date": "2026-04-21T11:39:39+01:00",
+            "last_commit": "107029da920b7df59162410367e986a7d803692c",
+            "last_commit_date": "2026-04-24T10:35:00+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": "423502e5bf2ef618915f51ff8d58822d",
@@ -10907,8 +10907,8 @@
                 "v1.4": 925,
                 "v1.5": 881
             },
-            "last_commit": "781ebc8ff0e04a64a2128fb333c1c7657cf1dd88",
-            "last_commit_date": "2026-04-21T01:53:48+00:00",
+            "last_commit": "f154f618395e6f905187fa796ccfcf9816970c88",
+            "last_commit_date": "2026-04-24T09:06:09+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": "e7fa146aa6d4cb0304845a300f87c1f1",
@@ -11413,7 +11413,8 @@
             "lag_after_commit_by_commit": {
                 "v1.15": 264,
                 "v1.16": 181,
-                "v1.17": 89
+                "v1.17": 89,
+                "v1.18": 27
             },
             "lag_after_commit_by_tag": {
                 "v1.15": 296,
@@ -11432,6 +11433,7 @@
                 "v1.15": 264,
                 "v1.16": 181,
                 "v1.17": 89,
+                "v1.18": 27,
                 "v1.2": 1203,
                 "v1.3": 1022,
                 "v1.4": 959,
@@ -11460,8 +11462,8 @@
                 "v1.8": 969,
                 "v1.9": 871
             },
-            "last_commit": "e774a68286049fef844784b5935d7fc3eac16aa2",
-            "last_commit_date": "2026-04-19T22:28:29+01:00",
+            "last_commit": "db1fb0e14774c9d3934d235467516f376e7631af",
+            "last_commit_date": "2026-04-23T19:38:21+01:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "f901b27e9248930d252135e0180dd281",
@@ -11640,6 +11642,14 @@
                     [
                         "eed58443dcf8837ecefcfefacefc11106e0ea142",
                         "2026-03-18T07:36:19+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.18": [
+                    [
+                        "44fc8d3993a4d6f3a093f180cafe83dc74cbc848",
+                        "2026-04-23T08:12:52+01:00",
                         null,
                         null
                     ]
