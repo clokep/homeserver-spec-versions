@@ -1286,7 +1286,7 @@ ADDITIONAL_PROJECTS = [
         room_version_finders=SynapseFinders.room_version_finders,
         default_room_version_finders=SynapseFinders.default_room_version_finders,
         commits=CommitInfo(
-            earliest_commit="c3549368bd7f804d8172a93f5064b83cec75df9a",
+            earliest_commit="c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
             earliest_tag=None,
         ),
         forked_from=ForkInfo(name="synapse"),
@@ -1442,6 +1442,7 @@ ADDITIONAL_PROJECTS = [
                 paths=[
                     "pkg/hammerhead/config/consts.go",
                     "pkg/venatord/config/consts.go",
+                    "internal/venatord/config/consts.go",
                 ],
                 pattern=r"mautrix.SpecV(\d+)",
                 parser=lambda s: {f"v{s[0]}.{s[1:]}"},
@@ -1455,6 +1456,7 @@ ADDITIONAL_PROJECTS = [
                     "pkg/hammerhead/config/config.go",
                     "pkg/hammerhead/config/consts.go",
                     "pkg/venatord/config/consts.go",
+                    "internal/venatord/config/consts.go",
                 ],
                 pattern=r"RoomV(\d+)",
             )
@@ -1465,6 +1467,7 @@ ADDITIONAL_PROJECTS = [
                     "cmd/hammerhead/hammerhead.go",
                     "pkg/hammerhead/config/consts.go",
                     "pkg/venatord/config/consts.go",
+                    "internal/venatord/config/consts.go",
                 ],
                 pattern=r"DefaultRoomVersion(?::| =) id\.RoomV(\d+)",
             )
