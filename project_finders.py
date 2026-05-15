@@ -99,6 +99,12 @@ class ConduwuitFinders(ConduitFinders):
     )
 
 
+class ContinuwuityFinders(ConduwuitFinders):
+    spec_version_finders: PatternFinderType = ConduitFinders.get_spec_version_finders(
+        ["src/api/client/unversioned.rs", "src/core/matrix/versions.rs"]
+    )
+
+
 class DendriteFinders(Finders):
     """Base finders for Dendrite-based projects."""
 
@@ -173,7 +179,8 @@ class SynapseFinders(SynapseLegacyFinders):
         SynapseLegacyFinders.room_version_finders
         + [
             PatternFinder(
-                paths=["rust/src/room_versions.rs"], pattern=r"ROOM_VERSION_V(\d+)"
+                paths=["rust/src/room_versions.rs"],
+                pattern=r"ROOM_VERSION_V(\d+)|const V(\d+): RoomVersion",
             ),
         ]
     )

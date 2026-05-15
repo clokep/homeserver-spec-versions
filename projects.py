@@ -15,6 +15,7 @@ from manual_projects import generate_synapse_pro
 from project_finders import (
     ConduitFinders,
     ConduwuitFinders,
+    ContinuwuityFinders,
     DendriteFinders,
     Finders,
     SynapseFinders,
@@ -168,9 +169,9 @@ ADDITIONAL_METADATA = {
     ),
     "continuwuity": AdditionalMetadata(
         branch="main",
-        spec_version_finders=ConduwuitFinders.spec_version_finders,
-        room_version_finders=ConduwuitFinders.room_version_finders,
-        default_room_version_finders=ConduwuitFinders.default_room_version_finders,
+        spec_version_finders=ContinuwuityFinders.spec_version_finders,
+        room_version_finders=ContinuwuityFinders.room_version_finders,
+        default_room_version_finders=ContinuwuityFinders.default_room_version_finders,
         commits=CommitInfo(earliest_commit="e054a56b3286a6fb3091bedd5261089435ed26d1"),
         forked_from=ForkInfo(name="conduwuit"),
         process_updates=True,
@@ -658,7 +659,7 @@ ADDITIONAL_PROJECTS = [
             earliest_tag=None,
         ),
         forked_from=ForkInfo(name="conduit"),
-        process_updates=True,
+        process_updates=False,
     ),
     ProjectMetadata(
         name="Gridify",
