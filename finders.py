@@ -3,6 +3,8 @@ import subprocess
 from dataclasses import dataclass
 from typing import Callable
 
+ParserType = Callable[[str], set[str] | list[str]]
+
 
 @dataclass
 class PatternFinder:
@@ -19,7 +21,7 @@ class PatternFinder:
     # The parser, defaults to none.
     #
     # This is called with a tuple of capturing groups from pattern.
-    parser: Callable[[str], set[str]] | None = None
+    parser: ParserType | None = None
 
     # Invalid results that should be ignored.
     to_ignore: list[str] | None = None
@@ -52,7 +54,7 @@ def get_pattern_from_file(
     root: str,
     paths: list[str],
     pattern: str,
-    parser: Callable[[str], set[str]] | None,
+    parser: ParserType | None,
     to_ignore: list[str] | None,
 ) -> set[str]:
     """
@@ -77,7 +79,7 @@ def get_pattern_from_file(
         cwd=root,
     )
 
-    versions = set()
+    versions: set[str] = set()
 
     for line in result.stdout.decode("ascii").splitlines():
         # Strip comments.
@@ -96,7 +98,7 @@ def get_pattern_from_file(
             for match in matches
         ]
         # Flatten the list of lists
-        versions.update([m for ma in matches for m in ma])
+        versions.update(*matches)
 
     # Ignore some versions that are "bad".
     if to_ignore:
