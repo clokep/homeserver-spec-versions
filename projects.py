@@ -3,6 +3,8 @@ import inspect
 import os.path
 from dataclasses import asdict, dataclass
 from datetime import datetime
+from multiprocessing import process
+from pty import fork
 from typing import Iterator
 from urllib.request import urlopen
 from zoneinfo import ZoneInfo
@@ -363,8 +365,7 @@ ADDITIONAL_METADATA = {
     ),
 }
 
-# Consider other Synapse "friendly" forks: dinum, beeper
-
+# Maybe https://github.com/lilyanavalley/264e.org?
 ADDITIONAL_PROJECTS = [
     ProjectMetadata(
         name="architex",
@@ -407,6 +408,23 @@ ADDITIONAL_PROJECTS = [
         repository="https://github.com/ShadowJonathan/Axiom",
         room=None,
         branch="master",
+        spec_version_finders=None,
+        room_version_finders=None,
+        default_room_version_finders=None,
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="axon",
+        description="High-performance Matrix homeserver written in Rust",
+        author="mm-goli1386",
+        maturity=Maturity.Unstarted,
+        language="Rust",
+        licence="AGPL-3.0",
+        repository="https://github.com/mm-goli1386/Axon",
+        room=None,
+        branch="main",
         spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
@@ -532,6 +550,35 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
+        name="daberiba",
+        description="Matrix homeserver",
+        author="masak1yu",
+        maturity=Maturity.Alpha,
+        language="Rust",
+        licence="MIT",
+        repository="https://github.com/masak1yu/daberiba",
+        room=None,
+        branch="main",
+        spec_version_finders=[
+            SpecVersionFinder(paths=["crates/server/src/api/client/versions.rs"]),
+        ],
+        room_version_finders=[
+            PatternFinder(
+                paths=["crates/server/src/api/client/capabilities.rs"],
+                pattern=r'"(\d+)": "stable"',
+            )
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["crates/server/src/api/client/capabilities.rs"],
+                pattern=r'"default": "(\d+)"',
+            )
+        ],
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
         name="dendrite-legacy",
         description="Dendrite is a second-generation Matrix homeserver written in Go!",
         author="Matrix.org team",
@@ -549,42 +596,8 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
-        name="zendrite",
-        description=" An opinionated fork of element-hq/dendrite",
-        author="Patrick Schratz",
-        maturity=Maturity.Beta,
-        language="Go",
-        licence="AGPL-3.0-or-later OR Element Commercial License",
-        repository="https://codefloe.com/pat-s/zendrite",
-        room=None,
-        branch="main",
-        spec_version_finders=DendriteFinders.spec_version_finders,
-        room_version_finders=DendriteFinders.room_version_finders
-        + [
-            # For a period github.com/jackmaninov/gomatrixserverlib was used to replace github.com/matrix-org/gomatrixserverlib
-            # but this didn't have any impact on supported versions.
-            SubRepoFinder(
-                repository="https://codefloe.com/pat-s/gomatrixserverlib",
-                commit_finder=PatternFinder(
-                    paths=["go.mod"],
-                    pattern=r"codefloe.com/pat-s/gomatrixserverlib (?:v0\.0\.0-\d+-([0-9a-f]+)|(v\d\.\d.\d))",
-                ),
-                finder=PatternFinder(
-                    paths=["eventversion.go"], pattern=r"RoomVersionV(\d+)"
-                ),
-            ),
-        ],
-        default_room_version_finders=DendriteFinders.default_room_version_finders,
-        commits=CommitInfo(
-            earliest_commit="379ffff1f6673ddd39164f65194716d2e3c2ebb0",
-            earliest_tag=None,
-        ),
-        forked_from=ForkInfo(name="dendrite"),
-        process_updates=True,
-    ),
-    ProjectMetadata(
         name="dopamine",
-        description="Matrix homeserver implementation written in Elixir ",
+        description="Matrix homeserver implementation written in Elixir",
         author="Aidan Noll",
         maturity=Maturity.Unstarted,
         language="Elixir",
@@ -596,6 +609,47 @@ ADDITIONAL_PROJECTS = [
             SpecVersionFinder(
                 paths=["apps/dopamine_web/lib/dopamine_web/views/info_view.ex"]
             )
+        ],
+        room_version_finders=None,
+        default_room_version_finders=None,
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="exagon",
+        description="Exagon is an open-source Matrix homeserver implementation built to be resilient, performant and simple to maintain and administer.",
+        author="Nicolas Jouanin",
+        maturity=Maturity.Alpha,
+        language="Elixir",
+        licence="Apache-2.0",
+        repository="https://gitlab.com/ex_agon/exagon",
+        room=None,
+        branch="main",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=["lib/exagon_web/matrix/client/controllers/client_controller.ex"],
+                to_ignore=["v1.0"],
+            )
+        ],
+        room_version_finders=None,
+        default_room_version_finders=None,
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="ferrix",
+        description="A toy Matrix homeserver written in Rust, for me to learn more about the Matrix protocol",
+        author="EliseZeroTwo",
+        maturity=Maturity.Alpha,
+        language="Rust",
+        licence="MIT",
+        repository="https://gitlab.com/elise/ferrix",
+        room=None,
+        branch="main",
+        spec_version_finders=[
+            SpecVersionFinder(paths=["src/api/clientserver/standards.rs"])
         ],
         room_version_finders=None,
         default_room_version_finders=None,
@@ -726,6 +780,23 @@ ADDITIONAL_PROJECTS = [
             earliest_commit="f44e23b8cc2c3ab7d1c36f702f00a6b5b947c5d0",
             earliest_tag=None,
         ),
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="feditrix",
+        description="Feditrix Homeserver, a super-app-like for the fediverse (Mastodon, PeerTube, etc.) with Matrix included.",
+        author="Andrei Jiroh Halili",
+        maturity=Maturity.Unstarted,
+        language="TypeScript",
+        licence="AGPL-3.0-or-later",
+        repository="https://gitlab.com/recaptime-dev-olddata/app",
+        room=None,
+        branch="main",
+        spec_version_finders=None,
+        room_version_finders=None,
+        default_room_version_finders=None,
+        commits=None,
         forked_from=None,
         process_updates=True,
     ),
@@ -957,6 +1028,10 @@ ADDITIONAL_PROJECTS = [
         forked_from=None,
         process_updates=True,
     ),
+    # potenial forks:
+    # https://github.com/cf-remi/goodshab-matrix
+    # https://github.com/linksever137/matrix-homeserver
+    # https://github.com/jmbish04/matrix-homeserver
     ProjectMetadata(
         name="matrix-workers",
         description="Matrix Homeserver on Cloudflare Workers",
@@ -1536,6 +1611,40 @@ ADDITIONAL_PROJECTS = [
         default_room_version_finders=[],
         commits=None,
         forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="zendrite",
+        description=" An opinionated fork of element-hq/dendrite",
+        author="Patrick Schratz",
+        maturity=Maturity.Beta,
+        language="Go",
+        licence="AGPL-3.0-or-later OR Element Commercial License",
+        repository="https://codefloe.com/pat-s/zendrite",
+        room=None,
+        branch="main",
+        spec_version_finders=DendriteFinders.spec_version_finders,
+        room_version_finders=DendriteFinders.room_version_finders
+        + [
+            # For a period github.com/jackmaninov/gomatrixserverlib was used to replace github.com/matrix-org/gomatrixserverlib
+            # but this didn't have any impact on supported versions.
+            SubRepoFinder(
+                repository="https://codefloe.com/pat-s/gomatrixserverlib",
+                commit_finder=PatternFinder(
+                    paths=["go.mod"],
+                    pattern=r"codefloe.com/pat-s/gomatrixserverlib (?:v0\.0\.0-\d+-([0-9a-f]+)|(v\d\.\d.\d))",
+                ),
+                finder=PatternFinder(
+                    paths=["eventversion.go"], pattern=r"RoomVersionV(\d+)"
+                ),
+            ),
+        ],
+        default_room_version_finders=DendriteFinders.default_room_version_finders,
+        commits=CommitInfo(
+            earliest_commit="379ffff1f6673ddd39164f65194716d2e3c2ebb0",
+            earliest_tag=None,
+        ),
+        forked_from=ForkInfo(name="dendrite"),
         process_updates=True,
     ),
 ]
