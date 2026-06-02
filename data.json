@@ -2609,8 +2609,8 @@
                 "v1.5": 885,
                 "v1.8": 701
             },
-            "last_commit": "14c1d37b47544e168fe30e338b4caaaced951320",
-            "last_commit_date": "2026-05-18T05:05:09+00:00",
+            "last_commit": "5cb0db6f31f5d7e0c712667cfd95f9accc4ad904",
+            "last_commit_date": "2026-06-02T05:03:05+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": "91f3488fc720fa750f5de6344cf04e16",
@@ -3369,8 +3369,8 @@
                 "v1.1": 1134,
                 "v1.2": 1049
             },
-            "last_commit": "933a12d00e9f3010cb1570c32ca9d87b79665aa4",
-            "last_commit_date": "2026-02-06T17:43:16+00:00",
+            "last_commit": "08cac1ccf0a45471132ad24a29e3ec15643675fa",
+            "last_commit_date": "2026-05-20T15:41:45+00:00",
             "maturity": "beta",
             "merged_back": false,
             "project_data_hash": "de4534894f0eb6e64dd38d3aeb56e438",
@@ -4262,8 +4262,8 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit": "09eebd8a6046971e28690673cbd705697973c82d",
-            "last_commit_date": "2026-05-11T17:07:30+02:00",
+            "last_commit": "a3a2e7be486dad9544c38c671274a4382bdbc15b",
+            "last_commit_date": "2026-05-22T16:00:59+02:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "e5ed12fad117e79c6e61c881c5de7e71",
@@ -5390,7 +5390,7 @@
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
             "last_commit": null,
-            "last_commit_date": "2026-05-18T13:04:49.486703",
+            "last_commit_date": "2026-06-02T09:45:33.779363",
             "maturity": "beta",
             "merged_back": false,
             "project_data_hash": null,
@@ -6204,8 +6204,8 @@
             "lag_all_by_tag": {
                 "r0.6.1": 1497
             },
-            "last_commit": "af4073fb131658db11983be2d2eae3f2564e59af",
-            "last_commit_date": "2026-05-12T23:30:52+02:00",
+            "last_commit": "f2d803eb778a442acba71502de6ea13bf4419017",
+            "last_commit_date": "2026-05-27T14:46:33+02:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "0178434a03f9fc610a705be60c537a73",
@@ -7000,8 +7000,8 @@
                 "v1.9": 127
             },
             "lag_all_by_tag": {},
-            "last_commit": "2b6f1bc9f71f6f8fe9e827f8d0dbd82227fc0614",
-            "last_commit_date": "2026-05-14T18:57:37-07:00",
+            "last_commit": "91d6d29e8370b12816f16a3b5ab98b734911f057",
+            "last_commit_date": "2026-06-01T20:45:40-07:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "9676627c7de9bee60ea6e462e02881fd",
@@ -7192,7 +7192,7 @@
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
             "last_commit": null,
-            "last_commit_date": "2026-05-18T13:04:49.486731",
+            "last_commit_date": "2026-06-02T09:45:33.779387",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": null,
@@ -7754,143 +7754,143 @@
             "default_room_version_dates_by_commit": {
                 "10": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ]
             },
             "default_room_version_dates_by_tag": {},
-            "forked_date": "2026-05-07T13:49:49+01:00",
+            "forked_date": "2026-05-15T11:43:12+01:00",
             "forked_from": "synapse",
-            "initial_commit_date": "2026-05-07T16:17:49+01:00",
+            "initial_commit_date": "2026-05-18T21:09:23+01:00",
             "initial_release_date": null,
             "lag_after_commit_by_commit": {},
             "lag_after_commit_by_tag": {},
             "lag_after_release_by_commit": {},
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {
-                "r0.0.1": 3768,
-                "r0.1.0": 3650,
-                "r0.2.0": 3583,
-                "r0.3.0": 3083,
-                "r0.4.0": 2805,
-                "r0.5.0": 2521,
-                "r0.6.0": 2372,
-                "r0.6.1": 2171,
-                "v1.1": 1639,
-                "v1.10": 775,
-                "v1.11": 685,
-                "v1.12": 576,
-                "v1.2": 1554,
-                "v1.3": 1373,
-                "v1.4": 1310,
-                "v1.5": 1266,
-                "v1.6": 1177,
-                "v1.7": 1077,
-                "v1.8": 987,
-                "v1.9": 889
+                "r0.0.1": 3780,
+                "r0.1.0": 3661,
+                "r0.2.0": 3595,
+                "r0.3.0": 3094,
+                "r0.4.0": 2816,
+                "r0.5.0": 2533,
+                "r0.6.0": 2384,
+                "r0.6.1": 2182,
+                "v1.1": 1651,
+                "v1.10": 787,
+                "v1.11": 697,
+                "v1.12": 588,
+                "v1.2": 1566,
+                "v1.3": 1384,
+                "v1.4": 1322,
+                "v1.5": 1278,
+                "v1.6": 1189,
+                "v1.7": 1089,
+                "v1.8": 999,
+                "v1.9": 901
             },
             "lag_all_by_tag": {},
-            "last_commit": "18df94f1fff0b6dd339d4f94d4ec801502f575e5",
-            "last_commit_date": "2026-05-10T17:44:02+01:00",
+            "last_commit": "6b6b21badbe1831a0a26edcd1d026af4591bf70a",
+            "last_commit_date": "2026-05-18T21:09:23+01:00",
             "maturity": "beta",
             "merged_back": false,
-            "project_data_hash": "ff2a26fb8d97b472d10cbebdd4b62be6",
+            "project_data_hash": "4f26b13fa247f5d5e148bbb622c3d7ed",
             "room_version_dates_by_commit": {
                 "1": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "10": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "11": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "12": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "2": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "3": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "4": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "5": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "6": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "7": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "8": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "9": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
@@ -7900,160 +7900,160 @@
             "spec_version_dates_by_commit": {
                 "r0.0.1": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "r0.1.0": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "r0.2.0": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "r0.3.0": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "r0.4.0": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "r0.5.0": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "r0.6.0": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "r0.6.1": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "v1.1": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "v1.10": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "v1.11": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "v1.12": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "v1.2": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "v1.3": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "v1.4": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "v1.5": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "v1.6": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "v1.7": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "v1.8": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
                 ],
                 "v1.9": [
                     [
-                        "c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
-                        "2026-05-07T16:17:49+01:00",
+                        "a862e7f8fd149f735c901e516d54038e5b35c9e3",
+                        "2026-05-18T21:09:23+01:00",
                         null,
                         null
                     ]
@@ -8075,7 +8075,7 @@
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
             "last_commit": null,
-            "last_commit_date": "2026-05-18T13:04:49.486749",
+            "last_commit_date": "2026-06-02T09:45:33.779404",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": null,
@@ -8173,8 +8173,8 @@
                 "v1.8": 138,
                 "v1.9": 40
             },
-            "last_commit": "ec4950b438f17efd7ceaf3fd1e8fa2b9c7d41ac4",
-            "last_commit_date": "2026-05-18T16:10:40+00:00",
+            "last_commit": "387dfabe3b445c71ef423a420d97e107d2fb30ab",
+            "last_commit_date": "2026-06-02T12:34:36+01:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": "9ff85ce2ce0af3d4d75379bfe3333730",
@@ -10444,7 +10444,7 @@
                 "v1.9": 376
             },
             "last_commit": null,
-            "last_commit_date": "2026-05-08T00:00:00+00:00",
+            "last_commit_date": "2026-05-20T00:00:00+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": null,
@@ -11260,8 +11260,8 @@
                 "v1.4": 925,
                 "v1.5": 881
             },
-            "last_commit": "8a3a585a5a780a11e7255221e48035833b3babc9",
-            "last_commit_date": "2026-05-18T05:11:56+00:00",
+            "last_commit": "585358bac85249ecf2dff1e255b12c0d0c4ec56d",
+            "last_commit_date": "2026-06-02T06:51:00+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": "e7fa146aa6d4cb0304845a300f87c1f1",
@@ -11823,8 +11823,8 @@
                 "v1.8": 969,
                 "v1.9": 871
             },
-            "last_commit": "1203bc7e6d333f5dee7cecf8e6cf5824a7e26a39",
-            "last_commit_date": "2026-05-13T21:53:45+01:00",
+            "last_commit": "71cc19ab9bd9801726e02ed218edc80ea62a5b18",
+            "last_commit_date": "2026-05-20T02:32:55+01:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "7c32700f246163c0ad9e9e8c9a66a7ff",
@@ -13345,8 +13345,8 @@
                 "v1.1": 1549,
                 "v1.2": 1464
             },
-            "last_commit": "36ff326332e6d9890145e3ca650077d5a680978c",
-            "last_commit_date": "2026-05-18T06:26:07+00:00",
+            "last_commit": "40844294510d84b667c5630e659a8971f5c29848",
+            "last_commit_date": "2026-05-28T06:02:10+00:00",
             "maturity": "beta",
             "merged_back": false,
             "project_data_hash": "14429ccaef6777a0d4021b53bdc6c1a5",

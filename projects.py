@@ -1360,7 +1360,7 @@ ADDITIONAL_PROJECTS = [
         room_version_finders=SynapseFinders.room_version_finders,
         default_room_version_finders=SynapseFinders.default_room_version_finders,
         commits=CommitInfo(
-            earliest_commit="c2dbc3fc9fc0d531be2fafb5a6463a034c849474",
+            earliest_commit="a862e7f8fd149f735c901e516d54038e5b35c9e3",
             earliest_tag=None,
         ),
         forked_from=ForkInfo(name="synapse"),
