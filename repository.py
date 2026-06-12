@@ -211,13 +211,17 @@ class GitRepository(Repository[Commit, TagReference]):
 
             # Fetch again if the additional refspec is added.
             if self._check_refspecs():
-                self._repo.remote().fetch()
+                self._fetch()
         else:
             self._repo = Repo(self.working_dir)
             self._check_refspecs()
-            self._repo.remote().fetch()
+            self._fetch()
 
         self._git_cmd = git.cmd.Git(self.working_dir)
+
+    def _fetch(self) -> None:
+        """Fetch new commits & tags."""
+        self._repo.remote().fetch(tags=True)
 
     def _check_refspecs(self) -> bool:
         """Add a fetch refspec for pull requests as some sub-repos target pull requests of other repos."""

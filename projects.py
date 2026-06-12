@@ -364,6 +364,7 @@ ADDITIONAL_METADATA = {
 }
 
 # Maybe https://github.com/lilyanavalley/264e.org?
+# Zion's Gate https://matrix.to/#/!4YgPCZyvXlfgjRhD-4N3CfvTgVwMQ5hKq-qmouH_R-8/$p7NuDUKG8i-UyqgkBylTcQTEzQUpfBXKsPuEqqzP4oU?via=element.io&via=matrix.org&via=mozilla.org
 ADDITIONAL_PROJECTS = [
     ProjectMetadata(
         name="architex",
@@ -1364,7 +1365,7 @@ ADDITIONAL_PROJECTS = [
             earliest_tag=None,
         ),
         forked_from=ForkInfo(name="synapse"),
-        process_updates=True,
+        process_updates=False,  # Git is requiring a login
     ),
     ProjectMetadata(
         name="synapse-ancient",
@@ -1466,9 +1467,26 @@ ADDITIONAL_PROJECTS = [
         description="A Matrix homeserver implementation written in Elixir that has just begun",
         author="Serra Allgood",
         maturity=Maturity.Alpha,
-        language="Rust",
+        language="Elixir",
         licence="AGPL-3.0",
         repository="https://github.com/serra-allgood/thurim",
+        room="#thurim:matrix.org",
+        branch="main",
+        spec_version_finders=None,
+        room_version_finders=None,
+        default_room_version_finders=None,
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="thurim-old",
+        description="A Matrix homeserver implementation written in Elixir that has just begun",
+        author="Serra Allgood",
+        maturity=Maturity.Alpha,
+        language="Elixir",
+        licence="AGPL-3.0",
+        repository="https://github.com/serra-allgood/thurim-old",  # Fake repository so path is correct
         room=None,
         branch="main",
         spec_version_finders=[
@@ -1490,7 +1508,7 @@ ADDITIONAL_PROJECTS = [
         ],
         commits=None,
         forked_from=None,
-        process_updates=True,
+        process_updates=False,  # History was stomped on and is no longer available
     ),
     ProjectMetadata(
         name="venator",
@@ -1548,7 +1566,7 @@ ADDITIONAL_PROJECTS = [
         ],
         commits=None,
         forked_from=None,
-        process_updates=True,
+        process_updates=False,  # Git is requiring a login
     ),
     ProjectMetadata(
         name="vona",
