@@ -1365,7 +1365,7 @@ ADDITIONAL_PROJECTS = [
             earliest_tag=None,
         ),
         forked_from=ForkInfo(name="synapse"),
-        process_updates=False,  # Git is requiring a login
+        process_updates=True,
     ),
     ProjectMetadata(
         name="synapse-ancient",
@@ -1566,7 +1566,7 @@ ADDITIONAL_PROJECTS = [
         ],
         commits=None,
         forked_from=None,
-        process_updates=False,  # Git is requiring a login
+        process_updates=True,
     ),
     ProjectMetadata(
         name="vona",
