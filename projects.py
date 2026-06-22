@@ -365,6 +365,8 @@ ADDITIONAL_METADATA = {
 
 # Maybe https://github.com/lilyanavalley/264e.org?
 # Zion's Gate https://matrix.to/#/!4YgPCZyvXlfgjRhD-4N3CfvTgVwMQ5hKq-qmouH_R-8/$p7NuDUKG8i-UyqgkBylTcQTEzQUpfBXKsPuEqqzP4oU?via=element.io&via=matrix.org&via=mozilla.org
+# Dead repos:
+#   elatrix (https://github.com/Adrixop/elatrix - 404s)
 ADDITIONAL_PROJECTS = [
     ProjectMetadata(
         name="architex",
@@ -1213,6 +1215,29 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
+        name="peykon",
+        description="A lightweight Matrix homeserver implementation written in C#.",
+        author="Poulad",
+        maturity=Maturity.Obsolete,
+        language="C#",
+        licence="MIT",
+        repository="https://github.com/poulad/PeykOn",
+        room=None,
+        branch="master",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "src/PeykOn/Controllers/2. API Standards/VersionsController.cs",
+                ]
+            ),
+        ],
+        room_version_finders=None,
+        default_room_version_finders=None,
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
         name="plasma",
         description="Plasma is an open-source Matrix server implementation.",
         author="",
@@ -1385,6 +1410,25 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
+        name="signaller",
+        description="A homeserver designed to be used on systems with limited resources.",
+        author="signaller-matrix",
+        maturity=Maturity.Alpha,
+        language="Go",
+        licence="MIT",
+        repository="https://github.com/signaller-matrix/signaller",
+        room=None,
+        branch="master",
+        spec_version_finders=[
+            SpecVersionFinder(paths=["consts.go", "internal/consts.go"])
+        ],
+        room_version_finders=None,
+        default_room_version_finders=None,
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
         name="starnapse",
         description="element-hq/synapse with patches for starstruck.systems",
         author="star",
@@ -1479,6 +1523,25 @@ ADDITIONAL_PROJECTS = [
             latest_commit="a694353ec4e59f9ba331a7aa691f22d49a415b0b",
         ),
         forked_from=ForkInfo(name="synapse-legacy", merged_back=True),
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="synapse-famedly",
+        description="Fork of synapse by Famedly with patches.",
+        author="Famedly",
+        maturity=Maturity.Stable,
+        language="Python",
+        licence="AGPL-3.0",
+        repository="https://github.com/famedly/synapse",
+        room=None,
+        branch="master",
+        spec_version_finders=SynapseFinders.spec_version_finders,
+        room_version_finders=SynapseFinders.room_version_finders,
+        default_room_version_finders=SynapseFinders.default_room_version_finders,
+        commits=CommitInfo(
+            earliest_commit="ab0a981c32509813e68ea9ffcd5a01960bc873a5",
+        ),
+        forked_from=ForkInfo(name="synapse-legacy"),
         process_updates=True,
     ),
     ProjectMetadata(
