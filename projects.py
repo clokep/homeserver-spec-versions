@@ -638,6 +638,43 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
+        name="ferretcannon",
+        description="FERRETCANNON is an LLM-only implementation of The Matrix Specification in Kotlin/KTor.",
+        author="Ed Geraghty",
+        maturity=Maturity.Alpha,
+        language="Kotlin",
+        licence="YPL",
+        repository="https://github.com/EdGeraghty/FERRETCANNON",
+        room=None,
+        branch="main",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=["src/main/kotlin/routes/client-server/client/ClientRoutes.kt"],
+            ),
+        ],
+        room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "src/main/kotlin/routes/client-server/client/AuthRoutes.kt",
+                    "src/main/kotlin/routes/client-server/client/ClientRoutes.kt",
+                ],
+                pattern=r'"default" to "(\d+)"|put\("(\d+)", "stable"',
+            ),
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "src/main/kotlin/routes/client-server/client/AuthRoutes.kt",
+                    "src/main/kotlin/routes/client-server/client/ClientRoutes.kt",
+                ],
+                pattern=r'"(\d+)" to "stable"|put\("default", "(\d+)"',
+            ),
+        ],
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
         name="ferrix",
         description="A toy Matrix homeserver written in Rust, for me to learn more about the Matrix protocol",
         author="EliseZeroTwo",
