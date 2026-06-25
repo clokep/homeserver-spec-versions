@@ -558,6 +558,27 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
+        name="coordinate",
+        description="Erlang based Matrix homeserver",
+        author="Justin Wood",
+        maturity=Maturity.Unstarted,
+        language="Erlang",
+        licence="Apache-2.0",
+        repository="https://git.sr.ht/~ankhers/coordinate",
+        room=None,
+        branch="master",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=["apps/coordinate/src/coordinate_client_versions_h.erl"]
+            )
+        ],
+        room_version_finders=None,
+        default_room_version_finders=None,
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
         name="cortex",
         description="Cortex is a reference implementation of Matrix Home Server",
         author="Vedhavyas Singareddi",
