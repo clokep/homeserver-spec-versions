@@ -1171,6 +1171,33 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
+        name="matrixon",
+        description="Next-Generation Matrix Server with AI and Web3 Integration",
+        author="arkCyber",
+        maturity=Maturity.Unstarted,
+        language="Rust",
+        licence="MIT OR Apache-2.0",
+        repository="https://github.com/arkCyber/Matrixon",
+        room=None,
+        branch="main",
+        spec_version_finders=[SpecVersionFinder(paths=["src/lib.rs"])],
+        room_version_finders=[
+            PatternFinder(
+                paths=["src/lib.rs"],
+                pattern=r'"(\d+)": "stable"',
+            ),
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["src/lib.rs"],
+                pattern=r'"default": "(\d+)"',
+            ),
+        ],
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
         name="messagehub",
         description="A P2P Matrix home server created using libp2p.",
         author="gdlol",
