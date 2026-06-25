@@ -365,8 +365,6 @@ ADDITIONAL_METADATA = {
 
 # Maybe https://github.com/lilyanavalley/264e.org?
 # Zion's Gate https://matrix.to/#/!4YgPCZyvXlfgjRhD-4N3CfvTgVwMQ5hKq-qmouH_R-8/$p7NuDUKG8i-UyqgkBylTcQTEzQUpfBXKsPuEqqzP4oU?via=element.io&via=matrix.org&via=mozilla.org
-# Dead repos:
-#   elatrix (https://github.com/Adrixop/elatrix - 404s)
 ADDITIONAL_PROJECTS = [
     ProjectMetadata(
         name="architex",
@@ -654,6 +652,23 @@ ADDITIONAL_PROJECTS = [
                 paths=["apps/dopamine_web/lib/dopamine_web/views/info_view.ex"]
             )
         ],
+        room_version_finders=None,
+        default_room_version_finders=None,
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="elatrix",
+        description="Matrix server implementation attempt",
+        author="MKenin / kirill-kruchkov",
+        maturity=Maturity.Unstarted,
+        language="Elixir",
+        licence="",
+        repository="https://github.com/elatrix/elatrix",
+        room=None,
+        branch="master",
+        spec_version_finders=None,
         room_version_finders=None,
         default_room_version_finders=None,
         commits=None,
