@@ -458,6 +458,49 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
+        name="bromal",
+        description="A lightweight opensource messaging server, that uses the Matrix protocol",
+        author="Igorj Gorjaĉev",
+        maturity=Maturity.Alpha,
+        language="Elixir",
+        licence="AGPL-3.0-or-later",
+        repository="https://code.bromal.im/main/bromal",
+        room=None,
+        branch="master",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "lib/bromal_api/matrix/client/versions.ex",
+                    "lib/bromal_client/matrix/client/versions.ex",
+                ]
+            )
+        ],
+        room_version_finders=[
+            PatternFinder(
+                paths=["lib/bromal_client/matrix/client/capabilities.ex"],
+                pattern=r'"(\d+)" => "stable"',
+            ),
+            PatternFinder(
+                paths=["lib/bromal/rooms/versions.ex"],
+                pattern=r"Versions\.Version(\d+)",
+            ),
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["lib/bromal_client/matrix/client/capabilities.ex"],
+                pattern=r'"default" => "(\d+)"',
+            ),
+            PatternFinder(
+                paths=["lib/bromal/rooms/versions/version10.ex"],
+                pattern=r"def default.+: true",
+                parser=lambda s: {"10"},
+            ),
+        ],
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
         name="calyx",
         description="A soft fork of Synapse",
         author="Helix K",
