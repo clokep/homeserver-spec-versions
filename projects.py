@@ -1171,6 +1171,46 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
+        name="messagehub",
+        description="A P2P Matrix home server created using libp2p.",
+        author="gdlol",
+        maturity=Maturity.Alpha,
+        language="C#",
+        licence="MIT",
+        repository="https://github.com/gdlol/MessageHub",
+        room=None,
+        branch="master",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "MessageHub/ClientServerApi/VersionsController.cs",
+                    "MessageHub/ClientServer/VersionsController.cs",
+                ]
+            )
+        ],
+        room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "MessageHub/ClientServerApi/CapabilitiesController.cs",
+                    "MessageHub/ClientServer/CapabilitiesController.cs",
+                ],
+                pattern=r'\["(\d+)"\] = "stable"',
+            )
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "MessageHub/ClientServerApi/CapabilitiesController.cs",
+                    "MessageHub/ClientServer/CapabilitiesController.cs",
+                ],
+                pattern=r'\["default"\] = (\d+),',
+            )
+        ],
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
         name="mocktrix",
         description="Partial implementation of a Matrix homeserver (work in progress)",
         author="Dirk Stolle",
@@ -1199,6 +1239,32 @@ ADDITIONAL_PROJECTS = [
             PatternFinder(
                 paths=["Mocktrix/client/r0.6.1/Capabilities.cs"],
                 pattern=r'DefaultVersion = "(\d+)",',
+            ),
+        ],
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="nebu",
+        description="An enterprise-grade, Matrix-compatible chat server — Apache 2.0, no federation, horizontally scalable.",
+        author="INNOQ",
+        maturity=Maturity.Alpha,
+        language="Go, Elixir",
+        licence="Apache-2.0",
+        repository="https://github.com/innoq/nebu",
+        room=None,
+        branch="main",
+        spec_version_finders=[SpecVersionFinder(paths=["gateway/cmd/gateway/main.go"])],
+        room_version_finders=[
+            PatternFinder(
+                paths=["gateway/cmd/gateway/main.go"], pattern=r'"(\d+)":"stable"'
+            ),
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["gateway/cmd/gateway/main.go"],
+                pattern=r'"default":"(\d+)"',
             ),
         ],
         commits=None,
@@ -1742,6 +1808,46 @@ ADDITIONAL_PROJECTS = [
                 ],
                 pattern=r"DefaultRoomVersion(?::| =) id\.RoomV(\d+)",
             )
+        ],
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="vela",
+        description="A self-hostable Matrix homeserver written in Rust.",
+        author="sufforest",
+        maturity=Maturity.Alpha,
+        language="Rust",
+        licence="Apache-2.0",
+        repository="https://github.com/sufforest/vela",
+        room=None,
+        branch="main",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "vela-api/src/discovery.rs",
+                    "vela-api/src/directory/discovery.rs",
+                ]
+            ),
+        ],
+        room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "vela-api/src/capabilities.rs",
+                    "vela-api/src/profile/capabilities.rs",
+                ],
+                pattern=r'"(\d+)": "stable"',
+            ),
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "vela-api/src/capabilities.rs",
+                    "vela-api/src/profile/capabilities.rs",
+                ],
+                pattern=r'"default": "(\d+)"',
+            ),
         ],
         commits=None,
         forked_from=None,

@@ -81,7 +81,7 @@ def get_pattern_from_file(
 
     versions: set[str] = set()
 
-    for line in result.stdout.decode("ascii").splitlines():
+    for line in result.stdout.decode("utf-8").splitlines():
         # Strip comments.
         #
         # TODO This only handles line comments, not block comments.
