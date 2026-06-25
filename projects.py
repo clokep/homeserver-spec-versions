@@ -364,6 +364,8 @@ ADDITIONAL_METADATA = {
 }
 
 # Maybe https://github.com/lilyanavalley/264e.org?
+# RasmusRendal/smh
+# tcpipuk/hammerhead
 # Zion's Gate https://matrix.to/#/!4YgPCZyvXlfgjRhD-4N3CfvTgVwMQ5hKq-qmouH_R-8/$p7NuDUKG8i-UyqgkBylTcQTEzQUpfBXKsPuEqqzP4oU?via=element.io&via=matrix.org&via=mozilla.org
 ADDITIONAL_PROJECTS = [
     ProjectMetadata(
@@ -393,6 +395,23 @@ ADDITIONAL_PROJECTS = [
                 pattern=r'"default: "(\d+)"',
             ),
         ],
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="arrow",
+        description="An implementation of the matrix API spec in Haskell",
+        author="MaT1g3R",
+        maturity=Maturity.Unstarted,
+        language="Haskell",
+        licence="AGPL-3.0-or-later",
+        repository="https://github.com/MaT1g3R/arrow",
+        room=None,
+        branch="master",
+        spec_version_finders=[SpecVersionFinder(paths=["src/Versions.hs"])],
+        room_version_finders=None,
+        default_room_version_finders=None,
         commits=None,
         forked_from=None,
         process_updates=True,
@@ -1129,6 +1148,30 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
+        name="m-lstrom",
+        description="M-lstorm is a continuon of matrix homeserver software maelstorm",
+        author="Alexander Max Ranabel",
+        maturity=Maturity.Obsolete,
+        language="Rust",
+        licence="Apache-2.0 OR MIT",
+        repository="https://github.com/AlexanderMaxRanabel/m-lstrom",
+        room=None,
+        branch="master",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "src/server/handlers/admin.rs",
+                    "crates/maelstrom-api/src/handlers/versions.rs",
+                ]
+            ),
+        ],
+        room_version_finders=None,
+        default_room_version_finders=None,
+        commits=CommitInfo(earliest_commit="7554e295522a1008a40b8067d2ea5d042776c08e"),
+        forked_from=ForkInfo(name="maelstrom"),
+        process_updates=True,
+    ),
+    ProjectMetadata(
         name="Matrices",
         description="Matrix.org homeservers",
         author="James Aimonetti",
@@ -1310,6 +1353,28 @@ ADDITIONAL_PROJECTS = [
         branch="master",
         spec_version_finders=None,
         room_version_finders=None,
+        default_room_version_finders=None,
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="ocaml-matrix",
+        description="Implementation of a matrix server in OCaml for MirageOS",
+        author="Gwenaëlle Lecat",
+        maturity=Maturity.Unstarted,
+        language="OCaml",
+        licence="ISC",
+        repository="https://github.com/mirage/ocaml-matrix",
+        room=None,
+        branch="main",
+        spec_version_finders=None,
+        room_version_finders=[
+            PatternFinder(
+                paths=["ci-server/federation_routes.ml"],
+                pattern=r'room_version = "(\d+)"',
+            )
+        ],
         default_room_version_finders=None,
         commits=None,
         forked_from=None,
