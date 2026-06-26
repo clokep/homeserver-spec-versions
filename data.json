@@ -6298,7 +6298,7 @@
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
             "last_commit": null,
-            "last_commit_date": "2026-06-25T09:03:11.300534",
+            "last_commit_date": "2026-06-26T09:04:28.700655",
             "maturity": "beta",
             "merged_back": false,
             "project_data_hash": null,
@@ -7592,8 +7592,8 @@
             "lag_all_by_tag": {
                 "r0.6.1": 1497
             },
-            "last_commit": "6c341ee4c7122d29b4669fb0264aaef719fa1155",
-            "last_commit_date": "2026-06-22T23:59:15+02:00",
+            "last_commit": "1a4e0e6130bfffe9dd77e36744fad51164380d72",
+            "last_commit_date": "2026-06-25T14:06:33+02:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "0178434a03f9fc610a705be60c537a73",
@@ -8747,8 +8747,8 @@
                 "v1.9": 127
             },
             "lag_all_by_tag": {},
-            "last_commit": "c7e80f249705a94b9929eb82f325d21ebe8fc9f1",
-            "last_commit_date": "2026-06-23T12:55:13-07:00",
+            "last_commit": "054eb4387982a95f0bd4821270ab0ba2b1f50c46",
+            "last_commit_date": "2026-06-25T12:19:09-07:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "9676627c7de9bee60ea6e462e02881fd",
@@ -8939,7 +8939,7 @@
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
             "last_commit": null,
-            "last_commit_date": "2026-06-25T09:03:11.300568",
+            "last_commit_date": "2026-06-26T09:04:28.700688",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": null,
@@ -9856,7 +9856,7 @@
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
             "last_commit": null,
-            "last_commit_date": "2026-06-25T09:03:11.300593",
+            "last_commit_date": "2026-06-26T09:04:28.700712",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": null,
@@ -9954,8 +9954,8 @@
                 "v1.8": 138,
                 "v1.9": 40
             },
-            "last_commit": "4e9f7757f17ba81b8747b7f8f9646d17df145aa3",
-            "last_commit_date": "2026-06-24T21:16:03+00:00",
+            "last_commit": "7bc2b93e4c7bd9e1df771a065566f7dec81fd1ce",
+            "last_commit_date": "2026-06-26T08:35:26+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": "9ff85ce2ce0af3d4d75379bfe3333730",
@@ -13707,8 +13707,8 @@
                 "v1.8": 1017,
                 "v1.9": 919
             },
-            "last_commit": "0d915ad82e4baf928defa734e4073a1aa3779100",
-            "last_commit_date": "2026-06-25T10:40:29+00:00",
+            "last_commit": "22676a30b9f3dd40f8a7346e643f72d8d5a9a5ab",
+            "last_commit_date": "2026-06-26T04:29:39+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": "e7fa146aa6d4cb0304845a300f87c1f1",
@@ -14360,8 +14360,8 @@
                 "v1.17": 129,
                 "v1.18": 31
             },
-            "last_commit": "d14ea5d3430138763c8232a3761554a76367f3d4",
-            "last_commit_date": "2026-06-25T03:04:45-07:00",
+            "last_commit": "b5d6baad0557fb5a4371450e77118123a9303ef7",
+            "last_commit_date": "2026-06-25T22:03:25-07:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "a55519d423d26538005f1371e95bcf63",
@@ -14587,11 +14587,11 @@
                 "v1.8": 969,
                 "v1.9": 871
             },
-            "last_commit": "fbe3ec95ee78c1ce4ea9c7e422e81425d9784360",
-            "last_commit_date": "2026-06-24T19:50:19+01:00",
+            "last_commit": "465aa12d6960ef937be6d9be9dc5392624e000c5",
+            "last_commit_date": "2026-06-25T23:50:24+02:00",
             "maturity": "alpha",
             "merged_back": false,
-            "project_data_hash": "7c32700f246163c0ad9e9e8c9a66a7ff",
+            "project_data_hash": "324111a28f6d21657759d07a403fad3e",
             "room_version_dates_by_commit": {
                 "10": [
                     [
@@ -16109,8 +16109,8 @@
                 "v1.1": 1549,
                 "v1.2": 1464
             },
-            "last_commit": "0878db55543ec51cad4b23c70bb8990e68fc9e56",
-            "last_commit_date": "2026-06-24T14:07:27+00:00",
+            "last_commit": "5875d5945b0c20446198e03e24415007414a22b0",
+            "last_commit_date": "2026-06-26T07:23:31+00:00",
             "maturity": "beta",
             "merged_back": false,
             "project_data_hash": "14429ccaef6777a0d4021b53bdc6c1a5",
