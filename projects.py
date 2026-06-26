@@ -1611,7 +1611,7 @@ ADDITIONAL_PROJECTS = [
         licence="Apache-2.0",
         repository="https://github.com/clokep/relapse",
         room=None,
-        branch="develop",
+        branch="main",
         # These are equivalent to SynapseLegacyFinder with a different base path.
         spec_version_finders=[
             SpecVersionFinder(paths=["relapse/rest/client/versions.py"])
