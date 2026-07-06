@@ -787,6 +787,7 @@ ADDITIONAL_PROJECTS = [
         forked_from=None,
         process_updates=True,
     ),
+    # Note that this is a joke implementation that isn't really being worked on, but it does truly implement parts of the API.
     ProjectMetadata(
         name="ferretcannon",
         description="FERRETCANNON is an LLM-only implementation of The Matrix Specification in Kotlin/KTor.",
@@ -1365,6 +1366,7 @@ ADDITIONAL_PROJECTS = [
         forked_from=None,
         process_updates=True,
     ),
+    # nebu doesn't implement federation, but does implement the Client-Server API, so clients can use it.
     ProjectMetadata(
         name="nebu",
         description="An enterprise-grade, Matrix-compatible chat server — Apache 2.0, no federation, horizontally scalable.",
@@ -1635,15 +1637,45 @@ ADDITIONAL_PROJECTS = [
         forked_from=ForkInfo(name="synapse-legacy"),
         process_updates=True,
     ),
+    ProjectMetadata(
+        name="river",
+        description="",
+        author="",
+        maturity=Maturity.Alpha,
+        language="Elixir",
+        licence="",
+        repository="https://git.sr.ht/~sbr/river",
+        room=None,
+        branch="main",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=["lib/river_web/controllers/matrix/versions_controller.ex"]
+            )
+        ],
+        room_version_finders=[
+            PatternFinder(
+                paths=["lib/river_web/controllers/matrix/capabilities_controller.ex"],
+                pattern=r'"(\d+)" => "stable"',
+            )
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["config/config.exs"], pattern=r'default_room_version: "(\d+)"'
+            )
+        ],
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
     # Note that RocketChat homeserver doesn't implement the Client-Server API, thus
     # it doesn't declare itself compatible with any particular versions.
     ProjectMetadata(
         name="RocketChat-homeserver",
-        description="",
-        author="",
+        description="A Matrix Federation homeserver implementation for server-to-server communication.",
+        author="RocketChat",
         maturity=Maturity.Alpha,
         language="TypeScript",
-        licence="?",
+        licence="AGPL-3.0",
         repository="https://github.com/RocketChat/homeserver",
         room=None,
         branch="main",
@@ -1733,7 +1765,7 @@ ADDITIONAL_PROJECTS = [
             earliest_tag=None,
         ),
         forked_from=ForkInfo(name="synapse"),
-        process_updates=True,
+        process_updates=False,
     ),
     ProjectMetadata(
         name="synapse-ancient",
