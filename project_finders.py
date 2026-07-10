@@ -175,6 +175,11 @@ class SynapseLegacyFinders(Finders):
 class SynapseFinders(SynapseLegacyFinders):
     """Base finders for Synapse-based projects."""
 
+    spec_version_finders: PatternFinderType = (
+        SynapseLegacyFinders.spec_version_finders
+        + [SpecVersionFinder(paths=["rust/src/handlers/versions.rs"])]
+    )
+
     room_version_finders: PatternFinderType = (
         SynapseLegacyFinders.room_version_finders
         + [
