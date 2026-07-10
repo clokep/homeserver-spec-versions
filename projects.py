@@ -1411,6 +1411,33 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
+        name="neutrino",
+        description="A lightweight, embedded homeserver written in Rust.",
+        author="Element",
+        maturity=Maturity.Alpha,
+        language="Rust",
+        licence="AGPL-3.0-only",
+        repository="https://github.com/element-hq/neutrino",
+        room=None,
+        branch="main",
+        spec_version_finders=[
+            SpecVersionFinder(paths=["crates/neutrino-http/src/lib.rs"])
+        ],
+        room_version_finders=[
+            PatternFinder(
+                paths=["crates/neutrino-http/src/lib.rs"], pattern=r'"(\d+)": "stable"'
+            )
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["crates/neutrino-http/src/lib.rs"], pattern=r'"default": "(\d+)"'
+            )
+        ],
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
         name="ocaml-matrix",
         description="Implementation of a matrix server in OCaml for MirageOS",
         author="Gwenaëlle Lecat",
