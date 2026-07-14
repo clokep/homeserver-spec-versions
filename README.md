@@ -46,4 +46,39 @@ You can also fetch individual projects by providing one or more projects:
 
 ----
 
- [This work](https://patrick.cloke.us/homeserver-spec-versions/) © 2024 by [Patrick Cloke](https://github.com/clokep) is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+## Finding Homeservers
+
+### Forges
+
+* bitbucket.org
+* codeberg.org
+* codefloe.com
+* sr.ht
+* gitea.com
+* github.com
+* gitlab.com
+* launchpad.net
+* savannah.gnu.org
+* sourceforge.net
+
+### Package repositories
+
+* .NET (NuGet): nuget.org
+* C/C++ (Conan): conan.io
+* Erlang (Hex): hex.pm
+* Haskell (Hackage): hackage.haskell.org
+* Java (Maven): mvnrepository.com
+* Lua (LuaRocks): luarocks.org
+* OCaml (OPAM): opam.ocaml.org
+* Node.js (npm): npmjs.com
+* Perl (CPAN): cpan.org
+* PHP (Pear): pear.php.net
+* PHP (Packagist): packagist.org
+* Python (PyPI): pypi.org
+* Ruby (RubyGems): rubygems.org
+* Rust (Crates.io): crates.io
+* Swift / Objective-C (CocoaPods): cocoapods.org
+
+----
+
+[This work](https://patrick.cloke.us/homeserver-spec-versions/) © 2024 by [Patrick Cloke](https://github.com/clokep) is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
