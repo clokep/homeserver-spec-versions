@@ -41,10 +41,6 @@ function cmpRoomVersions(a, b) {
     return Number(a) - Number(b);
 }
 
-function resetZoom(chartId) {
-    Chart.getChart(chartId).resetZoom();
-}
-
 /**
  * Add a data point to a bar graph.
  */
