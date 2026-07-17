@@ -501,6 +501,37 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
+        name="axon-2",
+        description="Elixir/Erlang Matrix homeserver targeting spec v1.18",
+        author="mazoochian",
+        maturity=Maturity.Alpha,
+        language="Elixir",
+        licence="MIT",
+        repository="https://github.com/mazoochian/axon",
+        room=None,
+        branch="master",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=["apps/axon_web/lib/axon_web/controllers/version_controller.ex"]
+            )
+        ],
+        room_version_finders=[
+            PatternFinder(
+                paths=["apps/axon_web/lib/axon_web/controllers/version_controller.ex"],
+                pattern=r'"(\d+)" => "stable"',
+            )
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["apps/axon_web/lib/axon_web/controllers/version_controller.ex"],
+                pattern=r'"default" => "(\d+)"',
+            )
+        ],
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
         name="babbleserv",
         description="Babbleserv is a Matrix homeserver built on top of FoundationDB",
         author="Beeper",
