@@ -1292,6 +1292,35 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
+        name="Merovingian",
+        description="Matrix protocol trafficker of information.",
+        author="James Chapman",
+        maturity=Maturity.Alpha,
+        language="C++",
+        licence="GPL-3.0-or-later",
+        repository="https://github.com/OMG-Software/Merovingian",
+        room=None,
+        branch="main",
+        spec_version_finders=[
+            SpecVersionFinder(paths=["src/homeserver/client_server.cpp"])
+        ],
+        room_version_finders=[
+            PatternFinder(
+                paths=["src/rooms/room_version_policy.cpp"],
+                pattern=r'RoomVersionPolicy{"(\d+)"',
+            )
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["src/homeserver/client_server.cpp"],
+                pattern=r'"default", json_str\("(\d+)"\)',
+            )
+        ],
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
         name="messagehub",
         description="A P2P Matrix home server created using libp2p.",
         author="gdlol",
@@ -1599,6 +1628,35 @@ ADDITIONAL_PROJECTS = [
             PatternFinder(
                 paths=["config/config.exs"], pattern=r'default_room_version: "(\d+)"'
             ),
+        ],
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="Progressive-Server",
+        description="Progressive Matrix homeserver in C++23 — high-performance Matrix ecosystem",
+        author="Anton Maurer",
+        maturity=Maturity.Alpha,
+        language="C++",
+        licence="",
+        repository="https://github.com/progressive-chat/progressive-server",
+        room=None,
+        branch="main",
+        spec_version_finders=[
+            SpecVersionFinder(paths=["src/progressive/rest/client/endpoints.cpp"])
+        ],
+        room_version_finders=[
+            PatternFinder(
+                paths=["src/progressive/room_versions.cpp"],
+                pattern=r'v.version = "(\d+)";',
+            )
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["src/progressive/room_versions.cpp"],
+                pattern=r'default_version_ = "(\d+)";',
+            )
         ],
         commits=None,
         forked_from=None,
