@@ -40,7 +40,9 @@ class ConduitFinders(Finders):
             )
         ]
 
-    spec_version_finders: PatternFinderType = get_spec_version_finders([])
+    spec_version_finders: PatternFinderType = get_spec_version_finders(
+        ["conduit/src/api/client_server/unversioned.rs"]
+    )
 
     @staticmethod
     def get_room_version_finders(extra_paths: list[str]) -> PatternFinderType:
@@ -58,7 +60,9 @@ class ConduitFinders(Finders):
             ),
         ]
 
-    room_version_finders: PatternFinderType = get_room_version_finders([])
+    room_version_finders: PatternFinderType = get_room_version_finders(
+        ["conduit/src/service/globals/mod.rs"]
+    )
 
     @staticmethod
     def get_default_room_version_finders(
@@ -80,7 +84,7 @@ class ConduitFinders(Finders):
         ]
 
     default_room_version_finders: PatternFinderType = get_default_room_version_finders(
-        []
+        ["conduit/src/config/mod.rs", "conduit-config/src/lib.rs"]
     )
 
 
