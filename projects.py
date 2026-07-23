@@ -3,7 +3,7 @@ import inspect
 import os.path
 from dataclasses import asdict, dataclass
 from datetime import datetime
-from typing import Iterator
+from typing import Callable, Iterator
 from urllib.request import urlopen
 from zoneinfo import ZoneInfo
 
@@ -76,6 +76,9 @@ class CommitInfo:
     #
     # Note that earlier tags might exist in the repo due to forks or other reasons.
     earliest_tag: str | None = None
+
+    # Callable which takes a tag name and returns true if it should be ignored.
+    ignored_tags: Callable[[str], bool] | None = None
 
 
 @dataclass
@@ -213,6 +216,7 @@ ADDITIONAL_METADATA = {
         commits=CommitInfo(
             earliest_commit="6bfe946bd2d82db12c1e49918612cc3d7139b8ce",
             earliest_tag=None,
+            ignored_tags=lambda tag: tag.startswith("helm-dendrite-"),
         ),
         forked_from=ForkInfo(name="dendrite-legacy"),
         process_updates=True,
@@ -754,7 +758,7 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=DendriteFinders.spec_version_finders,
         room_version_finders=DendriteFinders.room_version_finders,
         default_room_version_finders=DendriteFinders.default_room_version_finders,
-        commits=None,
+        commits=CommitInfo(ignored_tags=lambda tag: tag.startswith("helm-dendrite-")),
         forked_from=None,
         process_updates=True,
     ),
@@ -1347,7 +1351,7 @@ ADDITIONAL_PROJECTS = [
                 pattern=r'"default", json_str\("(\d+)"\)',
             )
         ],
-        commits=None,
+        commits=CommitInfo(ignored_tags=lambda tag: tag == "latest"),
         forked_from=None,
         process_updates=True,
     ),
@@ -1560,7 +1564,7 @@ ADDITIONAL_PROJECTS = [
         maturity=Maturity.Alpha,
         language="C++",
         licence="AGPL-3.0",
-        repository="https://github.com/MTRNord/persephone",
+        repository="https://phorge.mtrnord.blog/source/persephone.git",
         room=None,
         branch="main",
         spec_version_finders=[
@@ -1588,7 +1592,7 @@ ADDITIONAL_PROJECTS = [
         ],
         commits=None,
         forked_from=None,
-        process_updates=True,
+        process_updates=False,  # TODO Cloning is returning a 500.
     ),
     ProjectMetadata(
         name="peykon",
@@ -1992,8 +1996,8 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=SynapseLegacyFinders.spec_version_finders,
         room_version_finders=SynapseLegacyFinders.room_version_finders,
         default_room_version_finders=SynapseLegacyFinders.default_room_version_finders,
-        # Earlier tags exist from DINSIC.
-        commits=CommitInfo(earliest_tag="v0.0.0"),
+        # Ignore DINSIC and the Element hosting service tags.
+        commits=CommitInfo(ignored_tags=lambda tag: "dinsic" in tag or "hss" in tag or "modular" in tag or tag == "alpha"),
         forked_from=ForkInfo("synapse-ancient"),
         process_updates=True,
     ),

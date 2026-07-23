@@ -134,7 +134,7 @@ def get_project_versions(
             )
 
         # Resolve the commit to the *next* tag.
-        tag = repo.get_tag_from_commit(hexsha)
+        tag = repo.get_tag_from_commit(hexsha, project)
         # If no tags were found than this wasn't released yet.
         if tag:
             if not versions_at_tag or versions_at_tag[-1].versions != cur_versions:

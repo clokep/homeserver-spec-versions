@@ -185,7 +185,7 @@ class Repository(Generic[CommitType, TagType], metaclass=abc.ABCMeta):
         """
 
     @abc.abstractmethod
-    def get_tag_from_commit(self, commit: str) -> str | None:
+    def get_tag_from_commit(self, commit: str, project: ProjectMetadata) -> str | None:
         """Find the first tag which contains a commit."""
 
     @abc.abstractmethod
@@ -352,7 +352,7 @@ class GitRepository(Repository[Commit, TagReference]):
             # Find the first tag after the earliest commit.
             if project.commits and project.commits.earliest_commit:
                 earliest_tag_sha = self.get_tag_from_commit(
-                    project.commits.earliest_commit
+                    project.commits.earliest_commit, project
                 )
                 if earliest_tag_sha:
                     return self._repo.tags[earliest_tag_sha]
@@ -366,7 +366,7 @@ class GitRepository(Repository[Commit, TagReference]):
         """
         return commit.hexsha, commit.committed_datetime
 
-    def get_tag_from_commit(self, commit: str) -> str | None:
+    def get_tag_from_commit(self, commit: str, project: ProjectMetadata) -> str | None:
         """Find the first tag which contains a commit."""
         # Resolve the commit to the *next* tag. Sorting by creatordate will use the
         # tagged date for annotated tags, otherwise the commit date.
@@ -376,8 +376,8 @@ class GitRepository(Repository[Commit, TagReference]):
             as_process=False,
             stdout_as_string=True,
         ).splitlines()
-        # TODO Hack for Dendrite to remove the helm-dendrite-* tags.
-        tags = [t for t in tags if not t.startswith("helm-dendrite-")]
+        if project.commits and project.commits.ignored_tags:
+            tags = [t for t in tags if not project.commits.ignored_tags(t)]
         if tags:
             return tags[0]
         return None
