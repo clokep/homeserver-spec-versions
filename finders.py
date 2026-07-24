@@ -1,7 +1,7 @@
 import re
 import subprocess
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable
 
 ParserType = Callable[[str], set[str] | list[str]]
 
@@ -77,6 +77,7 @@ def get_pattern_from_file(
         ],
         capture_output=True,
         cwd=root,
+        check=False,
     )
 
     versions: set[str] = set()

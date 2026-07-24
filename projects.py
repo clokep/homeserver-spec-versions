@@ -1,9 +1,9 @@
 import hashlib
 import inspect
 import os.path
+from collections.abc import Callable, Iterator
 from dataclasses import asdict, dataclass
-from datetime import datetime
-from typing import Callable, Iterator
+from datetime import datetime, timedelta, timezone
 from urllib.request import urlopen
 from zoneinfo import ZoneInfo
 
@@ -1997,7 +1997,11 @@ ADDITIONAL_PROJECTS = [
         room_version_finders=SynapseLegacyFinders.room_version_finders,
         default_room_version_finders=SynapseLegacyFinders.default_room_version_finders,
         # Ignore DINSIC and the Element hosting service tags.
-        commits=CommitInfo(ignored_tags=lambda tag: "dinsic" in tag or "hss" in tag or "modular" in tag or tag == "alpha"),
+        commits=CommitInfo(
+            ignored_tags=lambda tag: (
+                "dinsic" in tag or "hss" in tag or "modular" in tag or tag == "alpha"
+            )
+        ),
         forked_from=ForkInfo("synapse-ancient"),
         process_updates=True,
     ),
@@ -2215,13 +2219,19 @@ MANUAL_PROJECTS = {
         # Pre-end of 2022-10-10:
         # https://matrix.org/blog/2023/01/03/matrix-community-year-in-review-2022
         # https://gitlab.com/famedly/conduit/-/commit/2b7c19835b65e4dd3a6a32466a9f45b06bf1ced2
-        initial_commit_date=datetime(2022, 10, 10, 0, 0, 0),
-        forked_date=datetime(2022, 10, 10, 0, 0, 0),
+        initial_commit_date=datetime(
+            2022, 10, 10, 15, 0, 44, tzinfo=timezone(offset=timedelta(hours=-2))
+        ),
+        forked_date=datetime(
+            2022, 10, 10, 15, 0, 44, tzinfo=timezone(offset=timedelta(hours=-2))
+        ),
         merged_back=True,
         forked_from="conduit",
         # No idea, use the latest commit in conduit from them?
         # https://gitlab.com/famedly/conduit/-/commit/7cc346bc18d50d614bd07f4d2dbe0186eb024389
-        last_commit_date=datetime(2022, 12, 21, 0, 0, 0),
+        last_commit_date=datetime(
+            2022, 12, 21, 11, 45, 12, tzinfo=timezone(offset=timedelta(hours=-1))
+        ),
         spec_version_dates_by_commit={},
         spec_version_dates_by_tag={},
         room_version_dates_by_commit={},
@@ -2233,12 +2243,14 @@ MANUAL_PROJECTS = {
     "hungryserv": lambda: ManualProjectData(
         initial_release_date=None,
         # Pre 2022-06-10: https://sumnerevans.com/posts/travel/2022-lisbon-and-paris/ericeira-portugal/
-        initial_commit_date=datetime(2022, 6, 5, 0, 0, 0),
+        initial_commit_date=datetime(
+            2022, 6, 10, 12, 0, 0, tzinfo=timezone(offset=timedelta(hours=-6))
+        ),
         forked_date=None,
         merged_back=False,
         forked_from=None,
         # It is being actively developed.
-        last_commit_date=datetime.now(),
+        last_commit_date=datetime.now(tz=timezone.utc),
         spec_version_dates_by_commit={},
         spec_version_dates_by_tag={},
         room_version_dates_by_commit={},
@@ -2254,12 +2266,12 @@ MANUAL_PROJECTS = {
     "reddit": lambda: ManualProjectData(
         initial_release_date=None,
         # Earliest known reference: https://macaw.social/@wongmjane/109529583352532543
-        initial_commit_date=datetime(2022, 12, 7, 0, 0, 0),
-        forked_date=datetime(2022, 12, 7, 0, 0, 0),
+        initial_commit_date=datetime(2022, 12, 17, 14, 53, 28, tzinfo=timezone.utc),
+        forked_date=datetime(2022, 12, 17, 14, 53, 28, tzinfo=timezone.utc),
         merged_back=False,
         forked_from="dendrite-legacy",
         # It is being actively developed.
-        last_commit_date=datetime.now(),
+        last_commit_date=datetime.now(tz=timezone.utc),
         spec_version_dates_by_commit={},
         spec_version_dates_by_tag={},
         room_version_dates_by_commit={},
@@ -2271,12 +2283,12 @@ MANUAL_PROJECTS = {
     "StashCat": lambda: ManualProjectData(
         initial_release_date=None,
         # Earliest known reference: https://element.io/blog/element-sponsors-public-sector-track-at-the-matrix-conference/
-        initial_commit_date=datetime(2024, 8, 6, 0, 0, 0),
+        initial_commit_date=datetime(2024, 8, 6, 9, 1, 58, tzinfo=timezone.utc),
         forked_date=None,
         merged_back=False,
         forked_from=None,
         # It is being actively developed.
-        last_commit_date=datetime.now(),
+        last_commit_date=datetime.now(tz=timezone.utc),
         spec_version_dates_by_commit={},
         spec_version_dates_by_tag={},
         room_version_dates_by_commit={},
@@ -2291,13 +2303,17 @@ MANUAL_PROJECTS = {
     "TeamSpeak5": lambda: ManualProjectData(
         initial_release_date=None,
         # Earliest known reference: https://x.com/teamspeak/status/1589621116032585728
-        initial_commit_date=datetime(2022, 11, 7, 14, 9, 0),
+        initial_commit_date=datetime(
+            2022, 11, 7, 14, 9, 0, tzinfo=ZoneInfo("America/New_York")
+        ),
         forked_date=None,
         merged_back=False,
         forked_from=None,
         # TeamSpeak 6 does not include Matrix support: https://github.com/teamspeak/teamspeak6-server/issues/31#issuecomment-3563104693
         # First release of TeamSpeak 6 beta: https://community.teamspeak.com/t/teamspeak-6-0-0-beta1-screen-camera-sharing-communities-design-overhaul/54925
-        last_commit_date=datetime(2025, 1, 21, 15, 15, 0),
+        last_commit_date=datetime(
+            2025, 1, 21, 15, 15, 0, tzinfo=ZoneInfo("America/New_York")
+        ),
         spec_version_dates_by_commit={},
         spec_version_dates_by_tag={},
         room_version_dates_by_commit={},
@@ -2311,9 +2327,8 @@ MANUAL_PROJECTS = {
 
 def download_projects():
     """Download the servers.toml metadata file."""
-    with open("servers.toml", "wb") as f:
-        with urlopen(SERVER_METADATA_URL) as u:
-            f.write(u.read())
+    with open("servers.toml", "wb") as f, urlopen(SERVER_METADATA_URL) as u:
+        f.write(u.read())
 
 
 def load_projects() -> Iterator[ProjectMetadata]:

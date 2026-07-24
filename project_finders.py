@@ -112,7 +112,7 @@ class ContinuwuityFinders(ConduwuitFinders):
 class DendriteFinders(Finders):
     """Base finders for Dendrite-based projects."""
 
-    spec_version_finders: PatternFinderType = [
+    spec_version_finders: PatternFinderType = [  # noqa: RUF012
         SpecVersionFinder(
             paths=[
                 "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
@@ -122,7 +122,7 @@ class DendriteFinders(Finders):
             to_ignore=["v1.0"],
         )
     ]
-    room_version_finders: PatternFinderType = [
+    room_version_finders: PatternFinderType = [  # noqa: RUF012
         # gomatrixserverlib was vendored early in the project, but before room versions were a thing.
         PatternFinder(
             paths=["roomserver/version/version.go"],
@@ -139,7 +139,7 @@ class DendriteFinders(Finders):
             ),
         ),
     ]
-    default_room_version_finders: PatternFinderType = [
+    default_room_version_finders: PatternFinderType = [  # noqa: RUF012
         PatternFinder(
             paths=[
                 "roomserver/version/version.go",
@@ -155,16 +155,16 @@ class DendriteFinders(Finders):
 class SynapseLegacyFinders(Finders):
     """Base finders for Synapse legacy-based projects."""
 
-    spec_version_finders: PatternFinderType = [
+    spec_version_finders: PatternFinderType = [  # noqa: RUF012
         SpecVersionFinder(paths=["synapse/rest/client/versions.py"])
     ]
-    room_version_finders: PatternFinderType = [
+    room_version_finders: PatternFinderType = [  # noqa: RUF012
         PatternFinder(
             paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
             pattern=r"RoomVersions.V(\d+)",
         ),
     ]
-    default_room_version_finders: PatternFinderType = [
+    default_room_version_finders: PatternFinderType = [  # noqa: RUF012
         PatternFinder(
             paths=[
                 "synapse/api/constants.py",

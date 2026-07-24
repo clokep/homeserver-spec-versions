@@ -1,10 +1,11 @@
 import abc
 import itertools
 import os.path
+from collections.abc import Iterable, Iterator
 from datetime import datetime, timedelta, timezone
 from functools import cmp_to_key
 from pathlib import Path
-from typing import Generic, Iterable, Iterator, TypeVar
+from typing import Generic, TypeVar
 
 import git.cmd
 from git import Commit, Repo, TagReference
@@ -58,7 +59,7 @@ class Repository(Generic[CommitType, TagType], metaclass=abc.ABCMeta):
             elif isinstance(finder, SubRepoFinder):
                 commits_iterator = self._get_commits_by_subrepo(project, finder)
             else:
-                raise ValueError(f"Unsupported finder: {finder.__class__.__name__}")
+                raise TypeError(f"Unsupported finder: {finder.__class__.__name__}")
 
             all_commits_iterators.append(commits_iterator)
 
@@ -118,7 +119,7 @@ class Repository(Generic[CommitType, TagType], metaclass=abc.ABCMeta):
             sub_repo_commit = self._get_submodule_commit(finder.commit_finder.path)
 
         else:
-            raise ValueError(
+            raise TypeError(
                 f"Unsupported commit finder: {finder.commit_finder.__class__.__name__}"
             )
 
@@ -156,7 +157,7 @@ class Repository(Generic[CommitType, TagType], metaclass=abc.ABCMeta):
             yield from self._get_commits_by_paths(project, [finder.commit_finder.path])
 
         else:
-            raise ValueError(
+            raise TypeError(
                 f"Unsupported commit finder: {finder.commit_finder.__class__.__name__}"
             )
 

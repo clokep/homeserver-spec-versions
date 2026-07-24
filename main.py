@@ -1,3 +1,4 @@
+import itertools
 import json
 import sys
 from dataclasses import asdict, astuple, dataclass
@@ -121,7 +122,7 @@ def get_project_versions(
                 finder_versions = repo.get_pattern_from_subrepo(finder)
 
             else:
-                raise ValueError(f"Unsupported finder: {finder.__class__.__name__}")
+                raise TypeError(f"Unsupported finder: {finder.__class__.__name__}")
 
             cur_versions.update(finder_versions)
 
@@ -136,11 +137,12 @@ def get_project_versions(
         # Resolve the commit to the *next* tag.
         tag = repo.get_tag_from_commit(hexsha, project)
         # If no tags were found than this wasn't released yet.
-        if tag:
-            if not versions_at_tag or versions_at_tag[-1].versions != cur_versions:
-                versions_at_tag.append(
-                    CommitVersionInfo(tag, repo.get_tag_datetime(tag), cur_versions)
-                )
+        if tag and (
+            not versions_at_tag or versions_at_tag[-1].versions != cur_versions
+        ):
+            versions_at_tag.append(
+                CommitVersionInfo(tag, repo.get_tag_datetime(tag), cur_versions)
+            )
 
     # Map of each version to a list of commit metadata for when support for that version changed.
     versions = resolve_versions_at_commit(versions_at_commit)
@@ -372,20 +374,18 @@ def main(projects: set[str]):
         spec_versions, room_versions, default_room_versions = get_spec_dates()
         spec_dates = sorted(spec_versions.items(), key=lambda v: v[1])
         result.update(
-            **{
-                "spec_versions": {
-                    "lag": dict(
-                        [(spec_dates[0][0], 0)]
-                        + [
-                            (y[0], (y[1] - x[1]).days)
-                            for x, y in zip(spec_dates[:-1], spec_dates[1:])
-                        ]
-                    ),
-                    "version_dates": spec_versions,
-                },
-                "room_versions": room_versions,
-                "default_room_versions": default_room_versions,
-            }
+            spec_versions={
+                "lag": dict(
+                    [(spec_dates[0][0], 0)]
+                    + [
+                        (y[0], (y[1] - x[1]).days)
+                        for x, y in itertools.pairwise(spec_dates)
+                    ]
+                ),
+                "version_dates": spec_versions,
+            },
+            room_versions=room_versions,
+            default_room_versions=default_room_versions,
         )
     else:
         # Load the previously fetch spec versions.
@@ -410,7 +410,7 @@ def main(projects: set[str]):
             print("Repository unavailable, skipping.")
         else:
             prev_project_dates = result["homeserver_versions"].get(project.name.lower())
-            if prev_project_dates and False:
+            if prev_project_dates:
                 prev_last_commit = prev_project_dates.get("last_commit")
                 prev_project_data_hash = prev_project_dates.get("project_data_hash")
             else:
@@ -446,4 +446,4 @@ def main(projects: set[str]):
 
 
 if __name__ == "__main__":
-    main(set(s.lower() for s in sys.argv[1:]))
+    main({s.lower() for s in sys.argv[1:]})
