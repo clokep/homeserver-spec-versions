@@ -222,7 +222,7 @@ class GitRepository(Repository[Commit, TagReference]):
 
     def _fetch(self) -> None:
         """Fetch new commits & tags."""
-        self._repo.remote().fetch(tags=True)
+        self._repo.remote().fetch(tags=True, force=True)
 
     def _check_refspecs(self) -> bool:
         """Add a fetch refspec for pull requests as some sub-repos target pull requests of other repos."""
