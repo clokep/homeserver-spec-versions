@@ -623,7 +623,7 @@ ADDITIONAL_PROJECTS = [
             # git show v1.145.0 on element-hq/synapse
             date=datetime(2026, 1, 13, 9, 29, 9, tzinfo=ZoneInfo("Canada/Mountain")),
         ),
-        process_updates=True,
+        process_updates=False,
     ),
     ProjectMetadata(
         name="casniam",
@@ -2135,7 +2135,7 @@ ADDITIONAL_PROJECTS = [
         ],
         commits=None,
         forked_from=None,
-        process_updates=True,
+        process_updates=False,
     ),
     ProjectMetadata(
         name="worrywart",
