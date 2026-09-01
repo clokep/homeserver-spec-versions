@@ -408,7 +408,7 @@ ADDITIONAL_METADATA = {
                     "pkg/venatord/config/consts.go",
                     "internal/venatord/config/consts.go",
                 ],
-                pattern=r"DefaultRoomVersion(?::| =) id\.RoomV(\d+)",
+                pattern=r"DefaultRoomVersion(?::| +=) id\.RoomV(\d+)",
             )
         ],
         commits=None,
@@ -1825,8 +1825,24 @@ ADDITIONAL_PROJECTS = [
                 ],
                 pattern=r"""['"](\d+)['"]""",
             ),
+            PatternFinder(
+                paths=["packages/room/src/manager/factory.ts"],
+                pattern=r"'(\d+)',",
+            ),
         ],
-        default_room_version_finders=None,
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "packages/homeserver/src/services/event.service.ts",
+                    "packages/federation-sdk/src/services/event.service.ts",
+                ],
+                pattern=r"""return ['"](\d+)['"]""",
+            ),
+            PatternFinder(
+                paths=["packages/room/src/manager/factory.ts"],
+                pattern=r"defaultRoomVersion = '(\d+)'",
+            ),
+        ],
         commits=None,
         forked_from=None,
         process_updates=True,
@@ -2317,6 +2333,11 @@ MANUAL_PROJECTS = {
     "synapse-pro": generate_synapse_pro,
     # TeamSpeak 5 added support for Matrix, which was then dropped in TeamSpeak 6.
     # Was this actually homegrown or is this a fork?
+    #
+    # https://hub.docker.com/r/teamspeaksystems/teamspeak6-server
+    # https://github.com/teamspeak/element-hq-synapse
+    # https://github.com/teamspeak/synapse
+    # https://community.teamspeak.com/t/why-was-the-homebase-concept-abandoned/64403/4
     "TeamSpeak5": lambda: ManualProjectData(
         initial_release_date=None,
         # Earliest known reference: https://x.com/teamspeak/status/1589621116032585728
