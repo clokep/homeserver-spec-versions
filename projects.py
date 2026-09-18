@@ -20,6 +20,7 @@ from project_finders import (
     Finders,
     SynapseFinders,
     SynapseLegacyFinders,
+    TuwunelFinders,
 )
 
 SERVER_METADATA_URL = "https://raw.githubusercontent.com/matrix-org/matrix.org/main/content/ecosystem/servers/servers.toml"
@@ -351,13 +352,9 @@ ADDITIONAL_METADATA = {
     ),
     "tuwunel": AdditionalMetadata(
         branch="dev",
-        spec_version_finders=ConduitFinders.get_spec_version_finders(
-            ["src/api/client/unversioned.rs", "src/api/client/versions.rs"]
-        ),
-        room_version_finders=ConduitFinders.get_room_version_finders(
-            ["src/core/info/room_version.rs", "src/core/config/room_version.rs"]
-        ),
-        default_room_version_finders=ConduwuitFinders.default_room_version_finders,
+        spec_version_finders=TuwunelFinders.spec_version_finders,
+        room_version_finders=TuwunelFinders.room_version_finders,
+        default_room_version_finders=TuwunelFinders.default_room_version_finders,
         commits=CommitInfo(
             earliest_commit="ce6e5e48de2a3580e17609f382cd4520fb6d8c63",
             earliest_tag=None,
@@ -1670,7 +1667,7 @@ ADDITIONAL_PROJECTS = [
     ),
     ProjectMetadata(
         name="phantom",
-        description="rust matrix homeserver",
+        description="Matrix homeserver in Rust (a conduwuit port) with a Go terminal admin console.",
         author="Hilthon",
         maturity=Maturity.Unstarted,
         language="Rust",
@@ -1682,7 +1679,7 @@ ADDITIONAL_PROJECTS = [
         room_version_finders=None,
         default_room_version_finders=None,
         commits=None,
-        forked_from=None,
+        forked_from=ForkInfo("conduwuit"),
         process_updates=True,
     ),
     ProjectMetadata(
@@ -1896,6 +1893,34 @@ ADDITIONAL_PROJECTS = [
         ],
         room_version_finders=None,
         default_room_version_finders=None,
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="spindle",
+        description="Design spec for a linearized Matrix homeserver: append-only room log, materialized state, and no state resolution on the hot path.",
+        author="James Reilly",
+        maturity=Maturity.Alpha,
+        language="Rust",
+        licence="Apache-2.0 OR MIT",
+        repository="https://github.com/tuna-os/spindle",
+        room=None,
+        branch="main",
+        spec_version_finders=[
+            SpecVersionFinder(paths=["crates/spindle-server/src/surface.rs"])
+        ],
+        room_version_finders=[
+            PatternFinder(
+                paths=["crates/spindle-server/src/surface.rs"], pattern=r'"(\d+)"'
+            )
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["crates/spindle-server/src/surface.rs"],
+                pattern=r'DEFAULT_ROOM_VERSION: .+"(\d+)"',
+            )
+        ],
         commits=None,
         forked_from=None,
         process_updates=True,
@@ -2169,6 +2194,23 @@ ADDITIONAL_PROJECTS = [
         commits=None,
         forked_from=None,
         process_updates=False,
+    ),
+    ProjectMetadata(
+        name="wbfuwunel",
+        description="Custom fork of tuwunel (Matrix homeserver in Rust) with added media garbage clean (GC) support. Streaming & Draft API (websocket) and full media management coming soon.",
+        author="",
+        maturity=Maturity.Beta,
+        language="Rust",
+        licence="Apache-2.0",
+        repository="https://github.com/WhiteBirchForumTeam/wbfuwunel",
+        room=None,
+        branch="main",
+        spec_version_finders=TuwunelFinders.spec_version_finders,
+        room_version_finders=TuwunelFinders.room_version_finders,
+        default_room_version_finders=TuwunelFinders.default_room_version_finders,
+        commits=CommitInfo(earliest_commit="63b8b74e2c3e895b42001cc5543c1faca932deb1"),
+        forked_from=ForkInfo("tuwunel"),
+        process_updates=True,
     ),
     ProjectMetadata(
         name="worrywart",

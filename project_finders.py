@@ -109,6 +109,15 @@ class ContinuwuityFinders(ConduwuitFinders):
     )
 
 
+class TuwunelFinders(ConduitFinders):
+    spec_version_finders = ConduitFinders.get_spec_version_finders(
+        ["src/api/client/unversioned.rs", "src/api/client/versions.rs"]
+    )
+    room_version_finders = ConduitFinders.get_room_version_finders(
+        ["src/core/info/room_version.rs", "src/core/config/room_version.rs"]
+    )
+
+
 class DendriteFinders(Finders):
     """Base finders for Dendrite-based projects."""
 
