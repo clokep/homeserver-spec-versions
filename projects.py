@@ -1710,7 +1710,7 @@ ADDITIONAL_PROJECTS = [
                 pattern=r'default_version_ = "(\d+)";',
             )
         ],
-        commits=None,
+        commits=CommitInfo(ignored_tags=lambda s: s.startswith("artifacts-backup")),
         forked_from=None,
         process_updates=True,
     ),
