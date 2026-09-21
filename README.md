@@ -51,15 +51,29 @@ You can also fetch individual projects by providing one or more projects:
 ### Forges
 
 * bitbucket.org
-* codeberg.org
-* codefloe.com
-* sr.ht
 * gitea.com
 * github.com
-* gitlab.com
 * launchpad.net
 * savannah.gnu.org
 * sourceforge.net
+* sr.ht
+
+#### Public instances of GitLab
+
+* gitlab.com
+* gitlab.opencode.de
+
+#### [Public instances of Forgejo](https://codeberg.org/forgejo-contrib/delightful-forgejo#user-content-public-instances):
+
+* bolha.dev
+* codeberg.org
+* codefloe.com
+* disroot.org/services/git
+* git.gay
+* git.kaki87.net
+* opencommit.eu
+* pub.solar
+* sij.ai
 
 ### Package repositories
 

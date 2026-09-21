@@ -348,7 +348,7 @@ ADDITIONAL_METADATA = {
         ],
         commits=None,
         forked_from=None,
-        process_updates=False,
+        process_updates=True,
     ),
     "tuwunel": AdditionalMetadata(
         branch="dev",
