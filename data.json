@@ -3120,8 +3120,8 @@
                 "v1.5": 885,
                 "v1.8": 701
             },
-            "last_commit": "dbcffe8af0e6541e777193c63bd4740aaf04920a",
-            "last_commit_date": "2026-09-21T05:02:42+00:00",
+            "last_commit": "cee69b4c8d1d777a86caa4746542a96bc11de939",
+            "last_commit_date": "2026-09-22T21:19:25+02:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": "e60c3d4b1a8031b170f14f4db984e049",
@@ -3982,7 +3982,7 @@
             "last_commit_date": "2026-05-20T15:41:45+00:00",
             "maturity": "beta",
             "merged_back": false,
-            "project_data_hash": "789fbb062793bc9bf2652c2aabd013a2",
+            "project_data_hash": "35c4f06437e087e77f2547409034d50c",
             "room_version_dates_by_commit": {
                 "1": [
                     [
@@ -4483,7 +4483,7 @@
             "last_commit_date": "2024-11-25T11:04:10+01:00",
             "maturity": "beta",
             "merged_back": false,
-            "project_data_hash": "a5f071db25118faf2939c088fb3b772b",
+            "project_data_hash": "3c30a5aa01d570a8cd133fa3defd4f68",
             "room_version_dates_by_commit": {
                 "1": [
                     [
@@ -4871,8 +4871,8 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit": "ed0d5b9b0d0785c9c1002dd5ed5ee8191f881962",
-            "last_commit_date": "2026-09-21T12:56:30+02:00",
+            "last_commit": "a84cfff057c0e9c3d5fe0164a252e344abd453a4",
+            "last_commit_date": "2026-09-22T11:15:24+02:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "7434fc282b55b4827efe4f6f8c93b2d0",
@@ -6631,7 +6631,7 @@
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
             "last_commit": null,
-            "last_commit_date": "2026-09-21T12:22:15.387188+00:00",
+            "last_commit_date": "2026-09-22T20:12:08.190770+00:00",
             "maturity": "beta",
             "merged_back": false,
             "project_data_hash": null,
@@ -7777,7 +7777,7 @@
             "last_commit_date": "2026-09-11T17:39:37+01:00",
             "maturity": "alpha",
             "merged_back": false,
-            "project_data_hash": "23c336f9f48597e1c1a9441b76268fbd",
+            "project_data_hash": "d55b024dcd3733107ade872adfdf23d0",
             "room_version_dates_by_commit": {
                 "1": [
                     [
@@ -9265,8 +9265,8 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit": "c094dd67421b8a5b4db656fca2f2333a171f60ac",
-            "last_commit_date": "2026-09-21T00:27:48+02:00",
+            "last_commit": "3cd9b39752fb583ab6c3e7f6cca5d0909e60fac3",
+            "last_commit_date": "2026-09-22T11:24:02+02:00",
             "maturity": "unstarted",
             "merged_back": false,
             "project_data_hash": "082f5706d2dd627ddc99dea31c07ce63",
@@ -9469,7 +9469,7 @@
             "last_commit_date": "2026-09-11T15:42:50+01:00",
             "maturity": "alpha",
             "merged_back": false,
-            "project_data_hash": "02cec3c81052b48b44031a0e2c33fc5f",
+            "project_data_hash": "67ec8893f9d02ae3891fc517df3c53bb",
             "room_version_dates_by_commit": {
                 "1": [
                     [
@@ -9919,7 +9919,7 @@
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
             "last_commit": null,
-            "last_commit_date": "2026-09-21T12:22:15.387222+00:00",
+            "last_commit_date": "2026-09-22T20:12:08.190820+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": null,
@@ -11260,7 +11260,7 @@
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
             "last_commit": null,
-            "last_commit_date": "2026-09-21T12:22:15.387254+00:00",
+            "last_commit_date": "2026-09-22T20:12:08.190936+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": null,
@@ -11382,8 +11382,8 @@
                 "v1.8": 138,
                 "v1.9": 40
             },
-            "last_commit": "26e46786b32e9ff48142e963422d106557df8aff",
-            "last_commit_date": "2026-09-21T10:00:53+01:00",
+            "last_commit": "625b331768d3d0027a0d020310a648f1e40247e5",
+            "last_commit_date": "2026-09-22T11:57:54-05:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": "18099f651fb26cbf550f3da4db7d07bf",
@@ -13045,8 +13045,8 @@
                 "v1.8": 104,
                 "v1.9": 5
             },
-            "last_commit": "85923e4180046a1dc054b1cca96b9d9fe72b1aff",
-            "last_commit_date": "2026-09-18T13:09:23+00:00",
+            "last_commit": "9005cfcdd76160a128496051510bd83c62632482",
+            "last_commit_date": "2026-09-21T13:13:46+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": "d3c09d377011ec90c0b9fa4b95f96410",
@@ -13806,7 +13806,7 @@
             "last_commit_date": "2023-12-13T14:50:56+00:00",
             "maturity": "stable",
             "merged_back": false,
-            "project_data_hash": "e25be398ac21af5fff521a55700ba7b5",
+            "project_data_hash": "a152ef6562b3c88ce352c0add4f414e5",
             "room_version_dates_by_commit": {
                 "1": [
                     [
@@ -14313,7 +14313,7 @@
                 "v1.9": 376
             },
             "last_commit": null,
-            "last_commit_date": "2026-09-17T00:00:00+00:00",
+            "last_commit_date": "2026-09-22T00:00:00+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": null,
@@ -17588,7 +17588,16 @@
             }
         },
         "wbfuwunel": {
-            "default_room_version_dates_by_commit": {},
+            "default_room_version_dates_by_commit": {
+                "11": [
+                    [
+                        "63b8b74e2c3e895b42001cc5543c1faca932deb1",
+                        "2026-09-01T20:00:39+08:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
             "default_room_version_dates_by_tag": {},
             "forked_date": "2026-08-23T22:59:43+00:00",
             "forked_from": "tuwunel",
@@ -17632,7 +17641,7 @@
             "last_commit_date": "2026-09-20T15:07:25+08:00",
             "maturity": "beta",
             "merged_back": false,
-            "project_data_hash": "4860797e13500d833348ee8db06d26b4",
+            "project_data_hash": "2d9441be0b0363bfd3df5d9e6a60c48f",
             "room_version_dates_by_commit": {
                 "10": [
                     [
@@ -18026,8 +18035,8 @@
                 "v1.1": 1549,
                 "v1.2": 1464
             },
-            "last_commit": "a746e6959d8383c79fb0343e5692c5adf026a792",
-            "last_commit_date": "2026-09-21T01:15:30+00:00",
+            "last_commit": "e08fa1f745e1ec7b16b479dfa22271be09642803",
+            "last_commit_date": "2026-09-22T06:17:00+00:00",
             "maturity": "beta",
             "merged_back": false,
             "project_data_hash": "80c0e668bc422ab7b77737f32dab696d",
