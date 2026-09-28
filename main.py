@@ -127,14 +127,11 @@ def get_project_versions(
 
     subrepo_versions_by_commit: dict[str, set[str]] = {}
     if subrepo_finders:
-        for commit in commits:
-            repo.checkout(commit)
-            cur_versions = set()
-            for finder in subrepo_finders:
-                finder_versions = repo.get_pattern_from_subrepo(finder)
-                cur_versions.update(finder_versions)
-            if cur_versions:
-                subrepo_versions_by_commit[commit.hexsha] = cur_versions
+        commit_hashes = [c.hexsha for c in commits]
+        for finder in subrepo_finders:
+            results = repo.extract_subrepo_versions(finder, commit_hashes)
+            for main_hash, versions in results.items():
+                subrepo_versions_by_commit.setdefault(main_hash, set()).update(versions)
 
     # Combine results and build versions_at_commit in order
     for commit in commits:

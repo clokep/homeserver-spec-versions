@@ -10,7 +10,7 @@ from typing import Generic, TypeVar
 from git import Commit, Repo, TagReference
 from git.exc import GitCommandError
 
-from finders import PatternFinder, SubModuleFinder, SubRepoFinder, get_pattern_from_file
+from finders import PatternFinder, SubModuleFinder, SubRepoFinder, parse_matches
 from projects import ProjectMetadata
 
 CommitType = TypeVar("CommitType")
@@ -87,59 +87,28 @@ class Repository(Generic[CommitType, TagType], metaclass=abc.ABCMeta):
         Get the commits where a file may have been modified.
         """
 
-    def get_pattern_from_subrepo(self, finder: SubRepoFinder) -> set[str]:
+    @abc.abstractmethod
+    def extract_subrepo_versions(
+        self, finder: SubRepoFinder, main_commit_hashes: list[str]
+    ) -> dict[str, set[str]]:
         """
-        Search a sub-repository for a pattern, this works by searching the main
-        repo for the sub-repository commit, then checking it out and searching
-        the sub-repository for the pattern.
+        Extract version patterns from a sub-repository at specific main-repo commits.
+
+        For each main commit, resolves the sub-repo commit hash, then searches
+        that sub-repo commit for version patterns.
+
+        Returns: {main_commit_hash: set[versions]}
         """
-        # Get the sub-repository.
-        sub_repo = Repository.create(finder.repository)
-
-        # The commit to checkout in the sub-repository.
-        sub_repo_commit = None
-
-        if isinstance(finder.commit_finder, PatternFinder):
-            commits = get_pattern_from_file(
-                self.working_dir,
-                finder.commit_finder.paths,
-                finder.commit_finder.pattern,
-                finder.commit_finder.parser,
-                finder.commit_finder.to_ignore,
-            )
-
-            if len(commits) > 1:
-                raise ValueError("Unexpected number of commits: {commits}")
-            elif len(commits) == 1:
-                sub_repo_commit = next(iter(commits))
-
-        elif isinstance(finder.commit_finder, SubModuleFinder):
-            # The commit of the sub-repo is found via the submodule path.
-            # Find the sub-module information, if it exists.
-            sub_repo_commit = self._get_submodule_commit(finder.commit_finder.path)
-
-        else:
-            raise TypeError(
-                f"Unsupported commit finder: {finder.commit_finder.__class__.__name__}"
-            )
-
-        # No commit was found, sub-repo must not exist.
-        if not sub_repo_commit:
-            return set()
-
-        sub_repo.checkout(sub_repo_commit)
-
-        return get_pattern_from_file(
-            sub_repo.working_dir,
-            finder.finder.paths,
-            finder.finder.pattern,
-            finder.finder.parser,
-            finder.finder.to_ignore,
-        )
 
     @abc.abstractmethod
-    def _get_submodule_commit(self, path: str) -> str | None:
-        """Find the commit of a sub-module checked out at the given path."""
+    def map_main_to_subrepo_commit(
+        self,
+        main_commit_hash: str,
+        commit_finder: PatternFinder | SubModuleFinder,
+    ) -> str | None:
+        """
+        Extract sub-repo commit hash from a specific main commit.
+        """
 
     def _get_commits_by_subrepo(
         self,
@@ -299,16 +268,106 @@ class GitRepository(Repository[Commit, TagReference]):
             commits.insert(0, self._repo.commit(earliest_commit))
         return commits
 
-    def _get_submodule_commit(self, path: str) -> str | None:
-        """Find the commit of a sub-module checked out at the given path."""
-        # The commit of the sub-repo is found via the submodule path.
-        # Find the sub-module information, if it exists.
-        sub_module = next(
-            (s for s in self._repo.submodules if s.path == path),
-            None,
+    def extract_subrepo_versions(
+        self, finder: SubRepoFinder, main_commit_hashes: list[str]
+    ) -> dict[str, set[str]]:
+        """
+        Extract version patterns from a sub-repository at specific main-repo commits.
+
+        For each main commit, resolves the sub-repo commit hash, then searches
+        that sub-repo commit for version patterns.
+
+        Returns: {main_commit_hash: set[versions]}
+        """
+        if not main_commit_hashes:
+            return {}
+
+        # Get or create sub-repository
+        sub_repo = Repository.create(finder.repository)
+
+        # Extract sub-repo commit for each main commit
+        main_to_subrepo: dict[str, str] = {}
+        subrepo_hashes: set[str] = set()
+
+        for main_hash in main_commit_hashes:
+            sub_hash = self.map_main_to_subrepo_commit(main_hash, finder.commit_finder)
+            if sub_hash:
+                main_to_subrepo[main_hash] = sub_hash
+                subrepo_hashes.add(sub_hash)
+
+        if not subrepo_hashes:
+            return {}
+
+        # Run single git grep in sub-repo across all unique sub-repo commits
+        subrepo_results = sub_repo.search_commits(
+            finder.finder.pattern,
+            finder.finder.paths,
+            list(subrepo_hashes),
         )
-        if sub_module:
-            return sub_module.hexsha
+
+        # Parse results and map back to main commits
+        result: dict[str, set[str]] = {}
+        for main_hash, sub_hash in main_to_subrepo.items():
+            matches = subrepo_results.get(sub_hash, [])
+            versions = parse_matches(
+                finder.finder.pattern,
+                matches,
+                finder.finder.parser,
+                finder.finder.to_ignore,
+            )
+
+            if versions:
+                result[main_hash] = versions
+
+        # TODO: Cache sub-repo grep results across project runs
+        # Currently each project creates new Repository instance
+
+        return result
+
+    def map_main_to_subrepo_commit(
+        self,
+        main_commit_hash: str,
+        commit_finder: PatternFinder | SubModuleFinder,
+    ) -> str | None:
+        """
+        Extract sub-repo commit hash from a specific main commit WITHOUT checkout.
+
+        For PatternFinder: git show <commit>:<path> + regex
+        For SubModuleFinder: git ls-tree <commit>:<path> + parse submodule entry
+        """
+        if isinstance(commit_finder, PatternFinder):
+            # Try each path until we find a match
+            for path in commit_finder.paths:
+                try:
+                    content = self._repo.git.show(f"{main_commit_hash}:{path}")
+                except GitCommandError:
+                    continue
+
+                parsed = parse_matches(
+                    commit_finder.pattern,
+                    content.splitlines(),
+                    commit_finder.parser,
+                    commit_finder.to_ignore,
+                )
+
+                if parsed:
+                    return next(iter(parsed))
+
+            return None
+
+        elif isinstance(commit_finder, SubModuleFinder):
+            # Use git ls-tree to get submodule commit at path
+            try:
+                output = self._repo.git.ls_tree(main_commit_hash, commit_finder.path)
+                # Output format: <mode> <type> <hash>\t<path>
+                # For submodule: 160000 commit <hash>\t<path>
+                for line in output.splitlines():
+                    parts = line.split()
+                    if len(parts) >= 3 and parts[1] == "commit":
+                        return parts[2]
+            except GitCommandError:
+                pass
+
         return None
 
     def search_commits(
@@ -354,7 +413,7 @@ class GitRepository(Repository[Commit, TagReference]):
         return matches_by_commit
 
     def get_earliest_commit(self, project: ProjectMetadata) -> Commit:
-        """Get the latest commit on the main branch."""
+        """Get the earliest commit on the main branch."""
         if project.commits and project.commits.earliest_commit:
             return self._repo.commit(project.commits.earliest_commit)
 
