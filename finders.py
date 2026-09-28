@@ -47,7 +47,7 @@ class SubRepoFinder:
 
 @dataclass
 class SpecVersionFinder(PatternFinder):
-    pattern: str = r"[vr]\d[\d\.]+\d"
+    pattern: str = r"[vr]\d+(?:\.\d+)+"
 
 
 def get_pattern_from_file(
@@ -107,3 +107,37 @@ def get_pattern_from_file(
             versions.discard(v)
 
     return versions
+
+
+def parse_matches(
+    pattern: str,
+    lines: list[str],
+    parser: ParserType | None = None,
+    to_ignore: list[str] | None = None,
+) -> set[str]:
+    """Apply parser to regex matches, return set of results."""
+    results = set()
+    for line in lines:
+        # Strip comments.
+        #
+        # TODO This only handles line comments, not block comments.
+        line = re.split(r"(^|\s)(#|//)", line)[0]
+        # Search again for the results.
+        matches = re.findall(pattern, line)
+        matches = [
+            parser(match)
+            if parser
+            else [m for m in match if m]
+            if isinstance(match, tuple)
+            else [match]
+            for match in matches
+        ]
+        # Flatten the list of lists
+        results.update(*matches)
+
+    # Ignore some versions that are "bad".
+    if to_ignore:
+        for r in to_ignore:
+            results.discard(r)
+
+    return results

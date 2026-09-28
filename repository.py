@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Generic, TypeVar
 
 from git import Commit, Repo, TagReference
+from git.exc import GitCommandError
 
 from finders import PatternFinder, SubModuleFinder, SubRepoFinder, get_pattern_from_file
 from projects import ProjectMetadata
@@ -196,6 +197,19 @@ class Repository(Generic[CommitType, TagType], metaclass=abc.ABCMeta):
         This prefers the tagged date, but falls back to the commit date.
         """
 
+    @abc.abstractmethod
+    def search_commits(
+        self,
+        pattern: str,
+        paths: list[str],
+        commit_hashes: list[str],
+    ) -> dict[str, list[str]]:
+        """
+        Search for pattern in specific commits using git grep (no checkout).
+
+        Returns: {commit_hash: [(line_num, matched_line), ...]}
+        """
+
 
 class GitRepository(Repository[Commit, TagReference]):
     def __init__(self, name: str, remote: str) -> None:
@@ -296,6 +310,48 @@ class GitRepository(Repository[Commit, TagReference]):
         if sub_module:
             return sub_module.hexsha
         return None
+
+    def search_commits(
+        self,
+        pattern: str,
+        paths: list[str],
+        commit_hashes: list[str],
+    ) -> dict[str, list[str]]:
+        """
+        Search for pattern in specific commits using git grep (no checkout).
+
+        Returns: {commit_hash: [(line_num, matched_line), ...]}
+        """
+        if not commit_hashes:
+            return {}
+
+        # Use GitPython's git.grep method
+        # -n: show line numbers
+        # -P: Perl-compatible regex
+        # commit_hashes: list of commits to search
+        # --: separator before paths
+        # *paths: paths to search
+        try:
+            result = self._repo.git.grep(
+                "-n", "-P", pattern, *commit_hashes, "--", *paths
+            )
+        except GitCommandError as e:
+            # grep returns exit code 1 when no matches found
+            if e.status == 1 and e.stdout == "":
+                return {}
+            raise
+
+        matches_by_commit: dict[str, list[str]] = {}
+        for line in result.splitlines():
+            if not line:
+                continue
+            # Format: commit_hash:file_path:line_num:matched_line
+            parts = line.split(":", 3)
+            if len(parts) == 4:
+                commit_hash, _, _, matched = parts
+                matches_by_commit.setdefault(commit_hash, []).append(matched)
+
+        return matches_by_commit
 
     def get_earliest_commit(self, project: ProjectMetadata) -> Commit:
         """Get the latest commit on the main branch."""

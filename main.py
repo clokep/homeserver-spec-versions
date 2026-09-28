@@ -5,7 +5,7 @@ from dataclasses import asdict, astuple, dataclass
 from datetime import datetime
 
 from data import ManualProjectData, ProjectData, VersionInfo
-from finders import PatternFinder, SubRepoFinder, get_pattern_from_file
+from finders import PatternFinder, SubRepoFinder, parse_matches
 from projects import MANUAL_PROJECTS, ProjectMetadata, load_projects
 from repository import Repository
 from spec import get_spec_dates
@@ -105,31 +105,49 @@ def get_project_versions(
 
     commits = repo.get_modified_commits(project, finders)
 
+    # Separate finders by type
+    pattern_finders = [f for f in finders if isinstance(f, PatternFinder)]
+    subrepo_finders = [f for f in finders if isinstance(f, SubRepoFinder)]
+
+    pattern_versions_by_commit: dict[str, set[str]] = {}
+    if pattern_finders:
+        commit_hashes = [c.hexsha for c in commits]
+        for finder in pattern_finders:
+            matches_by_commit = repo.search_commits(
+                finder.pattern, finder.paths, commit_hashes
+            )
+            for commit_hash, matches in matches_by_commit.items():
+                versions = parse_matches(
+                    finder.pattern, matches, finder.parser, finder.to_ignore
+                )
+
+                pattern_versions_by_commit.setdefault(commit_hash, set()).update(
+                    versions
+                )
+
+    subrepo_versions_by_commit: dict[str, set[str]] = {}
+    if subrepo_finders:
+        for commit in commits:
+            repo.checkout(commit)
+            cur_versions = set()
+            for finder in subrepo_finders:
+                finder_versions = repo.get_pattern_from_subrepo(finder)
+                cur_versions.update(finder_versions)
+            if cur_versions:
+                subrepo_versions_by_commit[commit.hexsha] = cur_versions
+
+    # Combine results and build versions_at_commit in order
     for commit in commits:
-        repo.checkout(commit)
+        hexsha, committed_datetime = repo.get_commit_info(commit)
 
         cur_versions = set()
-        for finder in finders:
-            if isinstance(finder, PatternFinder):
-                finder_versions = get_pattern_from_file(
-                    repo.working_dir,
-                    finder.paths,
-                    finder.pattern,
-                    finder.parser,
-                    finder.to_ignore,
-                )
-            elif isinstance(finder, SubRepoFinder):
-                finder_versions = repo.get_pattern_from_subrepo(finder)
-
-            else:
-                raise TypeError(f"Unsupported finder: {finder.__class__.__name__}")
-
-            cur_versions.update(finder_versions)
+        cur_versions.update(pattern_versions_by_commit.get(hexsha, set()))
+        cur_versions.update(subrepo_versions_by_commit.get(hexsha, set()))
 
         # Commits are ordered earliest to latest, only record if the
         # version info changed.
-        hexsha, committed_datetime = repo.get_commit_info(commit)
         if not versions_at_commit or versions_at_commit[-1].versions != cur_versions:
+            committed_datetime = commit.committed_datetime
             versions_at_commit.append(
                 CommitVersionInfo(hexsha, committed_datetime, cur_versions)
             )
