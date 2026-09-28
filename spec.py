@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 
-from finders import get_pattern_from_file
+from finders import parse_matches
 from repository import GitRepository
 
 
@@ -51,22 +51,25 @@ def get_spec_dates() -> tuple[
         "content/rooms/_index.md",
     ]
     default_room_versions = {}
-    for commit in spec_repo._repo.iter_commits(
-        "origin/main", paths=DEFAULT_ROOM_VERSION_PATHS, reverse=True
-    ):
-        spec_repo.checkout(commit)
-
-        cur_versions = get_pattern_from_file(
-            spec_repo.working_dir,
-            DEFAULT_ROOM_VERSION_PATHS,
-            r"Servers MUST have Room Version (\d+)|Servers SHOULD use (?:\*\*)?room version (\d+)(?:\*\*)?",
-            None,
-            [],
+    pattern = r"Servers MUST have Room Version (\d+)|Servers SHOULD use (?:\*\*)?room version (\d+)(?:\*\*)?"
+    commit_hashes = [
+        c.hexsha
+        for c in spec_repo._repo.iter_commits(
+            "origin/main", paths=DEFAULT_ROOM_VERSION_PATHS, reverse=True
         )
-        assert len(cur_versions) <= 1, "Found more than one default room version"
-        if cur_versions:
-            default_room_version = next(iter(cur_versions))
+    ]
+    matches_by_commit = spec_repo.search_commits(
+        pattern, DEFAULT_ROOM_VERSION_PATHS, commit_hashes
+    )
+
+    for commit_hash, matches in matches_by_commit.items():
+        versions = parse_matches(pattern, matches)
+
+        assert len(versions) <= 1, "Found more than one default room version"
+        if versions:
+            default_room_version = next(iter(versions))
             if default_room_version not in default_room_versions:
+                commit = spec_repo._repo.commit(commit_hash)
                 default_room_versions[default_room_version] = commit.committed_datetime
 
     return spec_versions, room_versions, default_room_versions
