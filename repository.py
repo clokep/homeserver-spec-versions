@@ -7,7 +7,6 @@ from functools import cmp_to_key
 from pathlib import Path
 from typing import Generic, TypeVar
 
-import git.cmd
 from git import Commit, Repo, TagReference
 
 from finders import PatternFinder, SubModuleFinder, SubRepoFinder, get_pattern_from_file
@@ -218,8 +217,6 @@ class GitRepository(Repository[Commit, TagReference]):
             self._check_refspecs()
             self._fetch()
 
-        self._git_cmd = git.cmd.Git(self.working_dir)
-
     def _fetch(self) -> None:
         """Fetch new commits & tags."""
         self._repo.remote().fetch(tags=True, force=True)
@@ -371,11 +368,8 @@ class GitRepository(Repository[Commit, TagReference]):
         """Find the first tag which contains a commit."""
         # Resolve the commit to the *next* tag. Sorting by creatordate will use the
         # tagged date for annotated tags, otherwise the commit date.
-        tags = self._git_cmd.execute(
-            ("git", "tag", "--sort=creatordate", "--contains", commit),
-            with_extended_output=False,
-            as_process=False,
-            stdout_as_string=True,
+        tags = self._repo.git.tag(
+            "--sort=creatordate", "--contains", commit
         ).splitlines()
         if project.commits and project.commits.ignored_tags:
             tags = [t for t in tags if not project.commits.ignored_tags(t)]
