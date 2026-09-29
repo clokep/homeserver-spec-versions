@@ -3,7 +3,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>Homeserver Timeline</title>
+  <title>Homeserver Timeline — Homeserver Spec Versions</title>
   <script src="lib/chart.umd.min.js"></script>
   <script src="lib/hammer.min.js"></script>
   <script src="lib/chartjs-plugin-zoom.min.js"></script>
@@ -12,80 +12,45 @@
   <script src="lib/chartjs-adapter-date-fns.bundle.min.js"></script>
   <script src="common.js" defer="defer"></script>
   <script src="timeline.js" defer="defer"></script>
-  <style>
-      div {
-          width: 75%;
-          margin-left: auto;
-          margin-right: auto;
-          padding-bottom: 2em;
-      }
-
-      .reset-zoom {
-          position: absolute;
-          margin-left: auto;
-          margin-right: 3px;
-          margin-top: 10px;
-      }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-  <div>
-    <h1>Homeserver Timeline</h1>
+<nav>
+    <a href="index.html" class="brand">Homeserver Spec Versions</a>
+    <div class="links">
+      <a href="index.html">Version Timelines</a>
+      <a href="timeline.html" class="active">Homeserver Timeline</a>
+    </div>
+  </nav>
 
-    <a href="./">Homeserver Versions Support</a>
-
-    <p>
-      Timeline of Matrix homeserver versions.
-    </p>
-
-    <p>
-      Forks are considered from the first commit which is not part of the parent project.
-    </p>
-
-    <p>
-      Drag or pinch to zoom. Hold shift to pan.
-    </p>
-
+  <div class="controls">
     <h3>Maturity</h3>
-    <p>
-      Limit the displayed homeservers to their maturity.
-
-      <br>
-
-      <input type="checkbox" id="stable" onclick="render();" checked />
-      <label for="stable">Stable</label>
-
-      <input type="checkbox" id="beta" onclick="render();" checked />
-      <label for="beta">Beta</label>
-
-      <input type="checkbox" id="alpha"onclick="render();" checked />
-      <label for="alpha">Alpha</label>
-
-      <input type="checkbox" id="obsolete" onclick="render();" checked />
-      <label for="obsolete">Obsolete</label>
-
-      <input type="checkbox" id="unstarted" onclick="render();" />
-      <label for="unstarted">Unstarted</label>
-    </p>
+    <p>Limit the displayed homeservers to their maturity.</p>
+    <div class="control-group">
+      <label><input type="checkbox" id="stable" onclick="render();" checked /> <span>Stable</span></label>
+      <label><input type="checkbox" id="beta" onclick="render();" checked /> <span>Beta</span></label>
+      <label><input type="checkbox" id="alpha" onclick="render();" checked /> <span>Alpha</span></label>
+      <label><input type="checkbox" id="obsolete" onclick="render();" checked /> <span>Obsolete</span></label>
+      <label><input type="checkbox" id="unstarted" onclick="render();" /> <span>Unstarted</span></label>
+    </div>
   </div>
 
-  <div>
+  <div class="chart-container">
     <button class="reset-zoom" onclick="resetZoom('homeserver-history');">reset zoom</button>
     <canvas id="homeserver-history"></canvas>
   </div>
 
-  <div>
+  <div class="chart-container">
     <button class="reset-zoom" onclick="resetZoom('homeserver-activity');">reset zoom</button>
     <canvas id="homeserver-activity"></canvas>
   </div>
 
   <hr>
 
-  <div>
+  <div class="footer">
     See the <a href="https://github.com/clokep/homeserver-spec-versions/">source on GitHub</a>.
   </div>
-
 </body>
 
 </html>
