@@ -117,9 +117,7 @@ def get_project_versions(
                 finder.pattern, finder.paths, commit_hashes
             )
             for commit_hash, matches in matches_by_commit.items():
-                versions = parse_matches(
-                    finder.pattern, matches, finder.parser, finder.to_ignore
-                )
+                versions = parse_matches(finder, matches)
 
                 pattern_versions_by_commit.setdefault(commit_hash, set()).update(
                     versions
@@ -386,6 +384,8 @@ def main(projects: set[str]):
 
     if not projects or "spec" in projects:
         # Get information about the spec itself.
+        print("Starting spec")
+
         spec_versions, room_versions, default_room_versions = get_spec_dates()
         spec_dates = sorted(spec_versions.items(), key=lambda v: v[1])
         result.update(
@@ -402,6 +402,8 @@ def main(projects: set[str]):
             room_versions=room_versions,
             default_room_versions=default_room_versions,
         )
+
+        print()
     else:
         # Load the previously fetch spec versions.
         spec_versions = {

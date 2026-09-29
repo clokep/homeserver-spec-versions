@@ -309,12 +309,7 @@ class GitRepository(Repository[Commit, TagReference]):
         result: dict[str, set[str]] = {}
         for main_hash, sub_hash in main_to_subrepo.items():
             matches = subrepo_results.get(sub_hash, [])
-            versions = parse_matches(
-                finder.finder.pattern,
-                matches,
-                finder.finder.parser,
-                finder.finder.to_ignore,
-            )
+            versions = parse_matches(finder.finder, matches)
 
             if versions:
                 result[main_hash] = versions
@@ -343,12 +338,7 @@ class GitRepository(Repository[Commit, TagReference]):
                 except GitCommandError:
                     continue
 
-                parsed = parse_matches(
-                    commit_finder.pattern,
-                    content.splitlines(),
-                    commit_finder.parser,
-                    commit_finder.to_ignore,
-                )
+                parsed = parse_matches(commit_finder, content.splitlines())
 
                 if parsed:
                     return next(iter(parsed))

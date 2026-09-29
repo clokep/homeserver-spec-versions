@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 
-from finders import parse_matches
+from finders import PatternFinder, parse_matches
 from repository import GitRepository
 
 
@@ -45,25 +45,29 @@ def get_spec_dates() -> tuple[
                     room_versions[room_version] = commit.committed_datetime
 
     # Map of default room versions -> commit date.
-    DEFAULT_ROOM_VERSION_PATHS = [
-        "specification/index.rst",
-        "content/_index.md",
-        "content/rooms/_index.md",
-    ]
     default_room_versions = {}
-    pattern = r"Servers MUST have Room Version (\d+)|Servers SHOULD use (?:\*\*)?room version (\d+)(?:\*\*)?"
+    default_room_version_finder = PatternFinder(
+        pattern=r"Servers MUST have Room Version (\d+)|Servers SHOULD use (?:\*\*)?room version (\d+)(?:\*\*)?",
+        paths=[
+            "specification/index.rst",
+            "content/_index.md",
+            "content/rooms/_index.md",
+        ],
+    )
     commit_hashes = [
         c.hexsha
         for c in spec_repo._repo.iter_commits(
-            "origin/main", paths=DEFAULT_ROOM_VERSION_PATHS, reverse=True
+            "origin/main", paths=default_room_version_finder.paths, reverse=True
         )
     ]
     matches_by_commit = spec_repo.search_commits(
-        pattern, DEFAULT_ROOM_VERSION_PATHS, commit_hashes
+        default_room_version_finder.pattern,
+        default_room_version_finder.paths,
+        commit_hashes,
     )
 
     for commit_hash, matches in matches_by_commit.items():
-        versions = parse_matches(pattern, matches)
+        versions = parse_matches(default_room_version_finder, matches)
 
         assert len(versions) <= 1, "Found more than one default room version"
         if versions:

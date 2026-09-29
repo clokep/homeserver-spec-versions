@@ -49,12 +49,7 @@ class SpecVersionFinder(PatternFinder):
     pattern: str = r"[vr]\d+(?:\.\d+)+"
 
 
-def parse_matches(
-    pattern: str,
-    lines: list[str],
-    parser: ParserType | None = None,
-    to_ignore: list[str] | None = None,
-) -> set[str]:
+def parse_matches(finder: PatternFinder, lines: list[str]) -> set[str]:
     """Apply parser to regex matches, return set of results."""
     results = set()
     for line in lines:
@@ -63,10 +58,10 @@ def parse_matches(
         # TODO This only handles line comments, not block comments.
         line = re.split(r"(^|\s)(#|//)", line)[0]
         # Search again for the results.
-        matches = re.findall(pattern, line)
+        matches = re.findall(finder.pattern, line)
         matches = [
-            parser(match)
-            if parser
+            finder.parser(match)
+            if finder.parser
             else [m for m in match if m]
             if isinstance(match, tuple)
             else [match]
@@ -76,8 +71,8 @@ def parse_matches(
         results.update(*matches)
 
     # Ignore some versions that are "bad".
-    if to_ignore:
-        for r in to_ignore:
+    if finder.to_ignore:
+        for r in finder.to_ignore:
             results.discard(r)
 
     return results
