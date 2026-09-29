@@ -132,6 +132,12 @@ class ProjectMetadata(ServerMetadata, AdditionalMetadata):
                         finder.parser
                     ).strip()
 
+        # Handle ignored_tags callable in CommitInfo
+        if self.commits and self.commits.ignored_tags is not None:
+            props["commits"]["ignored_tags"] = inspect.getsource(
+                self.commits.ignored_tags
+            ).strip()
+
         return hashlib.md5(str(props).encode()).hexdigest()
 
 
