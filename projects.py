@@ -787,6 +787,38 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
+        name="earendel",
+        description="Private, self-hosted messaging server for families and small groups built on the open Matrix protocol.",
+        author="???",
+        maturity=Maturity.Alpha,
+        language="Rust",
+        licence="GPL-3.0",
+        repository="https://github.com/sudhantechie/earendel",
+        room=None,
+        branch="main",
+        spec_version_finders=[
+            SpecVersionFinder(paths=["rust/src/handlers/versions.rs"])
+        ],
+        room_version_finders=[
+            PatternFinder(
+                paths=["rust/src/room_versions.rs"],
+                pattern=r"ROOM_VERSION_V(\d+)|const V(\d+): RoomVersion",
+            ),
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["earendel/config/server.py"],
+                pattern=r'DEFAULT_ROOM_VERSION = "(\d+)"',
+            ),
+        ],
+        commits=None,
+        forked_from=ForkInfo(
+            # Last matching commit was ac771446a61b2fbf1944d747e8dc944f8421b451 (minus renames).
+            name="synapse",
+        ),
+        process_updates=True,
+    ),
+    ProjectMetadata(
         name="elatrix",
         description="Matrix server implementation attempt",
         author="MKenin / kirill-kruchkov",
@@ -1408,13 +1440,7 @@ ADDITIONAL_PROJECTS = [
         repository="https://github.com/striezel/Mocktrix",
         room=None,
         branch="main",
-        spec_version_finders=[
-            SpecVersionFinder(
-                paths=[
-                    "Mocktrix/client/Versions.cs",
-                ]
-            )
-        ],
+        spec_version_finders=[SpecVersionFinder(paths=["Mocktrix/client/Versions.cs"])],
         room_version_finders=[
             PatternFinder(
                 paths=[
@@ -1428,6 +1454,35 @@ ADDITIONAL_PROJECTS = [
                 paths=["Mocktrix/client/r0.6.1/Capabilities.cs"],
                 pattern=r'DefaultVersion = "(\d+)",',
             ),
+        ],
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="myelin",
+        description="Myelin: a modern Matrix homeserver in Rust — Kubernetes-native, Synapse-compatible, bridges first-class",
+        author="Brandon P",
+        maturity=Maturity.Alpha,
+        language="Rust",
+        licence="Apache-2.0",
+        repository="https://github.com/brandon-dacrib/myelin",
+        room=None,
+        branch="main",
+        spec_version_finders=[
+            SpecVersionFinder(paths=["crates/hs-cli/src/versions.rs"])
+        ],
+        room_version_finders=[
+            PatternFinder(
+                paths=["crates/hs-model/src/room_version.rs"],
+                pattern=r'"(\d+)"',
+            )
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["crates/hs-cli/src/capabilities.rs"],
+                pattern=r'DEFAULT_ROOM_VERSION.+ = "(\d+)"',
+            )
         ],
         commits=None,
         forked_from=None,
@@ -1682,8 +1737,21 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="main",
         spec_version_finders=None,
-        room_version_finders=None,
-        default_room_version_finders=None,
+        room_version_finders=[
+            PatternFinder(
+                paths=["crates/phantom-core/src/matrix/state_res/room_version.rs"],
+                pattern=r"RoomVersionId::V(\d+)",
+            )
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "crates/phantom-service/src/server_keys/verify.rs",
+                    "crates/phantom-service/src/net/server_keys/verify.rs",
+                ],
+                pattern=r"DEFAULT_ROOM_VERSION.+ = RoomVersionId::V(\d+)",
+            )
+        ],
         commits=None,
         forked_from=ForkInfo("conduwuit"),
         process_updates=True,
@@ -1867,6 +1935,35 @@ ADDITIONAL_PROJECTS = [
         spec_version_finders=[SpecVersionFinder(paths=["src/api/r0/versions.rs"])],
         room_version_finders=None,
         default_room_version_finders=None,
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="saltator",
+        description="A self-clustering Matrix homeserver in Rust - Native HA, no external database.",
+        author="Ophymx",
+        maturity=Maturity.Alpha,
+        language="Rust",
+        licence="MIT OR Apache-2.0",
+        repository="https://github.com/ophymx/saltator",
+        room=None,
+        branch="main",
+        spec_version_finders=[
+            SpecVersionFinder(paths=["crates/saltator-cs-api/src/routes/session.rs"])
+        ],
+        room_version_finders=[
+            PatternFinder(
+                paths=["crates/saltator-core/src/room_version.rs"],
+                pattern=r'"(\d+)"',
+            )
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["crates/saltator/src/config.rs"],
+                pattern=r'default_room_version = "(\d+)"',
+            )
+        ],
         commits=None,
         forked_from=None,
         process_updates=True,
