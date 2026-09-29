@@ -1339,7 +1339,7 @@ ADDITIONAL_PROJECTS = [
         room_version_finders=[
             PatternFinder(
                 paths=["src/rooms/room_version_policy.cpp"],
-                pattern=r'RoomVersionPolicy{"(\d+)"',
+                pattern=r'RoomVersionPolicy{"(\d+)"|\.id = "(\d+)"?',
             )
         ],
         default_room_version_finders=[
@@ -1838,6 +1838,10 @@ ADDITIONAL_PROJECTS = [
             PatternFinder(
                 paths=["packages/room/src/manager/factory.ts"],
                 pattern=r"defaultRoomVersion = '(\d+)'",
+            ),
+            PatternFinder(
+                paths=["packages/federation-sdk/src/services/config.service.ts"],
+                pattern=r"DEFAULT_ROOM_VERSION.+ = '(\d+)'",
             ),
         ],
         commits=None,
