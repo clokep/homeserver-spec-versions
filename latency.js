@@ -1,0 +1,185 @@
+const zoomOptions = {
+    pan: {
+        enabled: true,
+        modifierKey: "shift",
+    },
+    zoom: {
+        pinch: {
+            enabled: true,
+        },
+        drag: {
+            enabled: true,
+        },
+        mode: 'xy',
+    }
+};
+
+function cmpVersions(a, b) {
+    // Build an array of the first character, then the partial version numbers.
+    let A = [a[0]];
+    A.push(...a.split(".").map(Number));
+
+    let B = [b[0]];
+    B.push(...b.split(".").map(Number));
+
+    for (let i = 0; i < a.length; ++i) {
+        // If B[i] is undefined, A must be earlier.
+        if (B[i] === undefined) {
+            return -1
+        }
+
+        // Otherwise compare the individual items.
+        if (A[i] < B[i]) {
+            return -1;
+        } else if (A[i] > B[i]) {
+            return 1;
+        }
+    }
+}
+
+function build() {
+    // Bar chart of the number of days between a spec release and the homeserver
+    // supporting it.
+    const barContext = document.getElementById("days-to-support");
+    new Chart(barContext, {
+        type: "bar",
+        data: null,
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: "Days to support spec version",
+                },
+                zoom: zoomOptions,
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: "Spec version"
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: "Days to support"
+                    }
+                }
+            }
+        }
+    });
+
+    // Scatter chart of the number of days between a spec release and the homeserver
+    // supporting it.
+    const scatterContext = document.getElementById("spec-days-vs-support");
+    new Chart(scatterContext, {
+        type: "scatter",
+        data: null,
+        options: {
+            plugins: {
+                datalabels: {
+                    align: "end"
+                },
+                title: {
+                    display: true,
+                    text: "Spec days vs. support days",
+                },
+                zoom: zoomOptions
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: "Days since last spec"
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: "Days to support"
+                    }
+                }
+            }
+        },
+        plugins: [ChartDataLabels]
+    });
+
+    // Add the initial data.
+    render();
+}
+
+function render() {
+    let allowedMaturities = ["stable", "beta", "alpha", "obsolete", "unstarted"].filter(maturity => document.getElementById(maturity).checked);
+    let displayType = document.getElementById("display-type").value;
+    let dateType = document.getElementById("date-type").value;
+
+    fetch("data.json").then(response => response.json()).then(data => {
+        // Filter the displayed projects by maturity.
+        data.homeserver_versions = Object.fromEntries(
+            Object.entries(data.homeserver_versions).filter(
+                ([project, projectInfo]) => allowedMaturities.includes(projectInfo.maturity)
+            )
+        );
+
+        renderData(data, displayType, dateType);
+    });
+}
+
+/**
+ * Render the data which has already been filtered for ignored homeservers.
+ */
+function renderData(data, displayType, dateType) {
+    // The full list of released spec versions.
+    const specVersions = Object.keys(data.spec_versions.version_dates).sort(cmpVersions);
+
+    var barDatasets = [];
+    var scatterDatasets = [];
+
+    for (let project in data.homeserver_versions) {
+        const projectVersions = data.homeserver_versions[project]["lag_" + displayType + "_" + dateType];
+
+        // If there are no versions, don't bother adding them.
+        if (!Object.keys(projectVersions).length) {
+            continue;
+        }
+
+        barDatasets.push({
+            label: project,
+            // Fill in zeros for missing spec versions.
+            data: specVersions.map(v => projectVersions[v] || 0),
+            borderWidth: 1,
+        })
+
+        scatterDatasets.push({
+            label: project,
+            data: Object.keys(projectVersions).map(v => {
+                return {
+                    label: v,
+                    x: data.spec_versions.lag[v],
+                    y: projectVersions[v]
+                };
+            }),
+            borderWidth: 1,
+        })
+    }
+
+    // Bar chart of the number of days between a spec release and the homeserver
+    // supporting it.
+    const barChart = Chart.getChart("days-to-support");
+    barChart.data = {
+        labels: specVersions,
+        datasets: barDatasets,
+    };
+    barChart.update();
+
+    // Scatter chart of the number of days between a spec release and the homeserver
+    // supporting it.
+    const scatterChart = Chart.getChart("spec-days-vs-support");
+    scatterChart.data = {
+        datasets: scatterDatasets,
+    };
+    scatterChart.update();
+}
+
+// Build the initial version.
+build();

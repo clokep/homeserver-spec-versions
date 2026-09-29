@@ -3,7 +3,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>Supported Versions — Homeserver Spec Versions</title>
+  <title>Spec Latency — Homeserver Spec Versions</title>
   <script src="lib/chart.umd.min.js"></script>
   <script src="lib/hammer.min.js"></script>
   <script src="lib/chartjs-plugin-zoom.min.js"></script>
@@ -11,7 +11,7 @@
   <script src="lib/chartjs-plugin-annotation.min.js"></script>
   <script src="lib/chartjs-adapter-date-fns.bundle.min.js"></script>
   <script src="common.js" defer="defer"></script>
-  <script src="supported-versions.js" defer="defer"></script>
+  <script src="latency.js" defer="defer"></script>
   <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -19,8 +19,8 @@
 <nav>
     <a href="index.html" class="brand">Homeserver Spec Versions</a>
     <div class="links">
-      <a href="index.html" class="active">Supported Versions</a>
-      <a href="latency.html">Spec Latency</a>
+      <a href="index.html">Supported Versions</a>
+      <a href="latency.html" class="active">Spec Latency</a>
       <a href="timeline.html">Homeserver Timeline</a>
     </div>
   </nav>
@@ -38,6 +38,18 @@
   </div>
 
   <div class="controls">
+    <h3>Releases to include</h3>
+    <p>By default, only the spec versions released <i>after</i> a homeserver's first release are included.</p>
+    <div class="control-group">
+      <select id="display-type" onchange="render();">
+        <option value="all">All spec releases</option>
+        <option value="after_commit">Spec releases after initial project commit</option>
+        <option value="after_release" selected>Spec releases after initial project release</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="controls">
     <h3>Commit or tag date</h3>
     <p>Use the commit date or first release (tag) date?</p>
     <div class="control-group">
@@ -51,18 +63,13 @@
   <p style="color: #666; font-size: 14px;">Drag or pinch to zoom. Hold shift to pan.</p>
 
   <div class="chart-container">
-    <button class="reset-zoom" onclick="resetZoom('supported-spec-versions-over-time');">reset zoom</button>
-    <canvas id="supported-spec-versions-over-time"></canvas>
+    <button class="reset-zoom" onclick="resetZoom('days-to-support');">reset zoom</button>
+    <canvas id="days-to-support"></canvas>
   </div>
 
   <div class="chart-container">
-    <button class="reset-zoom" onclick="resetZoom('supported-room-versions-over-time');">reset zoom</button>
-    <canvas id="supported-room-versions-over-time"></canvas>
-  </div>
-
-  <div class="chart-container">
-    <button class="reset-zoom" onclick="resetZoom('default-room-versions-over-time');">reset zoom</button>
-    <canvas id="default-room-versions-over-time"></canvas>
+    <button class="reset-zoom" onclick="resetZoom('spec-days-vs-support');">reset zoom</button>
+    <canvas id="spec-days-vs-support"></canvas>
   </div>
 
 <hr>
