@@ -563,6 +563,30 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
+        name="bicerin",
+        description="Lightweight Matrix homeserver for bridge-heavy applications written in Rust",
+        author="Qwale",
+        maturity=Maturity.Alpha,
+        language="Rust",
+        licence="Apache-2.0",
+        repository="https://github.com/qwale-app/bicerin-matrix",
+        room=None,
+        branch="main",
+        spec_version_finders=[
+            SpecVersionFinder(paths=["crates/bicerin-http/src/handlers/auth.rs"])
+        ],
+        room_version_finders=[],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["crates/bicerin-config/src/lib.rs"],
+                pattern=r'default_room_version: "(\d+)"',
+            )
+        ],
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
         name="bromal",
         description="A lightweight opensource messaging server, that uses the Matrix protocol",
         author="Igorj Gorjaĉev",
@@ -1736,7 +1760,9 @@ ADDITIONAL_PROJECTS = [
         repository="https://github.com/HilthonTT/phantom",
         room=None,
         branch="main",
-        spec_version_finders=None,
+        spec_version_finders=[
+            SpecVersionFinder(paths=["crates/phantom-api/src/client/versions.rs"])
+        ],
         room_version_finders=[
             PatternFinder(
                 paths=["crates/phantom-core/src/matrix/state_res/room_version.rs"],
@@ -2217,6 +2243,26 @@ ADDITIONAL_PROJECTS = [
         commits=None,
         forked_from=None,
         process_updates=False,  # History was stomped on and is no longer available
+    ),
+    ProjectMetadata(
+        name="tuwunel-terva",
+        description="terva-sh's release mirror of tuwunel, the Matrix homeserver: upstream history plus curated changes. Not affiliated with upstream.",
+        author="Terva",
+        maturity=Maturity.Beta,
+        language="Rust",
+        licence="Apache-2.0",
+        repository="https://github.com/terva-sh/tuwunel",
+        room=None,
+        branch="release",
+        spec_version_finders=TuwunelFinders.spec_version_finders,
+        room_version_finders=TuwunelFinders.room_version_finders,
+        default_room_version_finders=TuwunelFinders.default_room_version_finders,
+        commits=CommitInfo(
+            earliest_commit="cb0c8c1630008b93e2dfe74ca2e6f4026ede1c55",
+            earliest_tag=None,
+        ),
+        forked_from=ForkInfo(name="tuwunel"),
+        process_updates=True,
     ),
     ProjectMetadata(
         name="vela",
