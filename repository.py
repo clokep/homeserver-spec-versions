@@ -5,7 +5,8 @@ from collections.abc import Iterable, Iterator
 from datetime import datetime, timedelta, timezone
 from functools import cmp_to_key
 from pathlib import Path
-from typing import Generic, TypeVar
+from typing import ClassVar, Generic, TypeVar
+from urllib.parse import urlparse
 
 from git import Commit, Repo, TagReference
 from git.exc import GitCommandError
@@ -204,21 +205,38 @@ class GitRepository(Repository[Commit, TagReference]):
         """Fetch new commits & tags."""
         self._repo.remote().fetch(tags=True, force=True)
 
+    EXPECTED_REFSPECS: ClassVar[dict[str, str]] = {
+        "codefloe.com": "+refs/pull/*:refs/remotes/origin/pull/*",
+        "github.com": "+refs/pull/*:refs/remotes/origin/pull/*",
+        "gitlab.com": "+refs/merge-requests/*:refs/remotes/origin/pull/*",
+    }
+
     def _check_refspecs(self) -> bool:
         """Add a fetch refspec for pull requests as some sub-repos target pull requests of other repos."""
         url = next(self._repo.remote().urls)
-        if "github.com" in url:
-            reader = self._repo.config_reader("repository")
-            refspecs = reader.get_values('remote "origin"', "fetch")
-            if len(refspecs) < 2:
-                with self._repo.config_writer("repository") as writer:
-                    writer.add_value(
-                        'remote "origin"',
-                        "fetch",
-                        "+refs/pull/*:refs/remotes/origin/pull/*",
-                    )
-                return True
+        parsed_url = urlparse(url)
+
+        try:
+            expected_refspec = self.EXPECTED_REFSPECS[parsed_url.netloc]
+        except KeyError:
+            # Unknown forge, nothing to do.
+            return False
+
+        # Read back the config to see if it is already there.
+        reader = self._repo.config_reader("repository")
+        refspecs = reader.get_values('remote "origin"', "fetch")
+        for refspec in refspecs:
+            if refspec == expected_refspec:
+                break
+        else:
+            # Expected refspec not found.
+            with self._repo.config_writer("repository") as writer:
+                writer.add_value('remote "origin"', "fetch", expected_refspec)
+            return True
         return False
+
+    def _add_refspec(self, refspec: str, path: str) -> None:
+        pass
 
     def checkout(self, commit: str | Commit) -> None:
         """Checkout a specific commit or refspec."""
