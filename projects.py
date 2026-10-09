@@ -1761,7 +1761,12 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="main",
         spec_version_finders=[
-            SpecVersionFinder(paths=["crates/phantom-api/src/client/versions.rs"])
+            SpecVersionFinder(
+                paths=[
+                    "crates/phantom-api/src/client/versions.rs",
+                    "crates/phantom-api/src/client/ops/versions.rs",
+                ]
+            )
         ],
         room_version_finders=[
             PatternFinder(
@@ -2401,7 +2406,11 @@ ADDITIONAL_PROJECTS = [
                 repository="https://codefloe.com/pat-s/gomatrixserverlib",
                 commit_finder=PatternFinder(
                     paths=["go.mod"],
-                    pattern=r"codefloe.com/pat-s/gomatrixserverlib (?:v0\.0\.0-\d+-([0-9a-f]+)|(v\d\.\d.\d))",
+                    # The versions are of the form v0.0.0-<commit> OR vX.Y.Z OR vX.Y.Z-0.YYYYMMDDHHmmSS-<commit>.
+                    # The latter format doesn't always use real tags, so we need the commit instead, try to match that
+                    # first.
+                    pattern=r"codefloe.com/pat-s/gomatrixserverlib (?:v\d\.\d\.\d-[\.\d]+-([0-9a-f]+)|(v[1-9]\.\d.\d))",
+                    to_ignore=["v1.2.3"],
                 ),
                 finder=PatternFinder(
                     paths=["eventversion.go"], pattern=r"RoomVersionV(\d+)"
