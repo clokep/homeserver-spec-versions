@@ -1350,6 +1350,34 @@ ADDITIONAL_PROJECTS = [
         forked_from=None,
         process_updates=True,
     ),
+    ProjectMetadata(
+        name="matrix-nodejs-homeserver",
+        description="A Matrix homeserver as an importable Node.js library, and a public server built on it.",
+        author="Krystian Mikołajczyk",
+        maturity=Maturity.Alpha,
+        language="TypeScript",
+        licence="PolyForm-Noncommercial-1.0.0",
+        repository="https://github.com/k18k/matrix-nodejs-homeserver",
+        room=None,
+        branch="main",
+        spec_version_finders=[
+            SpecVersionFinder(paths=["packages/core/src/api/misc.ts"])
+        ],
+        room_version_finders=[
+            PatternFinder(
+                paths=["packages/core/src/core/events.ts"], pattern=r'"(\d+)"'
+            )
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["packages/core/src/core/events.ts"],
+                pattern=r'DEFAULT_ROOM_VERSION = "(\d+)"',
+            )
+        ],
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
     # potenial forks:
     # https://github.com/cf-remi/goodshab-matrix
     # https://github.com/linksever137/matrix-homeserver

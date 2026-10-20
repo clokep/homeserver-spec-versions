@@ -8315,6 +8315,587 @@
             "spec_version_dates_by_commit": {},
             "spec_version_dates_by_tag": {}
         },
+        "matrix-nodejs-homeserver": {
+            "default_room_version_dates_by_commit": {
+                "10": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "default_room_version_dates_by_tag": {
+                "10": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "forked_date": null,
+            "forked_from": null,
+            "initial_commit_date": "2026-10-15T19:27:24+02:00",
+            "initial_release_date": "2026-10-16T18:23:30+02:00",
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
+                "r0.0.1": 3932,
+                "r0.1.0": 3813,
+                "r0.2.0": 3747,
+                "r0.3.0": 3246,
+                "r0.4.0": 2968,
+                "r0.5.0": 2685,
+                "r0.6.0": 2536,
+                "r0.6.1": 2334,
+                "v1.1": 1803,
+                "v1.10": 939,
+                "v1.11": 849,
+                "v1.2": 1718,
+                "v1.3": 1536,
+                "v1.4": 1474,
+                "v1.5": 1430,
+                "v1.6": 1341,
+                "v1.7": 1241,
+                "v1.8": 1151,
+                "v1.9": 1053
+            },
+            "lag_all_by_tag": {
+                "r0.0.1": 3932,
+                "r0.1.0": 3813,
+                "r0.2.0": 3747,
+                "r0.3.0": 3246,
+                "r0.4.0": 2968,
+                "r0.5.0": 2685,
+                "r0.6.0": 2536,
+                "r0.6.1": 2334,
+                "v1.1": 1803,
+                "v1.10": 939,
+                "v1.11": 849,
+                "v1.2": 1718,
+                "v1.3": 1536,
+                "v1.4": 1474,
+                "v1.5": 1430,
+                "v1.6": 1341,
+                "v1.7": 1241,
+                "v1.8": 1151,
+                "v1.9": 1053
+            },
+            "last_commit": "ac5ff4d56e5e77195559dd13f43c10a085b79b8d",
+            "last_commit_date": "2026-10-17T23:15:47+02:00",
+            "maturity": "alpha",
+            "merged_back": false,
+            "project_data_hash": "79d7ece517f72b2cdc9864bcd82f3695",
+            "room_version_dates_by_commit": {
+                "1": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "10": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "11": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "12": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "2": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "3": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "4": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "5": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "6": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "7": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "8": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "9": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "room_version_dates_by_tag": {
+                "1": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "10": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "11": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "12": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "2": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "3": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "4": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "5": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "6": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "7": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "8": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "9": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "spec_version_dates_by_commit": {
+                "r0.0.1": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.1.0": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.2.0": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.3.0": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.4.0": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.5.0": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.6.0": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.6.1": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.1": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.10": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.11": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.2": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.3": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.4": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.5": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.6": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.7": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.8": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.9": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "spec_version_dates_by_tag": {
+                "r0.0.1": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.1.0": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.2.0": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.3.0": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.4.0": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.5.0": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.6.0": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.6.1": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.1": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.10": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.11": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.2": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.3": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.4": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.5": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.6": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.7": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.8": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.9": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ]
+            }
+        },
         "matrix-workers": {
             "default_room_version_dates_by_commit": {
                 "10": [
