@@ -1,4 +1,4 @@
-gitpython==3.1.55
+gitpython==3.2.1
 beautifulsoup4==4.15.0
-ruff==0.16.0
-ty==0.0.63
+ruff==0.17.2
+ty==0.0.91

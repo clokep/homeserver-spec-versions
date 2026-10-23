@@ -1126,7 +1126,7 @@ ADDITIONAL_PROJECTS = [
         room="#harmony:neilalexander.dev",
         branch="main",
         spec_version_finders=DendriteFinders.spec_version_finders,
-        room_version_finders=DendriteFinders.room_version_finders
+        room_version_finders=(DendriteFinders.room_version_finders or [])
         + [
             # Harmony re-vendored gomatrixserverlib
             PatternFinder(
@@ -2468,7 +2468,7 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="main",
         spec_version_finders=DendriteFinders.spec_version_finders,
-        room_version_finders=DendriteFinders.room_version_finders
+        room_version_finders=(DendriteFinders.room_version_finders or [])
         + [
             # For a period github.com/jackmaninov/gomatrixserverlib was used to replace github.com/matrix-org/gomatrixserverlib
             # but this didn't have any impact on supported versions.

@@ -27,7 +27,7 @@ class ConduitFinders(Finders):
     """Base finders for Conduit=based projects."""
 
     @staticmethod
-    def get_spec_version_finders(extra_paths: list[str]) -> PatternFinderType:
+    def get_spec_version_finders(extra_paths: list[str]) -> PatternFinderType | None:
         return [
             SpecVersionFinder(
                 paths=[
@@ -40,7 +40,7 @@ class ConduitFinders(Finders):
             )
         ]
 
-    spec_version_finders: PatternFinderType = get_spec_version_finders(
+    spec_version_finders = get_spec_version_finders(
         ["conduit/src/api/client_server/unversioned.rs"]
     )
 
@@ -60,14 +60,14 @@ class ConduitFinders(Finders):
             ),
         ]
 
-    room_version_finders: PatternFinderType = get_room_version_finders(
+    room_version_finders = get_room_version_finders(
         ["conduit/src/service/globals/mod.rs"]
     )
 
     @staticmethod
     def get_default_room_version_finders(
         extra_paths: list[str], additional_pattern: str = r""
-    ) -> PatternFinderType:
+    ) -> PatternFinderType | None:
         return [
             PatternFinder(
                 paths=[
@@ -83,28 +83,26 @@ class ConduitFinders(Finders):
             ),
         ]
 
-    default_room_version_finders: PatternFinderType = get_default_room_version_finders(
+    default_room_version_finders = get_default_room_version_finders(
         ["conduit/src/config/mod.rs", "conduit-config/src/lib.rs"]
     )
 
 
 class ConduwuitFinders(ConduitFinders):
-    spec_version_finders: PatternFinderType = ConduitFinders.get_spec_version_finders(
+    spec_version_finders = ConduitFinders.get_spec_version_finders(
         ["src/api/client/unversioned.rs"]
     )
-    room_version_finders: PatternFinderType = ConduitFinders.get_room_version_finders(
+    room_version_finders = ConduitFinders.get_room_version_finders(
         ["src/core/info/room_version.rs"]
     )
-    default_room_version_finders: PatternFinderType = (
-        ConduitFinders.get_default_room_version_finders(
-            ["src/core/config/mod.rs"],
-            r"|default_default_room_version.+RoomVersionId::V(\d+)",
-        )
+    default_room_version_finders = ConduitFinders.get_default_room_version_finders(
+        ["src/core/config/mod.rs"],
+        r"|default_default_room_version.+RoomVersionId::V(\d+)",
     )
 
 
 class ContinuwuityFinders(ConduwuitFinders):
-    spec_version_finders: PatternFinderType = ConduitFinders.get_spec_version_finders(
+    spec_version_finders = ConduitFinders.get_spec_version_finders(
         ["src/api/client/unversioned.rs", "src/core/matrix/versions.rs"]
     )
 
@@ -122,7 +120,7 @@ class TuwunelFinders(ConduitFinders):
 class DendriteFinders(Finders):
     """Base finders for Dendrite-based projects."""
 
-    spec_version_finders: PatternFinderType = [  # noqa: RUF012
+    spec_version_finders = [  # noqa: RUF012
         SpecVersionFinder(
             paths=[
                 "src/github.com/matrix-org/dendrite/clientapi/routing/routing.go",
@@ -132,7 +130,7 @@ class DendriteFinders(Finders):
             to_ignore=["v1.0"],
         )
     ]
-    room_version_finders: PatternFinderType = [  # noqa: RUF012
+    room_version_finders = [  # noqa: RUF012
         # gomatrixserverlib was vendored early in the project, but before room versions were a thing.
         PatternFinder(
             paths=["roomserver/version/version.go"],
@@ -149,7 +147,7 @@ class DendriteFinders(Finders):
             ),
         ),
     ]
-    default_room_version_finders: PatternFinderType = [  # noqa: RUF012
+    default_room_version_finders = [  # noqa: RUF012
         PatternFinder(
             paths=[
                 "roomserver/version/version.go",
@@ -165,16 +163,16 @@ class DendriteFinders(Finders):
 class SynapseLegacyFinders(Finders):
     """Base finders for Synapse legacy-based projects."""
 
-    spec_version_finders: PatternFinderType = [  # noqa: RUF012
+    spec_version_finders = [  # noqa: RUF012
         SpecVersionFinder(paths=["synapse/rest/client/versions.py"])
     ]
-    room_version_finders: PatternFinderType = [  # noqa: RUF012
+    room_version_finders = [  # noqa: RUF012
         PatternFinder(
             paths=["synapse/api/constants.py", "synapse/api/room_versions.py"],
             pattern=r"RoomVersions.V(\d+)",
         ),
     ]
-    default_room_version_finders: PatternFinderType = [  # noqa: RUF012
+    default_room_version_finders = [  # noqa: RUF012
         PatternFinder(
             paths=[
                 "synapse/api/constants.py",
@@ -189,17 +187,15 @@ class SynapseLegacyFinders(Finders):
 class SynapseFinders(SynapseLegacyFinders):
     """Base finders for Synapse-based projects."""
 
-    spec_version_finders: PatternFinderType = (
-        SynapseLegacyFinders.spec_version_finders
-        + [SpecVersionFinder(paths=["rust/src/handlers/versions.rs"])]
-    )
+    assert SynapseLegacyFinders.spec_version_finders is not None
+    spec_version_finders = SynapseLegacyFinders.spec_version_finders + [
+        SpecVersionFinder(paths=["rust/src/handlers/versions.rs"])
+    ]
 
-    room_version_finders: PatternFinderType = (
-        SynapseLegacyFinders.room_version_finders
-        + [
-            PatternFinder(
-                paths=["rust/src/room_versions.rs"],
-                pattern=r"ROOM_VERSION_V(\d+)|const V(\d+): RoomVersion",
-            ),
-        ]
-    )
+    assert SynapseLegacyFinders.room_version_finders is not None
+    room_version_finders = SynapseLegacyFinders.room_version_finders + [
+        PatternFinder(
+            paths=["rust/src/room_versions.rs"],
+            pattern=r"ROOM_VERSION_V(\d+)|const V(\d+): RoomVersion",
+        ),
+    ]
