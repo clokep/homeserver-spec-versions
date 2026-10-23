@@ -1309,6 +1309,31 @@ ADDITIONAL_PROJECTS = [
         forked_from=None,
         process_updates=True,
     ),
+    # m-lstrom was forked separately from upstream twice.
+    ProjectMetadata(
+        name="m-lstrom-old",
+        description="M-lstorm is a continuon of matrix homeserver software maelstorm",
+        author="Alexander Max Ranabel",
+        maturity=Maturity.Obsolete,
+        language="Rust",
+        licence="Apache-2.0 OR MIT",
+        repository="https://github.com/AlexanderMaxRanabel/m-lstrom-old",
+        room=None,
+        branch="master",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "src/server/handlers/admin.rs",
+                    "crates/maelstrom-api/src/handlers/versions.rs",
+                ]
+            ),
+        ],
+        room_version_finders=None,
+        default_room_version_finders=None,
+        commits=CommitInfo(earliest_commit="7554e295522a1008a40b8067d2ea5d042776c08e"),
+        forked_from=ForkInfo(name="maelstrom"),
+        process_updates=False,
+    ),
     ProjectMetadata(
         name="m-lstrom",
         description="M-lstorm is a continuon of matrix homeserver software maelstorm",
@@ -1329,7 +1354,7 @@ ADDITIONAL_PROJECTS = [
         ],
         room_version_finders=None,
         default_room_version_finders=None,
-        commits=CommitInfo(earliest_commit="7554e295522a1008a40b8067d2ea5d042776c08e"),
+        commits=CommitInfo(earliest_commit="3a41e4cada2ee934f5035d3e9a9fbfb476162713"),
         forked_from=ForkInfo(name="maelstrom"),
         process_updates=True,
     ),
