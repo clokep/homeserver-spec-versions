@@ -3809,8 +3809,8 @@
                 "v1.5": 885,
                 "v1.8": 701
             },
-            "last_commit": "4a20fd62a935be6d9d6d52391106ad9b66936459",
-            "last_commit_date": "2026-10-21T18:29:30-04:00",
+            "last_commit": "8fff8f66d398512a34396cf6bd20dd19c71fc9be",
+            "last_commit_date": "2026-10-26T05:01:31+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": "3101d40c5891cdb39fbf8bfc033855f5",
@@ -5871,8 +5871,8 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit": "beaaed620e6e592fcd76a52315075327b657b4a9",
-            "last_commit_date": "2026-10-22T16:31:20+02:00",
+            "last_commit": "5b0583ba57227c01ad680503c04dfe6b7892ba04",
+            "last_commit_date": "2026-10-26T13:00:33+01:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "7434fc282b55b4827efe4f6f8c93b2d0",
@@ -7631,7 +7631,7 @@
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
             "last_commit": null,
-            "last_commit_date": "2026-10-23T12:44:46.696081+00:00",
+            "last_commit_date": "2026-10-26T12:48:57.116077+00:00",
             "maturity": "beta",
             "merged_back": false,
             "project_data_hash": null,
@@ -7719,6 +7719,731 @@
             "room_version_dates_by_tag": {},
             "spec_version_dates_by_commit": {},
             "spec_version_dates_by_tag": {}
+        },
+        "katrix": {
+            "default_room_version_dates_by_commit": {
+                "10": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "default_room_version_dates_by_tag": {
+                "10": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "forked_date": null,
+            "forked_from": null,
+            "initial_commit_date": "2026-10-15T19:27:24+02:00",
+            "initial_release_date": "2026-10-16T18:23:30+02:00",
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
+                "r0.0.1": 3932,
+                "r0.1.0": 3813,
+                "r0.2.0": 3747,
+                "r0.3.0": 3246,
+                "r0.4.0": 2968,
+                "r0.5.0": 2685,
+                "r0.6.0": 2536,
+                "r0.6.1": 2334,
+                "v1.1": 1803,
+                "v1.10": 939,
+                "v1.11": 849,
+                "v1.12": 743,
+                "v1.13": 670,
+                "v1.14": 572,
+                "v1.15": 481,
+                "v1.16": 398,
+                "v1.17": 306,
+                "v1.18": 208,
+                "v1.19": 104,
+                "v1.2": 1718,
+                "v1.3": 1536,
+                "v1.4": 1474,
+                "v1.5": 1430,
+                "v1.6": 1341,
+                "v1.7": 1241,
+                "v1.8": 1151,
+                "v1.9": 1053
+            },
+            "lag_all_by_tag": {
+                "r0.0.1": 3932,
+                "r0.1.0": 3813,
+                "r0.2.0": 3747,
+                "r0.3.0": 3246,
+                "r0.4.0": 2968,
+                "r0.5.0": 2685,
+                "r0.6.0": 2536,
+                "r0.6.1": 2334,
+                "v1.1": 1803,
+                "v1.10": 939,
+                "v1.11": 849,
+                "v1.12": 743,
+                "v1.13": 670,
+                "v1.14": 572,
+                "v1.15": 481,
+                "v1.16": 398,
+                "v1.17": 306,
+                "v1.18": 208,
+                "v1.19": 104,
+                "v1.2": 1718,
+                "v1.3": 1536,
+                "v1.4": 1474,
+                "v1.5": 1430,
+                "v1.6": 1341,
+                "v1.7": 1241,
+                "v1.8": 1151,
+                "v1.9": 1053
+            },
+            "last_commit": "b973c53baa86a66416f1b3b49d22caa61f32d929",
+            "last_commit_date": "2026-10-25T01:45:34+02:00",
+            "maturity": "alpha",
+            "merged_back": false,
+            "project_data_hash": "b584eb5daec1dec23b3aa302cf1b3974",
+            "room_version_dates_by_commit": {
+                "1": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "10": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "11": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "12": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "2": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "3": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "4": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "5": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "6": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "7": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "8": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "9": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "room_version_dates_by_tag": {
+                "1": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "10": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "11": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "12": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "2": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "3": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "4": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "5": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "6": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "7": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "8": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "9": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "spec_version_dates_by_commit": {
+                "r0.0.1": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.1.0": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.2.0": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.3.0": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.4.0": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.5.0": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.6.0": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.6.1": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.1": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.10": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.11": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.12": [
+                    [
+                        "6dbae7dd3e18058c405ad5234dcc46b224d27976",
+                        "2026-10-20T22:05:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.13": [
+                    [
+                        "6dbae7dd3e18058c405ad5234dcc46b224d27976",
+                        "2026-10-20T22:05:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.14": [
+                    [
+                        "6dbae7dd3e18058c405ad5234dcc46b224d27976",
+                        "2026-10-20T22:05:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.15": [
+                    [
+                        "6dbae7dd3e18058c405ad5234dcc46b224d27976",
+                        "2026-10-20T22:05:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.16": [
+                    [
+                        "6dbae7dd3e18058c405ad5234dcc46b224d27976",
+                        "2026-10-20T22:05:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.17": [
+                    [
+                        "6dbae7dd3e18058c405ad5234dcc46b224d27976",
+                        "2026-10-20T22:05:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.18": [
+                    [
+                        "6dbae7dd3e18058c405ad5234dcc46b224d27976",
+                        "2026-10-20T22:05:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.19": [
+                    [
+                        "6dbae7dd3e18058c405ad5234dcc46b224d27976",
+                        "2026-10-20T22:05:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.2": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.3": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.4": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.5": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.6": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.7": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.8": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.9": [
+                    [
+                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
+                        "2026-10-17T22:22:54+02:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "spec_version_dates_by_tag": {
+                "r0.0.1": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.1.0": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.2.0": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.3.0": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.4.0": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.5.0": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.6.0": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.6.1": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.1": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.10": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.11": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.12": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.8",
+                        "2026-10-21T08:34:48+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.13": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.8",
+                        "2026-10-21T08:34:48+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.14": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.8",
+                        "2026-10-21T08:34:48+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.15": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.8",
+                        "2026-10-21T08:34:48+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.16": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.8",
+                        "2026-10-21T08:34:48+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.17": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.8",
+                        "2026-10-21T08:34:48+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.18": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.8",
+                        "2026-10-21T08:34:48+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.19": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.8",
+                        "2026-10-21T08:34:48+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.2": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.3": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.4": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.5": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.6": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.7": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.8": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.9": [
+                    [
+                        "matrix-nodejs-homeserver@0.3.5",
+                        "2026-10-17T22:52:20+02:00",
+                        null,
+                        null
+                    ]
+                ]
+            }
         },
         "ligase": {
             "default_room_version_dates_by_commit": {},
@@ -8513,731 +9238,6 @@
             "spec_version_dates_by_commit": {},
             "spec_version_dates_by_tag": {}
         },
-        "matrix-nodejs-homeserver": {
-            "default_room_version_dates_by_commit": {
-                "10": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ]
-            },
-            "default_room_version_dates_by_tag": {
-                "10": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ]
-            },
-            "forked_date": null,
-            "forked_from": null,
-            "initial_commit_date": "2026-10-15T19:27:24+02:00",
-            "initial_release_date": "2026-10-16T18:23:30+02:00",
-            "lag_after_commit_by_commit": {},
-            "lag_after_commit_by_tag": {},
-            "lag_after_release_by_commit": {},
-            "lag_after_release_by_tag": {},
-            "lag_all_by_commit": {
-                "r0.0.1": 3932,
-                "r0.1.0": 3813,
-                "r0.2.0": 3747,
-                "r0.3.0": 3246,
-                "r0.4.0": 2968,
-                "r0.5.0": 2685,
-                "r0.6.0": 2536,
-                "r0.6.1": 2334,
-                "v1.1": 1803,
-                "v1.10": 939,
-                "v1.11": 849,
-                "v1.12": 743,
-                "v1.13": 670,
-                "v1.14": 572,
-                "v1.15": 481,
-                "v1.16": 398,
-                "v1.17": 306,
-                "v1.18": 208,
-                "v1.19": 104,
-                "v1.2": 1718,
-                "v1.3": 1536,
-                "v1.4": 1474,
-                "v1.5": 1430,
-                "v1.6": 1341,
-                "v1.7": 1241,
-                "v1.8": 1151,
-                "v1.9": 1053
-            },
-            "lag_all_by_tag": {
-                "r0.0.1": 3932,
-                "r0.1.0": 3813,
-                "r0.2.0": 3747,
-                "r0.3.0": 3246,
-                "r0.4.0": 2968,
-                "r0.5.0": 2685,
-                "r0.6.0": 2536,
-                "r0.6.1": 2334,
-                "v1.1": 1803,
-                "v1.10": 939,
-                "v1.11": 849,
-                "v1.12": 743,
-                "v1.13": 670,
-                "v1.14": 572,
-                "v1.15": 481,
-                "v1.16": 398,
-                "v1.17": 306,
-                "v1.18": 208,
-                "v1.19": 104,
-                "v1.2": 1718,
-                "v1.3": 1536,
-                "v1.4": 1474,
-                "v1.5": 1430,
-                "v1.6": 1341,
-                "v1.7": 1241,
-                "v1.8": 1151,
-                "v1.9": 1053
-            },
-            "last_commit": "03c30e785a5bd004227687c31661359076caa012",
-            "last_commit_date": "2026-10-21T08:34:48+02:00",
-            "maturity": "alpha",
-            "merged_back": false,
-            "project_data_hash": "79d7ece517f72b2cdc9864bcd82f3695",
-            "room_version_dates_by_commit": {
-                "1": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "10": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "11": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "12": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "2": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "3": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "4": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "5": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "6": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "7": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "8": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "9": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ]
-            },
-            "room_version_dates_by_tag": {
-                "1": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "10": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "11": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "12": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "2": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "3": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "4": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "5": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "6": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "7": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "8": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "9": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ]
-            },
-            "spec_version_dates_by_commit": {
-                "r0.0.1": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "r0.1.0": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "r0.2.0": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "r0.3.0": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "r0.4.0": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "r0.5.0": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "r0.6.0": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "r0.6.1": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.1": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.10": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.11": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.12": [
-                    [
-                        "6dbae7dd3e18058c405ad5234dcc46b224d27976",
-                        "2026-10-20T22:05:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.13": [
-                    [
-                        "6dbae7dd3e18058c405ad5234dcc46b224d27976",
-                        "2026-10-20T22:05:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.14": [
-                    [
-                        "6dbae7dd3e18058c405ad5234dcc46b224d27976",
-                        "2026-10-20T22:05:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.15": [
-                    [
-                        "6dbae7dd3e18058c405ad5234dcc46b224d27976",
-                        "2026-10-20T22:05:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.16": [
-                    [
-                        "6dbae7dd3e18058c405ad5234dcc46b224d27976",
-                        "2026-10-20T22:05:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.17": [
-                    [
-                        "6dbae7dd3e18058c405ad5234dcc46b224d27976",
-                        "2026-10-20T22:05:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.18": [
-                    [
-                        "6dbae7dd3e18058c405ad5234dcc46b224d27976",
-                        "2026-10-20T22:05:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.19": [
-                    [
-                        "6dbae7dd3e18058c405ad5234dcc46b224d27976",
-                        "2026-10-20T22:05:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.2": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.3": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.4": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.5": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.6": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.7": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.8": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.9": [
-                    [
-                        "ff7a5992a6ac042a72cd9bd1588502092a466995",
-                        "2026-10-17T22:22:54+02:00",
-                        null,
-                        null
-                    ]
-                ]
-            },
-            "spec_version_dates_by_tag": {
-                "r0.0.1": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "r0.1.0": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "r0.2.0": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "r0.3.0": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "r0.4.0": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "r0.5.0": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "r0.6.0": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "r0.6.1": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.1": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.10": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.11": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.12": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.8",
-                        "2026-10-21T08:34:48+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.13": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.8",
-                        "2026-10-21T08:34:48+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.14": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.8",
-                        "2026-10-21T08:34:48+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.15": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.8",
-                        "2026-10-21T08:34:48+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.16": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.8",
-                        "2026-10-21T08:34:48+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.17": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.8",
-                        "2026-10-21T08:34:48+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.18": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.8",
-                        "2026-10-21T08:34:48+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.19": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.8",
-                        "2026-10-21T08:34:48+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.2": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.3": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.4": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.5": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.6": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.7": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.8": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ],
-                "v1.9": [
-                    [
-                        "matrix-nodejs-homeserver@0.3.5",
-                        "2026-10-17T22:52:20+02:00",
-                        null,
-                        null
-                    ]
-                ]
-            }
-        },
         "matrix-workers": {
             "default_room_version_dates_by_commit": {
                 "10": [
@@ -9667,7 +9667,7 @@
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2026-05-08T14:26:07+03:00",
-            "initial_release_date": "2026-10-23T10:31:38+01:00",
+            "initial_release_date": "2026-10-26T08:37:12+00:00",
             "lag_after_commit_by_commit": {
                 "v1.19": 15
             },
@@ -9696,8 +9696,8 @@
                 "v1.9": 899
             },
             "lag_all_by_tag": {},
-            "last_commit": "6a3d3de02312acbdbba4b4207bf4a3e92b1dfed0",
-            "last_commit_date": "2026-10-23T10:31:38+01:00",
+            "last_commit": "f707b7fab69799415e415d767ee5cabcaed7ddfe",
+            "last_commit_date": "2026-10-26T11:41:21+00:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "e810b39e0d864f5d59b66fb930a8843e",
@@ -10331,8 +10331,8 @@
                 "v1.8": 1144,
                 "v1.9": 1046
             },
-            "last_commit": "d8d34babd203fc5f832075dbf7536c7f9d108001",
-            "last_commit_date": "2026-10-21T22:51:11-04:00",
+            "last_commit": "c3f7b972b3e144baec778281cbeb6b7dc21cd54c",
+            "last_commit_date": "2026-10-23T10:55:45-04:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "de294d1d9db6cfb63c262629ccb263ad",
@@ -12591,8 +12591,8 @@
                 "v1.9": 127
             },
             "lag_all_by_tag": {},
-            "last_commit": "33b214ab9d435fd778e6f0e5474b014d81e47b67",
-            "last_commit_date": "2026-10-18T21:18:38-07:00",
+            "last_commit": "2cff51601930b53f3baa08ef721861e9368f3458",
+            "last_commit_date": "2026-10-25T16:12:46-07:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "a9160fe4df048abb1e356346982ba91b",
@@ -12783,7 +12783,7 @@
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
             "last_commit": null,
-            "last_commit_date": "2026-10-23T12:44:46.696130+00:00",
+            "last_commit_date": "2026-10-26T12:48:57.116107+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": null,
@@ -14562,7 +14562,7 @@
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
             "last_commit": null,
-            "last_commit_date": "2026-10-23T12:44:46.696166+00:00",
+            "last_commit_date": "2026-10-26T12:48:57.116138+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": null,
@@ -14722,8 +14722,8 @@
                 "v1.8": 138,
                 "v1.9": 40
             },
-            "last_commit": "7ea942a5fe7cc60e0818d7296a2f080ccf551b86",
-            "last_commit_date": "2026-10-22T14:51:16-05:00",
+            "last_commit": "d99e5fe78300f49544112a922961836d746b0c04",
+            "last_commit_date": "2026-10-26T11:56:06+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": "b0554ed73410fecc14a89b3c197eb9da",
@@ -16499,8 +16499,8 @@
                 "v1.8": 104,
                 "v1.9": 5
             },
-            "last_commit": "560709f4017280b9c75f42a62fedee598778a7ed",
-            "last_commit_date": "2026-10-22T10:42:44+00:00",
+            "last_commit": "04dc1d4303e024145fe603954e4f69ecce671979",
+            "last_commit_date": "2026-10-26T10:37:13+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": "ce8b9a9c574806802c2cc52b0d23ac89",
@@ -17834,7 +17834,7 @@
                 "v1.9": 376
             },
             "last_commit": null,
-            "last_commit_date": "2026-10-16T00:00:00+00:00",
+            "last_commit_date": "2026-10-23T00:00:00+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": null,
@@ -18742,8 +18742,8 @@
                 "v1.8": 1017,
                 "v1.9": 919
             },
-            "last_commit": "7a8829cc2fa938ec5d4d77c72dab016d2344fc27",
-            "last_commit_date": "2026-10-23T10:30:18+00:00",
+            "last_commit": "8ed90a27d6f49c93a9713a46e071fb03042fa308",
+            "last_commit_date": "2026-10-25T09:32:47+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": "1053a417eb4f0208bdc75afb86c4b6a8",
@@ -20120,8 +20120,8 @@
                 "v1.17": 129,
                 "v1.18": 31
             },
-            "last_commit": "942bde233e28999c977c3b0cfb99a0c9d4f2d368",
-            "last_commit_date": "2026-10-22T20:33:19-07:00",
+            "last_commit": "c96b55e0c0bcae8865985bf1348321dfed44bb73",
+            "last_commit_date": "2026-10-24T22:58:14-07:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "7f6b04aff6d2bef5c5551b56d908d44a",
@@ -20361,8 +20361,8 @@
                 "v1.8": 969,
                 "v1.9": 871
             },
-            "last_commit": "4f624b4f96067e45b998f1e058950b40b819fbec",
-            "last_commit_date": "2026-10-23T03:16:09+02:00",
+            "last_commit": "f7aaaaf7dc923244de530e074f1bc8fc23da7beb",
+            "last_commit_date": "2026-10-26T08:35:33+00:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "0ba00dfe35f52ffe54ddb6dfc80cfe68",
@@ -22260,6 +22260,8 @@
                 "v1.11": 846,
                 "v1.12": 740,
                 "v1.13": 667,
+                "v1.14": 575,
+                "v1.15": 484,
                 "v1.2": 1463,
                 "v1.3": 1525,
                 "v1.4": 1462,
@@ -22278,14 +22280,23 @@
                 "r0.5.0": 2431,
                 "r0.6.1": 2080,
                 "v1.1": 1549,
+                "v1.10": 945,
+                "v1.11": 855,
+                "v1.12": 746,
+                "v1.13": 673,
+                "v1.14": 575,
+                "v1.15": 484,
                 "v1.2": 1464,
                 "v1.3": 1530,
                 "v1.4": 1468,
                 "v1.5": 1424,
-                "v1.6": 1335
+                "v1.6": 1335,
+                "v1.7": 1247,
+                "v1.8": 1157,
+                "v1.9": 1059
             },
-            "last_commit": "e56e74b387ccb07924f984955e2f114deb93d6cb",
-            "last_commit_date": "2026-10-19T00:55:27+00:00",
+            "last_commit": "b9a79cabafcaba2445ca04de132b6a76f7b6d414",
+            "last_commit_date": "2026-10-26T04:02:46+00:00",
             "maturity": "beta",
             "merged_back": false,
             "project_data_hash": "cfba5906e81b562aa81224d17e4eede8",
@@ -22582,6 +22593,22 @@
                         null
                     ]
                 ],
+                "v1.14": [
+                    [
+                        "9374ece8e71a86d9ca739ca19a6826c0b291cf2a",
+                        "2026-10-24T04:57:23+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.15": [
+                    [
+                        "ebbd877263ec1575312167bd3db3367d7290ccc6",
+                        "2026-10-24T06:10:11+00:00",
+                        null,
+                        null
+                    ]
+                ],
                 "v1.2": [
                     [
                         "379ffff1f6673ddd39164f65194716d2e3c2ebb0",
@@ -22712,6 +22739,54 @@
                         null
                     ]
                 ],
+                "v1.10": [
+                    [
+                        "v3.6.0",
+                        "2026-10-24T12:03:53+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.11": [
+                    [
+                        "v3.6.0",
+                        "2026-10-24T12:03:53+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.12": [
+                    [
+                        "v3.6.0",
+                        "2026-10-24T12:03:53+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.13": [
+                    [
+                        "v3.6.0",
+                        "2026-10-24T12:03:53+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.14": [
+                    [
+                        "v3.6.0",
+                        "2026-10-24T12:03:53+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.15": [
+                    [
+                        "v3.6.0",
+                        "2026-10-24T12:03:53+00:00",
+                        null,
+                        null
+                    ]
+                ],
                 "v1.2": [
                     [
                         "v0.15.3",
@@ -22748,6 +22823,30 @@
                     [
                         "v3.5.0",
                         "2026-10-11T17:00:07+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.7": [
+                    [
+                        "v3.6.0",
+                        "2026-10-24T12:03:53+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.8": [
+                    [
+                        "v3.6.0",
+                        "2026-10-24T12:03:53+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.9": [
+                    [
+                        "v3.6.0",
+                        "2026-10-24T12:03:53+00:00",
                         null,
                         null
                     ]

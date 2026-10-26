@@ -1376,26 +1376,38 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
-        name="matrix-nodejs-homeserver",
+        name="katrix",
         description="A Matrix homeserver as an importable Node.js library, and a public server built on it.",
         author="Krystian Mikołajczyk",
         maturity=Maturity.Alpha,
         language="TypeScript",
         licence="PolyForm-Noncommercial-1.0.0",
-        repository="https://github.com/k18k/matrix-nodejs-homeserver",
+        repository="https://github.com/k18k/katrix",
         room=None,
         branch="main",
         spec_version_finders=[
-            SpecVersionFinder(paths=["packages/core/src/api/misc.ts"])
+            SpecVersionFinder(
+                paths=[
+                    "packages/core/src/api/misc.ts",
+                    "packages/server/src/api/misc.ts",
+                ]
+            )
         ],
         room_version_finders=[
             PatternFinder(
-                paths=["packages/core/src/core/events.ts"], pattern=r'"(\d+)"'
+                paths=[
+                    "packages/core/src/core/events.ts",
+                    "packages/server/src/core/events.ts",
+                ],
+                pattern=r'"(\d+)"',
             )
         ],
         default_room_version_finders=[
             PatternFinder(
-                paths=["packages/core/src/core/events.ts"],
+                paths=[
+                    "packages/core/src/core/events.ts",
+                    "packages/server/src/core/events.ts",
+                ],
                 pattern=r'DEFAULT_ROOM_VERSION = "(\d+)"',
             )
         ],
