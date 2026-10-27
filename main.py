@@ -5,7 +5,12 @@ from dataclasses import asdict, astuple, dataclass
 from datetime import datetime
 
 from data import ManualProjectData, ProjectData, VersionInfo
-from finders import PatternFinder, SubRepoFinder, parse_matches
+from finders import (
+    PatternFinder,
+    SubRepoFinder,
+    map_language_to_comment_styles,
+    parse_matches,
+)
 from projects import MANUAL_PROJECTS, ProjectMetadata, load_projects
 from repository import Repository
 from spec import get_spec_dates
@@ -117,7 +122,9 @@ def get_project_versions(
                 finder.pattern, finder.paths, commit_hashes
             )
             for commit_hash, matches in matches_by_commit.items():
-                versions = parse_matches(finder, matches)
+                versions = parse_matches(
+                    finder, matches, map_language_to_comment_styles(project.language)
+                )
 
                 pattern_versions_by_commit.setdefault(commit_hash, set()).update(
                     versions

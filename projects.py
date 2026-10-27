@@ -457,6 +457,80 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
+        name="arminius",
+        description="A new homeserver",
+        author="Famedly",
+        maturity=Maturity.Obsolete,
+        language="Rust",
+        licence="Apache-2.0 OR CC0-1.0 OR MIT",
+        repository="https://gitlab.com/bundesmessenger/backend/neo/arminius/arminius",
+        room=None,
+        branch="main",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "client-component/src/main.rs",
+                    "client-component/src/lib.rs",
+                    "client-component/src/discovery.rs",
+                    "client-component/src/handlers/discovery.rs",
+                    "crates/servers/nehws-server-client/src/handlers/discovery.rs",
+                ]
+            ),
+            PatternFinder(
+                paths=[
+                    "client-component/src/discovery.rs",
+                    "client-component/src/handlers/discovery.rs",
+                    "crates/servers/nehws-server-client/src/handlers/discovery.rs",
+                    "crates/servers/arminius-server-client/src/handlers/discovery.rs",
+                ],
+                pattern=r"MatrixVersion::(V[\d_]+)",
+                parser=lambda s: {s.replace("_", ".").lower()},
+                # V1_0 is only mentioned in an error string.
+                to_ignore=["v1.0"],
+            ),
+        ],
+        room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "client-component/src/discovery.rs",
+                    "client-component/src/handlers/discovery.rs",
+                    "crates/servers/nehws-server-client/src/handlers/discovery.rs",
+                ],
+                pattern=r"RoomVersionId::V(\d+),",
+            ),
+            PatternFinder(
+                paths=[
+                    "crates/libs/nehws-lib-events/src/types.rs",
+                    "crates/libs/arminius-lib-events/src/types.rs",
+                ],
+                pattern=r"KnownRoomVersionId::V(\d+),",
+            ),
+        ],
+        default_room_version_finders=[
+            # Originally only a single room version was supported, so this is greedy but works.
+            PatternFinder(
+                paths=[
+                    "client-component/src/discovery.rs",
+                    "client-component/src/handlers/discovery.rs",
+                    "crates/servers/nehws-server-client/src/handlers/discovery.rs",
+                ],
+                pattern=r"RoomVersionId::V(\d+),",
+            ),
+            PatternFinder(
+                paths=[
+                    "crates/libs/nehws-lib-events/src/types.rs",
+                    "crates/libs/arminius-lib-events/src/types.rs",
+                ],
+                # We would need a multi-line pattern to pull out version 11 here.
+                pattern=r"#\[default\]",
+                parser=lambda s: {"11"},
+            ),
+        ],
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
         name="arrow",
         description="An implementation of the matrix API spec in Haskell",
         author="MaT1g3R",
@@ -977,7 +1051,7 @@ ADDITIONAL_PROJECTS = [
         description="",
         author="Vlad Tokarev",
         maturity=Maturity.Unstarted,
-        language="Golang",
+        language="Go",
         licence="",
         repository="https://github.com/vlad-tokarev/go-matrix-homeserver",
         room=None,
@@ -1059,7 +1133,7 @@ ADDITIONAL_PROJECTS = [
         description="Robust, Ubiquitous and Massively Scalable Messaging Platform (XMPP, MQTT, SIP Server)",
         author="ProcessOne",
         maturity=Maturity.Alpha,
-        language="Erlang/OTP",
+        language="Erlang",
         licence="GPL-2.0-only",
         repository="https://github.com/processone/ejabberd",
         room=None,
@@ -1256,7 +1330,7 @@ ADDITIONAL_PROJECTS = [
         description="A new breed of homeserver for matrix.org",
         author="Half-Shot",
         maturity=Maturity.Obsolete,
-        language=".NET Core 2.0",
+        language="C#",
         licence="MIT",
         repository="https://github.com/Half-Shot/MagnetHS",
         room=None,
@@ -1600,7 +1674,7 @@ ADDITIONAL_PROJECTS = [
         description="An enterprise-grade, Matrix-compatible chat server — Apache 2.0, no federation, horizontally scalable.",
         author="INNOQ",
         maturity=Maturity.Alpha,
-        language="Go, Elixir",
+        language="Go",  # and Elixir
         licence="Apache-2.0",
         repository="https://github.com/innoq/nebu",
         room=None,

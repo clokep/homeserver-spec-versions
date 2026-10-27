@@ -67,7 +67,10 @@ def get_spec_dates() -> tuple[
     )
 
     for commit_hash, matches in matches_by_commit.items():
-        versions = parse_matches(default_room_version_finder, matches)
+        # Markdown doesn't really support comments, but these are commonly used.
+        versions = parse_matches(
+            default_room_version_finder, matches, ["<!--", "[//]:"]
+        )
 
         assert len(versions) <= 1, "Found more than one default room version"
         if versions:

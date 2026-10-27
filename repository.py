@@ -327,6 +327,7 @@ class GitRepository(Repository[Commit, TagReference]):
         result: dict[str, set[str]] = {}
         for main_hash, sub_hash in main_to_subrepo.items():
             matches = subrepo_results.get(sub_hash, [])
+            # TODO Pass ignored file patterns.
             versions = parse_matches(finder.finder, matches)
 
             if versions:
@@ -356,6 +357,7 @@ class GitRepository(Repository[Commit, TagReference]):
                 except GitCommandError:
                     continue
 
+                # TODO Pass ignored file patterns.
                 parsed = parse_matches(commit_finder, content.splitlines())
 
                 if parsed:
