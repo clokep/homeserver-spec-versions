@@ -114,7 +114,10 @@ class TuwunelFinders(ConduitFinders):
     room_version_finders = ConduitFinders.get_room_version_finders(
         ["src/core/info/room_version.rs", "src/core/config/room_version.rs"]
     )
-    default_room_version_finders = ConduwuitFinders.default_room_version_finders
+    default_room_version_finders = ConduitFinders.get_default_room_version_finders(
+        ["src/core/config/mod.rs", "src/core/config/rooms.rs"],
+        r"|default_default_room_version.+RoomVersionId::V(\d+)|default_default_version.+RoomVersionId::V(\d+)",
+    )
 
 
 class DendriteFinders(Finders):
