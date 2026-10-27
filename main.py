@@ -103,7 +103,7 @@ def get_project_versions(
     versions_at_commit = []
     versions_at_tag = []
 
-    commits = repo.get_modified_commits(project, finders)
+    commits = list(repo.get_modified_commits(project, finders))
 
     # Separate finders by type
     pattern_finders = [f for f in finders if isinstance(f, PatternFinder)]
@@ -357,7 +357,7 @@ def get_project_data_for_manual(
     )
 
 
-def main(projects: set[str]):
+def main(projects: set[str], force: bool) -> None:
     # The final output data is an object:
     #
     # spec_versions:
@@ -427,7 +427,8 @@ def main(projects: set[str]):
             print("Repository unavailable, skipping.")
         else:
             prev_project_dates = result["homeserver_versions"].get(project.name.lower())
-            if prev_project_dates:
+            # If force is true, disregard a previous project hash.
+            if prev_project_dates and not force:
                 prev_last_commit = prev_project_dates.get("last_commit")
                 prev_project_data_hash = prev_project_dates.get("project_data_hash")
             else:
@@ -463,4 +464,12 @@ def main(projects: set[str]):
 
 
 if __name__ == "__main__":
-    main({s.lower() for s in sys.argv[1:]})
+    params = {s.lower() for s in sys.argv[1:]}
+
+    force = False
+    for p in ("--force", "-f"):
+        if p in params:
+            force = True
+            params.remove("--force")
+
+    main(params, force)

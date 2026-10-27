@@ -7631,7 +7631,7 @@
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
             "last_commit": null,
-            "last_commit_date": "2026-10-27T14:57:52.648265+00:00",
+            "last_commit_date": "2026-10-27T15:10:28.658870+00:00",
             "maturity": "beta",
             "merged_back": false,
             "project_data_hash": null,
@@ -9696,8 +9696,8 @@
                 "v1.9": 899
             },
             "lag_all_by_tag": {},
-            "last_commit": "e2c5b38e547889a779d46c7e33e684b4e2fce1e4",
-            "last_commit_date": "2026-10-27T10:04:01+00:00",
+            "last_commit": "aef67950f94f0f65fccdbe0eb288e14ca1caa38d",
+            "last_commit_date": "2026-10-27T15:01:47+00:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "e810b39e0d864f5d59b66fb930a8843e",
@@ -12305,11 +12305,20 @@
                     ]
                 ]
             },
-            "default_room_version_dates_by_tag": {},
+            "default_room_version_dates_by_tag": {
+                "10": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2026-05-22T09:30:48+02:00",
-            "initial_release_date": "2026-09-11T08:20:25+01:00",
+            "initial_release_date": "2026-09-09T07:01:13+01:00",
             "lag_after_commit_by_commit": {},
             "lag_after_commit_by_tag": {},
             "lag_after_release_by_commit": {},
@@ -12328,7 +12337,20 @@
                 "v1.8": 1002,
                 "v1.9": 904
             },
-            "lag_all_by_tag": {},
+            "lag_all_by_tag": {
+                "r0.6.1": 2295,
+                "v1.1": 1764,
+                "v1.10": 900,
+                "v1.11": 810,
+                "v1.2": 1679,
+                "v1.3": 1498,
+                "v1.4": 1435,
+                "v1.5": 1391,
+                "v1.6": 1302,
+                "v1.7": 1202,
+                "v1.8": 1112,
+                "v1.9": 1014
+            },
             "last_commit": "4bb88ee409e7cf6e18fb1d62bd599782f8453b31",
             "last_commit_date": "2026-09-11T15:42:50+01:00",
             "maturity": "alpha",
@@ -12424,7 +12446,96 @@
                     ]
                 ]
             },
-            "room_version_dates_by_tag": {},
+            "room_version_dates_by_tag": {
+                "1": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "10": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "11": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "2": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "3": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "4": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "5": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "6": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "7": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "8": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "9": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
             "spec_version_dates_by_commit": {
                 "r0.6.1": [
                     [
@@ -12523,7 +12634,104 @@
                     ]
                 ]
             },
-            "spec_version_dates_by_tag": {}
+            "spec_version_dates_by_tag": {
+                "r0.6.1": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.1": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.10": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.11": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.2": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.3": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.4": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.5": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.6": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.7": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.8": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.9": [
+                    [
+                        "step-04-34a53ce2",
+                        "2026-09-09T07:01:13+01:00",
+                        null,
+                        null
+                    ]
+                ]
+            }
         },
         "radio_beam": {
             "default_room_version_dates_by_commit": {
@@ -12783,7 +12991,7 @@
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
             "last_commit": null,
-            "last_commit_date": "2026-10-27T14:57:52.648318+00:00",
+            "last_commit_date": "2026-10-27T15:10:28.658901+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": null,
@@ -14562,7 +14770,7 @@
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
             "last_commit": null,
-            "last_commit_date": "2026-10-27T14:57:52.648362+00:00",
+            "last_commit_date": "2026-10-27T15:10:28.658938+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": null,
@@ -19471,7 +19679,7 @@
             "last_commit_date": "2026-10-01T17:32:56-05:00",
             "maturity": "beta",
             "merged_back": false,
-            "project_data_hash": "0c0b4118b74292dc2324acfb2ba089d8",
+            "project_data_hash": "552084b43cfb529222eb9ad39a19965b",
             "room_version_dates_by_commit": {
                 "10": [
                     [
@@ -21875,7 +22083,7 @@
             "last_commit_date": "2026-10-11T20:01:13+08:00",
             "maturity": "beta",
             "merged_back": false,
-            "project_data_hash": "4ae34060546ee6f29141056aa355affd",
+            "project_data_hash": "47cef1f0e88d7ef725c32348d0b9ecca",
             "room_version_dates_by_commit": {
                 "10": [
                     [
