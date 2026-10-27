@@ -94,9 +94,9 @@
             },
             "last_commit": "b392f6aee184f8514c46c080597509763deb6050",
             "last_commit_date": "2026-10-27T15:23:58+01:00",
-            "maturity": "obsolete",
+            "maturity": "beta",
             "merged_back": false,
-            "project_data_hash": "a915f1730024b06a3d2ce0da85445add",
+            "project_data_hash": "2328ec9a290275a92cee5a193c194827",
             "room_version_dates_by_commit": {
                 "10": [
                     [
