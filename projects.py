@@ -1307,6 +1307,34 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
+        name="lattice",
+        description="Lattice is an open-source Matrix homeserver in the age of AI powered by golang",
+        author="enimatek-nl",
+        maturity=Maturity.Unstarted,
+        language="Go",
+        licence="MIT",
+        repository="https://github.com/enimatek-nl/lattice",
+        room=None,
+        branch="main",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=["internal/service/capabilities.go"], to_ignore=["v1.0"]
+            )
+        ],
+        room_version_finders=[
+            PatternFinder(paths=["internal/service/rooms.go"], pattern=r'"(\d+)"')
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=["internal/service/rooms.go"],
+                pattern=r'DefaultRoomVersion = "(\d+)"',
+            )
+        ],
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
         name="lomatia",
         description="Experimental Matrix homeserver written in Rust",
         author="LEARAX, vpzomtrrfrt",

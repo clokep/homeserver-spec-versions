@@ -53,7 +53,18 @@ def map_language_to_comment_styles(language: str) -> list[str] | None:
     """Maps a language to the comment styles supported."""
     language = language.strip()
 
-    if language in ("C", "C#", "C++", "Go", "Java", "JavaScript", "Kotlin", "Rust", "Scala", "TypeScript"):
+    if language in (
+        "C",
+        "C#",
+        "C++",
+        "Go",
+        "Java",
+        "JavaScript",
+        "Kotlin",
+        "Rust",
+        "Scala",
+        "TypeScript",
+    ):
         return ["//"]
     elif language in ("Elixir", "Erlang"):
         return ["#", "--"]
@@ -79,7 +90,7 @@ def parse_matches(
             # Strip comments.
             #
             # TODO This only handles line comments, not block comments.
-            pattern = r"(^|\s)(" + "|".join(re.escape(s) for s in  comment_styles) + ")"
+            pattern = r"(^|\s)(" + "|".join(re.escape(s) for s in comment_styles) + ")"
             line = re.split(pattern, line)[0]
         # Search again for the results.
         matches = re.findall(finder.pattern, line)
