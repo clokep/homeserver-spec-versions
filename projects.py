@@ -766,7 +766,7 @@ ADDITIONAL_PROJECTS = [
         name="congruent",
         description="Progressive c10y fork. Datascience-centric. Features & performance.",
         author="Shane Jaroch",
-        maturity=Maturity.Beta,
+        maturity=Maturity.Alpha,
         language="Rust",
         licence="Apache-2.0",
         repository="https://github.com/gamesguru/congruent",
@@ -1580,17 +1580,28 @@ ADDITIONAL_PROJECTS = [
         room=None,
         branch="main",
         spec_version_finders=[
-            SpecVersionFinder(paths=["src/homeserver/client_server.cpp"])
+            SpecVersionFinder(
+                paths=[
+                    "src/homeserver/client_server.cpp",
+                    "src/homeserver/ClientServerRuntime.cpp",
+                ]
+            )
         ],
         room_version_finders=[
             PatternFinder(
-                paths=["src/rooms/room_version_policy.cpp"],
+                paths=[
+                    "src/rooms/room_version_policy.cpp",
+                    "src/rooms/RoomVersionPolicy.cpp",
+                ],
                 pattern=r'RoomVersionPolicy{"(\d+)"|\.id = "(\d+)"?',
             )
         ],
         default_room_version_finders=[
             PatternFinder(
-                paths=["src/homeserver/client_server.cpp"],
+                paths=[
+                    "src/homeserver/client_server.cpp",
+                    "src/homeserver/ClientServerRuntime.cpp",
+                ],
                 pattern=r'"default", json_str\("(\d+)"\)',
             )
         ],
@@ -2217,6 +2228,26 @@ ADDITIONAL_PROJECTS = [
         default_room_version_finders=None,
         commits=None,
         forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="sithnapse",
+        description="Synapse: Matrix homeserver written in Python/Twisted + Rust",
+        author="Shane Jaroch",
+        maturity=Maturity.Alpha,
+        language="Python",
+        licence="AGPL-3.0",
+        repository="https://github.com/gamesguru/sithnapse",
+        room=None,
+        branch="develop",
+        spec_version_finders=SynapseFinders.spec_version_finders,
+        room_version_finders=SynapseFinders.room_version_finders,
+        default_room_version_finders=SynapseFinders.default_room_version_finders,
+        commits=CommitInfo(
+            earliest_commit="6119a568fc60c3050ab044486c946fbdca26f63b",
+            earliest_tag=None,
+        ),
+        forked_from=ForkInfo(name="synapse"),
         process_updates=True,
     ),
     ProjectMetadata(
