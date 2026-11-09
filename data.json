@@ -5397,6 +5397,317 @@
                 ]
             }
         },
+        "dendrite-gamesguru": {
+            "default_room_version_dates_by_commit": {
+                "12": [
+                    [
+                        "b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf",
+                        "2026-10-18T14:43:43-04:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "default_room_version_dates_by_tag": {},
+            "forked_date": "2026-08-27T16:36:11-04:00",
+            "forked_from": "zendrite",
+            "initial_commit_date": "2026-10-18T14:43:43-04:00",
+            "initial_release_date": null,
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
+                "r0.0.1": 3933,
+                "r0.1.0": 3814,
+                "r0.2.0": 3748,
+                "r0.3.0": 3247,
+                "r0.4.0": 2969,
+                "r0.5.0": 2686,
+                "r0.6.1": 2335,
+                "v1.1": 1804,
+                "v1.10": 942,
+                "v1.11": 852,
+                "v1.12": 743,
+                "v1.13": 670,
+                "v1.2": 1719,
+                "v1.3": 1539,
+                "v1.4": 1477,
+                "v1.5": 1433,
+                "v1.6": 1344,
+                "v1.7": 1244,
+                "v1.8": 1154,
+                "v1.9": 1056
+            },
+            "lag_all_by_tag": {},
+            "last_commit": "0731d24a3a2eab5a6f2971964c2dfe45f7fe2593",
+            "last_commit_date": "2026-10-27T14:00:59-04:00",
+            "maturity": "alpha",
+            "merged_back": false,
+            "project_data_hash": "afd8b3cb6d58f46ce4d268f587e134e6",
+            "room_version_dates_by_commit": {
+                "1": [
+                    [
+                        "b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf",
+                        "2026-10-18T14:43:43-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "10": [
+                    [
+                        "b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf",
+                        "2026-10-18T14:43:43-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "11": [
+                    [
+                        "b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf",
+                        "2026-10-18T14:43:43-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "12": [
+                    [
+                        "b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf",
+                        "2026-10-18T14:43:43-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "2": [
+                    [
+                        "b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf",
+                        "2026-10-18T14:43:43-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "3": [
+                    [
+                        "b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf",
+                        "2026-10-18T14:43:43-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "4": [
+                    [
+                        "b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf",
+                        "2026-10-18T14:43:43-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "5": [
+                    [
+                        "b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf",
+                        "2026-10-18T14:43:43-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "6": [
+                    [
+                        "b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf",
+                        "2026-10-18T14:43:43-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "7": [
+                    [
+                        "b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf",
+                        "2026-10-18T14:43:43-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "8": [
+                    [
+                        "b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf",
+                        "2026-10-18T14:43:43-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "9": [
+                    [
+                        "b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf",
+                        "2026-10-18T14:43:43-04:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
+                "r0.0.1": [
+                    [
+                        "b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf",
+                        "2026-10-18T14:43:43-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.1.0": [
+                    [
+                        "b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf",
+                        "2026-10-18T14:43:43-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.2.0": [
+                    [
+                        "b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf",
+                        "2026-10-18T14:43:43-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.3.0": [
+                    [
+                        "b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf",
+                        "2026-10-18T14:43:43-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.4.0": [
+                    [
+                        "b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf",
+                        "2026-10-18T14:43:43-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.5.0": [
+                    [
+                        "b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf",
+                        "2026-10-18T14:43:43-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "r0.6.1": [
+                    [
+                        "b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf",
+                        "2026-10-18T14:43:43-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.1": [
+                    [
+                        "b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf",
+                        "2026-10-18T14:43:43-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.10": [
+                    [
+                        "bc22e5ed85b3043b0ef45eecbb5c938bdaeebfea",
+                        "2026-10-20T16:13:22-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.11": [
+                    [
+                        "bc22e5ed85b3043b0ef45eecbb5c938bdaeebfea",
+                        "2026-10-20T16:13:22-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.12": [
+                    [
+                        "bc22e5ed85b3043b0ef45eecbb5c938bdaeebfea",
+                        "2026-10-20T16:13:22-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.13": [
+                    [
+                        "bc22e5ed85b3043b0ef45eecbb5c938bdaeebfea",
+                        "2026-10-20T16:13:22-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.2": [
+                    [
+                        "b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf",
+                        "2026-10-18T14:43:43-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.3": [
+                    [
+                        "bc22e5ed85b3043b0ef45eecbb5c938bdaeebfea",
+                        "2026-10-20T16:13:22-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.4": [
+                    [
+                        "bc22e5ed85b3043b0ef45eecbb5c938bdaeebfea",
+                        "2026-10-20T16:13:22-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.5": [
+                    [
+                        "bc22e5ed85b3043b0ef45eecbb5c938bdaeebfea",
+                        "2026-10-20T16:13:22-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.6": [
+                    [
+                        "bc22e5ed85b3043b0ef45eecbb5c938bdaeebfea",
+                        "2026-10-20T16:13:22-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.7": [
+                    [
+                        "bc22e5ed85b3043b0ef45eecbb5c938bdaeebfea",
+                        "2026-10-20T16:13:22-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.8": [
+                    [
+                        "bc22e5ed85b3043b0ef45eecbb5c938bdaeebfea",
+                        "2026-10-20T16:13:22-04:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.9": [
+                    [
+                        "bc22e5ed85b3043b0ef45eecbb5c938bdaeebfea",
+                        "2026-10-20T16:13:22-04:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "spec_version_dates_by_tag": {}
+        },
         "dendrite-legacy": {
             "default_room_version_dates_by_commit": {
                 "1": [

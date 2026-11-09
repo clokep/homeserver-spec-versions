@@ -21,6 +21,7 @@ from project_finders import (
     SynapseFinders,
     SynapseLegacyFinders,
     TuwunelFinders,
+    ZendriteFinders,
 )
 
 SERVER_METADATA_URL = "https://raw.githubusercontent.com/matrix-org/matrix.org/main/content/ecosystem/servers/servers.toml"
@@ -878,6 +879,36 @@ ADDITIONAL_PROJECTS = [
         default_room_version_finders=DendriteFinders.default_room_version_finders,
         commits=CommitInfo(ignored_tags=lambda tag: tag.startswith("helm-dendrite-")),
         forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
+        name="dendrite-gamesguru",
+        description="My (fully Complement-compliant) Zendrite/Dendrite fork.",
+        author="Shane Jaroch",
+        maturity=Maturity.Alpha,
+        language="Go",
+        licence="AGPL-3.0-or-later",
+        repository="https://git.nutra.tk/gamesguru/dendrite",
+        room=None,
+        branch="main",
+        spec_version_finders=ZendriteFinders.spec_version_finders,
+        room_version_finders=(ZendriteFinders.room_version_finders or [])
+        + [
+            SubRepoFinder(
+                repository="https://github.com/gamesguru/gomatrixserverlib",
+                commit_finder=PatternFinder(
+                    paths=["go.mod"],
+                    pattern=r"github.com/gamesguru/gomatrixserverlib v0\.0\.0-\d+-([0-9a-f]+)",
+                ),
+                finder=PatternFinder(
+                    paths=["eventversion.go"], pattern=r"RoomVersionV(\d+)"
+                ),
+            ),
+        ],
+        default_room_version_finders=ZendriteFinders.default_room_version_finders,
+        commits=CommitInfo(earliest_commit="b0db7ba3cc3b801d7d850d0edf8c86c5fc1bcadf"),
+        # Technically also forks from the last commit of dendrite (08cac1cc).
+        forked_from=ForkInfo(name="zendrite"),
         process_updates=True,
     ),
     ProjectMetadata(
@@ -2612,27 +2643,9 @@ ADDITIONAL_PROJECTS = [
         repository="https://codefloe.com/pat-s/zendrite",
         room=None,
         branch="main",
-        spec_version_finders=DendriteFinders.spec_version_finders,
-        room_version_finders=(DendriteFinders.room_version_finders or [])
-        + [
-            # For a period github.com/jackmaninov/gomatrixserverlib was used to replace github.com/matrix-org/gomatrixserverlib
-            # but this didn't have any impact on supported versions.
-            SubRepoFinder(
-                repository="https://codefloe.com/pat-s/gomatrixserverlib",
-                commit_finder=PatternFinder(
-                    paths=["go.mod"],
-                    # The versions are of the form v0.0.0-<commit> OR vX.Y.Z OR vX.Y.Z-0.YYYYMMDDHHmmSS-<commit>.
-                    # The latter format doesn't always use real tags, so we need the commit instead, try to match that
-                    # first.
-                    pattern=r"codefloe.com/pat-s/gomatrixserverlib (?:v\d\.\d\.\d-[\.\d]+-([0-9a-f]+)|(v[1-9]\.\d.\d))",
-                    to_ignore=["v1.2.3"],
-                ),
-                finder=PatternFinder(
-                    paths=["eventversion.go"], pattern=r"RoomVersionV(\d+)"
-                ),
-            ),
-        ],
-        default_room_version_finders=DendriteFinders.default_room_version_finders,
+        spec_version_finders=ZendriteFinders.spec_version_finders,
+        room_version_finders=(ZendriteFinders.room_version_finders),
+        default_room_version_finders=ZendriteFinders.default_room_version_finders,
         commits=CommitInfo(
             earliest_commit="379ffff1f6673ddd39164f65194716d2e3c2ebb0",
             earliest_tag=None,

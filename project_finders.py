@@ -163,6 +163,27 @@ class DendriteFinders(Finders):
     ]
 
 
+class ZendriteFinders(DendriteFinders):
+    room_version_finders = (DendriteFinders.room_version_finders or []) + [
+        # For a period github.com/jackmaninov/gomatrixserverlib was used to replace github.com/matrix-org/gomatrixserverlib
+        # but this didn't have any impact on supported versions.
+        SubRepoFinder(
+            repository="https://codefloe.com/pat-s/gomatrixserverlib",
+            commit_finder=PatternFinder(
+                paths=["go.mod"],
+                # The versions are of the form v0.0.0-<commit> OR vX.Y.Z OR vX.Y.Z-0.YYYYMMDDHHmmSS-<commit>.
+                # The latter format doesn't always use real tags, so we need the commit instead, try to match that
+                # first.
+                pattern=r"codefloe.com/pat-s/gomatrixserverlib (?:v\d\.\d\.\d-[\.\d]+-([0-9a-f]+)|(v[1-9]\.\d.\d))",
+                to_ignore=["v1.2.3"],
+            ),
+            finder=PatternFinder(
+                paths=["eventversion.go"], pattern=r"RoomVersionV(\d+)"
+            ),
+        ),
+    ]
+
+
 class SynapseLegacyFinders(Finders):
     """Base finders for Synapse legacy-based projects."""
 
