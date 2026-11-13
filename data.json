@@ -92,8 +92,8 @@
                 "v1.11": 851,
                 "v1.9": 1055
             },
-            "last_commit": "ea9926cca59dff684c1b38a57e5f461c3ae714b4",
-            "last_commit_date": "2026-11-10T13:03:07+00:00",
+            "last_commit": "9ed3698cd050c01f1f0be230ecbc404e954c54ad",
+            "last_commit_date": "2026-11-13T14:16:43+01:00",
             "maturity": "beta",
             "merged_back": false,
             "project_data_hash": "2328ec9a290275a92cee5a193c194827",
@@ -1938,8 +1938,8 @@
                 "v1.8": 628,
                 "v1.9": 530
             },
-            "last_commit": "c201feb4851f837d809244fd536c1c189266089f",
-            "last_commit_date": "2026-10-18T18:46:05+01:00",
+            "last_commit": "e11ecbeca0e66058f3a4716e00a2dbd9737cff24",
+            "last_commit_date": "2026-11-02T22:04:57+00:00",
             "maturity": "beta",
             "merged_back": false,
             "project_data_hash": "1735c0cb4cceba8bfc0c4436db9c26e2",
@@ -4189,8 +4189,8 @@
                 "v1.5": 885,
                 "v1.8": 701
             },
-            "last_commit": "684b83491bc9c6a67e67dbd4c1d2cead797dc92f",
-            "last_commit_date": "2026-11-10T05:17:14+00:00",
+            "last_commit": "4ebcf299e22e3f19a86e9c16d51c443009a9959d",
+            "last_commit_date": "2026-11-13T06:22:35+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": "3101d40c5891cdb39fbf8bfc033855f5",
@@ -5440,8 +5440,8 @@
                 "v1.9": 1056
             },
             "lag_all_by_tag": {},
-            "last_commit": "0731d24a3a2eab5a6f2971964c2dfe45f7fe2593",
-            "last_commit_date": "2026-10-27T14:00:59-04:00",
+            "last_commit": "4a45fddbc8f4c00e363bb7473d85074201730c9c",
+            "last_commit_date": "2026-11-12T16:35:43-05:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "afd8b3cb6d58f46ce4d268f587e134e6",
@@ -6562,8 +6562,8 @@
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
-            "last_commit": "6679aa7192c4019f7bcb3c968ee0136ffa4f3ac3",
-            "last_commit_date": "2026-11-04T15:40:30+01:00",
+            "last_commit": "b33f2cc64f32f3e43378faa86297dcacdeec58f2",
+            "last_commit_date": "2026-11-10T17:23:22+03:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "40a9ce957ee9f36cb467a8a884e62676",
@@ -8322,7 +8322,7 @@
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
             "last_commit": null,
-            "last_commit_date": "2026-11-10T14:32:27.671006+00:00",
+            "last_commit_date": "2026-11-13T13:22:32.548378+00:00",
             "maturity": "beta",
             "merged_back": false,
             "project_data_hash": null,
@@ -8498,8 +8498,8 @@
                 "v1.8": 1151,
                 "v1.9": 1053
             },
-            "last_commit": "dab4086c7ea7badeecf6256f3ff0992d338fa858",
-            "last_commit_date": "2026-11-03T13:06:32+01:00",
+            "last_commit": "bc4f105b24ed4a89a6f43bda0df6717e94f9b612",
+            "last_commit_date": "2026-11-12T21:46:21+01:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "b584eb5daec1dec23b3aa302cf1b3974",
@@ -10584,15 +10584,34 @@
                     ]
                 ]
             },
-            "default_room_version_dates_by_tag": {},
+            "default_room_version_dates_by_tag": {
+                "10": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00"
+                    ]
+                ],
+                "12": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
             "forked_date": null,
             "forked_from": null,
             "initial_commit_date": "2026-05-08T14:26:07+03:00",
-            "initial_release_date": "2026-11-10T07:48:05+00:00",
+            "initial_release_date": "2026-11-12T11:22:08+00:00",
             "lag_after_commit_by_commit": {
                 "v1.19": 15
             },
-            "lag_after_commit_by_tag": {},
+            "lag_after_commit_by_tag": {
+                "v1.19": 126
+            },
             "lag_after_release_by_commit": {},
             "lag_after_release_by_tag": {},
             "lag_all_by_commit": {
@@ -10616,9 +10635,29 @@
                 "v1.8": 997,
                 "v1.9": 899
             },
-            "lag_all_by_tag": {},
-            "last_commit": "9c6b0d707975511543dfba694d645a29cff7b42d",
-            "last_commit_date": "2026-11-10T07:48:05+00:00",
+            "lag_all_by_tag": {
+                "v1.1": 1828,
+                "v1.10": 964,
+                "v1.11": 874,
+                "v1.12": 765,
+                "v1.13": 692,
+                "v1.14": 594,
+                "v1.15": 503,
+                "v1.16": 420,
+                "v1.17": 328,
+                "v1.18": 230,
+                "v1.19": 126,
+                "v1.2": 1743,
+                "v1.3": 1562,
+                "v1.4": 1499,
+                "v1.5": 1455,
+                "v1.6": 1366,
+                "v1.7": 1266,
+                "v1.8": 1176,
+                "v1.9": 1078
+            },
+            "last_commit": "e9e206bc74fc9955a1f661f3d40f1bbcd9df8006",
+            "last_commit_date": "2026-11-13T08:31:44+00:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "bda6c78ef1be161e9496350d96042127",
@@ -10720,7 +10759,104 @@
                     ]
                 ]
             },
-            "room_version_dates_by_tag": {},
+            "room_version_dates_by_tag": {
+                "1": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00"
+                    ]
+                ],
+                "10": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "11": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "12": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "2": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00"
+                    ]
+                ],
+                "3": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "4": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "5": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "6": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "7": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "8": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "9": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
             "spec_version_dates_by_commit": {
                 "v1.1": [
                     [
@@ -10875,7 +11011,160 @@
                     ]
                 ]
             },
-            "spec_version_dates_by_tag": {}
+            "spec_version_dates_by_tag": {
+                "v1.1": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.10": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.11": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.12": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.13": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.14": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.15": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.16": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.17": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.18": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.19": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.2": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.3": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.4": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.5": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.6": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.7": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.8": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.9": [
+                    [
+                        "v1.0.0",
+                        "2026-11-12T11:22:08+00:00",
+                        null,
+                        null
+                    ]
+                ]
+            }
         },
         "messagehub": {
             "default_room_version_dates_by_commit": {
@@ -11081,8 +11370,8 @@
             "lag_all_by_tag": {
                 "r0.6.1": 1497
             },
-            "last_commit": "7ca8101517186d7cb79f5f2010b25f46975a9674",
-            "last_commit_date": "2026-11-08T23:05:36+01:00",
+            "last_commit": "1489326607056222e6d8b5a173225c680b947c35",
+            "last_commit_date": "2026-11-11T22:04:40+01:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "51c53d4aa13cb2b6bd88ada0e631837e",
@@ -11874,8 +12163,8 @@
                 "v1.8": 998,
                 "v1.9": 900
             },
-            "last_commit": "ce014aee752724bfcd25c83caf2960440d0fdcfb",
-            "last_commit_date": "2026-05-18T12:06:57+02:00",
+            "last_commit": "d74286bd686848564dd8fc19fd981958abceb2f2",
+            "last_commit_date": "2026-11-11T09:04:10+01:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "d314f79046642d6db93b621e1213864e",
@@ -13937,7 +14226,7 @@
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
             "last_commit": null,
-            "last_commit_date": "2026-11-10T14:32:27.671039+00:00",
+            "last_commit_date": "2026-11-13T13:22:32.548409+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": null,
@@ -13986,8 +14275,8 @@
                 "v1.9": 487
             },
             "lag_all_by_tag": {},
-            "last_commit": "166fb9c2102ce1bbdd3d80f5474257e141c17ea5",
-            "last_commit_date": "2026-11-09T21:23:48-05:00",
+            "last_commit": "96fada47025806f92aba441dc6b73ad3208e5115",
+            "last_commit_date": "2026-11-13T08:20:14-05:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "483829ee5a0c2329ca6117e514a4da42",
@@ -15525,8 +15814,8 @@
                 "v1.1": 1762,
                 "v1.3": 1495
             },
-            "last_commit": "986e087ae7356e118b6e2fa2d73dd4efb1c053c3",
-            "last_commit_date": "2026-11-10T08:31:43-06:00",
+            "last_commit": "c681f3f0ecfa2f65bbb1a62e7f36104369989320",
+            "last_commit_date": "2026-11-13T00:23:29-06:00",
             "maturity": "alpha",
             "merged_back": false,
             "project_data_hash": "cbe17ca43b51bd172ee1243e170b76eb",
@@ -16088,7 +16377,7 @@
             "lag_all_by_commit": {},
             "lag_all_by_tag": {},
             "last_commit": null,
-            "last_commit_date": "2026-11-10T14:32:27.671074+00:00",
+            "last_commit_date": "2026-11-13T13:22:32.548439+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": null,
@@ -16248,8 +16537,8 @@
                 "v1.8": 138,
                 "v1.9": 40
             },
-            "last_commit": "9d8354419c00af1f4013f8609e58f55ed0804c47",
-            "last_commit_date": "2026-11-10T14:11:31+00:00",
+            "last_commit": "e5ac8656615da97ffc5a4bb4f41387fa95869be4",
+            "last_commit_date": "2026-11-13T13:57:50+01:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": "b0554ed73410fecc14a89b3c197eb9da",
@@ -18012,6 +18301,8 @@
                 "v1.13": 671,
                 "v1.14": 573,
                 "v1.15": 482,
+                "v1.16": 420,
+                "v1.17": 329,
                 "v1.9": 5
             },
             "lag_after_release_by_commit": {
@@ -18032,6 +18323,8 @@
                 "v1.13": 671,
                 "v1.14": 573,
                 "v1.15": 482,
+                "v1.16": 420,
+                "v1.17": 329,
                 "v1.9": 5
             },
             "lag_all_by_commit": {
@@ -18077,6 +18370,8 @@
                 "v1.13": 671,
                 "v1.14": 573,
                 "v1.15": 482,
+                "v1.16": 420,
+                "v1.17": 329,
                 "v1.2": 602,
                 "v1.3": 421,
                 "v1.4": 358,
@@ -18086,8 +18381,8 @@
                 "v1.8": 104,
                 "v1.9": 5
             },
-            "last_commit": "e2df54d359f4cadebc0e9130327601cf23796cd9",
-            "last_commit_date": "2026-10-30T13:51:32+00:00",
+            "last_commit": "6db9657dabc58c504fee548f1d9c8e65e8fc9b7d",
+            "last_commit_date": "2026-11-12T17:12:45+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": "ce8b9a9c574806802c2cc52b0d23ac89",
@@ -18618,6 +18913,22 @@
                     [
                         "v1.163.0_2",
                         "2026-10-22T11:35:32+02:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.16": [
+                    [
+                        "v1.165.0_1",
+                        "2026-11-12T17:40:00+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.17": [
+                    [
+                        "v1.165.0_1",
+                        "2026-11-12T17:40:00+01:00",
                         null,
                         null
                     ]
@@ -19440,7 +19751,7 @@
                 "v1.9": 376
             },
             "last_commit": null,
-            "last_commit_date": "2026-11-03T00:00:00+00:00",
+            "last_commit_date": "2026-11-11T00:00:00+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": null,
@@ -20356,8 +20667,8 @@
                 "v1.8": 1017,
                 "v1.9": 919
             },
-            "last_commit": "9f4e45ba3793628ccd916d51ea8a7130889728c5",
-            "last_commit_date": "2026-11-10T11:20:51+00:00",
+            "last_commit": "af12aba1ad446521caf56fa1255f9c0fa167aab2",
+            "last_commit_date": "2026-11-11T14:39:53+00:00",
             "maturity": "stable",
             "merged_back": false,
             "project_data_hash": "fa9afbb345329943df567cdf67ad52ec",
@@ -24285,8 +24596,8 @@
                 "v1.8": 1157,
                 "v1.9": 1059
             },
-            "last_commit": "79c70d3bda901c86926be14af08c44aa273ca33d",
-            "last_commit_date": "2026-11-10T08:42:23+00:00",
+            "last_commit": "40a0b4b60c2bc260eda23f5ea4ce2d7d3f93d50b",
+            "last_commit_date": "2026-11-12T17:29:58+00:00",
             "maturity": "beta",
             "merged_back": false,
             "project_data_hash": "cfba5906e81b562aa81224d17e4eede8",
