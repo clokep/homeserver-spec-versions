@@ -427,6 +427,27 @@ ADDITIONAL_METADATA = {
 # Zion's Gate https://matrix.to/#/!4YgPCZyvXlfgjRhD-4N3CfvTgVwMQ5hKq-qmouH_R-8/$p7NuDUKG8i-UyqgkBylTcQTEzQUpfBXKsPuEqqzP4oU?via=element.io&via=matrix.org&via=mozilla.org
 ADDITIONAL_PROJECTS = [
     ProjectMetadata(
+        name="anoncat",
+        description="a privacy-focused Matrix homeserver (tuwunel fork)",
+        author="anti-ghostsec",
+        maturity=Maturity.Alpha,
+        language="Rust",
+        licence="Apache-2.0",
+        repository="https://github.com/anti-ghostsec/anoncat",
+        room=None,
+        branch="anoncat",
+        # This uses the TuwunelFinders, but the later entries are unused on it.
+        spec_version_finders=TuwunelFinders.spec_version_finders,
+        room_version_finders=TuwunelFinders.room_version_finders,
+        default_room_version_finders=TuwunelFinders.default_room_version_finders,
+        commits=None,
+        # Looks like anoncat forked from tuwunel commit 8ed90a27d6f49c93a9713a46e071fb03042fa308.
+        forked_from=ForkInfo(
+            name="tuwunel", date=datetime(2026, 10, 25, 4, 54, 34, tzinfo=timezone.utc)
+        ),
+        process_updates=True,
+    ),
+    ProjectMetadata(
         name="architex",
         description="A Matrix homeserver written in Elixir",
         author="Pim Kunis",
