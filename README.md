@@ -52,18 +52,22 @@ You can also fetch individual projects by providing one or more projects:
 
 * bitbucket.org
 * gitea.com
-* github.com
-* launchpad.net
-* savannah.gnu.org
-* sourceforge.net
-* sr.ht
+* github.com: https://github.com/search?q=matrix+homeserver&type=repositories&s=updated&o=desc
+* launchpad.net: https://launchpad.net/+search?field.text=matrix+homeserver
+* savannah.gnu.org: https://savannah.gnu.org/search/?search=Search&words0=matrix+homeserver&type_of_search=soft&exact=1&max_rows=25&type=#options
+* sourceforge.net: https://sourceforge.net/directory/?q=matrix%20homeserver
+* sr.ht: https://sr.ht/projects?search=matrix+homeserver&sort=recently-updated
 
 #### Public instances of GitLab
+
+Search these with pattern `https://<domain>/search?search=matrix+homeserver&nav_source=navbar&include_archived=true`
 
 * gitlab.com
 * gitlab.opencode.de
 
 #### [Public instances of Forgejo](https://codeberg.org/forgejo-contrib/delightful-forgejo#user-content-public-instances):
+
+Search these with pattern `https://<domain>/explore/repos?q=matrix+homeserver&only_show_relevant=false&fork=0&sort=recentupdate`
 
 * bolha.dev
 * codeberg.org
