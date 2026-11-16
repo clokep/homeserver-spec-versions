@@ -962,7 +962,7 @@ ADDITIONAL_PROJECTS = [
             # Last matching commit was ac771446a61b2fbf1944d747e8dc944f8421b451 (minus renames).
             name="synapse",
         ),
-        process_updates=True,
+        process_updates=False,  # Repository deleted.
     ),
     ProjectMetadata(
         name="elatrix",
