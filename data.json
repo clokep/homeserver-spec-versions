@@ -348,6 +348,308 @@
             },
             "spec_version_dates_by_tag": {}
         },
+        "asaroton": {
+            "default_room_version_dates_by_commit": {
+                "12": [
+                    [
+                        "079f4a199de14b55d496b68851b829eef94c2b51",
+                        "2026-10-25T12:55:43+01:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "default_room_version_dates_by_tag": {},
+            "forked_date": null,
+            "forked_from": null,
+            "initial_commit_date": "2026-10-25T12:43:08+01:00",
+            "initial_release_date": null,
+            "lag_after_commit_by_commit": {},
+            "lag_after_commit_by_tag": {},
+            "lag_after_release_by_commit": {},
+            "lag_after_release_by_tag": {},
+            "lag_all_by_commit": {
+                "v1.1": 1810,
+                "v1.10": 946,
+                "v1.11": 856,
+                "v1.12": 747,
+                "v1.13": 674,
+                "v1.14": 576,
+                "v1.15": 485,
+                "v1.16": 402,
+                "v1.17": 310,
+                "v1.18": 212,
+                "v1.19": 108,
+                "v1.2": 1725,
+                "v1.3": 1544,
+                "v1.4": 1481,
+                "v1.5": 1437,
+                "v1.6": 1348,
+                "v1.7": 1248,
+                "v1.8": 1158,
+                "v1.9": 1060
+            },
+            "lag_all_by_tag": {},
+            "last_commit": "9121b74bb29f2dbd4b6282ef8cf576322f450fab",
+            "last_commit_date": "2026-11-16T12:27:12+01:00",
+            "maturity": "alpha",
+            "merged_back": false,
+            "project_data_hash": "1ecf9f3841bc6a5a694e1631c1a09842",
+            "room_version_dates_by_commit": {
+                "1": [
+                    [
+                        "079f4a199de14b55d496b68851b829eef94c2b51",
+                        "2026-10-25T12:55:43+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "10": [
+                    [
+                        "079f4a199de14b55d496b68851b829eef94c2b51",
+                        "2026-10-25T12:55:43+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "11": [
+                    [
+                        "079f4a199de14b55d496b68851b829eef94c2b51",
+                        "2026-10-25T12:55:43+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "12": [
+                    [
+                        "079f4a199de14b55d496b68851b829eef94c2b51",
+                        "2026-10-25T12:55:43+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "2": [
+                    [
+                        "079f4a199de14b55d496b68851b829eef94c2b51",
+                        "2026-10-25T12:55:43+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "3": [
+                    [
+                        "079f4a199de14b55d496b68851b829eef94c2b51",
+                        "2026-10-25T12:55:43+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "4": [
+                    [
+                        "079f4a199de14b55d496b68851b829eef94c2b51",
+                        "2026-10-25T12:55:43+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "5": [
+                    [
+                        "079f4a199de14b55d496b68851b829eef94c2b51",
+                        "2026-10-25T12:55:43+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "6": [
+                    [
+                        "079f4a199de14b55d496b68851b829eef94c2b51",
+                        "2026-10-25T12:55:43+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "7": [
+                    [
+                        "079f4a199de14b55d496b68851b829eef94c2b51",
+                        "2026-10-25T12:55:43+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "8": [
+                    [
+                        "079f4a199de14b55d496b68851b829eef94c2b51",
+                        "2026-10-25T12:55:43+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "9": [
+                    [
+                        "079f4a199de14b55d496b68851b829eef94c2b51",
+                        "2026-10-25T12:55:43+01:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "room_version_dates_by_tag": {},
+            "spec_version_dates_by_commit": {
+                "v1.1": [
+                    [
+                        "2b4127af01572a985b0b5facd22a6dda1db931c2",
+                        "2026-10-25T13:25:19+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.10": [
+                    [
+                        "2b4127af01572a985b0b5facd22a6dda1db931c2",
+                        "2026-10-25T13:25:19+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.11": [
+                    [
+                        "2b4127af01572a985b0b5facd22a6dda1db931c2",
+                        "2026-10-25T13:25:19+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.12": [
+                    [
+                        "2b4127af01572a985b0b5facd22a6dda1db931c2",
+                        "2026-10-25T13:25:19+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.13": [
+                    [
+                        "2b4127af01572a985b0b5facd22a6dda1db931c2",
+                        "2026-10-25T13:25:19+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.14": [
+                    [
+                        "2b4127af01572a985b0b5facd22a6dda1db931c2",
+                        "2026-10-25T13:25:19+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.15": [
+                    [
+                        "2b4127af01572a985b0b5facd22a6dda1db931c2",
+                        "2026-10-25T13:25:19+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.16": [
+                    [
+                        "2b4127af01572a985b0b5facd22a6dda1db931c2",
+                        "2026-10-25T13:25:19+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.17": [
+                    [
+                        "2b4127af01572a985b0b5facd22a6dda1db931c2",
+                        "2026-10-25T13:25:19+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.18": [
+                    [
+                        "2b4127af01572a985b0b5facd22a6dda1db931c2",
+                        "2026-10-25T13:25:19+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.19": [
+                    [
+                        "2b4127af01572a985b0b5facd22a6dda1db931c2",
+                        "2026-10-25T13:25:19+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.2": [
+                    [
+                        "2b4127af01572a985b0b5facd22a6dda1db931c2",
+                        "2026-10-25T13:25:19+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.3": [
+                    [
+                        "2b4127af01572a985b0b5facd22a6dda1db931c2",
+                        "2026-10-25T13:25:19+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.4": [
+                    [
+                        "2b4127af01572a985b0b5facd22a6dda1db931c2",
+                        "2026-10-25T13:25:19+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.5": [
+                    [
+                        "2b4127af01572a985b0b5facd22a6dda1db931c2",
+                        "2026-10-25T13:25:19+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.6": [
+                    [
+                        "2b4127af01572a985b0b5facd22a6dda1db931c2",
+                        "2026-10-25T13:25:19+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.7": [
+                    [
+                        "2b4127af01572a985b0b5facd22a6dda1db931c2",
+                        "2026-10-25T13:25:19+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.8": [
+                    [
+                        "2b4127af01572a985b0b5facd22a6dda1db931c2",
+                        "2026-10-25T13:25:19+01:00",
+                        null,
+                        null
+                    ]
+                ],
+                "v1.9": [
+                    [
+                        "2b4127af01572a985b0b5facd22a6dda1db931c2",
+                        "2026-10-25T13:25:19+01:00",
+                        null,
+                        null
+                    ]
+                ]
+            },
+            "spec_version_dates_by_tag": {}
+        },
         "axiom": {
             "default_room_version_dates_by_commit": {},
             "default_room_version_dates_by_tag": {},

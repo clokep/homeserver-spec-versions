@@ -549,6 +549,46 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
+        name="asaroton",
+        description="A Matrix homeserver in Rust",
+        author="The asaroton authors",
+        maturity=Maturity.Alpha,
+        language="Rust",
+        licence="Apache-2.0",
+        repository="https://github.com/Oele/asaroton",
+        room=None,
+        branch="main",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "crates/tessera-api/src/client/discovery.rs",
+                    "crates/asaroton-api/src/client/discovery.rs",
+                ]
+            )
+        ],
+        room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "crates/tessera-core/src/room_version.rs",
+                    "crates/asaroton-core/src/room_version.rs",
+                ],
+                pattern=r"RoomVersionId::V(\d+),",
+            )
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "crates/tessera-core/src/room_version.rs",
+                    "crates/asaroton-core/src/room_version.rs",
+                ],
+                pattern=r"DEFAULT_ROOM_VERSION: .+RoomVersionId::V(\d+)",
+            )
+        ],
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
         name="axiom",
         description="Python Matrix Homeserver implementation aimed for easy prototyping and experimentation",
         author="Jonathan de Jong",
