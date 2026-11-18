@@ -419,6 +419,18 @@ ADDITIONAL_METADATA = {
         forked_from=None,
         process_updates=True,
     ),
+    "zendrite": AdditionalMetadata(
+        branch="main",
+        spec_version_finders=ZendriteFinders.spec_version_finders,
+        room_version_finders=ZendriteFinders.room_version_finders,
+        default_room_version_finders=ZendriteFinders.default_room_version_finders,
+        commits=CommitInfo(
+            earliest_commit="379ffff1f6673ddd39164f65194716d2e3c2ebb0",
+            earliest_tag=None,
+        ),
+        forked_from=ForkInfo(name="dendrite"),
+        process_updates=True,
+    ),
 }
 
 # Maybe https://github.com/lilyanavalley/264e.org?
@@ -772,7 +784,7 @@ ADDITIONAL_PROJECTS = [
         maturity=Maturity.Beta,
         language="Python",
         licence="AGPL-3.0",
-        repository="https://leakedsynapsepro.nhjkl.com/matrix/calyx",
+        repository="https://gitea.heizle.net/matrix/calyx",
         room=None,
         branch="master",
         spec_version_finders=SynapseFinders.spec_version_finders,
@@ -786,7 +798,7 @@ ADDITIONAL_PROJECTS = [
             # git show v1.145.0 on element-hq/synapse
             date=datetime(2026, 1, 13, 9, 29, 9, tzinfo=ZoneInfo("Canada/Mountain")),
         ),
-        process_updates=False,
+        process_updates=True,
     ),
     ProjectMetadata(
         name="casniam",
@@ -2712,26 +2724,6 @@ ADDITIONAL_PROJECTS = [
         forked_from=ForkInfo(name="synapse"),
         process_updates=True,
     ),
-    ProjectMetadata(
-        name="zendrite",
-        description=" An opinionated fork of element-hq/dendrite",
-        author="Patrick Schratz",
-        maturity=Maturity.Beta,
-        language="Go",
-        licence="AGPL-3.0-or-later OR Element Commercial License",
-        repository="https://codefloe.com/pat-s/zendrite",
-        room=None,
-        branch="main",
-        spec_version_finders=ZendriteFinders.spec_version_finders,
-        room_version_finders=(ZendriteFinders.room_version_finders),
-        default_room_version_finders=ZendriteFinders.default_room_version_finders,
-        commits=CommitInfo(
-            earliest_commit="379ffff1f6673ddd39164f65194716d2e3c2ebb0",
-            earliest_tag=None,
-        ),
-        forked_from=ForkInfo(name="dendrite"),
-        process_updates=True,
-    ),
 ]
 
 # Data to dump verbatim into data.json, this is for e.g. proprietary homeservers,
@@ -2890,11 +2882,15 @@ def load_projects() -> Iterator[ProjectMetadata]:
         data = tomllib.load(f)
 
     for server in data["servers"]:
-        server_name = server["name"] = server["name"].lower()
+        server_name = server["name"] = server["name"].lower().replace(" ", "-")
 
         if server_name in INVALID_PROJECTS:
             print(f"Ignoring {server_name}.")
             print()
+            continue
+
+        # For manual projects, we'll hit them later, so skip.
+        if "repository" not in server and server_name in MANUAL_PROJECTS:
             continue
 
         if server_name not in ADDITIONAL_METADATA:
@@ -2902,6 +2898,9 @@ def load_projects() -> Iterator[ProjectMetadata]:
             continue
 
         server["maturity"] = Maturity(server["maturity"].lower())
+
+        # A couple of projects provide website.
+        server.pop("website", None)
 
         # Can't use asdict here since it recurses into inner classes.
         yield ProjectMetadata(**server, **ADDITIONAL_METADATA[server_name].__dict__)
