@@ -2230,6 +2230,12 @@ ADDITIONAL_PROJECTS = [
                 paths=["packages/room/src/manager/factory.ts"],
                 pattern=r"'(\d+)',",
             ),
+            PatternFinder(
+                paths=["packages/room/src/manager/type.ts"],
+                pattern=r"'(\d+)'",
+                # Room versions 1 & 2 are listed in this file, but not actually supported.
+                parser=lambda s: {s} if s not in ["1", "2"] else set(),
+            ),
         ],
         default_room_version_finders=[
             PatternFinder(
