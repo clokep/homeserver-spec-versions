@@ -1168,6 +1168,34 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
+        name="goodshab-workers",
+        description="Matrix homeserver for matrix.goodshab.com",
+        author="crosettiremi",
+        maturity=Maturity.Alpha,
+        language="TypeScript",
+        licence="MIT",
+        repository="https://github.com/cf-remi/goodshab-matrix",
+        room=None,
+        branch="main",
+        spec_version_finders=[SpecVersionFinder(paths=["main/src/api/versions.ts"])],
+        room_version_finders=[
+            PatternFinder(paths=["src/index.ts"], pattern=r"'(\d+)'")
+        ],
+        default_room_version_finders=[
+            PatternFinder(paths=["src/index.ts"], pattern=r"default: '(\d+)'")
+        ],
+        commits=None,
+        forked_from=ForkInfo(
+            "matrix-workers",
+            # 9d1c8e777a21fa6272fd357dbc8047dcee048249
+            # Looks like it was forked from upstream 9d1c8e777a21fa6272fd357dbc8047dcee048249.
+            date=datetime(
+                2026, 2, 9, 19, 28, 29, tzinfo=timezone(offset=timedelta(hours=-5))
+            ),
+        ),
+        process_updates=True,
+    ),
+    ProjectMetadata(
         name="grapevine",
         description="Grapevine is a Matrix homeserver that was originally forked from Conduit 0.7.0. Eventually, Grapevine will be rewritten from scratch in a separate repository.",
         author="Charles Hall",
@@ -1411,6 +1439,46 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
+        name="katrix",
+        description="A Matrix homeserver as an importable Node.js library, and a public server built on it.",
+        author="Krystian Mikołajczyk",
+        maturity=Maturity.Alpha,
+        language="TypeScript",
+        licence="PolyForm-Noncommercial-1.0.0",
+        repository="https://github.com/k18k/katrix",
+        room=None,
+        branch="main",
+        spec_version_finders=[
+            SpecVersionFinder(
+                paths=[
+                    "packages/core/src/api/misc.ts",
+                    "packages/server/src/api/misc.ts",
+                ]
+            )
+        ],
+        room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "packages/core/src/core/events.ts",
+                    "packages/server/src/core/events.ts",
+                ],
+                pattern=r'"(\d+)"',
+            )
+        ],
+        default_room_version_finders=[
+            PatternFinder(
+                paths=[
+                    "packages/core/src/core/events.ts",
+                    "packages/server/src/core/events.ts",
+                ],
+                pattern=r'DEFAULT_ROOM_VERSION = "(\d+)"',
+            )
+        ],
+        commits=None,
+        forked_from=None,
+        process_updates=True,
+    ),
+    ProjectMetadata(
         name="lattice",
         description="Lattice is an open-source Matrix homeserver in the age of AI powered by golang",
         author="enimatek-nl",
@@ -1582,49 +1650,49 @@ ADDITIONAL_PROJECTS = [
         process_updates=True,
     ),
     ProjectMetadata(
-        name="katrix",
-        description="A Matrix homeserver as an importable Node.js library, and a public server built on it.",
-        author="Krystian Mikołajczyk",
+        name="matrix-homeserver-jmbish04",
+        description="Matrix Homeserver on Cloudflare Workers",
+        author="Nick Kuntz",
         maturity=Maturity.Alpha,
         language="TypeScript",
-        licence="PolyForm-Noncommercial-1.0.0",
-        repository="https://github.com/k18k/katrix",
+        licence="MIT",
+        repository="https://github.com/jmbish04/matrix-homeserver",
         room=None,
         branch="main",
-        spec_version_finders=[
-            SpecVersionFinder(
-                paths=[
-                    "packages/core/src/api/misc.ts",
-                    "packages/server/src/api/misc.ts",
-                ]
-            )
-        ],
+        spec_version_finders=[SpecVersionFinder(paths=["main/src/api/versions.ts"])],
         room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "packages/core/src/core/events.ts",
-                    "packages/server/src/core/events.ts",
-                ],
-                pattern=r'"(\d+)"',
-            )
+            PatternFinder(paths=["src/index.ts"], pattern=r"'(\d+)'")
         ],
         default_room_version_finders=[
-            PatternFinder(
-                paths=[
-                    "packages/core/src/core/events.ts",
-                    "packages/server/src/core/events.ts",
-                ],
-                pattern=r'DEFAULT_ROOM_VERSION = "(\d+)"',
-            )
+            PatternFinder(paths=["src/index.ts"], pattern=r"default: '(\d+)'")
         ],
-        commits=None,
-        forked_from=None,
+        # Ignore the import commit.
+        commits=CommitInfo(earliest_commit="33be04acefb7d1e2bf2dccfa097ea24959ea2035"),
+        forked_from=ForkInfo(name="matrix-workers"),
         process_updates=True,
     ),
-    # potenial forks:
-    # https://github.com/cf-remi/goodshab-matrix
-    # https://github.com/linksever137/matrix-homeserver
-    # https://github.com/jmbish04/matrix-homeserver
+    ProjectMetadata(
+        name="matrix-homeserver-linksever137",
+        description="Matrix Homeserver on Cloudflare Workers",
+        author="Nick Kuntz",
+        maturity=Maturity.Alpha,
+        language="TypeScript",
+        licence="MIT",
+        repository="https://github.com/linksever137/matrix-homeserver",
+        room=None,
+        branch="main",
+        spec_version_finders=[SpecVersionFinder(paths=["main/src/api/versions.ts"])],
+        room_version_finders=[
+            PatternFinder(paths=["src/index.ts"], pattern=r"'(\d+)'")
+        ],
+        default_room_version_finders=[
+            PatternFinder(paths=["src/index.ts"], pattern=r"default: '(\d+)'")
+        ],
+        # Ignore the import commit.
+        commits=CommitInfo(earliest_commit="f3d8ccd740e435fde595621e2ae0c219140d39e4"),
+        forked_from=ForkInfo(name="matrix-workers"),
+        process_updates=True,
+    ),
     ProjectMetadata(
         name="matrix-workers",
         description="Matrix Homeserver on Cloudflare Workers",
